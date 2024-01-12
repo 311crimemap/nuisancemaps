@@ -26,7 +26,7 @@ public class TestControllerTest {
 
 	@Test  //matches output from HelloController.java - based on route
 	public void getHello() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/test").accept(MediaType.APPLICATION_JSON))
+	    mvc.perform(MockMvcRequestBuilders.get("/test").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().json("{ 'id': 1, 'name': 'hello'}"));
 	}
