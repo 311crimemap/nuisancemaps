@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  database:
+    image: 'bitnami/postgresql:16.1.0'
+    network_mode: "host"
+    #ports:
+    #- '5432'
+    environment:
+    # - ALLOW_EMPTY_PASSWORD=yes
+    - POSTGRESQL_USER=postgres
+    - POSTGRESQL_PASSWORD=admin
+    - POSTGRESQL_DATABASE=db_example
+   
