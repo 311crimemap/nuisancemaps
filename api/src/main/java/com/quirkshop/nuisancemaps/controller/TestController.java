@@ -19,11 +19,11 @@ public class TestController {
     private TestRepository testRepository;
 
     @PostMapping(path = "/test/create") // Map ONLY POST Requests
-    public @ResponseBody String create(@RequestParam String name) {
+    public @ResponseBody String create(@RequestParam String name, Integer age) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         // curl -X POST -d name=Howdy localhost:8080/test/create
-        Test t = new Test(name);
+        Test t = new Test(name, age);
         testRepository.save(t);
         return "Saved";
     };
