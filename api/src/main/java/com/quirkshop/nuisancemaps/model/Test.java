@@ -11,6 +11,7 @@ public class Test {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
+    private int age;
 
     public Test() {
     } // default required by JPA
@@ -33,6 +34,14 @@ public class Test {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getAge() {
+        return this.age;
     }
 
 }

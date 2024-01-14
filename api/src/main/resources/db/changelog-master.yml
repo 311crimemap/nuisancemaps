@@ -1,0 +1,4 @@
+# NB: directory relative to /resources
+databaseChangeLog:
+- includeAll:
+    path: db/changelogs
