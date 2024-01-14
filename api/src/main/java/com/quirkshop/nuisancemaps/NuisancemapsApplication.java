@@ -36,8 +36,8 @@ public class NuisancemapsApplication {
 			// save a few Tests
 			// this is useful for seeding the DB when hibernate.ddl-auto is create
 			log.info("saving initial test instances to db");
-			repository.save(new Test("testopresto"));
-			repository.save(new Test("test"));
+			//repository.save(new Test("testopresto", 1));
+			//repository.save(new Test("test", 2));
 			log.info("");
 		};
 	}
