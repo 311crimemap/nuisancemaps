@@ -131,6 +131,12 @@ Approach:
 
 Liquibase modifies the database and tracks which changelogs were run.
 
+#### Liquibase Gotchas
+
+* `liquibase:update` will run off `target/classes/eb/changelogs` copied files.
+* Consider the generated output diff (`generated_changelog.sql`) as a temp file and don't include in a migration.
+* Ensure manual creation of a proper change log, informed by generated - e.g. create a `06-changelog.sql`, but delete `generated_changelog.sql` file before running an update.
+* Ensure extension tables; e.g. postgis tables are not dropped.
 
 #### Liquibase Authentication
 
