@@ -17,13 +17,13 @@ public class NuisancemapsApplication {
 
 	public static void main(String[] args) {
 
-		// doesn't work
+		// output before "spring" logo
 		System.out.println("println pre");
 		log.info("log pre");
 
 		SpringApplication.run(NuisancemapsApplication.class, args);
 
-		// works
+		// output after load
 		System.out.println("println post");
 		log.info("log post");
 	}
@@ -36,8 +36,8 @@ public class NuisancemapsApplication {
 			// save a few Tests
 			// this is useful for seeding the DB when hibernate.ddl-auto is create
 			log.info("saving initial test instances to db");
-			//repository.save(new Test("testopresto", 1));
-			//repository.save(new Test("test", 2));
+			// repository.save(new Test("testopresto", 1));
+			// repository.save(new Test("test", 2));
 			log.info("");
 		};
 	}
