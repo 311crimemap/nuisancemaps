@@ -16,8 +16,9 @@ public class Test {
     public Test() {
     } // default required by JPA
 
-    public Test(String name) {
+    public Test(String name, int age) {
         this.name = name;
+        this.age = age;
     }
 
     public int getId() {
