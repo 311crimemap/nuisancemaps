@@ -112,9 +112,11 @@ ORM implementation for JPA.
 
 ### DB via Liquibase + Hibernate ORM
 
-For standalone operation, specificy a `liquibase.properties`. Approach is to use Entity / Hibernate as a schema reference. Liquibase will t hen generate the sql diff - the migraiton - that is applied to the database.
+For standalone operation, specificy a `liquibase.properties`. Approach is to use Entity / Hibernate as a schema reference. 
+Liquibase will t hen generate the sql diff - the migraiton - that is applied to the database.
 
-THe liquibase plugin is integrated with spring and defaults to running automatically, but currently disabled in `application.properties` (`spring.liquibase.enabled=false`). Don't necessarily want migrations running automatically on every deploy.
+THe liquibase plugin is integrated with spring and defaults to running automatically, but currently disabled in `application.properties` (`spring.liquibase.enabled=false`). 
+Don't necessarily want migrations running automatically on every deploy.
 
 
 Approach:
@@ -150,13 +152,81 @@ Will require a bash script, configMap in a job. Which I think is fine for a k3s 
 
 ### Maven Commands
 
+#### Determine Main Class
+
+Want a single build, same image, shared libraries (important for database entities) while only changing different container config for a different app.
+Allows scaling different apps, as number of replicas is controlled by deploys in k8s.
+
+Testing considerations: By having multiple main's, no longer explicit about the which Spring context is being used.
+Often breaks tests. We can restrict SpringBootTest context to the needed classes/app:
+
+`@SpringBootTest(classes = NuisancemapsApplication.class)`
+
+
+##### Basic
+
+Maven Default: configure statically via maven in `pom.xml`:
+
+```
+<plugin>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-maven-plugin</artifactId>
+  <configuration>
+    <mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
+  </configuration>
+</plugin>
+<plugin>
+
+```
+
+##### Docker-compose / Dev
+
+CLI overrides maven; uses `start-class` property (can see in `mvnw spring-boot:run -X` debug output)
+
+Select main class at runtime in docker-compose.yml:
+* dev run: `bash -c "mvwn spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.WorkerApplication"`
+
+##### Build Individual Jar
+
+Can build separate jars with command line default for main class:`./mvnw install -Dstart-class=com.quirkshop.nuisancemaps.WorkerApplication`
+* allows a straightforward `java -jar` to launch app
+
+##### Build Fat Jar
+
+Have Maven use basic config above to set a default build. This packages everything into a fat Jar with default main class.
+
+Use command line to specifiy run time lternate main class via Spring's `PropertiesLauncher`. [Docs](https://docs.spring.io/spring-boot/docs/3.2.0-SNAPSHOT/reference/html/executable-jar.html#appendix.executable-jar.launching)
+
+
+1. Need to execute 'jar' by treating jar as class path.
+2. Set `org.springframework.boot.loader.launch.PropertiesLauncher` as main
+3. Set config `loader.main` which maps to start-class. (see docs)
+
+
+```
+# Execute different main's:
+
+java -cp nuisancemaps-0.0.1-SNAPSHOT.jar \
+     -Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication \
+      org.springframework.boot.loader.launch.PropertiesLauncher
+
+java -cp nuisancemaps-0.0.1-SNAPSHOT.jar \
+     -Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication \
+      org.springframework.boot.loader.launch.PropertiesLauncher
+
+```
+
+
+
+
 #### Spring
 
 * `mvnw dependency:tree`: `pom.xml` libs, dependencies and their versions
 * `mvnw spring-boot:run`
-* `mvnw tests`
+* `mvnw test`
 * `mvnw compile`
-
+* `mvnw install`: builds jar
+* `mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.WorkerApplication`: explicitly choose main class to run spring-boot application
 
 #### Database
 
