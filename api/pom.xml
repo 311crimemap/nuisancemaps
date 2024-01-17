@@ -16,6 +16,7 @@
 	<description>Nuisance Maps</description>
 	<properties>
 		<java.version>17</java.version>
+		<!-- <start-class>com.quirkshop.nuisancemaps.WorkerApplication</start-class> -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -55,8 +56,20 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<!--
+						Don't explicitly set a mainClass;
+						they're set in command line - see README.md
+					-->
+					<!--
+					<mainClass>org.springframework.boot.loader.launch.PropertiesLauncher</mainClass>
 					<mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
+					-->
+					<image>
+					</image>
+
 				</configuration>
+
+
 			</plugin>
 			<plugin>
 				<groupId>org.liquibase</groupId>
