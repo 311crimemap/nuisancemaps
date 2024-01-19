@@ -19,10 +19,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
-import java.sql.Date;
-
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import java.time.LocalDateTime;
@@ -90,6 +87,7 @@ public class NuisancemapsApplication {
 
 		srepo.save(s);
 		crepo.save(d);
+		
 		entityManager.flush();
 
 		Source s2 = d.getSource();
