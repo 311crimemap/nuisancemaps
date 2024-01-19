@@ -15,9 +15,9 @@ import jakarta.persistence.SequenceGenerator;
 import org.locationtech.jts.geom.Point;
 
 @Entity
-@Table(name="data_crime")
+@Table(name = "data_crime")
 public class DataCrime {
-   
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_crime_seq")
     @SequenceGenerator(name = "data_crime_seq", allocationSize = 1)
@@ -31,7 +31,7 @@ public class DataCrime {
     private String category;
     private String description;
     private String location;
-    
+
     private double latitude;
     private double longitude;
     private Point point;
@@ -41,7 +41,7 @@ public class DataCrime {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime created_at;
-    
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
 
@@ -50,7 +50,7 @@ public class DataCrime {
 
     public DataCrime(Source source, String report_num, String category, String description, String location,
             double latitude, double longitude, Point point, LocalDateTime reported_at) {
-        this.source = source;
+        this.setSource(source);
         this.report_num = report_num;
         this.category = category;
         this.description = description;
@@ -73,8 +73,10 @@ public class DataCrime {
         return source;
     }
 
+    // set inverse relation
     public void setSource(Source source) {
         this.source = source;
+        this.source.addDataCrime(this);
     }
 
     public String getReport_num() {
@@ -157,25 +159,4 @@ public class DataCrime {
         this.updated_at = updated_at;
     }
 
-    
 }
-
-
-/*
-
-| field                 | crime data field                                                                    |
-| --------------------- | ----------------------------------------------------------------------------------- |
-| id                    | -                                                                                   |
-| source_id             | (fkey source table)                                                                 |
-| report_num            | complaint_num, case_num, report_num, etc.                                           |
-| category              | of_desc, primary_type, crime_type,                                                  |
-| description           | pd_desc, description                                                                |
-| location              | prem_type_desc, location_description, location_type, (general location description) |
-| latitude              | latitude, location.latittude                                                        |
-| longitude             | longitude, location.longitude                                                       |
-| Point                 | spatial                                                                             |
-| reported_at           | rpt_dt, date, rep_date_time,                                                        |
-| created_at            |                                                                                     |
-| updated_at            |                                                                                     |
-
-*/    

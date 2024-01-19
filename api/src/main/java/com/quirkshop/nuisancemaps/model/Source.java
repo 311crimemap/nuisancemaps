@@ -1,6 +1,7 @@
 package com.quirkshop.nuisancemaps.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,9 +14,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.CascadeType;;
+
 @Entity
-@Table(name="source")
+@Table(name = "source")
 public class Source {
 
     @Id
@@ -27,15 +28,15 @@ public class Source {
     private String description;
     private String url;
 
-    @OneToMany(mappedBy = "source", fetch = FetchType.EAGER)
-    private List<DataCrime> dataCrimes;
+    @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
+    private List<DataCrime> dataCrimes = new ArrayList<DataCrime>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime created_at;
-    
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
-    
+
     // TODO: store possible property mapping
 
     public Source() {
@@ -45,6 +46,10 @@ public class Source {
         this.category = category;
         this.description = description;
         this.url = url;
+    }
+
+    public void addDataCrime(DataCrime crime) {
+        this.dataCrimes.add(crime);
     }
 
     public Integer getId() {
@@ -80,6 +85,7 @@ public class Source {
     }
 
     public List<DataCrime> getDataCrimes() {
+        System.out.println("HERE");
         return dataCrimes;
     }
 
@@ -103,18 +109,4 @@ public class Source {
         this.updated_at = updated_at;
     }
 
-
 }
-
-/*
-| field           | 311 data field    |
-| --------------- | ----------------- |
-| id              | -                 |
-| category        | (311, crime)      |
-| description     | (nyc, atx, detc.) |
-| url             |                   |
-| created_at      |                   |
-| updated_at      |                   |
-
-field config - premature; just do hardcode in code for now, see where refactor can happen
- */

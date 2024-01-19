@@ -1,6 +1,97 @@
 # Worker Data
 
----
+* PostGIS is extension in DB
+* Hibernate is the ORM (eJPA implementation)
+* Hibernate Spatia is the library to enable GIS hibernate
+* JTS (`org.locationtech.jts`) is the library for data types; e.g. `org.locationtech.jts.geom.Point`
+
+## Entity / JPA
+
+* `@Table(name = <>)`: sets database name (generated in liquibase)
+
+### Sequence Generation
+
+* Instructs strategy for id increments.
+* JPA defaults to `STAR WITH 1 INCREMENT BY 50`
+  * more important for batch processing, but set increment to for now
+* liquibase will generate a migraton, sometimes with weird capitalization (`_SEQ`). Fix these to lowercase.
+
+```
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "source_seq")
+@SequenceGenerator(name = "source_seq", allocationSize = 1)
+```
+
+### Associations
+
+For associated many relations, instantiate an empty list / hash in the constructor
+
+There is an entire lifecycle to entities; transient state, persistent - JPA tries to defer queries, etc. Without delving too deeply, think of concurrency and separation between in memory entity vs persisted-to-db data.
+
+Can @autowired an `EntityManager`, but not sure if that's an antipattern.
+
+* FetchType.EAGER: fetch collection immediately when fetchin parent, but if not needed, wasteful
+* FetchType.LAZY:  fetch collection when needed
+
+For lazy load, accessing a child needs to be wrapped in a Transaction.
+
+NB: LazyLoading in `CommandLineRunner` has breaking issues; doesn't seem able to do so with FetchType.LAZY. (Works with Eager.) However, in controller same code seems to work.
+
+
+#### One to Many
+
+e.g A Source has many Crimes
+
+The key to proper ORM behavior is to explicitly have the association manage the inverse relationship.
+
+
+
+```
+DataCrime(source) {
+    this.setSource(source);
+}
+
+setSource(source) {
+    this.source = source;
+    this.source.addDataCrime(this); # manually add the inverse
+}
+```
+
+##### One
+
+Source table
+
+```
+# note the fetch: this is a lifecyle issue
+@OneToMany(mappedBy = "source", fetch = FetchType.EAGER, cascade = ...)
+List<> Crimes = new ArrayList<>()
+```
+
+```
+# most generated sql should be ok
+```
+
+##### Many
+
+Crimes table
+
+`name` refers to the foreign key columm
+
+```
+@ManyToOne
+@JoinColumn(name = "source_id", nullable = ...)
+```
+
+```
+# sql adjustments
+# need to add oreign key requires REFERENCES table(field)
+source_id INTEGER REFERENCES source(id)
+
+# this will also generate a duplicate constraint below:
+# REMOVE this as the database will generate the constraint from above
+CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES source(id)
+
+```
+
 
 ## Data
 
@@ -47,24 +138,25 @@ have to assume everything might be missing at some point
 | field                 | crime data field                                                                    |
 | --------------------- | ----------------------------------------------------------------------------------- |
 | id                    | -                                                                                   |
-| external_report_id    | complaint_num, case_num, report_num, etc.                                           |
 | source_id             | (fkey source table)                                                                 |
-| incident type / name  | of_desc, primary_type, crime_type,                                                  |
-| incident description  | pd_desc, description                                                                |
-| location_type              | prem_type_desc, location_description, location_type, (general location description) |
-| date reported created | rpt_dt, date, rep_date_time,                                                        |
+| report_num            | complaint_num, case_num, report_num, etc.                                           |
+| category              | of_desc, primary_type, crime_type,                                                  |
+| description           | pd_desc, description                                                                |
+| location              | prem_type_desc, location_description, location_type, (general location description) |
 | latitude              | latitude, location.latittude                                                        |
 | longitude             | longitude, location.longitude                                                       |
 | Point                 | spatial                                                                             |
+| reported_at           | rpt_dt, date, rep_date_time,                                                        |
 | created_at            |                                                                                     |
 | updated_at            |                                                                                     |
+
 
 ### data_311
 
 | field                | 311 data field                                                              |
 | -------------------- | --------------------------------------------------------------------------- |
 | id                   | -                                                                           |
-| external_report_id   | sr_num, unique_key, service_request_id, sr_number                           |
+| report_num           | sr_num, unique_key, service_request_id, sr_number                           |
 | source_id            | (fkey source table)                                                         |
 | incident type / name | sr_type_desc, complaint_type, service_name, sr_type                         |
 | incident description | descriptor, service_detail, detail (may not exist, be external to response) |
@@ -95,15 +187,14 @@ somehwat redundant, except on global level - just do it
 
 ### source (311 or crime data source meta)
 
-| field                         | 311 data field |
-| ----------------------------- | -------------- |
-| id                            | -              |
-| external_report_id            |                |
-| report (311, crime) type      |                |
-| description (nyc, atx, detc.) |                |
-| url                           |                |
-| created_at                    |                |
-| updated_at                    |                |
+| field           | 311 data field    |
+| --------------- | ----------------- |
+| id              | -                 |
+| report_category | (311, crime)      |
+| description     | (nyc, atx, detc.) |
+| url             |                   |
+| created_at      |                   |
+| updated_at      |                   |
 
 field config - premature; just do hardcode in code for now, see where refactor can happen
 
