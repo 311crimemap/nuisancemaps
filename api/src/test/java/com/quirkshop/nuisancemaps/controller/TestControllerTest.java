@@ -11,13 +11,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc; 
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+
 //mock value methods
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;  //status()
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content; //content()
 import static org.hamcrest.Matchers.equalTo; //equalTo(operand:....)
 
 
-@SpringBootTest
+@SpringBootTest(classes = NuisancemapsApplication.class)
 @AutoConfigureMockMvc  //these anotations inject MockMvc instance into test
 public class TestControllerTest {
 
@@ -26,7 +28,7 @@ public class TestControllerTest {
 
 	@Test  //matches output from HelloController.java - based on route
 	public void getHello() throws Exception {
-	    mvc.perform(MockMvcRequestBuilders.get("/test").accept(MediaType.APPLICATION_JSON))
+	    mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().json("{ 'id': 1, 'name': 'hello'}"));
 	}

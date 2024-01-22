@@ -6,15 +6,33 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.Test;
 import com.quirkshop.nuisancemaps.repository.TestRepository;
+
+import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+
+import org.hibernate.Hibernate;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @SpringBootApplication
 public class NuisancemapsApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
+	/*
+	 * @Autowired
+	 * private EntityManager entityManager;
+	 */
 	public static void main(String[] args) {
 
 		// output before "spring" logo
@@ -29,16 +47,38 @@ public class NuisancemapsApplication {
 	}
 
 	@Bean
-	public CommandLineRunner doesntmatterwhatthisiscalled(TestRepository repository) {
+	public CommandLineRunner doesntmatterwhatthisiscalled(SourceRepository srepo, DataCrimeRepository crepo) {
+		return args -> {
 
-		return (args) -> {
-
-			// save a few Tests
-			// this is useful for seeding the DB when hibernate.ddl-auto is create
 			log.info("saving initial test instances to db");
-			// repository.save(new Test("testopresto", 1));
-			// repository.save(new Test("test", 2));
-			log.info("");
+			String url = "https://data.austintexas.gov/resource/fdj4-gpfu.json?$query=SELECT%20*%20ORDER%20BY%20%60rep_date_time%60%20DESC%20NULL%20LAST";
+
+			Source s = new Source("crime", "Austin crime", url);
+			// Create a GeometryFactory
+			GeometryFactory geometryFactory = new GeometryFactory();
+
+			// Create a Coordinate using the double values
+			double lat = Double.parseDouble("30.43248411");
+			double lng = Double.parseDouble("-97.7359116");
+			Coordinate coordinate = new Coordinate(lat, lng);
+
+			// Create a Point using the GeometryFactory and Coordinate
+			Point point = geometryFactory.createPoint(coordinate);
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+			
+			DataCrime d = new DataCrime(s,
+					"2024240131387",
+					"DWI 2nd", "abdef", "PARKING/ DROP LOT/ GARAGE",
+					lat, lng, point, LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
+
+			log.info("save s");
+			log.info("save d");
+
+			srepo.save(s);
+			crepo.save(d);
+
 		};
 	}
+
 }
