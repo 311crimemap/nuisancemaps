@@ -59,9 +59,20 @@ Repositories: `<Template, ID>`
 
 ### Tests
 
-`/.mvnw tests`
+`/.mvnw tests -P test -Dspring.profiles.active=test`
 
-Integration and Mock examples (see quickstart).
+#### Environments
+
+Denoted via Profiles.
+
+* Maven profiles: `./mvnw ... -P <profile names>`
+* Spring active profiles: `./mvnw ... -Dspring.profiles.active=<profile_names>`
+  * active profiles can load specific suffix configurations e.g. `application-test.properties`
+
+Enabling a maven profile (think selecting `pom.xml` values) doesn't pass into the Spring runtime, so system args need to be _additionally_ passed.
+
+It's safest to just pass both a profile and system arg. (see test command)
+
 
 ##### Controller Test, Mocked requests: 
 
@@ -98,6 +109,17 @@ Configuration properties in hierarchical notation.
 Typical settings for jars loaded via `pom.xml`.
 
 Currently, most focused on database / persistence.
+
+##### Env config via Active Profiles - Example: Test Database
+
+Given command line: `-Dspring.profiles.active=<profile-name>`, Spring will automatically load suffix: `application-<profile>.properties`.
+
+Liquibase migrations also need to have dev vs test database specified. This is done by using a `test` profile to explicitly configure a `liquibase-test.properties` in `pom.xml`. A limitation is the file cannot be passed via command line. So for *liquibase*, we have enable a maven profile via `-P test`.
+
+Since liquibase, and Spring tests require maven profile, and spring active profile configurations, it's just best to to pass both during each operation.
+
+`./mvnw liquibase:update -P test -Dspring.profiles.active=test`
+`./mvnw tests -P test -Dspring.profiles.active=test`
 
 
 #### Hibernate

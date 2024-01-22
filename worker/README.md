@@ -92,8 +92,23 @@ CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES source(id)
 
 ```
 
-### Repository
+### Custom Repository Methods
 
+Model's data methods are implemented in the repository class.
+e.g. `SourceRepository` extends `CrudRepository`
+* Custom methods - `findOrCreate()` - requires:
+  * `interface SourceCustomRepository`
+  * implementation of interface (`SourceCustomRepositoryImpl`)
+* Use custom methods by adding it to extended class:
+  * `interface <Repository> extends CrudRepository<Source,Integer>, SourceCustomRepository`
+* `entityManager` is ORM bridge to database.
+
+
+### Tests and Test Database
+
+* Test Rollback: annotate each test with `@Transactional` so test suite is rolled back after each run (else data persists in test db)
+* This is more reliable than clearing out data or trying a drop_all migrate
+* If migrations aren't running, out of order, look to db `databasechange` see what's been run.
 
 ---
 
@@ -139,20 +154,20 @@ have to assume everything might be missing at some point
 
 ### data_crime
 
-| field                 | crime data field                                                                    |
-| --------------------- | ----------------------------------------------------------------------------------- |
-| id                    | -                                                                                   |
-| source_id             | (fkey source table)                                                                 |
-| report_num            | complaint_num, case_num, report_num, etc.                                           |
-| category              | of_desc, primary_type, crime_type,                                                  |
-| description           | pd_desc, description                                                                |
-| location              | prem_type_desc, location_description, location_type, (general location description) |
-| latitude              | latitude, location.latittude                                                        |
-| longitude             | longitude, location.longitude                                                       |
-| Point                 | spatial                                                                             |
-| reported_at           | rpt_dt, date, rep_date_time,                                                        |
-| created_at            |                                                                                     |
-| updated_at            |                                                                                     |
+| field       | crime data field                                                                    |
+| ----------- | ----------------------------------------------------------------------------------- |
+| id          | -                                                                                   |
+| source_id   | (fkey source table)                                                                 |
+| report_num  | complaint_num, case_num, report_num, etc.                                           |
+| category    | of_desc, primary_type, crime_type,                                                  |
+| description | pd_desc, description                                                                |
+| location    | prem_type_desc, location_description, location_type, (general location description) |
+| latitude    | latitude, location.latittude                                                        |
+| longitude   | longitude, location.longitude                                                       |
+| Point       | spatial                                                                             |
+| reported_at | rpt_dt, date, rep_date_time,                                                        |
+| created_at  |                                                                                     |
+| updated_at  |                                                                                     |
 
 
 ### data_311
