@@ -16,7 +16,7 @@ import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 //mock value methods
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;  //status()
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content; //content()
-import static org.hamcrest.Matchers.equalTo; //equalTo(operand:....)
+//import static org.hamcrest.Matchers.equalTo; //equalTo(operand:....)
 
 
 @SpringBootTest(classes = NuisancemapsApplication.class)

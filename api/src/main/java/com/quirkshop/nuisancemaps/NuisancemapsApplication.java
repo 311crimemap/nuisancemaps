@@ -6,23 +6,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.DataCrime;
-import com.quirkshop.nuisancemaps.model.Test;
-import com.quirkshop.nuisancemaps.repository.TestRepository;
 
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
-import org.hibernate.Hibernate;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @SpringBootApplication
 public class NuisancemapsApplication {
@@ -73,10 +68,10 @@ public class NuisancemapsApplication {
 					lat, lng, point, LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
 
 			log.info("save s");
-			log.info("save d");
+			//log.info("save d");
 
-			srepo.save(s);
-			crepo.save(d);
+			//srepo.save(s);
+			//crepo.save(d);
 
 		};
 	}
