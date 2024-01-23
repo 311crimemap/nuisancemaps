@@ -1,6 +1,8 @@
 package com.quirkshop.nuisancemaps.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
@@ -12,7 +14,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
 @Table(name = "data_crime")
@@ -34,6 +38,7 @@ public class DataCrime {
 
     private double latitude;
     private double longitude;
+    private GeometryFactory _geometryFactory;
     private Point point;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -49,7 +54,7 @@ public class DataCrime {
     } // default required by JPA
 
     public DataCrime(Source source, String report_num, String category, String description, String location,
-            double latitude, double longitude, Point point, LocalDateTime reported_at) {
+            GeometryFactory geometryFactory, double latitude, double longitude, LocalDateTime reported_at) {
         this.setSource(source);
         this.report_num = report_num;
         this.category = category;
@@ -57,8 +62,15 @@ public class DataCrime {
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.point = point;
+        this._geometryFactory = geometryFactory;
+        this.point = this.buildPoint(latitude, longitude);
+        // DateTimeFormatter formatter =
+        // DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
         this.reported_at = reported_at;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.created_at = now;
+        this.updated_at = now;
     }
 
     public Integer getId() {
@@ -125,6 +137,11 @@ public class DataCrime {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public Point buildPoint(double latitude, double longitude) {
+        Coordinate coordinate = new Coordinate(latitude, longitude);
+        return this._geometryFactory.createPoint(coordinate);
     }
 
     public Point getPoint() {
