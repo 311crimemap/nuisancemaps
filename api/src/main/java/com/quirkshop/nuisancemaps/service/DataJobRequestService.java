@@ -1,4 +1,4 @@
-package com.quirkshop.service;
+package com.quirkshop.nuisancemaps.service;
 
 import com.quirkshop.nuisancemaps.model.Source;
 
