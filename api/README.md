@@ -55,6 +55,37 @@ Repositories: `<Template, ID>`
 
 ### Service Class
 
+* uses Annotation: `@Service`: ensures injection of helpers
+
+`RestTemplate`: Spring helper for making HTTP requests and handling responses
+* GET request: `restTemplate.getForObject(url, String.class);`
+* `@Autowired`, allows object to be a `@Mock` in a test.
+
+
+#### JSON Response
+
+Example of parsing a list of objects
+* `Map<String, Object>` represents an individual JSON object. The "value" is an `Object` type as can be a nested object.
+
+```
+ObjectMapper objectMapper = new ObjectMapper();
+String jsonResponse = restTemplate.getForObject(url, String.class);
+List<Map<String, Object>> responseList = null;
+
+responseList = objectMapper.readValue(jsonResponse, new TypeReference<List<Map<String, Object>>>() {});
+
+for (Map<String, Object> responseObject : responseList) {
+
+  //get individual key/val by name
+  responseObject.get("<keyname>");
+
+  //loop through all keys of entire object
+  for (Map.Entry<String, Object> entry : responseObject.entrySet()) {
+     String fieldName = entry.getKey();
+     Object fieldValue = entry.getValue();
+  }
+}
+```
 
 
 ### Tests
@@ -72,6 +103,17 @@ Denoted via Profiles.
 Enabling a maven profile (think selecting `pom.xml` values) doesn't pass into the Spring runtime, so system args need to be _additionally_ passed.
 
 It's safest to just pass both a profile and system arg. (see test command)
+
+
+##### Injection / Mocks
+
+Testing a class, often setup the DI'd input as a `@Mock`, and then `@InjectMocks` into the variable.
+
+Injecting a Mock gives Mockito the lifecyle of the instance, which includes calling its constructor.
+
+If explicitly initalize anything outside of DI, it overwrites Mocks or any autowiring provided by Spring.
+
+Can't `@InjectMocks` and `@Autowired` within the same instance - causes conflict. Best to rethink the tests. All mocks. Or not.
 
 
 ##### Controller Test, Mocked requests: 
