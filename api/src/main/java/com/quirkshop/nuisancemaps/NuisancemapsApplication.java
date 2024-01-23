@@ -65,7 +65,8 @@ public class NuisancemapsApplication {
 			DataCrime d = new DataCrime(s,
 					"2024240131387",
 					"DWI 2nd", "abdef", "PARKING/ DROP LOT/ GARAGE",
-					lat, lng, point, LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
+					geometryFactory, lat, lng,
+					LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
 
 			log.info("save s");
 			//log.info("save d");
