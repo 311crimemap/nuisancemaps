@@ -1,7 +1,6 @@
 package com.quirkshop.nuisancemaps.model;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 

@@ -2,12 +2,8 @@ package com.quirkshop.nuisancemaps.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
@@ -15,10 +11,8 @@ import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
-import com.quirkshop.service.DataJobRequestServiceImpl;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -49,7 +43,6 @@ public class DataJobRequestServiceTest {
     private ResourceLoader resourceLoader;
 
     @InjectMocks
-    // @Autowired
     private DataJobRequestServiceImpl dataJobRequestService;
 
     @Test
@@ -78,9 +71,7 @@ public class DataJobRequestServiceTest {
         d.setId(1);
         when(datacrime_repo.save(Mockito.any(DataCrime.class))).thenReturn(d);
         
-        // dataJobRequestService = new DataJobRequestServiceImpl(source_repo,
-        // datacrime_repo);
-        // dataJobRequestService = new DataJobRequestServiceImpl();
+
         String result = dataJobRequestService.fetchJSON(s);
 
         System.out.println(result);

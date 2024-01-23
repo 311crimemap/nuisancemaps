@@ -38,7 +38,7 @@ public class TestController {
     @Autowired
     private DataCrimeRepository crepo;
     
-    @Autowired
+    //@Autowired
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
 
