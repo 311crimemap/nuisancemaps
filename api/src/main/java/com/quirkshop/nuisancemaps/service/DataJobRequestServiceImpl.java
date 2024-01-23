@@ -1,9 +1,10 @@
-package com.quirkshop.service;
+package com.quirkshop.nuisancemaps.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -38,6 +39,7 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
         // TODO: configLoader ?
 
         ObjectMapper objectMapper = new ObjectMapper();
+        
         // String result = restTemplate.getForObject(url, String.class);
         String jsonResponse = restTemplate.getForObject(url, String.class);
 
