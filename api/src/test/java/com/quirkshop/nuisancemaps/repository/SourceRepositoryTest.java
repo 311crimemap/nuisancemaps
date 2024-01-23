@@ -1,4 +1,4 @@
-package com.quirkshop.repository;
+package com.quirkshop.nuisancemaps.repository;
 
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
 //@SpringBootTest
 @SpringBootTest(classes = NuisancemapsApplication.class)
