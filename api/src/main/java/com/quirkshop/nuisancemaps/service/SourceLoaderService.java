@@ -31,6 +31,12 @@ public class SourceLoaderService {
         return this.sourceMap;
     }
 
+    public Source findBySourceConfigID(int id) {
+        if (this.sourceMap == null)
+            return null;
+        return this.sourceMap.get(id);
+    }
+
     public void loadJSON(String filename) {
         File jsonFile = null;
         try {

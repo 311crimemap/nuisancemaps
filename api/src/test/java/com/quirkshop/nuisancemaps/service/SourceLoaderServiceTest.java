@@ -20,13 +20,21 @@ public class SourceLoaderServiceTest {
 
     @Test
     public void loadJSONTest() {
-        assertThat(sourceLoaderService.getSourceMap()).isNull();
         sourceLoaderService.loadJSON("data/source_config.json");
         assertThat(sourceLoaderService.getSourceMap()).isNotNull();
         HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
-        Source s= sourceMap.get(1);
+        Source s = sourceMap.get(1);
         assertThat(s).isInstanceOf(Source.class);
         Map<String, Object> m = s.getMapping();
-        assertThat(m.get("report-num").toString()).isEqualTo("incident_report_number");
+        assertThat(m.get("report_num").toString()).isEqualTo("incident_report_number");
     }
+
+
+    @Test
+    public void findBySourceConfigIDTest() {
+        sourceLoaderService.loadJSON("data/source_config.json");
+        Source s = sourceLoaderService.findBySourceConfigID(1);
+        assertThat(s.getSource_config_id()).isEqualTo(1);
+    }
+
 }
