@@ -14,9 +14,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Index;
 
 @Entity
-@Table(name = "source")
+@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "source_config_entity"))
 public class Source {
 
     @Id
@@ -24,6 +25,8 @@ public class Source {
     @SequenceGenerator(name = "source_seq", allocationSize = 1)
     private Integer id;
 
+    private Integer source_config_id; // per json entry
+    private String source_config_entity; // City, State: maybe same location but old/new config endpoints
     private String category;
     private String description;
     private String url;
@@ -37,7 +40,21 @@ public class Source {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
 
-    // TODO: store possible property mapping
+    public Integer getSource_config_id() {
+        return source_config_id;
+    }
+
+    public void setSource_config_id(Integer source_config_id) {
+        this.source_config_id = source_config_id;
+    }
+
+    public String getSource_config_entity() {
+        return source_config_entity;
+    }
+
+    public void setSource_config_entity(String source_config_entity) {
+        this.source_config_entity = source_config_entity;
+    }
 
     public Source() {
     }

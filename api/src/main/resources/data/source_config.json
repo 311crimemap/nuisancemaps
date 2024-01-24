@@ -1,0 +1,24 @@
+[
+    {
+        "source_config_id" : 1,
+        "source_config_entity": "Austin, TX",
+        "category": "crime",
+        "description": "Austin Police",
+        "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
+        "mappings": [
+            { 
+                "version": 1,
+                "mapping": {
+                    "report_num": "incident_report_number",
+                    "category": "crime_type",
+                    "description": "",
+                    "location": "location_type",
+                    "latitude": "latitude",
+                    "longitude": "longitude",
+                    "reported_at": "occ_date_time"
+                }
+            }
+        ]
+
+    }
+]
