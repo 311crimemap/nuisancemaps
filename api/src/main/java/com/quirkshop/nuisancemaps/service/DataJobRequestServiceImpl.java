@@ -4,17 +4,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.model.DataCrime;
+import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -28,26 +29,43 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
     @Autowired
     private DataCrimeRepository datacrime_repo;
 
-    @Autowired
-    private SourceRepository source_repo;
+    private DataJob dataJob;
+    private ObjectMapper objectMapper;
+    private String jsonResponse;
+
+    public DataJobRequestServiceImpl() {
+        this.objectMapper = new ObjectMapper();
+        this.dataJob = null;
+        this.jsonResponse = null;
+    }
 
     @Override
-    public String fetchJSON(Source source) {
-        String url = source.getUrl();
-        // source = source_repo.save(source);
+    public String fetchJSON(DataJob d) {
+        this.dataJob = d;
 
-        // TODO: configLoader ?
+        try {
+            this.dataJob.buildURL();
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            // TODO: update status - set as error
+            e.printStackTrace();
+        }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        
-        // String result = restTemplate.getForObject(url, String.class);
-        String jsonResponse = restTemplate.getForObject(url, String.class);
+        String url = this.dataJob.getUrl();
+        // TODO: update status pending
+        this.jsonResponse = restTemplate.getForObject(url, String.class);
 
-        // Convert JSON string to List<Map<String, Object>>
+        // TODO: update status - set as complete
+        return jsonResponse;
+    }
+
+    @Override
+    public int createData() {
+        int num = 0;
         List<Map<String, Object>> responseList = null;
 
         try {
-            responseList = objectMapper.readValue(jsonResponse, new TypeReference<List<Map<String, Object>>>() {
+            responseList = objectMapper.readValue(this.jsonResponse, new TypeReference<List<Map<String, Object>>>() {
             });
         } catch (JsonMappingException e) {
             // TODO Auto-generated catch block
@@ -57,7 +75,7 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
             e.printStackTrace();
         }
 
-        source = source_repo.save(source);
+        Source source = this.dataJob.getSource();
         GeometryFactory geometryFactory = new GeometryFactory();
 
         // for each object in list
@@ -67,7 +85,7 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
             // for each key in config
             // System.out.println("K: " + responseObject.get("incident_report_number"));
 
-            DataCrime d = new DataCrime(source,
+            DataCrime data_crime = new DataCrime(source,
                     responseObject.get("incident_report_number").toString(),
                     responseObject.get("crime_type").toString(),
                     "", // responseObject.get("description").toString(),
@@ -77,29 +95,14 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
                     Double.parseDouble(responseObject.get("longitude").toString()),
                     LocalDateTime.parse(responseObject.get("occ_date_time").toString()));
 
-            System.out.println(d.toString());
+            System.out.println(data_crime.toString());
             System.out.println("Saving");
-            d = datacrime_repo.save(d);
-            // System.out.println("COUNT: " + datacrime_repo.count());
 
-            System.out.println("ID: " + d.getId());
-            /*
-             * for (Map.Entry<String, Object> entry : responseObject.entrySet()) {
-             * String fieldName = entry.getKey();
-             * Object fieldValue = entry.getValue();
-             * 
-             * // Process the field name and value as needed
-             * System.out.println("Field Name: " + fieldName + ", Field Value: " +
-             * fieldValue);
-             * }
-             */
+            data_crime = datacrime_repo.save(data_crime);
+            num++;
         }
-        // TODO:
-        // pluck fields of interest
-        // make data
-        // distinction change to source.getFetchUrl() vs. base url?
 
-        // return result;
-        return url;
+        return num;
+
     }
 }
