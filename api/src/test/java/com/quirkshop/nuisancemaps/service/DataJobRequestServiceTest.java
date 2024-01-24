@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.DataCrime;
+import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -47,7 +48,6 @@ public class DataJobRequestServiceTest {
 
     @Test
     @Transactional
-    // @ExtendWith(SpringExtension.class)
     void testFetchDataWithMock() throws IOException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/crime-atx.json");
@@ -56,30 +56,36 @@ public class DataJobRequestServiceTest {
         String jsonFixtureContent = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
                 StandardCharsets.UTF_8);
 
+        // Source
         Source s = new Source("test", "testDescription", "https://data.austintexas.gov/resource/fdj4-gpfu.json");
-        // s=source_repo.save(s);
+        s.setId(1);
+        when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
+
+        // DataJob
+        DataJob datajob = new DataJob(s, 100, 50, "id");
+        datajob.buildURL();
+
         // Mock restTemplate to return the jsonFixtureContent if it ever makes a request
         // to url
         // this @Mock restTemplate is D.I'd into dataJobRequestService.fetchJSON(s)
         // below
-        when(restTemplate.getForObject(s.getUrl(), String.class))
+        when(restTemplate.getForObject(datajob.getUrl(), String.class))
                 .thenReturn(jsonFixtureContent);
 
-        s.setId(1);
-        when(source_repo.save(Mockito.any(Source.class))).thenReturn( s );
-        DataCrime d = new DataCrime();
-        d.setId(1);
-        when(datacrime_repo.save(Mockito.any(DataCrime.class))).thenReturn(d);
-        
+        // build mock save result
+        // DataCrime d = new DataCrime();
+        // when(datacrime_repo.save(Mockito.any(DataCrime.class))).thenReturn(d);
 
-        String result = dataJobRequestService.fetchJSON(s);
-
-        System.out.println(result);
-        System.out.println("\n");
-        System.out.println(jsonFixtureContent);
-
-        verify(restTemplate).getForObject(s.getUrl(), String.class);
+        String result = dataJobRequestService.fetchJSON(datajob);
 
         assertThat(result).isEqualTo(jsonFixtureContent);
+
+        int num = dataJobRequestService.createData();
+
+        // num elements in fixture crime-atx
+        assertThat(num).isEqualTo(2);
+
+        // verify(restTemplate).getForObject(datajob.getUrl(), String.class);
+
     }
 }
