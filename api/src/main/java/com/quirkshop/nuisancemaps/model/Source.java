@@ -3,12 +3,14 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,6 +32,9 @@ public class Source {
     private String category;
     private String description;
     private String url;
+
+    @Transient
+    private Map<String, Object> mapping;
 
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
     private List<DataCrime> dataCrimes = new ArrayList<DataCrime>();
@@ -124,6 +129,14 @@ public class Source {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Map<String, Object> getMapping() {
+        return mapping;
+    }
+
+    public void setMapping(Map<String, Object> mapping) {
+        this.mapping = mapping;
     }
 
 }

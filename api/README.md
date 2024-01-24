@@ -202,6 +202,7 @@ Liquibase modifies the database and tracks which changelogs were run.
 
 #### Liquibase Gotchas
 
+* Ensure Spring is running without error: liquibase takes migrations from `/target`, which Spring compiles/copy. On an error, liquibase won't copy, and so won't detect a new migration.
 * Make sure `liquibase:update` is run in the correct context (e.g. docker hostnames?)
 * `liquibase:update` will run off `target/classes/eb/changelogs` copied files.
 * Consider the generated output diff (`generated_changelog.sql`) as a temp file and don't include in a migration.
