@@ -39,6 +39,9 @@ public class Source {
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
     private List<DataCrime> dataCrimes = new ArrayList<DataCrime>();
 
+    @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
+    private List<DataJob> dataJobs = new ArrayList<DataJob>();
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime created_at;
 
@@ -74,6 +77,10 @@ public class Source {
         this.dataCrimes.add(crime);
     }
 
+    public void addDataJob(DataJob datajob) {
+        this.dataJobs.add(datajob);
+    }
+
     public Integer getId() {
         return id;
     }
@@ -107,12 +114,19 @@ public class Source {
     }
 
     public List<DataCrime> getDataCrimes() {
-        System.out.println("HERE");
         return dataCrimes;
     }
 
     public void setDataCrimes(List<DataCrime> dataCrimes) {
         this.dataCrimes = dataCrimes;
+    }
+
+    public List<DataJob> getDataJobs() {
+        return dataJobs;
+    }
+
+    public void setDataJobs(List<DataJob> dataJobs) {
+        this.dataJobs = dataJobs;
     }
 
     public LocalDateTime getCreated_at() {
