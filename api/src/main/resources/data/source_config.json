@@ -2,9 +2,9 @@
     {
         "source_config_id" : 1,
         "source_config_entity": "Austin, TX",
+        "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
         "category": "crime",
         "description": "Austin Police",
-        "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
         "mappings": [
             { 
                 "version": 1,
