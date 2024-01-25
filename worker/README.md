@@ -36,14 +36,15 @@ For lazy load, accessing a child needs to be wrapped in a Transaction.
 
 NB: LazyLoading in `CommandLineRunner` has breaking issues; doesn't seem able to do so with FetchType.LAZY. (Works with Eager.) However, in controller same code seems to work.
 
+NB: In OneToMany association the many association (`mappedBy`) in a "one" can prevent migration because it assumes a table that hasn't been built yet. Create the model first, then add that association.
 
-#### One to Many
+#### OneToMany / ManyToOne
 
-e.g A Source has many Crimes
+OneToMany: A `Source` has many `DataCrime`(s)
 
-The key to proper ORM behavior is to explicitly have the association manage the inverse relationship.
+ManyToOne: Many `DataCrime`(s) have a (one) `Source`. (Each crime has a single source).
 
-
+The key to proper ORM behavior is to explicitly have the association manage the inverse relationship:
 
 ```
 DataCrime(source) {
@@ -58,11 +59,19 @@ setSource(source) {
 
 ##### One
 
-Source table
+Source (one) table
+
+`mappedBy`: The mappedBy value equals the field ofthe other side of the relationship.
+In this case, `mappedBy = "source"` because source is the property - the member variable - in the opposite relationship (represents the association object).
+
+* The property typically the class (ORM style).
+* In sql it will be the foreign key id (`source_id`).
+* 
+
 
 ```
 # note the fetch: this is a lifecyle issue
-@OneToMany(mappedBy = "source", fetch = FetchType.EAGER, cascade = ...)
+@OneToMany(mappedBy = "source", fetch = FetchType.EAGER / FetchType.LAZY, cascade = ...)
 List<> Crimes = new ArrayList<>()
 ```
 
@@ -72,9 +81,9 @@ List<> Crimes = new ArrayList<>()
 
 ##### Many
 
-Crimes table
+Crimes (many) table
 
-`name` refers to the foreign key columm
+Hibernate: `name` refers to the foreign key columm. Hibernate has accessor methods in both classes, but db migration has only foreign key in this table.
 
 ```
 @ManyToOne

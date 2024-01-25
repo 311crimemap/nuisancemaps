@@ -19,12 +19,13 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
-@Table(name = "data_crime")
-public class DataCrime {
+@Table(name = "data_311")
+public class Data311 {
+    // TODO: status update, other fields
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_crime_seq")
-    @SequenceGenerator(name = "data_crime_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_311_seq")
+    @SequenceGenerator(name = "data_311_seq", allocationSize = 1)
     private Integer id;
 
     @ManyToOne
@@ -52,10 +53,7 @@ public class DataCrime {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
 
-    public DataCrime() {
-    } // default required by JPA
-
-    public DataCrime(Source source, String report_num, String category, String description, String location,
+    public Data311(Source source, String report_num, String category, String description, String location,
             GeometryFactory geometryFactory, double latitude, double longitude, LocalDateTime reported_at) {
         this.setSource(source);
         this.report_num = report_num;
@@ -90,7 +88,7 @@ public class DataCrime {
     // set inverse relation
     public void setSource(Source source) {
         this.source = source;
-        this.source.addDataCrime(this);
+        this.source.addData311(this);
     }
 
     public String getReport_num() {

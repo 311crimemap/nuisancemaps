@@ -3,20 +3,23 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Index;
 
 @Entity
-@Table(name = "source")
+@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "source_config_entity"))
 public class Source {
 
     @Id
@@ -24,12 +27,23 @@ public class Source {
     @SequenceGenerator(name = "source_seq", allocationSize = 1)
     private Integer id;
 
+    private Integer source_config_id; // per json entry
+    private String source_config_entity; // City, State: maybe same location but old/new config endpoints
     private String category;
     private String description;
     private String url;
 
+    @Transient
+    private Map<String, Object> mapping;
+
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
     private List<DataCrime> dataCrimes = new ArrayList<DataCrime>();
+
+    @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
+    private List<Data311> data311s = new ArrayList<Data311>();
+
+    @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
+    private List<DataJob> dataJobs = new ArrayList<DataJob>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime created_at;
@@ -37,7 +51,21 @@ public class Source {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
 
-    // TODO: store possible property mapping
+    public Integer getSource_config_id() {
+        return source_config_id;
+    }
+
+    public void setSource_config_id(Integer source_config_id) {
+        this.source_config_id = source_config_id;
+    }
+
+    public String getSource_config_entity() {
+        return source_config_entity;
+    }
+
+    public void setSource_config_entity(String source_config_entity) {
+        this.source_config_entity = source_config_entity;
+    }
 
     public Source() {
     }
@@ -50,6 +78,14 @@ public class Source {
 
     public void addDataCrime(DataCrime crime) {
         this.dataCrimes.add(crime);
+    }
+
+    public void addData311(Data311 data311) {
+        this.data311s.add(data311);
+    }
+
+    public void addDataJob(DataJob datajob) {
+        this.dataJobs.add(datajob);
     }
 
     public Integer getId() {
@@ -85,12 +121,19 @@ public class Source {
     }
 
     public List<DataCrime> getDataCrimes() {
-        System.out.println("HERE");
         return dataCrimes;
     }
 
     public void setDataCrimes(List<DataCrime> dataCrimes) {
         this.dataCrimes = dataCrimes;
+    }
+
+    public List<DataJob> getDataJobs() {
+        return dataJobs;
+    }
+
+    public void setDataJobs(List<DataJob> dataJobs) {
+        this.dataJobs = dataJobs;
     }
 
     public LocalDateTime getCreated_at() {
@@ -107,6 +150,14 @@ public class Source {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Map<String, Object> getMapping() {
+        return mapping;
+    }
+
+    public void setMapping(Map<String, Object> mapping) {
+        this.mapping = mapping;
     }
 
 }
