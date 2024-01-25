@@ -68,6 +68,7 @@ public class DataJobRequestServiceTest {
         // DataJob
         DataJob datajob = new DataJob(s, 100, 50, "id");
         datajob.buildURL();
+        assertThat(datajob.getStatus()).isEqualTo("queued");
 
         // Mock restTemplate to return the jsonFixtureContent if it ever makes a request
         // to url
@@ -83,7 +84,7 @@ public class DataJobRequestServiceTest {
         String result = dataJobRequestService.fetchJSON(datajob);
 
         assertThat(result).isEqualTo(jsonFixtureContent);
-
+        assertThat(datajob.getStatus()).isEqualTo("fetch complete");
         // int num = dataJobRequestService.createData();
 
         // num elements in fixture crime-atx

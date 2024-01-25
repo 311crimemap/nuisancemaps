@@ -53,6 +53,7 @@ public class DataJob {
         this.param_limit = param_limit;
         this.param_offset = param_offset;
         this.order_key = order_key;
+        this.status = "queued";
     }
 
     public String buildURL() throws UnsupportedEncodingException {
