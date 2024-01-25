@@ -40,6 +40,9 @@ public class Source {
     private List<DataCrime> dataCrimes = new ArrayList<DataCrime>();
 
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
+    private List<Data311> data311s = new ArrayList<Data311>();
+
+    @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
     private List<DataJob> dataJobs = new ArrayList<DataJob>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -75,6 +78,10 @@ public class Source {
 
     public void addDataCrime(DataCrime crime) {
         this.dataCrimes.add(crime);
+    }
+
+    public void addData311(Data311 data311) {
+        this.data311s.add(data311);
     }
 
     public void addDataJob(DataJob datajob) {
