@@ -6,5 +6,4 @@ interface DataJobRequestService {
 
     public String fetchJSON(DataJob datajob);
 
-    public int createData();
 }
