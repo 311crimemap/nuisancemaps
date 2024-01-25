@@ -70,12 +70,14 @@ public class SourceLoaderService {
 
             int source_config_id = Integer.parseInt(responseObject.get("source_config_id").toString());
             String source_config_entity = responseObject.get("source_config_entity").toString();
+            String category = responseObject.get("category").toString();
             String url = responseObject.get("url").toString();
             String description = responseObject.get("description").toString();
             List<Map<String, Object>> mappings = (List<Map<String, Object>>) responseObject.get("mappings");
 
             source.setSource_config_entity(source_config_entity);
             source.setSource_config_id(source_config_id);
+            source.setCategory(category);
             source.setUrl(url);
             source.setDescription(description);
 
