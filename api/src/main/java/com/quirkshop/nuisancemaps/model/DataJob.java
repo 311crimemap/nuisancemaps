@@ -32,7 +32,9 @@ public class DataJob {
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
-    private String status; // pending, queued, completed, error
+    // status: pending, queued, fetch start / fetch error / fetch complete /
+    // completed, error
+    private String status;
     private String url; // actual crawlURL, uses source as base?
     private int param_limit;
     private int param_offset;
@@ -142,7 +144,6 @@ public class DataJob {
 
     public void setSource(Source source) {
         this.source = source;
-        this.source.addDataJob(this);
     }
 
     public int getNum_results() {

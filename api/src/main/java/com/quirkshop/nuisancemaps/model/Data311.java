@@ -85,10 +85,8 @@ public class Data311 {
         return source;
     }
 
-    // set inverse relation
     public void setSource(Source source) {
         this.source = source;
-        this.source.addData311(this);
     }
 
     public String getReport_num() {
