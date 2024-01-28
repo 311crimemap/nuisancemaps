@@ -24,9 +24,9 @@ import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.Test;
 import com.quirkshop.nuisancemaps.repository.TestRepository;
 
-
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+
 @RestController
 public class TestController {
     @Autowired
@@ -34,13 +34,12 @@ public class TestController {
 
     @Autowired
     private SourceRepository srepo;
-    
+
     @Autowired
     private DataCrimeRepository crepo;
-    
-    //@Autowired
-    private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
+    // @Autowired
+    private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
     @PostMapping(path = "/test/create") // Map ONLY POST Requests
     public @ResponseBody String create(@RequestParam String name, Integer age) {
@@ -83,11 +82,15 @@ public class TestController {
         Point point = geometryFactory.createPoint(coordinate);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        
-        DataCrime d = new DataCrime(s,
-                "2024240131387",
-                "DWI 2nd", "abdef", "PARKING/ DROP LOT/ GARAGE",
-                geometryFactory, lat, lng, LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
+        DataCrime d = new DataCrime(s);
+        d.setReport_num("2024240131387");
+        d.setCategory("DWI 2nd");
+        d.setDescription("abdef");
+        d.setLocation("PARKING/ DROP LOT/ GARAGE");
+        d.setLatitude(lat);
+        d.setLongitude(lng);
+        d.setPoint(point);
+        d.setReported_at(LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
 
         log.info("save s");
         log.info("save d");
@@ -114,8 +117,8 @@ public class TestController {
         // s2Query
         Source s2QueriedEntity = srepo.findById(s2.getId()).get();
         log.info("SourceEntity: " + s2QueriedEntity.getId());
-        //s2QueriedEntity.getDataCrimes().size();
-        
+        // s2QueriedEntity.getDataCrimes().size();
+
         // entityManager.refresh(sourceEntity); //I think it's the refresh
         List<DataCrime> l = s2QueriedEntity.getDataCrimes();
         for (DataCrime dl : l) {

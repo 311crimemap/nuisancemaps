@@ -43,7 +43,7 @@ public class NuisancemapsApplication {
 		log.info("log post");
 	}
 
-	//used in DataJobRequest
+	// used in DataJobRequest
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
@@ -69,18 +69,22 @@ public class NuisancemapsApplication {
 			Point point = geometryFactory.createPoint(coordinate);
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-			
-			DataCrime d = new DataCrime(s,
-					"2024240131387",
-					"DWI 2nd", "abdef", "PARKING/ DROP LOT/ GARAGE",
-					geometryFactory, lat, lng,
-					LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
+
+			DataCrime d = new DataCrime(s);
+			d.setReport_num("2024240131387");
+			d.setCategory("DWI 2nd");
+			d.setDescription("abdef");
+			d.setLocation("PARKING/ DROP LOT/ GARAGE");
+			d.setLatitude(lat);
+			d.setLongitude(lng);
+			d.setPoint(point);
+			d.setReported_at(LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
 
 			log.info("save s");
-			//log.info("save d");
+			// log.info("save d");
 
-			//srepo.save(s);
-			//crepo.save(d);
+			// srepo.save(s);
+			// crepo.save(d);
 
 		};
 	}
