@@ -53,21 +53,8 @@ public class Data311 {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
 
-    public Data311(Source source, String report_num, String category, String description, String location,
-            GeometryFactory geometryFactory, double latitude, double longitude, LocalDateTime reported_at) {
+    public Data311(Source source) {
         this.setSource(source);
-        this.report_num = report_num;
-        this.category = category;
-        this.description = description;
-        this.location = location;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this._geometryFactory = geometryFactory;
-        this.point = this.buildPoint(latitude, longitude);
-        // DateTimeFormatter formatter =
-        // DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        this.reported_at = reported_at;
-
         LocalDateTime now = LocalDateTime.now();
         this.created_at = now;
         this.updated_at = now;

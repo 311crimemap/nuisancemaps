@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.time.LocalDateTime;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,10 @@ import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.GeometryFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -72,39 +77,65 @@ public class DataService {
 
     public boolean createDataCrime(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {
         Map<String, Object> mapping = source.getMapping();
-        String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
+        String report_num = responseObject.get(mapping.get("report_num")).toString();
+        String category = responseObject.get(mapping.get("category")).toString();
         String description = responseObject.getOrDefault(mapping.get("description"), "").toString();
+        String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
+        double latitude = Double.parseDouble(responseObject.get(mapping.get("latitude")).toString());
+        double longitude = Double.parseDouble(responseObject.get(mapping.get("longitude")).toString());
+        Coordinate coordinate = new Coordinate(latitude, longitude);
+        Point point = geometryFactory.createPoint(coordinate);
+        LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
 
-        DataCrime data_crime = new DataCrime(source,
-                responseObject.get(mapping.get("report_num")).toString(),
-                responseObject.get(mapping.get("category")).toString(),
-                description.isEmpty() ? null : description,
-                location.isEmpty() ? null : location,
-                geometryFactory,
-                Double.parseDouble(responseObject.get(mapping.get("latitude")).toString()),
-                Double.parseDouble(responseObject.get(mapping.get("longitude")).toString()),
-                LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString()));
+        DataCrime data_crime = datacrime_repo.findByReportNum(report_num);
+
+        if (data_crime == null) {
+            data_crime = new DataCrime(source);
+        }
+
+        data_crime.setReport_num(report_num);
+        data_crime.setCategory(category);
+        data_crime.setDescription(description.isEmpty() ? null : description);
+        data_crime.setLocation(location.isEmpty() ? null : location);
+        data_crime.setLatitude(latitude);
+        data_crime.setLongitude(longitude);
+        data_crime.setPoint(point);
+        data_crime.setReported_at(reported_at);
+        data_crime.setUpdated_at(LocalDateTime.now());
 
         data_crime = datacrime_repo.save(data_crime);
 
         return true;
-
     }
 
     public boolean createData311(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {
         Map<String, Object> mapping = source.getMapping();
-        String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
-        String description = responseObject.getOrDefault(mapping.get("description"), "").toString();
 
-        Data311 data_311 = new Data311(source,
-                responseObject.get(mapping.get("report_num")).toString(),
-                responseObject.get(mapping.get("category")).toString(),
-                description.isEmpty() ? null : description,
-                location.isEmpty() ? null : location,
-                geometryFactory,
-                Double.parseDouble(responseObject.get(mapping.get("latitude")).toString()),
-                Double.parseDouble(responseObject.get(mapping.get("longitude")).toString()),
-                LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString()));
+        String report_num = responseObject.get(mapping.get("report_num")).toString();
+        String category = responseObject.get(mapping.get("category")).toString();
+        String description = responseObject.getOrDefault(mapping.get("description"), "").toString();
+        String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
+        double latitude = Double.parseDouble(responseObject.get(mapping.get("latitude")).toString());
+        double longitude = Double.parseDouble(responseObject.get(mapping.get("longitude")).toString());
+        Coordinate coordinate = new Coordinate(latitude, longitude);
+        Point point = geometryFactory.createPoint(coordinate);
+        LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
+
+        Data311 data_311 = data311_repo.findByReportNum(report_num);
+
+        if (data_311 == null) {
+            data_311 = new Data311(source);
+        }
+
+        data_311.setReport_num(report_num);
+        data_311.setCategory(category);
+        data_311.setDescription(description.isEmpty() ? null : description);
+        data_311.setLocation(location.isEmpty() ? null : location);
+        data_311.setLatitude(latitude);
+        data_311.setLongitude(longitude);
+        data_311.setPoint(point);
+        data_311.setReported_at(reported_at);
+        data_311.setUpdated_at(LocalDateTime.now());
 
         data_311 = data311_repo.save(data_311);
 
