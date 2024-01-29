@@ -37,8 +37,8 @@ public class Data311 {
     private String description;
     private String location;
 
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 
     @Transient // exclude from persistence operations (migrations)
     private GeometryFactory _geometryFactory;
@@ -53,21 +53,8 @@ public class Data311 {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
 
-    public Data311(Source source, String report_num, String category, String description, String location,
-            GeometryFactory geometryFactory, double latitude, double longitude, LocalDateTime reported_at) {
+    public Data311(Source source) {
         this.setSource(source);
-        this.report_num = report_num;
-        this.category = category;
-        this.description = description;
-        this.location = location;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this._geometryFactory = geometryFactory;
-        this.point = this.buildPoint(latitude, longitude);
-        // DateTimeFormatter formatter =
-        // DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        this.reported_at = reported_at;
-
         LocalDateTime now = LocalDateTime.now();
         this.created_at = now;
         this.updated_at = now;
@@ -85,10 +72,8 @@ public class Data311 {
         return source;
     }
 
-    // set inverse relation
     public void setSource(Source source) {
         this.source = source;
-        this.source.addData311(this);
     }
 
     public String getReport_num() {
@@ -123,19 +108,19 @@ public class Data311 {
         this.location = location;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

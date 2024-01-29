@@ -70,22 +70,18 @@ public class Source {
     public Source() {
     }
 
+    public List<Data311> getData311s() {
+        return data311s;
+    }
+
+    public void setData311s(List<Data311> data311s) {
+        this.data311s = data311s;
+    }
+
     public Source(String category, String description, String url) {
         this.category = category;
         this.description = description;
         this.url = url;
-    }
-
-    public void addDataCrime(DataCrime crime) {
-        this.dataCrimes.add(crime);
-    }
-
-    public void addData311(Data311 data311) {
-        this.data311s.add(data311);
-    }
-
-    public void addDataJob(DataJob datajob) {
-        this.dataJobs.add(datajob);
     }
 
     public Integer getId() {

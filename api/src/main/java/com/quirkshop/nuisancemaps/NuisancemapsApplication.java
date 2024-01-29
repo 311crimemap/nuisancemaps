@@ -8,18 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
-
-import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.model.DataCrime;
-
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
 public class NuisancemapsApplication {
@@ -43,7 +34,7 @@ public class NuisancemapsApplication {
 		log.info("log post");
 	}
 
-	//used in DataJobRequest
+	// used in DataJobRequest
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
@@ -52,36 +43,7 @@ public class NuisancemapsApplication {
 	@Bean
 	public CommandLineRunner doesntmatterwhatthisiscalled(SourceRepository srepo, DataCrimeRepository crepo) {
 		return args -> {
-
-			log.info("saving initial test instances to db");
-			String url = "https://data.austintexas.gov/resource/fdj4-gpfu.json?$query=SELECT%20*%20ORDER%20BY%20%60rep_date_time%60%20DESC%20NULL%20LAST";
-
-			Source s = new Source("crime", "Austin crime", url);
-			// Create a GeometryFactory
-			GeometryFactory geometryFactory = new GeometryFactory();
-
-			// Create a Coordinate using the double values
-			double lat = Double.parseDouble("30.43248411");
-			double lng = Double.parseDouble("-97.7359116");
-			Coordinate coordinate = new Coordinate(lat, lng);
-
-			// Create a Point using the GeometryFactory and Coordinate
-			Point point = geometryFactory.createPoint(coordinate);
-
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-			
-			DataCrime d = new DataCrime(s,
-					"2024240131387",
-					"DWI 2nd", "abdef", "PARKING/ DROP LOT/ GARAGE",
-					geometryFactory, lat, lng,
-					LocalDateTime.parse("2024-01-13T22:12:00.000", formatter));
-
-			log.info("save s");
-			//log.info("save d");
-
-			//srepo.save(s);
-			//crepo.save(d);
-
+			log.info("[NuisancemapsApplication] CommandLineRunner");
 		};
 	}
 
