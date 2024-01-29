@@ -27,6 +27,7 @@ public class DataService {
 
     private ObjectMapper objectMapper;
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
+    private final int LOG_NUM = 3000;
 
     @Autowired
     private DataCrimeRepository datacrime_repo;
@@ -71,7 +72,13 @@ public class DataService {
                     default:
                         break;
                 }
+
                 num++;
+
+                if (num % LOG_NUM == 0) {
+                    log.info(source.getCategory() + ": " + source.getUrl() + ": Processed " + num);
+                }
+
             } catch (Exception e) {
                 log.info("[DataService] createData error");
                 log.info(responseObject.toString());

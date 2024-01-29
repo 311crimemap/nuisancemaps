@@ -37,7 +37,7 @@ public class WorkerScheduleService {
     @Autowired
     DataService dataservice;
 
-    private final int PARAM_LIMIT = 1000;
+    private final int PARAM_LIMIT = 10000;
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
@@ -47,7 +47,7 @@ public class WorkerScheduleService {
         log.info("loaded source_config.json");
     }
 
-    @Scheduled(fixedRate = 500000) // TODO:. set cron for daily
+    @Scheduled(cron = "@daily")
     public void createDailyDataJobs() throws UnsupportedEncodingException {
         log.info("[createDailyDataJob]");
         HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
@@ -76,7 +76,7 @@ public class WorkerScheduleService {
 
             // if found last "completed" job; we create a new job from that offset
             if (datajob.getStatus().equals(DataJobStatus.COMPLETED)) {
-                datajob = new DataJob(source, datajob.getParam_limit(), datajob.getParam_offset(),
+                datajob = new DataJob(source, PARAM_LIMIT, datajob.getParam_offset(),
                         datajob.getOrder_key());
             }
 
@@ -89,12 +89,10 @@ public class WorkerScheduleService {
         }
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
-        // TODO: some kind of check to enabled / disable this task
         log.info("[checkDataJobQueue]");
 
-        // TODO: clean up source - mapping - persistence
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
             log.info("Empty Queue");
@@ -105,10 +103,13 @@ public class WorkerScheduleService {
         Map<String, Object> mapping = sourceLoaderService.getSourceMapping(source.getSource_config_id());
         source.setMapping(mapping);
 
+        log.info("fetching: " + datajob.getUrl());
         String json = dataJobRequestService.fetchJSON(datajob);
+
+        log.info("createData()");
         int num = dataservice.createData(source, json);
 
-        log.info("retrieved: " + num);
+        log.info("processed: " + num);
         datajob.setStatus(DataJobStatus.COMPLETED);
         datajob.setNum_results(num);
 
@@ -119,7 +120,7 @@ public class WorkerScheduleService {
         }
 
         // queue next job: new offset = offset + num
-        DataJob nextJob = new DataJob(datajob.getSource(), datajob.getParam_limit(), datajob.getParam_offset() + num,
+        DataJob nextJob = new DataJob(datajob.getSource(), PARAM_LIMIT, datajob.getParam_offset() + num,
                 datajob.getOrder_key());
 
         nextJob.buildURL();
