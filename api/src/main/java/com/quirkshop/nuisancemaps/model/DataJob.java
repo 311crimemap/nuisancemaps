@@ -3,11 +3,12 @@ package com.quirkshop.nuisancemaps.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +35,8 @@ public class DataJob {
 
     // status: pending, queued, fetch start / fetch error / fetch complete /
     // completed, error
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private DataJobStatus status;
     private String url; // actual crawlURL, uses source as base?
     private int param_limit;
     private int param_offset;
@@ -55,7 +57,7 @@ public class DataJob {
         this.param_limit = param_limit;
         this.param_offset = param_offset;
         this.order_key = order_key;
-        this.status = "queued";
+        this.status = DataJobStatus.QUEUED;
     }
 
     public String buildURL() throws UnsupportedEncodingException {
@@ -86,11 +88,11 @@ public class DataJob {
         return source;
     }
 
-    public String getStatus() {
+    public DataJobStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(DataJobStatus status) {
         this.status = status;
     }
 

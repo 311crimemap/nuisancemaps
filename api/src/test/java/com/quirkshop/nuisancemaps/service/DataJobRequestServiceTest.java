@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -68,7 +69,7 @@ public class DataJobRequestServiceTest {
         // DataJob
         DataJob datajob = new DataJob(s, 100, 50, "id");
         datajob.buildURL();
-        assertThat(datajob.getStatus()).isEqualTo("queued");
+        assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
         // Mock restTemplate to return the jsonFixtureContent if it ever makes a request
         // to url
@@ -84,7 +85,7 @@ public class DataJobRequestServiceTest {
         String result = dataJobRequestService.fetchJSON(datajob);
 
         assertThat(result).isEqualTo(jsonFixtureContent);
-        assertThat(datajob.getStatus()).isEqualTo("fetch complete");
+        assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.FETCH_COMPLETE);
         // int num = dataJobRequestService.createData();
 
         // num elements in fixture crime-atx

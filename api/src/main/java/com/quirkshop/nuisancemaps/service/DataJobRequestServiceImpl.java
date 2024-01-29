@@ -6,6 +6,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.UnsupportedEncodingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 
 @Service
 public class DataJobRequestServiceImpl implements DataJobRequestService {
@@ -34,17 +35,17 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
 
         String url = this.dataJob.getUrl();
 
-        this.dataJob.setStatus("fetch start");
+        this.dataJob.setStatus(DataJobStatus.FETCH_START);
 
         try {
             this.jsonResponse = restTemplate.getForObject(url, String.class);
         } catch (RestClientException e) {
-            this.dataJob.setStatus("fetch error");
+            this.dataJob.setStatus(DataJobStatus.FETCH_ERROR);
             e.printStackTrace();
             return null;
         }
 
-        this.dataJob.setStatus("fetch complete");
+        this.dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
         return jsonResponse;
     }
 

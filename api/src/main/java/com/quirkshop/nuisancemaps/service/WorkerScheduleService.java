@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -74,14 +75,14 @@ public class WorkerScheduleService {
             }
 
             // if found last "completed" job; we create a new job from that offset
-            if (datajob.getStatus() == "completed") {
+            if (datajob.getStatus().equals(DataJobStatus.COMPLETED)) {
                 datajob = new DataJob(source, datajob.getParam_limit(), datajob.getParam_offset(),
                         datajob.getOrder_key());
             }
 
             // if last job is "queued" leave it as-is, to be picked up by scheduled task
             datajob.buildURL();
-            datajob.setStatus("queued");
+            datajob.setStatus(DataJobStatus.QUEUED);
             datajob = dataJobRepository.save(datajob);
 
             log.info("category: " + source.getCategory() + " id: " + source.getSource_config_id());
@@ -94,7 +95,7 @@ public class WorkerScheduleService {
         log.info("[checkDataJobQueue]");
 
         // TODO: clean up source - mapping - persistence
-        DataJob datajob = dataJobRepository.getNextDataJob("queued");
+        DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
             log.info("Empty Queue");
             return;
@@ -108,7 +109,7 @@ public class WorkerScheduleService {
         int num = dataservice.createData(source, json);
 
         log.info("retrieved: " + num);
-        datajob.setStatus("completed");
+        datajob.setStatus(DataJobStatus.COMPLETED);
         datajob.setNum_results(num);
 
         dataJobRepository.save(datajob);
@@ -122,7 +123,7 @@ public class WorkerScheduleService {
                 datajob.getOrder_key());
 
         nextJob.buildURL();
-        nextJob.setStatus("queued");
+        nextJob.setStatus(DataJobStatus.QUEUED);
         dataJobRepository.save(nextJob);
 
         log.info("next job: " + nextJob.getUrl());

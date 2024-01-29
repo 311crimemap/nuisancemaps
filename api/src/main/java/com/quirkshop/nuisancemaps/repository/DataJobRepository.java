@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 
 import jakarta.persistence.EntityManager;
@@ -14,7 +15,7 @@ import jakarta.persistence.EntityManager;
 interface DataJobCustomRepository {
     DataJob findLastDataJobBySource(Source source);
 
-    DataJob getNextDataJob(String status);
+    DataJob getNextDataJob(DataJobStatus status);
 }
 
 class DataJobCustomRepositoryImpl implements DataJobCustomRepository {
@@ -31,8 +32,8 @@ class DataJobCustomRepositoryImpl implements DataJobCustomRepository {
                         "SELECT d FROM DataJob d WHERE d.source.id = :sourceId AND (d.status = :status_completed OR d.status = :status_queued) ORDER BY d.id DESC",
                         DataJob.class)
                 .setParameter("sourceId", source.getId())
-                .setParameter("status_completed", "completed")
-                .setParameter("status_queued", "queued")
+                .setParameter("status_completed", DataJobStatus.COMPLETED)
+                .setParameter("status_queued", DataJobStatus.QUEUED)
                 .setMaxResults(1)
                 .getResultList();
 
@@ -44,7 +45,7 @@ class DataJobCustomRepositoryImpl implements DataJobCustomRepository {
     }
 
     @Transactional
-    public DataJob getNextDataJob(String status) {
+    public DataJob getNextDataJob(DataJobStatus status) {
         List<DataJob> resultList = entityManager
                 .createQuery(
                         "SELECT d FROM DataJob d WHERE d.status = :status ORDER BY d.id ASC",
