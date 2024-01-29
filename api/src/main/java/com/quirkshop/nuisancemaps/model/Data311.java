@@ -32,7 +32,7 @@ public class Data311 {
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
-    private String report_num;
+    private String report_num; // indexed in db
     private String category;
     private String description;
     private String location;
@@ -52,6 +52,9 @@ public class Data311 {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
+
+    public Data311() {
+    } // default required by JPA
 
     public Data311(Source source) {
         this.setSource(source);
