@@ -89,7 +89,7 @@ public class WorkerScheduleService {
         }
     }
 
-    @Scheduled(fixedRate = 10000, initialDelay = 3000)
+    @Scheduled(fixedRate = 5000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         log.info("[checkDataJobQueue]");
 
@@ -106,13 +106,14 @@ public class WorkerScheduleService {
         log.info("fetching: " + datajob.getUrl());
         String json = dataJobRequestService.fetchJSON(datajob);
 
+        datajob.setStatus(DataJobStatus.PENDING);
+        dataJobRepository.save(datajob);
         log.info("createData()");
+
         int num = dataservice.createData(source, json);
 
-        log.info("processed: " + num);
         datajob.setStatus(DataJobStatus.COMPLETED);
         datajob.setNum_results(num);
-
         dataJobRepository.save(datajob);
 
         if (num == 0) {
