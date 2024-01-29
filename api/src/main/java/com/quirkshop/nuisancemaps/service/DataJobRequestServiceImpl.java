@@ -1,10 +1,12 @@
 package com.quirkshop.nuisancemaps.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import java.io.UnsupportedEncodingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 
 @Service
 public class DataJobRequestServiceImpl implements DataJobRequestService {
@@ -27,16 +29,23 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
         try {
             this.dataJob.buildURL();
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            // TODO: update status - set as error
             e.printStackTrace();
+            return null;
         }
 
         String url = this.dataJob.getUrl();
-        // TODO: update status pending
-        this.jsonResponse = restTemplate.getForObject(url, String.class);
 
-        // TODO: update status - set as complete
+        this.dataJob.setStatus(DataJobStatus.FETCH_START);
+
+        try {
+            this.jsonResponse = restTemplate.getForObject(url, String.class);
+        } catch (RestClientException e) {
+            this.dataJob.setStatus(DataJobStatus.FETCH_ERROR);
+            e.printStackTrace();
+            return null;
+        }
+
+        this.dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
         return jsonResponse;
     }
 

@@ -3,11 +3,12 @@ package com.quirkshop.nuisancemaps.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +33,10 @@ public class DataJob {
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
-    private String status; // pending, queued, completed, error
+    // status: pending, queued, fetch start / fetch error / fetch complete /
+    // completed, error
+    @Enumerated(EnumType.STRING)
+    private DataJobStatus status;
     private String url; // actual crawlURL, uses source as base?
     private int param_limit;
     private int param_offset;
@@ -53,14 +57,15 @@ public class DataJob {
         this.param_limit = param_limit;
         this.param_offset = param_offset;
         this.order_key = order_key;
+        this.status = DataJobStatus.QUEUED;
     }
 
     public String buildURL() throws UnsupportedEncodingException {
         String sourceURL = this.getSourceURL();
         String _url = UriComponentsBuilder.fromUriString(sourceURL)
-                .queryParam("limit", URLEncoder.encode(Integer.toString(param_limit), "UTF-8"))
-                .queryParam("offset", URLEncoder.encode(Integer.toString(param_offset), "UTF-8"))
-                .queryParam("order", URLEncoder.encode(order_key, "UTF-8"))
+                .queryParam("$limit", URLEncoder.encode(Integer.toString(param_limit), "UTF-8"))
+                .queryParam("$offset", URLEncoder.encode(Integer.toString(param_offset), "UTF-8"))
+                .queryParam("$order", URLEncoder.encode(order_key, "UTF-8"))
                 .build()
                 .toUriString();
         this.url = _url;
@@ -83,11 +88,11 @@ public class DataJob {
         return source;
     }
 
-    public String getStatus() {
+    public DataJobStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(DataJobStatus status) {
         this.status = status;
     }
 
@@ -141,7 +146,6 @@ public class DataJob {
 
     public void setSource(Source source) {
         this.source = source;
-        this.source.addDataJob(this);
     }
 
     public int getNum_results() {

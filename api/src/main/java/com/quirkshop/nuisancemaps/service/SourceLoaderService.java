@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,13 @@ public class SourceLoaderService {
     SourceLoaderService() {
         this.objectMapper = new ObjectMapper();
         this.sourceMap = new HashMap<Integer, Source>();
+    }
+
+    public Map<String, Object> getSourceMapping(int source_config_id) {
+        if (this.sourceMap.containsKey(source_config_id)) {
+            return this.sourceMap.get(source_config_id).getMapping();
+        }
+        return null;
     }
 
     public HashMap<Integer, Source> getSourceMap() {
