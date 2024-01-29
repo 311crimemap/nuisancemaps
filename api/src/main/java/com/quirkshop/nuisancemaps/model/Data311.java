@@ -32,7 +32,7 @@ public class Data311 {
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
-    private String report_num;
+    private String report_num; //indexed in db
     private String category;
     private String description;
     private String location;
