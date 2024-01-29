@@ -8,18 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
-
-import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.model.DataCrime;
-
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
 public class NuisancemapsApplication {

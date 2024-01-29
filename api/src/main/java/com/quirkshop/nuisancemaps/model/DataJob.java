@@ -61,9 +61,9 @@ public class DataJob {
     public String buildURL() throws UnsupportedEncodingException {
         String sourceURL = this.getSourceURL();
         String _url = UriComponentsBuilder.fromUriString(sourceURL)
-                .queryParam("limit", URLEncoder.encode(Integer.toString(param_limit), "UTF-8"))
-                .queryParam("offset", URLEncoder.encode(Integer.toString(param_offset), "UTF-8"))
-                .queryParam("order", URLEncoder.encode(order_key, "UTF-8"))
+                .queryParam("$limit", URLEncoder.encode(Integer.toString(param_limit), "UTF-8"))
+                .queryParam("$offset", URLEncoder.encode(Integer.toString(param_offset), "UTF-8"))
+                .queryParam("$order", URLEncoder.encode(order_key, "UTF-8"))
                 .build()
                 .toUriString();
         this.url = _url;
