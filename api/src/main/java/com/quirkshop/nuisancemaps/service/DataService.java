@@ -75,6 +75,7 @@ public class DataService {
             } catch (Exception e) {
                 log.info("[DataService] createData error");
                 log.info(responseObject.toString());
+                e.printStackTrace();
             }
         }
 
