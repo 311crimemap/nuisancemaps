@@ -51,6 +51,21 @@ public class Source {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updated_at;
 
+    public Source() {
+        LocalDateTime now = LocalDateTime.now();
+        this.created_at = now;
+        this.updated_at = now;
+    }
+
+    public Source(String category, String description, String url) {
+        this.category = category;
+        this.description = description;
+        this.url = url;
+        LocalDateTime now = LocalDateTime.now();
+        this.created_at = now;
+        this.updated_at = now;
+    }
+
     public Integer getSource_config_id() {
         return source_config_id;
     }
@@ -67,21 +82,12 @@ public class Source {
         this.source_config_entity = source_config_entity;
     }
 
-    public Source() {
-    }
-
     public List<Data311> getData311s() {
         return data311s;
     }
 
     public void setData311s(List<Data311> data311s) {
         this.data311s = data311s;
-    }
-
-    public Source(String category, String description, String url) {
-        this.category = category;
-        this.description = description;
-        this.url = url;
     }
 
     public Integer getId() {

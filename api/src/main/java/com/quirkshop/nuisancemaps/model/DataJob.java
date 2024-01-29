@@ -50,6 +50,9 @@ public class DataJob {
     private LocalDateTime updated_at;
 
     public DataJob() {
+        LocalDateTime now = LocalDateTime.now();
+        this.created_at = now;
+        this.updated_at = now;
     }
 
     public DataJob(Source source, int param_limit, int param_offset, String order_key) {
@@ -58,6 +61,9 @@ public class DataJob {
         this.param_offset = param_offset;
         this.order_key = order_key;
         this.status = DataJobStatus.QUEUED;
+        LocalDateTime now = LocalDateTime.now();
+        this.created_at = now;
+        this.updated_at = now;
     }
 
     public String buildURL() throws UnsupportedEncodingException {
