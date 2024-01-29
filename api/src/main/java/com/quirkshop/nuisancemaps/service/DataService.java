@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +26,7 @@ import java.util.Map;
 public class DataService {
 
     private ObjectMapper objectMapper;
+    private static final Logger log = LoggerFactory.getLogger(DataService.class);
 
     @Autowired
     private DataCrimeRepository datacrime_repo;
@@ -56,25 +59,29 @@ public class DataService {
         // for each object in list
         for (Map<String, Object> responseObject : responseList) {
             // responseObject contains key/val (another obj)
-            switch (source.getCategory()) {
-                case "crime":
-                    createDataCrime(source, responseObject, geometryFactory);
-                    break;
-                case "311":
-                    createData311(source, responseObject, geometryFactory);
-                    break;
-                default:
-                    break;
+            try {
+
+                switch (source.getCategory()) {
+                    case "crime":
+                        createDataCrime(source, responseObject, geometryFactory);
+                        break;
+                    case "311":
+                        createData311(source, responseObject, geometryFactory);
+                        break;
+                    default:
+                        break;
+                }
+                num++;
+            } catch (Exception e) {
+                log.info("[DataService] createData error");
+                log.info(responseObject.toString());
             }
-            num++;
         }
 
         return num;
     }
 
     public boolean createDataCrime(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {
-
-        System.out.println(responseObject);
 
         Map<String, Object> mapping = source.getMapping();
         String report_num = responseObject.get(mapping.get("report_num")).toString();
@@ -84,8 +91,8 @@ public class DataService {
         String lat = responseObject.getOrDefault(mapping.get("latitude"), "").toString();
         String lng = responseObject.getOrDefault(mapping.get("longitude"), "").toString();
 
-        Double latitude = Double.parseDouble(lat);
-        Double longitude = Double.parseDouble(lng);
+        Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
+        Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);
         Coordinate coordinate = null;
         Point point = null;
 
@@ -127,8 +134,8 @@ public class DataService {
         String lat = responseObject.getOrDefault(mapping.get("latitude"), "").toString();
         String lng = responseObject.getOrDefault(mapping.get("longitude"), "").toString();
 
-        Double latitude = Double.parseDouble(lat);
-        Double longitude = Double.parseDouble(lng);
+        Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
+        Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);
         Coordinate coordinate = null;
         Point point = null;
 

@@ -54,7 +54,6 @@ public class WorkerScheduleService {
         log.info("source_config.json num entries: " + sourceMap.size());
 
         for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
-            log.info(entry.toString());
 
             // NB: Anticipate modifying mapping fields, so allowing for config change of
             // same Source entity
@@ -85,7 +84,7 @@ public class WorkerScheduleService {
             datajob.setStatus("queued");
             datajob = dataJobRepository.save(datajob);
 
-            log.info(source.getCategory() + " " + source.getSource_config_id());
+            log.info("category: " + source.getCategory() + " id: " + source.getSource_config_id());
         }
     }
 
@@ -110,6 +109,8 @@ public class WorkerScheduleService {
 
         log.info("retrieved: " + num);
         datajob.setStatus("completed");
+        datajob.setNum_results(num);
+
         dataJobRepository.save(datajob);
 
         if (num == 0) {
