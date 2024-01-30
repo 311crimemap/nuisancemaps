@@ -3,17 +3,22 @@ package com.quirkshop.nuisancemaps.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -32,6 +37,9 @@ public class DataJob {
     @ManyToOne
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
+
+    @OneToMany(mappedBy = "dataJob", fetch = FetchType.LAZY)
+    private List<DataError> dataErrors = new ArrayList<DataError>();
 
     // status: pending, queued, fetch start / fetch error / fetch complete /
     // completed, error

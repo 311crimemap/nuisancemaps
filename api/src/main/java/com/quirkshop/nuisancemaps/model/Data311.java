@@ -13,13 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Index;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
-@Table(name = "data_311")
+@Table(name = "data_311", indexes = @Index(name = "idx_report_num_data_311", columnList = "report_num"))
 public class Data311 {
     // TODO: status update, other fields
 
