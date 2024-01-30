@@ -42,6 +42,16 @@ public class DataError {
         this.updated_at = now;
     }
 
+    public DataError(DataJob dataJob, String content, String error_msg) {
+        this.dataJob = dataJob;
+        this.content = content;
+        this.error_msg = error_msg;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.created_at = now;
+        this.updated_at = now;
+    }
+
     public Integer getId() {
         return id;
     }
