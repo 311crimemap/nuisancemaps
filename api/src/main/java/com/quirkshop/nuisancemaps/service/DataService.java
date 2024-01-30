@@ -137,7 +137,10 @@ public class DataService {
             point = geometryFactory.createPoint(coordinate);
         }
 
-        LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
+        String reported_at1 = responseObject.getOrDefault(mapping.get("reported_at"), "").toString();
+        String reported_at2 = responseObject.getOrDefault(mapping.get("reported_at2"), "").toString();
+        LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
+                : LocalDateTime.parse(reported_at1);
 
         DataCrime data_crime = datacrime_repo.findByReportNum(report_num);
 
