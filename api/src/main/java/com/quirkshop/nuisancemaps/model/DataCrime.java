@@ -13,13 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Index;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
-@Table(name = "data_crime")
+@Table(name = "data_crime", indexes = @Index(name = "idx_report_num_data_crime", columnList = "report_num"))
 public class DataCrime {
 
     @Id
