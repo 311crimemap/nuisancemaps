@@ -8,6 +8,15 @@
 ## Entity / JPA
 
 * `@Table(name = <>)`: sets database name (generated in liquibase)
+* `@Table(name = '<table_name>',  indexes = @Index(name = "idx_<field>_<table_name>", columnList = "report_num"))`
+
+## Index
+
+NB: postgres doesn't automatically create index on foreign key. Because of lazy
+loading, it may not be necessary to do so - e.g. consider usage and queries.
+
+* `CREATE INDEX idx_report_num_data_crime ON data_crime (report_num);`
+
 
 ### Sequence Generation
 
@@ -66,7 +75,7 @@ In this case, `mappedBy = "source"` because source is the property - the member 
 
 * The property typically the class (ORM style).
 * In sql it will be the foreign key id (`source_id`).
-* 
+*
 
 
 ```

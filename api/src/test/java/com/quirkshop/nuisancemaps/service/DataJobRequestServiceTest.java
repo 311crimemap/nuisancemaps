@@ -12,6 +12,7 @@ import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,9 @@ public class DataJobRequestServiceTest {
 
     @Mock
     private SourceRepository source_repo;
+
+    @Mock
+    DataJobRepository dataJobRepository;
 
     @Autowired
     private ResourceLoader resourceLoader;

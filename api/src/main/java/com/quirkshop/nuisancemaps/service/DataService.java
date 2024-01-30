@@ -1,7 +1,10 @@
 package com.quirkshop.nuisancemaps.service;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 
+import org.apache.commons.lang3.StringUtils;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -15,9 +18,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
+import com.quirkshop.nuisancemaps.model.DataError;
+import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +35,7 @@ public class DataService {
     private ObjectMapper objectMapper;
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
     private final int LOG_NUM = 3000;
+    private final int ERROR_RATE = 5;
 
     @Autowired
     private DataCrimeRepository datacrime_repo;
@@ -35,13 +43,19 @@ public class DataService {
     @Autowired
     private Data311Repository data311_repo;
 
+    @Autowired
+    private DataErrorRepository dataErrorRepository;
+
     public DataService() {
         this.objectMapper = new ObjectMapper();
     }
 
-    public int createData(Source source, String jsonResponse) {
+    public int createData(Source source, DataJob dataJob, String jsonResponse) {
         int num = 0;
+        int errors = 0;
         List<Map<String, Object>> responseList = null;
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
 
         try {
             responseList = objectMapper.readValue(jsonResponse,
@@ -81,9 +95,23 @@ public class DataService {
 
             } catch (Exception e) {
                 log.info("[DataService] createData error");
-                log.info(responseObject.toString());
-                e.printStackTrace();
+                errors++;
+                e.printStackTrace(pw);
+
+                String error_msg = StringUtils.substring(sw.toString(), 0, 255);
+                String content = StringUtils.substring(responseObject.toString(), 0, 255);
+
+                DataError dataError = new DataError(dataJob, content, error_msg);
+                dataErrorRepository.save(dataError);
+
+                log.info(content);
+                log.info(error_msg);
             }
+        }
+
+        // 5% error rate, mark job as failed to figure out consistent error
+        if (errors > (num / ERROR_RATE)) {
+            dataJob.setStatus(DataJobStatus.ERROR);
         }
 
         return num;
@@ -109,7 +137,10 @@ public class DataService {
             point = geometryFactory.createPoint(coordinate);
         }
 
-        LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
+        String reported_at1 = responseObject.getOrDefault(mapping.get("reported_at"), "").toString();
+        String reported_at2 = responseObject.getOrDefault(mapping.get("reported_at2"), "").toString();
+        LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
+                : LocalDateTime.parse(reported_at1);
 
         DataCrime data_crime = datacrime_repo.findByReportNum(report_num);
 
