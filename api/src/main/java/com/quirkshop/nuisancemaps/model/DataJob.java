@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -52,40 +51,40 @@ public class DataJob {
     @Enumerated(EnumType.STRING)
     private DataJobStatus status;
     private String url; // actual crawlURL, uses source as base?
-    private int param_limit;
-    private int param_offset;
-    private String order_key;
-    private int num_results;
+    private int paramLimit;
+    private int paramOffset;
+    private String orderKey;
+    private int numResults;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     public DataJob() {
         LocalDateTime now = LocalDateTime.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
-    public DataJob(Source source, int param_limit, int param_offset, String order_key) {
+    public DataJob(Source source, int paramLimit, int paramOffset, String orderKey) {
         this.source = source;
-        this.param_limit = param_limit;
-        this.param_offset = param_offset;
-        this.order_key = order_key;
+        this.paramLimit = paramLimit;
+        this.paramOffset = paramOffset;
+        this.orderKey = orderKey;
         this.status = DataJobStatus.QUEUED;
         LocalDateTime now = LocalDateTime.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     public String buildURL() throws UnsupportedEncodingException {
         String sourceURL = this.getSourceURL();
         String _url = UriComponentsBuilder.fromUriString(sourceURL)
-                .queryParam("$limit", URLEncoder.encode(Integer.toString(param_limit), "UTF-8"))
-                .queryParam("$offset", URLEncoder.encode(Integer.toString(param_offset), "UTF-8"))
-                .queryParam("$order", URLEncoder.encode(order_key, "UTF-8"))
+                .queryParam("$limit", URLEncoder.encode(Integer.toString(paramLimit), "UTF-8"))
+                .queryParam("$offset", URLEncoder.encode(Integer.toString(paramOffset), "UTF-8"))
+                .queryParam("$order", URLEncoder.encode(orderKey, "UTF-8"))
                 .build()
                 .toUriString();
         this.url = _url;
@@ -124,56 +123,56 @@ public class DataJob {
         this.url = url;
     }
 
-    public int getParam_limit() {
-        return param_limit;
+    public int getParamLimit() {
+        return paramLimit;
     }
 
-    public void setParam_limit(int param_limit) {
-        this.param_limit = param_limit;
+    public void setParamLimit(int paramLimit) {
+        this.paramLimit = paramLimit;
     }
 
-    public int getParam_offset() {
-        return param_offset;
+    public int getParamOffset() {
+        return paramOffset;
     }
 
-    public void setParam_offset(int param_offset) {
-        this.param_offset = param_offset;
+    public void setParamOffset(int paramOffset) {
+        this.paramOffset = paramOffset;
     }
 
-    public String getOrder_key() {
-        return order_key;
+    public String getOrderKey() {
+        return orderKey;
     }
 
-    public void setOrder_key(String orderKey) {
-        this.order_key = orderKey;
+    public void setOrderKey(String orderKey) {
+        this.orderKey = orderKey;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public void setSource(Source source) {
         this.source = source;
     }
 
-    public int getNum_results() {
-        return num_results;
+    public int getNumResults() {
+        return numResults;
     }
 
-    public void setNum_results(int numResults) {
-        this.num_results = numResults;
+    public void setNumResults(int numResults) {
+        this.numResults = numResults;
     }
 
 }

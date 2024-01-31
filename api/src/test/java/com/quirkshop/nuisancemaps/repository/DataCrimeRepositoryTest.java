@@ -27,13 +27,13 @@ public class DataCrimeRepositoryTest {
         sourceRepository.save(s);
         DataCrime d = new DataCrime(s);
         DataCrime d2 = new DataCrime(s);
-        d.setReport_num("123");
-        d2.setReport_num("abc");
+        d.setReportNum("123");
+        d2.setReportNum("abc");
         datacrime_repo.save(d);
         datacrime_repo.save(d2);
         DataCrime x = datacrime_repo.findByReportNum("123");
         DataCrime x2 = datacrime_repo.findByReportNum("abc");
-        assertThat(x.getReport_num()).isEqualTo("123");
-        assertThat(x2.getReport_num()).isEqualTo("abc");
+        assertThat(x.getReportNum()).isEqualTo("123");
+        assertThat(x2.getReportNum()).isEqualTo("abc");
     }
 }

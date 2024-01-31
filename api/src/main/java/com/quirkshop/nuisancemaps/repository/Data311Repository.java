@@ -22,7 +22,7 @@ class Data311CustomRepositoryImpl implements Data311CustomRepository {
     public Data311 findByReportNum(String report_num) {
 
         Data311 d = entityManager
-                .createQuery("SELECT d FROM Data311 d WHERE d.report_num = :value1", Data311.class)
+                .createQuery("SELECT d FROM Data311 d WHERE d.reportNum = :value1", Data311.class)
                 .setParameter("value1", report_num)
                 .setMaxResults(1)
                 .getResultList()

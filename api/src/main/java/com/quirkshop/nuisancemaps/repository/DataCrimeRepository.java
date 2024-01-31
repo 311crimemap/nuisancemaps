@@ -22,7 +22,7 @@ class DataCrimeCustomRepositoryImpl implements DataCrimeCustomRepository {
         public DataCrime findByReportNum(String report_num) {
 
                 DataCrime d = entityManager
-                                .createQuery("SELECT d FROM DataCrime d WHERE d.report_num = :value1", DataCrime.class)
+                                .createQuery("SELECT d FROM DataCrime d WHERE d.reportNum = :value1", DataCrime.class)
                                 .setParameter("value1", report_num)
                                 .setMaxResults(1)
                                 .getResultList()
