@@ -62,9 +62,9 @@ public class WorkerScheduleService {
             Source source = sourceRepository.findOrCreate(entry.getValue());
             source.setMapping(mapping);
 
-            // find the last/max record - this is a previous empty result, or latest
-            // queued job that hasn't run for whatever reason
-            DataJob datajob = dataJobRepository.findLastDataJobBySource(source);
+            // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
+            // latest queued job (DataJobStatus.QUEUED)
+            DataJob datajob = dataJobRepository.findLastDataJobBySource(source.getId());
 
             // start from scratch initial crawl
             if (datajob == null) {
