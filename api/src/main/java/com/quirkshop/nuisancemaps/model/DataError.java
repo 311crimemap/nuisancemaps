@@ -28,28 +28,28 @@ public class DataError {
 
     private String content;
 
-    private String error_msg;
+    private String errorMsg;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     public DataError() {
         LocalDateTime now = LocalDateTime.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
-    public DataError(DataJob dataJob, String content, String error_msg) {
+    public DataError(DataJob dataJob, String content, String errorMsg) {
         this.dataJob = dataJob;
         this.content = content;
-        this.error_msg = error_msg;
+        this.errorMsg = errorMsg;
 
         LocalDateTime now = LocalDateTime.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     public Integer getId() {
@@ -76,28 +76,28 @@ public class DataError {
         this.content = content;
     }
 
-    public String getError_msg() {
-        return error_msg;
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
-    public void setError_msg(String error_msg) {
-        this.error_msg = error_msg;
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

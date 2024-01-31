@@ -7,9 +7,7 @@ import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +21,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Index;
 
 @Entity
-@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "source_config_entity"))
+@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "sourceConfigEntity"))
 public class Source {
 
     @Id
@@ -31,8 +29,8 @@ public class Source {
     @SequenceGenerator(name = "source_seq", allocationSize = 1)
     private Integer id;
 
-    private Integer source_config_id; // per json entry
-    private String source_config_entity; // City, State: maybe same location but old/new config endpoints
+    private Integer sourceConfigId; // per json entry
+    private String sourceConfigEntity; // City, State: maybe same location but old/new config endpoints
     private String category;
     private String description;
     private String url;
@@ -53,15 +51,15 @@ public class Source {
     private List<DataJob> dataJobs = new ArrayList<DataJob>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     public Source() {
         LocalDateTime now = LocalDateTime.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     public Source(String category, String description, String url) {
@@ -69,24 +67,24 @@ public class Source {
         this.description = description;
         this.url = url;
         LocalDateTime now = LocalDateTime.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
-    public Integer getSource_config_id() {
-        return source_config_id;
+    public Integer getSourceConfigId() {
+        return sourceConfigId;
     }
 
-    public void setSource_config_id(Integer source_config_id) {
-        this.source_config_id = source_config_id;
+    public void setSourceConfigId(Integer sourceConfigId) {
+        this.sourceConfigId = sourceConfigId;
     }
 
-    public String getSource_config_entity() {
-        return source_config_entity;
+    public String getSourceConfigEntity() {
+        return sourceConfigEntity;
     }
 
-    public void setSource_config_entity(String source_config_entity) {
-        this.source_config_entity = source_config_entity;
+    public void setSourceConfigEntity(String sourceConfigEntity) {
+        this.sourceConfigEntity = sourceConfigEntity;
     }
 
     public List<Data311> getData311s() {
@@ -145,20 +143,20 @@ public class Source {
         this.dataJobs = dataJobs;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Map<String, Object> getMapping() {
