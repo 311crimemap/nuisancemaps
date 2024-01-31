@@ -7,6 +7,10 @@ import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
@@ -36,12 +40,15 @@ public class Source {
     @Transient
     private Map<String, Object> mapping;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
     private List<DataCrime> dataCrimes = new ArrayList<DataCrime>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
     private List<Data311> data311s = new ArrayList<Data311>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
     private List<DataJob> dataJobs = new ArrayList<DataJob>();
 
