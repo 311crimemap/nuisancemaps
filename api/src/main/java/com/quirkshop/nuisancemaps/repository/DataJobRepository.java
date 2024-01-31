@@ -3,6 +3,7 @@ package com.quirkshop.nuisancemaps.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,4 +66,9 @@ class DataJobCustomRepositoryImpl implements DataJobCustomRepository {
 @Repository
 public interface DataJobRepository extends CrudRepository<DataJob, Integer>, DataJobCustomRepository {
 
+    List<DataJob> findAll();
+
+    List<DataJob> findAllByOrderByIdDesc();
+
+    List<DataJob> findAllByOrderByIdDesc(PageRequest n);
 }
