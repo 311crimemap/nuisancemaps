@@ -8,7 +8,7 @@ Reminds and Notes on Spring Boot Setup
 * `model/`: entities
 * `repository`: entity data access methods: e.g extending CrudRepository interface around an entity.
   "Data access" methods: `findAll()`, `save()`, `findById()`, etc. Separates entity framework from data access.
-* `resources/` 
+* `resources/`
   * `db/`: liquibase - `changelogs` directory, indexed by `changelog-master.yml`
   * `application.properties`: Spring settings
   * `liquibase.properties`: liquibase settings
@@ -21,7 +21,7 @@ Reminds and Notes on Spring Boot Setup
 * Every variable or parameter is dependency injected, indicated by annotation.
 * Controller class itself takes a controller annotation type.
 * Class methods take a mapping, route path, and parameter annotations.
- 
+
 #### Annotations:
 
 * `@Restcontroller`: annotates the class
@@ -51,6 +51,39 @@ Repositories: `<Template, ID>`
 
 * `CrudRepository<T, ID>`:
 * `PagingAndSoringRepository<T, ID>`
+
+
+#### Repository: JPA Query Methods
+
+[Query Methods Docs](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html)
+
+JPA has conventions to generate the query implementation based on method name. Just write it in the interface.
+
+```
+public interface UserRepository extends Repository<User, Long> {
+  List<User> findByEmailAddressAndLastname(String emailAddress, String lastname);
+}
+```
+
+For bespoke queries can build it within the `@Query` annotation:
+
+Note the difference between JPA Query Lanuage (first example), and SQL.
+
+```
+# JPQL
+public interface UserRepository extends Repository<User, Long> {
+  @Query("select u from User u where u.emailAddress = ?1")
+  User findByEmailAddress(String emailAddress);
+}
+
+# SQL
+public interface UserRepository extends Repository<User, Long> {
+  @Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1", nativeQuery = true)
+  User findByEmailAddress(String emailAddress);
+}
+
+```
+
 
 
 ### Service Class
@@ -87,6 +120,23 @@ for (Map<String, Object> responseObject : responseList) {
 }
 ```
 
+##### JSON Annotations
+
+When deserializing objects from database, many-to-one or one-to-many relations can become circular:
+
+e.g.
+* DataJob (Many datajob has one source)
+  * Source
+    * DataCrime (one to many DataCrimes)
+    * Data311 (one to many Data311)
+    * DataJob (one to many DataJob) <-- circular
+
+So the initial DataJob will deserialize the Source, which will deserialize the DataJob, which will deserialize the Source...
+
+* `@JsonIgnore`: removes field
+* `@JsonBackReference`: the reverse part of the reference; the fields/collections -> NOT serialised.
+* `@JsonManagedReference`: the forward part of the reference and gets -> Serialised.
+
 
 ### Tests
 
@@ -116,11 +166,11 @@ If explicitly initalize anything outside of DI, it overwrites Mocks or any autow
 Can't `@InjectMocks` and `@Autowired` within the same instance - causes conflict. Best to rethink the tests. All mocks. Or not.
 
 
-##### Controller Test, Mocked requests: 
+##### Controller Test, Mocked requests:
 
 MockMvc: Mock to test server-side
 
-* e.g."controller unit-tests" to test annotations, any intermediate steps aside from just the output. 
+* e.g."controller unit-tests" to test annotations, any intermediate steps aside from just the output.
 * Can inject controllers with additional mocked services.
 * Avoids running servlet container.
 
@@ -169,17 +219,17 @@ Since liquibase, and Spring tests require maven profile, and spring active profi
 ORM implementation for JPA.
 
 `spring.jpa.hiberate.ddl-auto`: options on startup for how to handle db
-  
+
 * automatically maps JPA entity fields to database.
 * controls when and how that happens (at startup, never, clear out db first, etc.)
 * Currently deferred to manual migrations using liquibase
 
 ### DB via Liquibase + Hibernate ORM
 
-For standalone operation, specificy a `liquibase.properties`. Approach is to use Entity / Hibernate as a schema reference. 
+For standalone operation, specificy a `liquibase.properties`. Approach is to use Entity / Hibernate as a schema reference.
 Liquibase will t hen generate the sql diff - the migraiton - that is applied to the database.
 
-THe liquibase plugin is integrated with spring and defaults to running automatically, but currently disabled in `application.properties` (`spring.liquibase.enabled=false`). 
+THe liquibase plugin is integrated with spring and defaults to running automatically, but currently disabled in `application.properties` (`spring.liquibase.enabled=false`).
 Don't necessarily want migrations running automatically on every deploy.
 
 
@@ -189,7 +239,7 @@ Approach:
 2. Create/run diff (`./mvnw liquibase:diff`) that outputs the change set migration (output filename specified as in `liquibase.properties`) - currently `generated_changelog.sql`.
    * `db/changelogs`: changelogs are migrations; each file specifies a changeset
      * index: `changelog-master.yml`
-3. Verify diff - there are quirks from generated sql 
+3. Verify diff - there are quirks from generated sql
    * Ensure table names are proper case
    * default values if not null
    * foreign keys REFERENCES: `source_id INT REFERENCES source(id)`
@@ -275,11 +325,11 @@ The default main class can be defined in two places in `pom.xml`:
 * <props><start-class>com.quirkshop.nuisancemaps.WorkerApplication</start-class></props>
 * maven-plugin: <mainClass>com.quirkshop.nuisancemaps.WorkerApplication</mainClass>
 
-To toggle amongst main 
+To toggle amongst main
 * main class configuration must be done entirely on the command line. (Conflicts with dev run and jar building)
 * Allows the most consistent configuration across commonly used commands:
   * `mvnw spring-boot:run`
-  * `mvnw compile` 
+  * `mvnw compile`
   * `mvnw install`
   * `mvnw spring-boot:build-image`
 
