@@ -31,8 +31,8 @@ public class DataCrimeRepositoryTest {
         d2.setReportNum("abc");
         datacrime_repo.save(d);
         datacrime_repo.save(d2);
-        DataCrime x = datacrime_repo.findByReportNum("123");
-        DataCrime x2 = datacrime_repo.findByReportNum("abc");
+        DataCrime x = datacrime_repo.findOneByReportNum("123");
+        DataCrime x2 = datacrime_repo.findOneByReportNum("abc");
         assertThat(x.getReportNum()).isEqualTo("123");
         assertThat(x2.getReportNum()).isEqualTo("abc");
     }

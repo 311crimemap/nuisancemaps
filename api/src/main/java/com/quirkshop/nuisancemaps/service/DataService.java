@@ -142,7 +142,7 @@ public class DataService {
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
 
-        DataCrime data_crime = datacrime_repo.findByReportNum(report_num);
+        DataCrime data_crime = datacrime_repo.findOneByReportNum(report_num);
 
         if (data_crime == null) {
             data_crime = new DataCrime(source);
@@ -185,7 +185,7 @@ public class DataService {
 
         LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
 
-        Data311 data_311 = data311_repo.findByReportNum(report_num);
+        Data311 data_311 = data311_repo.findOneByReportNum(report_num);
 
         if (data_311 == null) {
             data_311 = new Data311(source);
