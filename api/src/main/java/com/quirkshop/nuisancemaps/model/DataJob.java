@@ -9,6 +9,10 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,10 +38,12 @@ public class DataJob {
     @SequenceGenerator(name = "data_job_seq", allocationSize = 1)
     private Integer id;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "dataJob", fetch = FetchType.LAZY)
     private List<DataError> dataErrors = new ArrayList<DataError>();
 

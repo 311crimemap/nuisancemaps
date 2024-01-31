@@ -65,4 +65,7 @@ class DataJobCustomRepositoryImpl implements DataJobCustomRepository {
 @Repository
 public interface DataJobRepository extends CrudRepository<DataJob, Integer>, DataJobCustomRepository {
 
+    List<DataJob> findAll();
+
+    List<DataJob> findAllByOrderByIdDesc();
 }
