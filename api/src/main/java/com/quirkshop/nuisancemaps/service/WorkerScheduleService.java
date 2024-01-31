@@ -62,9 +62,9 @@ public class WorkerScheduleService {
             Source source = sourceRepository.findOrCreate(entry.getValue());
             source.setMapping(mapping);
 
-            // find the last/max record - this is a previous empty result, or latest
-            // queued job that hasn't run for whatever reason
-            DataJob datajob = dataJobRepository.findLastDataJobBySource(source);
+            // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
+            // latest queued job (DataJobStatus.QUEUED)
+            DataJob datajob = dataJobRepository.findLastDataJobBySource(source.getId());
 
             // start from scratch initial crawl
             if (datajob == null) {
@@ -76,8 +76,8 @@ public class WorkerScheduleService {
 
             // if found last "completed" job; we create a new job from that offset
             if (datajob.getStatus().equals(DataJobStatus.COMPLETED)) {
-                datajob = new DataJob(source, PARAM_LIMIT, datajob.getParam_offset(),
-                        datajob.getOrder_key());
+                datajob = new DataJob(source, PARAM_LIMIT, datajob.getParamOffset(),
+                        datajob.getOrderKey());
             }
 
             // if last job is "queued" leave it as-is, to be picked up by scheduled task
@@ -85,7 +85,7 @@ public class WorkerScheduleService {
             datajob.setStatus(DataJobStatus.QUEUED);
             datajob = dataJobRepository.save(datajob);
 
-            log.info("category: " + source.getCategory() + " id: " + source.getSource_config_id());
+            log.info("category: " + source.getCategory() + " id: " + source.getSourceConfigId());
         }
     }
 
@@ -100,7 +100,7 @@ public class WorkerScheduleService {
         }
 
         Source source = datajob.getSource();
-        Map<String, Object> mapping = sourceLoaderService.getSourceMapping(source.getSource_config_id());
+        Map<String, Object> mapping = sourceLoaderService.getSourceMapping(source.getSourceConfigId());
         source.setMapping(mapping);
 
         log.info("fetching: " + datajob.getUrl());
@@ -119,7 +119,7 @@ public class WorkerScheduleService {
         }
 
         datajob.setStatus(DataJobStatus.COMPLETED);
-        datajob.setNum_results(num);
+        datajob.setNumResults(num);
         dataJobRepository.save(datajob);
 
         if (num == 0) {
@@ -127,8 +127,8 @@ public class WorkerScheduleService {
         }
 
         // queue next job: new offset = offset + num
-        DataJob nextJob = new DataJob(datajob.getSource(), PARAM_LIMIT, datajob.getParam_offset() + num,
-                datajob.getOrder_key());
+        DataJob nextJob = new DataJob(datajob.getSource(), PARAM_LIMIT, datajob.getParamOffset() + num,
+                datajob.getOrderKey());
 
         nextJob.buildURL();
         nextJob.setStatus(DataJobStatus.QUEUED);

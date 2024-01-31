@@ -142,21 +142,21 @@ public class DataService {
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
 
-        DataCrime data_crime = datacrime_repo.findByReportNum(report_num);
+        DataCrime data_crime = datacrime_repo.findOneByReportNum(report_num);
 
         if (data_crime == null) {
             data_crime = new DataCrime(source);
         }
 
-        data_crime.setReport_num(report_num);
+        data_crime.setReportNum(report_num);
         data_crime.setCategory(category);
         data_crime.setDescription(description.isEmpty() ? null : description);
         data_crime.setLocation(location.isEmpty() ? null : location);
         data_crime.setLatitude(latitude);
         data_crime.setLongitude(longitude);
         data_crime.setPoint(point);
-        data_crime.setReported_at(reported_at);
-        data_crime.setUpdated_at(LocalDateTime.now());
+        data_crime.setReportedAt(reported_at);
+        data_crime.setUpdatedAt(LocalDateTime.now());
 
         data_crime = datacrime_repo.save(data_crime);
 
@@ -185,21 +185,21 @@ public class DataService {
 
         LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
 
-        Data311 data_311 = data311_repo.findByReportNum(report_num);
+        Data311 data_311 = data311_repo.findOneByReportNum(report_num);
 
         if (data_311 == null) {
             data_311 = new Data311(source);
         }
 
-        data_311.setReport_num(report_num);
+        data_311.setReportNum(report_num);
         data_311.setCategory(category);
         data_311.setDescription(description.isEmpty() ? null : description);
         data_311.setLocation(location.isEmpty() ? null : location);
         data_311.setLatitude(latitude);
         data_311.setLongitude(longitude);
         data_311.setPoint(point);
-        data_311.setReported_at(reported_at);
-        data_311.setUpdated_at(LocalDateTime.now());
+        data_311.setReportedAt(reported_at);
+        data_311.setUpdatedAt(LocalDateTime.now());
 
         data_311 = data311_repo.save(data_311);
 

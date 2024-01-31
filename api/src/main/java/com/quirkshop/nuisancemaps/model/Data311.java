@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
-@Table(name = "data_311", indexes = @Index(name = "idx_report_num_data_311", columnList = "report_num"))
+@Table(name = "data_311", indexes = @Index(name = "idx_report_num_data_311", columnList = "reportNum"))
 public class Data311 {
     // TODO: status update, other fields
 
@@ -33,7 +33,7 @@ public class Data311 {
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
-    private String report_num; // indexed in db
+    private String reportNum; // indexed in db
     private String category;
     private String description;
     private String location;
@@ -43,25 +43,29 @@ public class Data311 {
 
     @Transient // exclude from persistence operations (migrations)
     private GeometryFactory _geometryFactory;
+
     private Point point;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime reported_at;
+    private LocalDateTime reportedAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     public Data311() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     } // default required by JPA
 
     public Data311(Source source) {
         this.setSource(source);
         LocalDateTime now = LocalDateTime.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     public Integer getId() {
@@ -80,12 +84,12 @@ public class Data311 {
         this.source = source;
     }
 
-    public String getReport_num() {
-        return report_num;
+    public String getReportNum() {
+        return reportNum;
     }
 
-    public void setReport_num(String report_num) {
-        this.report_num = report_num;
+    public void setReportNum(String reportNum) {
+        this.reportNum = reportNum;
     }
 
     public String getCategory() {
@@ -141,28 +145,28 @@ public class Data311 {
         this.point = point;
     }
 
-    public LocalDateTime getReported_at() {
-        return reported_at;
+    public LocalDateTime getReportedAt() {
+        return reportedAt;
     }
 
-    public void setReported_at(LocalDateTime reported_at) {
-        this.reported_at = reported_at;
+    public void setReportedAt(LocalDateTime reportedAt) {
+        this.reportedAt = reportedAt;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

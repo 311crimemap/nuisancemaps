@@ -83,8 +83,8 @@ public class SourceLoaderService {
             String description = responseObject.get("description").toString();
             List<Map<String, Object>> mappings = (List<Map<String, Object>>) responseObject.get("mappings");
 
-            source.setSource_config_entity(source_config_entity);
-            source.setSource_config_id(source_config_id);
+            source.setSourceConfigEntity(source_config_entity);
+            source.setSourceConfigId(source_config_id);
             source.setCategory(category);
             source.setUrl(url);
             source.setDescription(description);

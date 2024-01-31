@@ -34,7 +34,7 @@ public class SourceLoaderServiceTest {
     public void findBySourceConfigIDTest() {
         sourceLoaderService.loadJSON("data/source_config.json");
         Source s = sourceLoaderService.findBySourceConfigID(1);
-        assertThat(s.getSource_config_id()).isEqualTo(1);
+        assertThat(s.getSourceConfigId()).isEqualTo(1);
     }
 
 }
