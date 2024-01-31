@@ -15,8 +15,6 @@ import jakarta.persistence.EntityManager;
 
 interface DataJobCustomRepository {
     DataJob findLastDataJobBySource(Source source);
-
-    DataJob getNextDataJob(DataJobStatus status);
 }
 
 class DataJobCustomRepositoryImpl implements DataJobCustomRepository {
@@ -45,22 +43,6 @@ class DataJobCustomRepositoryImpl implements DataJobCustomRepository {
         return null;
     }
 
-    @Transactional
-    public DataJob getNextDataJob(DataJobStatus status) {
-        List<DataJob> resultList = entityManager
-                .createQuery(
-                        "SELECT d FROM DataJob d WHERE d.status = :status ORDER BY d.id ASC",
-                        DataJob.class)
-                .setParameter("status", status)
-                .setMaxResults(1)
-                .getResultList();
-
-        if (!resultList.isEmpty()) {
-            return resultList.get(0);
-        }
-
-        return null;
-    }
 }
 
 @Repository
@@ -71,4 +53,16 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer>, Dat
     List<DataJob> findAllByOrderByIdDesc();
 
     List<DataJob> findAllByOrderByIdDesc(PageRequest n);
+
+    DataJob findTopByStatusOrderByIdAsc(DataJobStatus status);
+
+    @Transactional
+    default DataJob getNextDataJob(DataJobStatus status) {
+        DataJob dataJob = findTopByStatusOrderByIdAsc(status);
+        if (dataJob == null)
+            return null;
+        dataJob.setStatus(DataJobStatus.PENDING);
+        dataJob = save(dataJob);
+        return dataJob;
+    }
 }
