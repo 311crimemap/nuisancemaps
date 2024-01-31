@@ -42,7 +42,7 @@ public class DataCrime {
 
     @Transient // exclude from persistence operations (migrations)
     private GeometryFactory _geometryFactory;
-    
+
     private Point point;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -55,15 +55,17 @@ public class DataCrime {
     private LocalDateTime updatedAt;
 
     public DataCrime() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     } // default required by JPA
-    
+
     public DataCrime(Source source) {
         this.setSource(source);
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
-    
 
     public Integer getId() {
         return id;

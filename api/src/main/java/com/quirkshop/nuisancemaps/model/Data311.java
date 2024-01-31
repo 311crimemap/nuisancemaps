@@ -43,7 +43,7 @@ public class Data311 {
 
     @Transient // exclude from persistence operations (migrations)
     private GeometryFactory _geometryFactory;
-    
+
     private Point point;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -56,6 +56,9 @@ public class Data311 {
     private LocalDateTime updatedAt;
 
     public Data311() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     } // default required by JPA
 
     public Data311(Source source) {
