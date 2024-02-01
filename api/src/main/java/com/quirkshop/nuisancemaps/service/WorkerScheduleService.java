@@ -42,9 +42,15 @@ public class WorkerScheduleService {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     @PostConstruct // method called once after beans all loaded
-    public void initialize() {
+    public void initialize() throws UnsupportedEncodingException {
         sourceLoaderService.loadJSON("data/source_config.json");
         log.info("loaded source_config.json");
+
+        // init seed
+        if (dataJobRepository.count() == 0) {
+            log.info("Initial Seed Jobs");
+            createDailyDataJobs();
+        }
     }
 
     @Scheduled(cron = "@daily")

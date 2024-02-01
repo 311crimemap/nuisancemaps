@@ -9,13 +9,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.service.WorkerScheduleService;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
 @SpringBootApplication
 @ComponentScan(
 		// Excludes worker, @EnableScheduling annotation (api and related backend only)
 		excludeFilters = {
-				@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WorkerApplication.class)
+			@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WorkerApplication.class),
+			@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WorkerScheduleService.class),
 		})
 public class NuisancemapsApplication {
 
