@@ -268,6 +268,125 @@ Can't use env variable credentials in `liquibase.properties` (cripple ware) but 
 Will require a bash script, configMap in a job. Which I think is fine for a k3s deploy.
 
 
+
+
+### Determine Main Class / Motivation
+
+* Want a single build, same image, shared libraries (important for database entities)
+* Only change different container's command config for a different app or service.
+* Single fat jar deploy, but able to choose which application to run, while
+  sharing libraries.
+* Allows scaling different apps, as number of replicas is controlled by deploys in k8s.
+
+##### Runtime Config Reminders:
+
+* `main-class`: Maven (xml)
+* `start-class`: Java system property (-D) for spring-boot runtime config
+* `loader.main`: Java system property (-D) for Jar manifest runtime config
+
+#### Basic Separation
+
+Multiple `main()` which at top level project directory:
+
+* `NuisancemapApplication`
+* `WorkerApplication`
+
+When running Spring, while the `start-class` entrance `main()` can be specified,
+Spring automatically scans for all annotated classes to include in the project.
+
+So for `@EnableScheduling`, or `@Scheduled` annotations, these will get bundled
+and toggled independently of the active `main` class.
+
+To exclude these annotations, use `@ComponentScan` to include/exclude classes
+and annotations associated with the running `main()`.
+
+The example `NuisancemapsApplication.java` below is the `main()` for the API.
+The configuration excludes the WorkerApplication class (second code block),
+where `@EnableScheduling` is toggled. Doing so allows this `main()` to execute
+without triggering any scheduled tasks.
+
+
+```
+// NuisancemapsApplication.java
+
+@SpringBootApplication
+@ComponentScan(
+        // no worker, scheduled related
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WorkerApplication.class)
+        })
+
+public class NuisancemapsApplication {
+
+    private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
+
+    public static void main(String[] args) {
+
+        // output before "spring" logo
+        System.out.println("println pre");
+        log.info("log pre");
+
+        SpringApplication.run(NuisancemapsApplication.class, args);
+
+        // output after load
+        System.out.println("println post");
+        log.info("log post");
+    }
+```
+
+In `WorkerApplication.java` below, we exclude the `NuisancemapsApplication.class` API
+class and its controllers from being loaded. However, `@EnableScheduling` is
+active, so service classes with `@Scheduled` tasks will be activated.
+
+The `@ConditionalOnProperty` is also used to enable/disable `@EnableScheduling`
+for testing purposes (in this case, not `main()`api/worker separation). This
+disables the annotation below it, given the value in the
+`resources/application-<profile>.properties` file. For testing environment, in
+`application-test.properties`, the `app.scheduling.enabled=false`. This
+environment is set by command line profile: `./mvwn test -P test
+-Dspring.profiles.active=test`. (more below)
+
+
+```
+// WorkerApplication.java
+@SpringBootApplication
+@ComponentScan(
+        // no api controllers, scheduled service and backend related
+        excludeFilters = {
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = NuisancemapsApplication.class),
+            @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = RestController.class)
+        })
+@ConditionalOnProperty(value = "app.scheduling.enabled", matchIfMissing = true, havingValue = "true")
+@EnableScheduling
+public class WorkerApplication {
+    private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
+
+    public static void main(String args[]) {
+        log.info("WorkerApplication pre");
+        SpringApplication.run(WorkerApplication.class, args);
+        log.info("WorkerApplication post");
+    }
+}
+```
+
+##### Config Class
+
+* Shared classes (b/w worker and api) might require shared beans. These can be
+  defined in a `@Configuration` class.
+* Typically used via `@Autowired` in multiple, but needs some dependency defined.
+* `/config/RestTemplateConfig.java`: example of RestTemplate `@Bean` dependency
+  needed in `DataJobRequestService`.
+
+#### Testing considerations:
+
+* With multiple main's, `SpringBootTest` need an explicit Spring applicaton context to load.
+* Multiple main's create ambiguity
+* Explicit label: `@SpringBootTest(classes = NuisancemapsApplication.class)`
+* See `@ConditionalOnProperty` notes above for enable/disable annotation
+  (`@EnableScheduling`) discussion.
+
+
+
 ### Maven Commands
 
 Custom main commands below, and then in more detail as to how these came about.
@@ -290,21 +409,7 @@ Custom main commands below, and then in more detail as to how these came about.
 Below are steps for certain cases, though the above seems best for now.
 
 
-#### Determine Main Class / Motivation
-
-* Want a single build, same image, shared libraries (important for database entities)
-* Only change different container's command config for a different app or service.
-* Allows scaling different apps, as number of replicas is controlled by deploys in k8s.
-
-Testing considerations:
-
-* With multiple main's, `SpringBootTest` need an explicit Spring applicaton context to load.
-* Multiple main's create ambiguity
-
-`@SpringBootTest(classes = NuisancemapsApplication.class)`
-
-
-##### Basic Jar Build
+###### Basic Jar Build
 
 Maven Default: define `mainClass` statically in `pom.xml`:
 
