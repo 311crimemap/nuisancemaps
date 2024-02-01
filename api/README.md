@@ -407,10 +407,19 @@ Custom main commands below, and then in more detail as to how these came about.
   * `java "-Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication" -jar /home/vergeman/dev/nuisancemaps/api/target/nuisancemaps-0.0.1-SNAPSHOT.jar`
   * `LOADER_MAIN=com.quirkshop.nuisancemaps.WorkerApplication java -jar /home/vergeman/dev/nuisancemaps/api/target/nuisancemaps-0.0.1-SNAPSHOT.jar`
 * Docker image via `spring-boot:build-iamge`
-  * `./mvnw spring-boot:build-image -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
-* Run Docker container with custom main (default executable is `PropertiesLauncher`)
-  * `docker run -e JAVA_OPTS="-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication" nuisancemaps:0.0.1-SNAPSHOT`
+  * `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
+* Run Docker container with custom main (default executable is `PropertiesLauncher`):
 
+```
+docker run \
+-e POSTGRESQL_USER=postgres \
+-e POSTGRESQL_PASSWORD=admin \
+-e POSTGRESQL_DATABASE=db_example \
+-e JAVA_OPTS="-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication" \
+--network=nuisancemaps_default nuisancemaps:0.0.1-SNAPSHOT
+```
+
+TODO: replace with `.env`
 
 Below are steps for certain cases, though the above seems best for now.
 
@@ -543,7 +552,7 @@ docker run --rm --entrypoint launcher -it nuisancemaps:0.0.1-SNAPSHOT \
 
 https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/htmlsingle/#build-image.customization
 
-* build image: `mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
+* build image: `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
 * updated standalone run w/ db on command line:
 ```
 docker run \
