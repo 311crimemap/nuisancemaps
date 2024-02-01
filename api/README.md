@@ -15,6 +15,12 @@ Reminds and Notes on Spring Boot Setup
 * `pom.xml`: "packages" / Gems / rake equivalent. Loads external libs and jars. Entry point for executable (`./mvnw <command>`).
 * `docker-compose.yml`
 
+### dev-tools
+
+* `pom.xml`: `spring-boot-devtools` artifact triggers auto reload: requires
+  `/target` to not be root.
+* If run `./mvwn clean compile` in docker content, can inadvertently set
+  `/target` to root and stops auto load.
 
 ### Controller
 
@@ -411,6 +417,8 @@ Below are steps for certain cases, though the above seems best for now.
 
 ###### Basic Jar Build
 
+For builds, make sure `/target` perms are not root.
+
 Maven Default: define `mainClass` statically in `pom.xml`:
 
 ```
@@ -536,7 +544,15 @@ docker run --rm --entrypoint launcher -it nuisancemaps:0.0.1-SNAPSHOT \
 https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/htmlsingle/#build-image.customization
 
 * build image: `mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
-* run with application main: `docker run -e JAVA_OPTS="-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication" nuisancemaps:0.0.1-SNAPSHOT`
+* updated standalone run w/ db on command line:
+```
+docker run \
+-e POSTGRESQL_USER=postgres \
+-e POSTGRESQL_PASSWORD=admin \
+-e POSTGRESQL_DATABASE=db_example \
+-e JAVA_OPTS="-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication" \
+--network=nuisancemaps_default nuisancemaps:0.0.1-SNAPSHOT
+```
 
 
 ---
