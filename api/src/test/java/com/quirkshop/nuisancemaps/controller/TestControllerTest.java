@@ -26,7 +26,7 @@ public class TestControllerTest {
 	@Autowired
 	private MockMvc mvc; //send HTTP requests into the DispatcherServlet and make assertions about the result.
 
-	@Test  //matches output from HelloController.java - based on route
+	@Test
 	public void getHello() throws Exception {
 	    mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
