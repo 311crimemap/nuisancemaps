@@ -132,8 +132,11 @@ public class WorkerScheduleService {
             return;
         }
 
-        // queue next job: new offset = offset + num
-        DataJob nextJob = new DataJob(datajob.getSource(), PARAM_LIMIT, datajob.getParamOffset() + num,
+        // queue next job: new offset = offset + PARAM_LIMIT
+        // get next batch of N (LIMIT) records.
+        // Look at dataJob.numResults to determine any errors, but this worker just
+        // grabs at each clip.
+        DataJob nextJob = new DataJob(datajob.getSource(), PARAM_LIMIT, datajob.getParamOffset() + PARAM_LIMIT,
                 datajob.getOrderKey());
 
         nextJob.buildURL();
