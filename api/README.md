@@ -269,11 +269,41 @@ Liquibase modifies the database and tracks which changelogs were run.
 
 Can't use env variable credentials in `liquibase.properties` (cripple ware) but can use them on command line:
 
-`./mvnw liquibase:update -Dusername=$POSTGRESQL_USER -Dpassword=$POSTGRESQL_PASSWORD`
+    `./mvnw liquibase:update -Dusername=$POSTGRESQL_USER -Dpassword=$POSTGRESQL_PASSWORD`
 
 Will require a bash script, configMap in a job. Which I think is fine for a k3s deploy.
 
 
+#### Liquibase CamelCase -> Snake Case (DB Naming convention)
+
+
+WHen generating a diff, `liqubase.properties` uses Hibernate (e.g. JPA code) as
+the source database, with postgres as the target.
+
+By default liquibase creates camel case field matches. To create snake_case columns according to db convention (and what JPA understands), we have to modify the `referenceURL` to use an additional physical naming strategy setting:
+
+
+```
+# liquibase.properties
+eferenceUrl=hibernate:spring:com.quirkshop.nuisancemaps?dialect=org.hibernate.dialect.PostgreSQLDialect\
+    &hibernate.physical_naming_strategy=com.quirkshop.nuisancemaps.config.SnakeCaseNamingStrategy
+```
+
+The implementation of `SnakeCaseNamingStrategy` is below;
+
+```
+// config/SnakeCaseNamingStrategy.java
+public class SnakeCaseNamingStrategy extends PhysicalNamingStrategyStandardImpl {
+    @Override
+    public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment context) {
+        return new Identifier(
+                CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name.getText()),
+                name.isQuoted());
+    }
+}
+```
+
+This ensures the diffs will be converted to snake case.
 
 
 ### Determine Main Class / Motivation
