@@ -44,6 +44,7 @@ services:
   db:
     image: 'bitnami/postgresql:16.1.0'
     volumes:
+      - nuisancemaps_db:/bitnami/postgresql
       # installed at "per database" level
       - ./db/01_enable_postgis.sql:/docker-entrypoint-initdb.d/01_enable_postgis.sql
     #network_mode: "host"
@@ -54,3 +55,6 @@ services:
       - POSTGRESQL_USER=postgres
       - POSTGRESQL_PASSWORD=admin
       - POSTGRESQL_DATABASE=db_example
+
+volumes:
+  nuisancemaps_db:
