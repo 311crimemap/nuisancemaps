@@ -54,7 +54,8 @@ public class DataJob {
     private int paramLimit;
     private int paramOffset;
     private String orderKey;
-    private int numResults;
+    private int numFetched;
+    private int numProcessed;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
@@ -167,12 +168,20 @@ public class DataJob {
         this.source = source;
     }
 
-    public int getNumResults() {
-        return numResults;
+    public int getNumProcessed() {
+        return numProcessed;
     }
 
-    public void setNumResults(int numResults) {
-        this.numResults = numResults;
+    public void setNumProcessed(int numResults) {
+        this.numProcessed = numResults;
+    }
+
+    public int getNumFetched() {
+        return numFetched;
+    }
+
+    public void setNumFetched(int numFetched) {
+        this.numFetched = numFetched;
     }
 
 }
