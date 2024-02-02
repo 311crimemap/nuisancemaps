@@ -152,7 +152,7 @@ public class WorkerScheduleService {
         dataJobRepository.save(datajob);
         log.info("createData()");
 
-        int num = dataservice.createData(source, datajob, json);
+        dataservice.createData(source, datajob, json);
 
         // if high error rate, mark job as error and stop future jobs
         if (datajob.getStatus() == DataJobStatus.ERROR) {
@@ -161,10 +161,9 @@ public class WorkerScheduleService {
         }
 
         datajob.setStatus(DataJobStatus.COMPLETED);
-        datajob.setNumResults(num);
         dataJobRepository.save(datajob);
 
-        if (num == 0) {
+        if (datajob.getNumFetched() == 0) {
             return;
         }
 
