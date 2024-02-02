@@ -5,6 +5,7 @@
         "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
         "category": "crime",
         "description": "Austin Police",
+        "numRecords": 2440821,
         "mappings": [
             {
                 "version": 1,
@@ -27,6 +28,7 @@
         "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
         "category": "311",
         "description": "Austin 311",
+        "numRecords": 1778332,
         "mappings": [
             {
                 "version": 1,

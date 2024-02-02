@@ -80,6 +80,7 @@ public class SourceLoaderService {
             String category = responseObject.get("category").toString();
             String url = responseObject.get("url").toString();
             String description = responseObject.get("description").toString();
+            int numRecords = (int) responseObject.get("numRecords");
             List<Map<String, Object>> mappings = (List<Map<String, Object>>) responseObject.get("mappings");
 
             source.setSourceConfigEntity(source_config_entity);
@@ -87,6 +88,7 @@ public class SourceLoaderService {
             source.setCategory(category);
             source.setUrl(url);
             source.setDescription(description);
+            source.setNumRecords(numRecords);
 
             // TODO: first of mapping list - not sure how to handle multiple config
             // from same url (e.g. data changes)
