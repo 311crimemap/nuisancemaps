@@ -1,12 +1,15 @@
 package com.quirkshop.nuisancemaps.service;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +54,37 @@ public class WorkerScheduleService {
             log.info("Initial Seed Jobs");
             createDailyDataJobs();
         }
+
+        // Remote address
+        log.info(InetAddress.getLoopbackAddress().getHostAddress());
+        log.info(InetAddress.getLoopbackAddress().getHostName());
     }
+
+    public void updateSourceNumRecords(Source source) {
+        // TODO: early terminate if not worker_1 hostname
+        // get pod name - restrict this to initial worker. e.g worker_1,
+        // log.info("getProp2: " + env.getProperty("HOSTNAME"));
+        // log.info( System.getenv("HOSTNAME"));
+
+        log.info("[SourceLoaderService] FetchCount ....");
+        Integer numRecords = sourceLoaderService.fetchCount(source);
+        if (numRecords == null) {
+            log.info("[SourceLoaderService] FetchCount Error for source: " + source.getSourceConfigId());
+            return;
+        }
+
+        String updateNumRecords = String.format("[SourceLoaderService] FetchCount %s -> %s", source.getNumRecords(),
+                numRecords);
+        log.info(updateNumRecords);
+        if (numRecords != null) {
+            source.setNumRecords(numRecords);
+            sourceRepository.save(source);
+        }
+    }
+
+    /*
+     * SCHEDULED TASKS
+     */
 
     @Scheduled(cron = "@daily")
     public void createDailyDataJobs() throws UnsupportedEncodingException {
@@ -67,6 +100,9 @@ public class WorkerScheduleService {
             Map<String, Object> mapping = sourceLoaderService.getSourceMapping(entry.getKey());
             Source source = sourceRepository.findOrCreate(entry.getValue());
             source.setMapping(mapping);
+
+            // Fetch Count and Update
+            updateSourceNumRecords(source);
 
             // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
             // latest queued job (DataJobStatus.QUEUED)
@@ -101,7 +137,7 @@ public class WorkerScheduleService {
 
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
-            log.info("Empty Queue");
+            log.info("No Jobs Queued");
             return;
         }
 
