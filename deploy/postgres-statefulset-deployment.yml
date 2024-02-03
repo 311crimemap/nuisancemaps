@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+spec:
+  selector:
+    matchLabels:
+      app: postgresql
+      app.kubernetes.io/name: postgresql
+  serviceName: postgresql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        app.kubernetes.io/name: postgresql
+    spec:
+      containers:
+      - name: postgresql
+        image: bitnami/postgresql:16.1.0
+        env:
+        - name: POSTGRESQL_USER
+          value: "postgres"
+        - name: POSTGRESQL_DATABASE
+          value: "db_example"
+        - name: POSTGRESQL_PASSWORD
+          value: "admin"
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/postgresql
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 8Gi

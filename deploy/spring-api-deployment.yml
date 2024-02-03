@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-api
+  name: spring-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring-api
+    spec:
+      containers:
+        - image: nuisancemaps:0.0.1-SNAPSHOT
+          name: spring-api
+          resources: {}
+          env:
+          - name: POSTGRESQL_USER
+            value: "postgres"
+          - name: POSTGRESQL_DATABASE
+            value: "db_example"
+          - name: POSTGRESQL_PASSWORD
+            value: "admin"
+          - name: JAVA_OPTS
+            value: "-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication"
+          ## probes
+          # livenessProbe:
+          #   httpGet:
+          #     path: /actuator/health/liveness
+          #     port: 8080
+          # readinessProbe:
+          #   httpGet:
+          #     path: /actuator/health/readiness
+          #     port: 8080
+          # lifecycle:
+          #   preStop:
+          #     exec:
+          #       command: ["sh", "-c", "sleep 10"]
