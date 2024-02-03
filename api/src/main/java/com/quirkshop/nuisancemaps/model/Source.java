@@ -34,6 +34,7 @@ public class Source {
     private String category;
     private String description;
     private String url;
+    private Integer numRecords;
 
     @Transient
     private Map<String, Object> mapping;
@@ -125,6 +126,14 @@ public class Source {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getNumRecords() {
+        return numRecords;
+    }
+
+    public void setNumRecords(Integer numRecords) {
+        this.numRecords = numRecords;
     }
 
     public List<DataCrime> getDataCrimes() {

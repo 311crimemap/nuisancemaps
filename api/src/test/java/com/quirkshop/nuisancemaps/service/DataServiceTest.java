@@ -64,8 +64,8 @@ public class DataServiceTest {
                 StandardCharsets.UTF_8);
 
         // dataService to create instances
-        int num = dataService.createData(s, d, jsonResponse);
-        assertThat(num).isEqualTo(2);
+        dataService.createData(s, d, jsonResponse);
+        assertThat(d.getNumProcessed()).isEqualTo(2);
     }
 
     @Test
@@ -88,8 +88,8 @@ public class DataServiceTest {
                 StandardCharsets.UTF_8);
 
         // dataService to create instances
-        int num = dataService.createData(s, d, jsonResponse);
-        assertThat(num).isEqualTo(2);
+        dataService.createData(s, d, jsonResponse);
+        assertThat(d.getNumProcessed()).isEqualTo(2);
     }
 
     @Test
@@ -111,8 +111,9 @@ public class DataServiceTest {
         dataJobRepository.save(d);
 
         // dataService to create instances
-        int num = dataService.createData(s, d, jsonResponse);
-        assertThat(num).isEqualTo(0);
+        dataService.createData(s, d, jsonResponse);
+        assertThat(d.getNumFetched()).isEqualTo(2);
+        assertThat(d.getNumProcessed()).isEqualTo(0);
 
         // creates a dataError
         // job also exceeds error rate (100% here)

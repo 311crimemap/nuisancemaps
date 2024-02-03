@@ -2,10 +2,11 @@ package com.quirkshop.nuisancemaps.model;
 
 public enum DataJobStatus {
     QUEUED("QUEUED"),
+    START("START"),
     FETCH_START("FETCH_START"),
     FETCH_ERROR("FETCH_ERROR"),
     FETCH_COMPLETE("FETCH_COMPLETE"),
-    PENDING("PENDING"), //pending createData
+    PENDING("PENDING"), // pending createData
     COMPLETED("COMPLETED"),
     ERROR("ERROR");
 

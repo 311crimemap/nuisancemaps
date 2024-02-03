@@ -50,8 +50,9 @@ public class DataService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public int createData(Source source, DataJob dataJob, String jsonResponse) {
-        int num = 0;
+    public void createData(Source source, DataJob dataJob, String jsonResponse) {
+        int numFetched = 0;
+        int numProcessed = 0;
         int errors = 0;
         List<Map<String, Object>> responseList = null;
         StringWriter sw = new StringWriter();
@@ -87,10 +88,10 @@ public class DataService {
                         break;
                 }
 
-                num++;
+                numProcessed++;
 
-                if (num % LOG_NUM == 0) {
-                    log.info(source.getCategory() + ": " + source.getUrl() + ": Processed " + num);
+                if (numProcessed % LOG_NUM == 0) {
+                    log.info(source.getCategory() + ": " + source.getUrl() + ": Processed " + numProcessed);
                 }
 
             } catch (Exception e) {
@@ -107,14 +108,17 @@ public class DataService {
                 log.info(content);
                 log.info(error_msg);
             }
+
+            numFetched++;
         }
 
         // 5% error rate, mark job as failed to figure out consistent error
-        if (errors > (num / ERROR_RATE)) {
+        if (errors > (numProcessed / ERROR_RATE)) {
             dataJob.setStatus(DataJobStatus.ERROR);
         }
 
-        return num;
+        dataJob.setNumFetched(numFetched);
+        dataJob.setNumProcessed(numProcessed);
     }
 
     public boolean createDataCrime(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {

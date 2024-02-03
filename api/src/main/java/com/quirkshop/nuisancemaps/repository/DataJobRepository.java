@@ -29,8 +29,10 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         DataJob dataJob = findTopByStatusOrderByIdAsc(status);
         if (dataJob == null)
             return null;
-        dataJob.setStatus(DataJobStatus.PENDING);
+        dataJob.setStatus(DataJobStatus.START);
         dataJob = save(dataJob);
         return dataJob;
     }
+
+    DataJob findTopBySourceIdOrderByParamOffsetDesc(Integer source_id);
 }
