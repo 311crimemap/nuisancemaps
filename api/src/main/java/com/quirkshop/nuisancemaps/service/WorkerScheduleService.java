@@ -2,16 +2,15 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -106,6 +105,10 @@ public class WorkerScheduleService {
 
             // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
             // latest queued job (DataJobStatus.QUEUED)
+            //
+            // This is slightly different from createNewJobs(): we want to redo the last job
+            // parameter offset because new records could be added the next day that are still within the
+            // same fetch range
             DataJob datajob = dataJobRepository.findLastDataJobBySource(source.getId());
 
             // start from scratch initial crawl
@@ -131,13 +134,14 @@ public class WorkerScheduleService {
         }
     }
 
-    @Scheduled(fixedRate = 5000, initialDelay = 3000)
+    @Scheduled(fixedRate = 10000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         log.info("[checkDataJobQueue]");
 
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
             log.info("No Jobs Queued");
+            createNewJobs();
             return;
         }
 
@@ -162,23 +166,51 @@ public class WorkerScheduleService {
 
         datajob.setStatus(DataJobStatus.COMPLETED);
         dataJobRepository.save(datajob);
+    }
 
-        if (datajob.getNumFetched() == 0) {
-            return;
+    @Transactional
+    public void createNewJobs() throws UnsupportedEncodingException {
+
+        HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
+
+        for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
+            Map<String, Object> mapping = sourceLoaderService.getSourceMapping(entry.getKey());
+            Source source = sourceRepository.findOrCreate(entry.getValue());
+            source.setMapping(mapping);
+
+            // NEW SOURCE
+            // if newly added source (have yet to run daily job) go fetch counts;
+            if (source.getNumRecords() == null) {
+                log.info("[createNewJobs] new source - fetching counts");
+                updateSourceNumRecords(source);
+                return;
+            }
+
+            // NEW SOURCE JOB 0
+            DataJob maxOffsetDataJob = dataJobRepository.findTopBySourceIdOrderByParamOffsetDesc(source.getId());
+            if (maxOffsetDataJob == null) {
+                log.info("[createNewJobs] No prevous jobs exist for this source - creating new at offset 0");
+                String key = source.getMapping().get("report_num").toString();
+                DataJob init_datajob = new DataJob(source, PARAM_LIMIT, 0, key);
+                dataJobRepository.save(init_datajob);
+                return;
+            }
+
+            // Next DataJob QUEUED, if source still has unretrieved records
+            if (maxOffsetDataJob.getParamOffset() + PARAM_LIMIT < source.getNumRecords()) {
+
+                DataJob nextJob = new DataJob(source,
+                        PARAM_LIMIT,
+                        maxOffsetDataJob.getParamOffset() + PARAM_LIMIT,
+                        maxOffsetDataJob.getOrderKey());
+
+                nextJob.buildURL();
+                nextJob.setStatus(DataJobStatus.QUEUED);
+                dataJobRepository.save(nextJob);
+                log.info("[createNewJobs] next job: " + nextJob.getUrl());
+            }
+
         }
-
-        // queue next job: new offset = offset + PARAM_LIMIT
-        // get next batch of N (LIMIT) records.
-        // Look at dataJob.numResults to determine any errors, but this worker just
-        // grabs at each clip.
-        DataJob nextJob = new DataJob(datajob.getSource(), PARAM_LIMIT, datajob.getParamOffset() + PARAM_LIMIT,
-                datajob.getOrderKey());
-
-        nextJob.buildURL();
-        nextJob.setStatus(DataJobStatus.QUEUED);
-        dataJobRepository.save(nextJob);
-
-        log.info("next job: " + nextJob.getUrl());
 
     }
 
