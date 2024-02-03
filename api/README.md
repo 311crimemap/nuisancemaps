@@ -269,11 +269,41 @@ Liquibase modifies the database and tracks which changelogs were run.
 
 Can't use env variable credentials in `liquibase.properties` (cripple ware) but can use them on command line:
 
-`./mvnw liquibase:update -Dusername=$POSTGRESQL_USER -Dpassword=$POSTGRESQL_PASSWORD`
+    `./mvnw liquibase:update -Dusername=$POSTGRESQL_USER -Dpassword=$POSTGRESQL_PASSWORD`
 
 Will require a bash script, configMap in a job. Which I think is fine for a k3s deploy.
 
 
+#### Liquibase CamelCase -> Snake Case (DB Naming convention)
+
+
+WHen generating a diff, `liqubase.properties` uses Hibernate (e.g. JPA code) as
+the source database, with postgres as the target.
+
+By default liquibase creates camel case field matches. To create snake_case columns according to db convention (and what JPA understands), we have to modify the `referenceURL` to use an additional physical naming strategy setting:
+
+
+```
+# liquibase.properties
+eferenceUrl=hibernate:spring:com.quirkshop.nuisancemaps?dialect=org.hibernate.dialect.PostgreSQLDialect\
+    &hibernate.physical_naming_strategy=com.quirkshop.nuisancemaps.config.SnakeCaseNamingStrategy
+```
+
+The implementation of `SnakeCaseNamingStrategy` is below;
+
+```
+// config/SnakeCaseNamingStrategy.java
+public class SnakeCaseNamingStrategy extends PhysicalNamingStrategyStandardImpl {
+    @Override
+    public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment context) {
+        return new Identifier(
+                CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name.getText()),
+                name.isQuoted());
+    }
+}
+```
+
+This ensures the diffs will be converted to snake case.
 
 
 ### Determine Main Class / Motivation
@@ -407,10 +437,19 @@ Custom main commands below, and then in more detail as to how these came about.
   * `java "-Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication" -jar /home/vergeman/dev/nuisancemaps/api/target/nuisancemaps-0.0.1-SNAPSHOT.jar`
   * `LOADER_MAIN=com.quirkshop.nuisancemaps.WorkerApplication java -jar /home/vergeman/dev/nuisancemaps/api/target/nuisancemaps-0.0.1-SNAPSHOT.jar`
 * Docker image via `spring-boot:build-iamge`
-  * `./mvnw spring-boot:build-image -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
-* Run Docker container with custom main (default executable is `PropertiesLauncher`)
-  * `docker run -e JAVA_OPTS="-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication" nuisancemaps:0.0.1-SNAPSHOT`
+  * `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
+* Run Docker container with custom main (default executable is `PropertiesLauncher`):
 
+```
+docker run \
+-e POSTGRESQL_USER=postgres \
+-e POSTGRESQL_PASSWORD=admin \
+-e POSTGRESQL_DATABASE=db_example \
+-e JAVA_OPTS="-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication" \
+--network=nuisancemaps_default nuisancemaps:0.0.1-SNAPSHOT
+```
+
+TODO: replace with `.env`
 
 Below are steps for certain cases, though the above seems best for now.
 
@@ -543,7 +582,7 @@ docker run --rm --entrypoint launcher -it nuisancemaps:0.0.1-SNAPSHOT \
 
 https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/htmlsingle/#build-image.customization
 
-* build image: `mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
+* build image: `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
 * updated standalone run w/ db on command line:
 ```
 docker run \
