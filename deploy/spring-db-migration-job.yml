@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: spring-liquibase-migration
+spec:
+  template:
+    spec:
+      containers:
+      - name: spring-liquibase-migration
+        image: liquibase/liquibase:4.25
+        # override docker based host url to access headless service
+        command: ["liquibase", "update", "--url=jdbc:postgresql://postgresql:5432/db_example"]
+        volumeMounts:
+          - name: liquibase-db-host-path
+            mountPath: /liquibase/db
+          - name: liquibase-properties
+            mountPath: /liquibase/liquibase.properties
+          #  subPath: liquibase.properties
+      volumes:
+        - name: liquibase-db-host-path
+          hostPath:
+            path: "/home/vergeman/dev/nuisancemaps/api/src/main/resources/db"
+        - name: liquibase-properties
+          hostPath:
+            path: "/home/vergeman/dev/nuisancemaps/api/src/main/resources/liquibase.properties"
+      restartPolicy: Never
+  backoffLimit: 4
