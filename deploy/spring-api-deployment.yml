@@ -30,6 +30,8 @@ spec:
             value: "admin"
           - name: JAVA_OPTS
             value: "-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication"
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://postgresql:5432/db_example"
           ## probes
           # livenessProbe:
           #   httpGet:
