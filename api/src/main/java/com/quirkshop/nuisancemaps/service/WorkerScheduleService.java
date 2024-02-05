@@ -1,7 +1,7 @@
 package com.quirkshop.nuisancemaps.service;
 
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -75,7 +74,10 @@ public class WorkerScheduleService {
             source.setMapping(mapping);
 
             // Fetch Count and Update
-            // TODO: lock to single worker / instance
+            // NB: Single Lock
+            boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source);
+            if (!needsUpdate)
+                continue;
             updateSourceNumRecords(source);
 
             // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
@@ -176,6 +178,7 @@ public class WorkerScheduleService {
 
         if (numRecords != null) {
             source.setNumRecords(numRecords);
+            source.setUpdatedAt(LocalDateTime.now());
             sourceRepository.save(source);
         }
     }

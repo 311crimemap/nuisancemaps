@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.LockModeType;
 
+import java.time.LocalDateTime;
+
 import com.quirkshop.nuisancemaps.model.Source;
 
 @Repository
@@ -27,4 +29,19 @@ public interface SourceRepository extends CrudRepository<Source, Integer> {
         return s;
     }
 
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public Source findByIdAndUpdatedAtBefore(Integer id, LocalDateTime localDateTime);
+
+    @Transactional
+    default boolean needsUpdateAndTouch(Source source ) {
+        LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
+        //lock
+        Source s = findByIdAndUpdatedAtBefore(source.getId(), nowMinusHours);
+        if (s == null)
+            return false;
+        source.setUpdatedAt(LocalDateTime.now());
+        save(source);
+        return true;
+    }
 }
