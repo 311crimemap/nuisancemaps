@@ -17,7 +17,7 @@ services:
       - ./api:/api
       - $HOME/.m2:/root/.m2
     working_dir: '/api'
-    command: bash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication"
+    command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication"
     ports:
       - 8080:8080
     environment:
@@ -32,14 +32,14 @@ services:
       - ./api:/api
       - $HOME/.m2:/root/.m2
     working_dir: '/api'
-    command: bash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.WorkerApplication"
+    command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.WorkerApplication"
     environment:
       # - ALLOW_EMPTY_PASSWORD=yes
       - POSTGRESQL_USER=postgres
       - POSTGRESQL_PASSWORD=admin
       - POSTGRESQL_DATABASE=db_example
     # deploy: # to test multiple workers
-    #   replicas: 2
+    #   replicas: 3
 
   db:
     image: 'bitnami/postgresql:16.1.0'
