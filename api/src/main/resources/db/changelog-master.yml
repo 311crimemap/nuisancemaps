@@ -1,4 +1,17 @@
 # NB: directory relative to /resources
+#
+# maxDeptha and endsWithfilter are necessary when using mounting db/changelogs
+# as a kubernetes configMap. Kubernetes mounts a directory by internally
+# symlinking at different subdirectories (/data, <date>) to allow for updates.
+#
+# So simply including all files from db/changelogs will result in duplicate
+# copies of sql (also traverses these helper subdirectories)
+#
+# Need to filter out all subdirectories via maxDepth: 1, and ensure only .sql
+# files are processed.
+#
 databaseChangeLog:
 - includeAll:
     path: db/changelogs
+    maxDepth: 1
+    endsWithFilter: .sql

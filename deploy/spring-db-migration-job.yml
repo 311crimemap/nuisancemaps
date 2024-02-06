@@ -9,19 +9,36 @@ spec:
       - name: spring-liquibase-migration
         image: liquibase/liquibase:4.25
         # override docker based host url to access headless service
+        # NB: host address requires postgres-service enabled
         command: ["liquibase", "update", "--url=jdbc:postgresql://postgresql:5432/db_example"]
         volumeMounts:
-          - name: liquibase-db-host-path
-            mountPath: /liquibase/db
+
           - name: liquibase-properties
             mountPath: /liquibase/liquibase.properties
-          #  subPath: liquibase.properties
+            subPath: liquibase.properties
+
+          - name: liquibase-changelog-master
+            mountPath: /liquibase/db/changelog-master.yml
+            subPath: changelog-master.yml
+
+          - name: liquibase-changelogs
+            mountPath: /liquibase/db/changelogs/
+      #
+      # see ./create-configmaps.sh
+      #
       volumes:
-        - name: liquibase-db-host-path
-          hostPath:
-            path: "/home/vergeman/dev/nuisancemaps/api/src/main/resources/db"
-        - name: liquibase-properties
-          hostPath:
-            path: "/home/vergeman/dev/nuisancemaps/api/src/main/resources/liquibase.properties"
+
+      - name: liquibase-properties
+        configMap:
+          name: liquibase-properties-configmap
+
+      - name: liquibase-changelog-master
+        configMap:
+          name: liquibase-changelog-master-configmap
+
+      - name: liquibase-changelogs
+        configMap:
+          name: liquibase-changelogs-configmap
+
       restartPolicy: Never
   backoffLimit: 4
