@@ -34,9 +34,9 @@ public interface SourceRepository extends CrudRepository<Source, Integer> {
     public Source findByIdAndUpdatedAtBefore(Integer id, LocalDateTime localDateTime);
 
     @Transactional
-    default boolean needsUpdateAndTouch(Source source ) {
+    default boolean needsUpdateAndTouch(Source source) {
         LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
-        //lock
+        // lock
         Source s = findByIdAndUpdatedAtBefore(source.getId(), nowMinusHours);
         if (s == null)
             return false;
