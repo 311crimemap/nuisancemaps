@@ -15,6 +15,10 @@ spec:
         app: postgresql
         app.kubernetes.io/name: postgresql
     spec:
+      # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
+      securityContext:
+        runAsUser: 1001
+        fsGroup: 1001
       containers:
       - name: postgresql
         image: bitnami/postgresql:16.1.0
@@ -35,7 +39,8 @@ spec:
   - metadata:
       name: data
     spec:
+      storageClassName: hcloud-volumes
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
-          storage: 8Gi
+          storage: 10Gi
