@@ -41,17 +41,18 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         return dataJob;
     }
 
-    default DataJob createNewDataJob(Source source, DataJob prevDataJob, Integer PARAM_LIMIT)
+    default DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
             throws UnsupportedEncodingException {
-        String key = source.getMapping().get("report_num").toString();
+
+        String key = source.getMapping().get("report_num").toString(); //NB: prevDataJob might exist
         DataJob dataJob;
 
         if (prevDataJob == null) {
-            dataJob = new DataJob(source, PARAM_LIMIT, 0, key);
+            dataJob = new DataJob(source, paramLimit, paramOffset, key);
         } else {
             dataJob = new DataJob(source,
-                    PARAM_LIMIT,
-                    prevDataJob.getParamOffset() + PARAM_LIMIT,
+                    paramLimit,
+                    paramOffset,
                     prevDataJob.getOrderKey());
         }
 
@@ -61,19 +62,22 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     }
 
     @Transactional
-    default DataJob createNextDataJob(Source source, Integer PARAM_LIMIT) throws UnsupportedEncodingException {
+    default DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
         //NB: Locked
         DataJob maxOffsetDataJob = findTopBySourceIdOrderByParamOffsetDesc(source.getId());
 
         // New Source job offset: 0
         if (maxOffsetDataJob == null) {
-            DataJob newJob = createNewDataJob(source, null, PARAM_LIMIT);
+            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
             return newJob;
         }
 
-        // Next job
-        if (maxOffsetDataJob.getParamOffset() + PARAM_LIMIT < source.getNumRecords()) {
-            DataJob nextJob = createNewDataJob(source, maxOffsetDataJob, PARAM_LIMIT);
+        // Create next job
+        if (maxOffsetDataJob.getParamOffset() + paramLimit < source.getNumRecords()) {
+            DataJob nextJob = createNewDataJob(source,
+                                               paramLimit,
+                                               maxOffsetDataJob.getParamOffset() + paramLimit,
+                                               maxOffsetDataJob);
             return nextJob;
         }
 
@@ -86,19 +90,24 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     DataJob findLastDataJobBySource(Integer source_id);
 
     @Transactional
-    default DataJob createLastDataJobBySource(Source source, Integer PARAM_LIMIT) throws UnsupportedEncodingException {
+    default DataJob createLastDataJobBySource(Source source, Integer paramLimit) throws UnsupportedEncodingException {
         // lock
         DataJob lastDataJob = findLastDataJobBySource(source.getId());
 
         // start from scratch initial crawl
         if (lastDataJob == null) {
-            DataJob newJob = createNewDataJob(source, null, PARAM_LIMIT);
+            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
             return newJob;
         }
 
-        // if found last "completed" job; we create a new job from that offset
+        // If found last "COMPLETED" job; we create a new job from that offset.
+        // Note that we deduct PARAM_LIMIT here because it gets added back in createNextDataJob().
+        // Our goal is to effectively "redo" this completed job
         if (lastDataJob.getStatus().equals(DataJobStatus.COMPLETED)) {
-            DataJob nextJob = createNewDataJob(source, lastDataJob, PARAM_LIMIT);
+            DataJob nextJob = createNewDataJob(source,
+                                               paramLimit,
+                                               lastDataJob.getParamLimit(),
+                                               lastDataJob);
             return nextJob;
         }
 
