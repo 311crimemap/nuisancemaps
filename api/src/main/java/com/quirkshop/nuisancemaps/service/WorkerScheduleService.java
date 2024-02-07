@@ -1,7 +1,7 @@
 package com.quirkshop.nuisancemaps.service;
 
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -53,32 +52,6 @@ public class WorkerScheduleService {
             log.info("Initial Seed Jobs");
             createDailyDataJobs();
         }
-
-        // Remote address
-        log.info(InetAddress.getLoopbackAddress().getHostAddress());
-        log.info(InetAddress.getLoopbackAddress().getHostName());
-    }
-
-    public void updateSourceNumRecords(Source source) {
-        // TODO: early terminate if not worker_1 hostname
-        // get pod name - restrict this to initial worker. e.g worker_1,
-        // log.info("getProp2: " + env.getProperty("HOSTNAME"));
-        // log.info( System.getenv("HOSTNAME"));
-
-        log.info("[SourceLoaderService] FetchCount ....");
-        Integer numRecords = sourceLoaderService.fetchCount(source);
-        if (numRecords == null) {
-            log.info("[SourceLoaderService] FetchCount Error for source: " + source.getSourceConfigId());
-            return;
-        }
-
-        String updateNumRecords = String.format("[SourceLoaderService] FetchCount %s -> %s", source.getNumRecords(),
-                numRecords);
-        log.info(updateNumRecords);
-        if (numRecords != null) {
-            source.setNumRecords(numRecords);
-            sourceRepository.save(source);
-        }
     }
 
     /*
@@ -101,6 +74,10 @@ public class WorkerScheduleService {
             source.setMapping(mapping);
 
             // Fetch Count and Update
+            // NB: Single Lock
+            boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source);
+            if (!needsUpdate)
+                continue;
             updateSourceNumRecords(source);
 
             // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
@@ -134,10 +111,11 @@ public class WorkerScheduleService {
         }
     }
 
-    @Scheduled(fixedRate = 10000, initialDelay = 3000)
+    @Scheduled(fixedDelay = 2000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         log.info("[checkDataJobQueue]");
 
+        // NB: lock
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
             log.info("No Jobs Queued");
@@ -166,9 +144,12 @@ public class WorkerScheduleService {
 
         datajob.setStatus(DataJobStatus.COMPLETED);
         dataJobRepository.save(datajob);
+        String logDone = String.format("[checkDataJobQueue] Done: %s | fetched: %s | processed: %s",
+                                       datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
+        log.info(logDone);
     }
 
-    @Transactional
+
     public void createNewJobs() throws UnsupportedEncodingException {
 
         HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
@@ -178,40 +159,31 @@ public class WorkerScheduleService {
             Source source = sourceRepository.findOrCreate(entry.getValue());
             source.setMapping(mapping);
 
-            // NEW SOURCE
-            // if newly added source (have yet to run daily job) go fetch counts;
-            if (source.getNumRecords() == null) {
-                log.info("[createNewJobs] new source - fetching counts");
-                updateSourceNumRecords(source);
-                return;
-            }
-
-            // NEW SOURCE JOB 0
-            DataJob maxOffsetDataJob = dataJobRepository.findTopBySourceIdOrderByParamOffsetDesc(source.getId());
-            if (maxOffsetDataJob == null) {
-                log.info("[createNewJobs] No prevous jobs exist for this source - creating new at offset 0");
-                String key = source.getMapping().get("report_num").toString();
-                DataJob init_datajob = new DataJob(source, PARAM_LIMIT, 0, key);
-                dataJobRepository.save(init_datajob);
-                return;
-            }
-
-            // Next DataJob QUEUED, if source still has unretrieved records
-            if (maxOffsetDataJob.getParamOffset() + PARAM_LIMIT < source.getNumRecords()) {
-
-                DataJob nextJob = new DataJob(source,
-                        PARAM_LIMIT,
-                        maxOffsetDataJob.getParamOffset() + PARAM_LIMIT,
-                        maxOffsetDataJob.getOrderKey());
-
-                nextJob.buildURL();
-                nextJob.setStatus(DataJobStatus.QUEUED);
-                dataJobRepository.save(nextJob);
-                log.info("[createNewJobs] next job: " + nextJob.getUrl());
-            }
-
+            // NB: lock
+            DataJob nextJob = dataJobRepository.createNextDataJob(source, PARAM_LIMIT);
+            log.info("[createNewJobs] next job: " + nextJob.getUrl());
         }
 
+    }
+
+    public void updateSourceNumRecords(Source source) {
+        log.info("[SourceLoaderService] FetchCount ....");
+
+        Integer numRecords = sourceLoaderService.fetchCount(source);
+        if (numRecords == null) {
+            log.info("[SourceLoaderService] FetchCount Error for source: " + source.getSourceConfigId());
+            return;
+        }
+
+        String updateNumRecords = String.format("[SourceLoaderService] FetchCount %s -> %s", source.getNumRecords(),
+                numRecords);
+        log.info(updateNumRecords);
+
+        if (numRecords != null) {
+            source.setNumRecords(numRecords);
+            source.setUpdatedAt(LocalDateTime.now());
+            sourceRepository.save(source);
+        }
     }
 
 }
