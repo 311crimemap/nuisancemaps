@@ -124,12 +124,16 @@ public class WorkerScheduleService {
         Map<String, Object> mapping = sourceLoaderService.getSourceMapping(source.getSourceConfigId());
         source.setMapping(mapping);
 
-        log.info("fetching: " + datajob.getUrl());
+        String prefixLog = String.format("%s - %s", source.getCategory(), source.getDescription());
+        String fetchLog = String.format("[Fetching] %s | offset: %s | %s",
+                                        prefixLog, datajob.getParamOffset(), datajob.getUrl());
+
+        log.info(fetchLog);
         String json = dataJobRequestService.fetchJSON(datajob);
 
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
-        log.info("createData()");
+        log.info("createData() " + prefixLog);
 
         dataservice.createData(source, datajob, json);
 

@@ -91,7 +91,7 @@ public class DataService {
                 numProcessed++;
 
                 if (numProcessed % LOG_NUM == 0) {
-                    log.info(source.getCategory() + ": " + source.getUrl() + ": Processed " + numProcessed);
+                    log.info(source.getCategory() + " - " + source.getDescription() + ": Processed " + numProcessed);
                 }
 
             } catch (Exception e) {
