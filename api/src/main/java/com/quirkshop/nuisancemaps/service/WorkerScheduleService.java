@@ -126,10 +126,13 @@ public class WorkerScheduleService {
 
         String prefixLog = String.format("%s - %s", source.getCategory(), source.getDescription());
         String fetchLog = String.format("[Fetching] %s | offset: %s | %s",
-                                        prefixLog, datajob.getParamOffset(), datajob.getUrl());
+                prefixLog, datajob.getParamOffset(), datajob.getUrl());
 
         log.info(fetchLog);
         String json = dataJobRequestService.fetchJSON(datajob);
+        String fetchComplete = String.format("[Fetch Complete] %s | offset: %s | %s",
+                                             prefixLog, datajob.getParamOffset(), datajob.getUrl());
+        log.info(fetchComplete);
 
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
