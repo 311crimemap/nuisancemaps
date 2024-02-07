@@ -54,9 +54,28 @@ public class WorkerScheduleService {
         }
     }
 
+
+
     /*
      * SCHEDULED TASKS
      */
+
+    @Scheduled(cron = "@daily")
+    public void fetchAndUpdateNumSourceRecords() {
+        HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
+
+        for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
+
+            Source source = sourceRepository.findOrCreate(entry.getValue());
+            // NB: Single Lock
+            LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
+            boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source, nowMinusHours);
+            if (!needsUpdate)
+                continue;
+
+            updateSourceNumRecords(source);
+        }
+    }
 
     @Scheduled(cron = "@daily")
     public void createDailyDataJobs() throws UnsupportedEncodingException {
@@ -73,41 +92,17 @@ public class WorkerScheduleService {
             Source source = sourceRepository.findOrCreate(entry.getValue());
             source.setMapping(mapping);
 
-            // Fetch Count and Update
-            // NB: Single Lock
-            boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source);
-            if (!needsUpdate)
-                continue;
-            updateSourceNumRecords(source);
-
             // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
             // latest queued job (DataJobStatus.QUEUED)
             //
             // This is slightly different from createNewJobs(): we want to redo the last job
             // parameter offset because new records could be added the next day that are still within the
             // same fetch range
-            DataJob datajob = dataJobRepository.findLastDataJobBySource(source.getId());
+            DataJob datajob = dataJobRepository.createLastDataJobBySource(source, PARAM_LIMIT);
 
-            // start from scratch initial crawl
-            if (datajob == null) {
-
-                String key = source.getMapping().get("report_num").toString();
-
-                datajob = new DataJob(source, PARAM_LIMIT, 0, key);
-            }
-
-            // if found last "completed" job; we create a new job from that offset
-            if (datajob.getStatus().equals(DataJobStatus.COMPLETED)) {
-                datajob = new DataJob(source, PARAM_LIMIT, datajob.getParamOffset(),
-                        datajob.getOrderKey());
-            }
-
-            // if last job is "queued" leave it as-is, to be picked up by scheduled task
-            datajob.buildURL();
-            datajob.setStatus(DataJobStatus.QUEUED);
-            datajob = dataJobRepository.save(datajob);
-
-            log.info("category: " + source.getCategory() + " id: " + source.getSourceConfigId());
+            String dailyJob = String.format("[createDailyDataJob] id: %s | category: %s | offset %s",
+                                            source.getSourceConfigId(), source.getCategory(), datajob.getParamOffset());
+            log.info(dailyJob);
         }
     }
 
