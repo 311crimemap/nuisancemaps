@@ -1,6 +1,7 @@
 package com.quirkshop.nuisancemaps.repository;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
@@ -90,7 +91,11 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     DataJob findLastDataJobBySource(Integer source_id);
 
     @Transactional
-    default DataJob createLastDataJobBySource(Source source, Integer paramLimit) throws UnsupportedEncodingException {
+    default DataJob createLastDataJobBySource(Source source, Integer paramLimit, LocalDateTime cutOffTime) throws UnsupportedEncodingException {
+
+        // NB: we don't want only the last COMPLETED job, otherwise we might
+        // repeatedly create duplicates of an existing next QUEUED job
+
         // lock
         DataJob lastDataJob = findLastDataJobBySource(source.getId());
 
@@ -100,20 +105,25 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
             return newJob;
         }
 
-        // If found last "COMPLETED" job; we create a new job from that offset.
-        // Note that we deduct PARAM_LIMIT here because it gets added back in createNextDataJob().
-        // Our goal is to effectively "redo" this completed job
-        if (lastDataJob.getStatus().equals(DataJobStatus.COMPLETED)) {
-            DataJob nextJob = createNewDataJob(source,
-                                               paramLimit,
-                                               lastDataJob.getParamLimit(),
-                                               lastDataJob);
-            return nextJob;
+        // last job is status "QUEUED" so don't create new tasks, leave everything
+        // as-is, to be picked up by scheduled task
+        if (lastDataJob.getStatus().equals(DataJobStatus.QUEUED)) {
+            return null;
         }
 
-        // if last job is "queued" leave it as-is, to be picked up by scheduled task
-        lastDataJob.setStatus(DataJobStatus.QUEUED);
-        save(lastDataJob);
-        return lastDataJob;
+        // prevent duplicate jobs; if last job was created too recently, exit
+        // (e.g. multiple workers)
+        if (cutOffTime.isBefore(lastDataJob.getCreatedAt())) {
+            return null;
+        }
+
+        // If found last "COMPLETED" job; we create a copy of that job.
+        // Our goal is to effectively "redo" the completed job. If there are
+        // updated or new records in that range, they will ingested.
+        DataJob nextJob = createNewDataJob(source,
+                                           paramLimit,
+                                           lastDataJob.getParamLimit(),
+                                           lastDataJob);
+        return nextJob;
     }
 }

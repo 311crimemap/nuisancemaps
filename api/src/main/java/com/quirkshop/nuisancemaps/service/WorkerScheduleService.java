@@ -98,7 +98,9 @@ public class WorkerScheduleService {
             // This is slightly different from createNewJobs(): we want to redo the last job
             // parameter offset because new records could be added the next day that are still within the
             // same fetch range
-            DataJob datajob = dataJobRepository.createLastDataJobBySource(source, PARAM_LIMIT);
+            LocalDateTime cutOffTime = LocalDateTime.now().minusHours(3);
+            DataJob datajob = dataJobRepository.createLastDataJobBySource(source, PARAM_LIMIT, cutOffTime);
+            if (datajob == null) return;
 
             String dailyJob = String.format("[createDailyDataJob] id: %s | category: %s | offset %s",
                                             source.getSourceConfigId(), source.getCategory(), datajob.getParamOffset());
