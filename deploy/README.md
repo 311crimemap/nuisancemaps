@@ -36,9 +36,20 @@ kubectl create secret docker-registry regcred \
     --docker-email=abc@abc.com
 ```
 
+docker image push
+```
+# 1. Reauth if necessary
+
+aws ecr get-login-password --region us-east-2 --profile abrepo | \
+docker login --username AWS --password-stdin 976034468541.dkr.ecr.us-east-2.amazonaws.com
+
+# 2. Push
+
+docker push 976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/nuisancemaps:0.0.1-SNAPSHOT
+
+```
 
 ---
-
 
 
 ```
@@ -52,6 +63,17 @@ kubectl exec -it postgresql-0 -- bash
 kubectl get all
 ```
 
+#### Docker Import Image Local
+
+To import local image into a local cluster:
+
+1. need to create tar file first
+2. import
+
+```
+docker save nuisancemaps:0.0.1-SNAPSHOT > nuisancemaps-0.0.1-SNAPSHOT.tar
+sudo k3s ctr images import nuisancemaps-0.0.1-SNAPSHOT.tar
+```
 
 #### Migration
 

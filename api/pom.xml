@@ -86,6 +86,7 @@
 					<mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
 					-->
 					<image>
+              <name>976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/${project.artifactId}:${project.version}</name>
 					</image>
 
 				</configuration>
