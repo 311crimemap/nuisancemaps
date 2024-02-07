@@ -3,25 +3,25 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: spring-api
-  name: spring-api
+    app: spring-worker
+  name: spring-worker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-api
+      app: spring-worker
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: spring-api
+        app: spring-worker
     spec:
       imagePullSecrets:
         - name: regcred
       containers:
         - image: 976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/nuisancemaps:0.0.1-SNAPSHOT
-          name: spring-api
+          name: spring-worker
           env:
           - name: POSTGRESQL_USER
             value: "postgres"
@@ -30,10 +30,10 @@ spec:
           - name: POSTGRESQL_PASSWORD
             value: "admin"
           - name: JAVA_OPTS
-            value: "-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication"
+            value: "-Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication"
           - name: SPRING_DATASOURCE_URL
             value: "jdbc:postgresql://postgresql:5432/db_example"
-          ## probes
+          # # probes
           # livenessProbe:
           #   httpGet:
           #     path: /actuator/health/liveness
