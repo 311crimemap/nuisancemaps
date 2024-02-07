@@ -17,6 +17,77 @@ loading, it may not be necessary to do so - e.g. consider usage and queries.
 
 * `CREATE INDEX idx_report_num_data_crime ON data_crime (report_num);`
 
+## Transactions
+
+* `@Transactional`: wraps a method as a `Transactional` block. Successful
+  transaction commits to database, else it is rolled back.
+
+* `@Lock(LockModeType.PESSIMISTIC_WRITE)`:
+  * A lock is held against a row(s)
+  * `PESSIMISTIC_WRITE`: obtain lock on record for write purpose. No one else
+    can read or write until release.
+  * `PESSIMISTIC_READ`: obtain lock on record for read purpose; no one can
+    rewrite it, but anyone else can read.
+  * `PESSIMISTIC`: idea that conflict is likely to occur, so aim to prevent conflicts via locks.
+  * `OPTIMISTIC`: conflicts are rare, checks for conflicts at update.
+
+* A Lock's duration continues throughout the length of the wrapping Transaction.
+* Concurrent workers / threads will block (wait) at the `@Lock` annotated method
+  until it is released (end of transaction lifecyle.)
+* The @Lock-annotated method is then executed; so each method will have access
+  to the most recent transaction data.
+
+
+Pattern:
+
+* Lock around a single find query that gets an object or set of objects
+* Wrap in a transaction-block that modifies the object returned by lock.
+* e.g. the `@Transactional` wraps the lock (`findTopByStatusOrderByIdAsc`)
+* e.g. The `@Lock` method is where code "spinlocks" - when entering execution, it
+  executes again (not "stale")
+
+```
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    DataJob findTopByStatusOrderByIdAsc(DataJobStatus status);
+
+    @Transactional
+    default DataJob getNextDataJob(DataJobStatus status) {
+        DataJob dataJob = findTopByStatusOrderByIdAsc(status);
+        if (dataJob == null)
+            return null;
+        dataJob.setStatus(DataJobStatus.START);
+        dataJob = save(dataJob);
+        return dataJob;
+    }
+```
+
+Second example with boolean exit to prevent duplicate work
+
+```
+    boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source);
+    if (!needsUpdate)
+        continue;
+    updateSourceNumRecords(source);
+
+// SourceRepository.java
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public Source findByIdAndUpdatedAtBefore(Integer id, LocalDateTime localDateTime);
+
+    @Transactional
+    default boolean needsUpdateAndTouch(Source source ) {
+        LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
+        //lock
+        Source s = findByIdAndUpdatedAtBefore(source.getId(), nowMinusHours);
+        if (s == null)
+            return false;
+        source.setUpdatedAt(LocalDateTime.now());
+        save(source);
+        return true;
+    }
+```
+
+
 
 ### Sequence Generation
 
