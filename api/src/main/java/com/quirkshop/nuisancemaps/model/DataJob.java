@@ -3,8 +3,10 @@ package com.quirkshop.nuisancemaps.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -80,14 +82,32 @@ public class DataJob {
         this.updatedAt = now;
     }
 
+    public String buildURLFields(Map<String, Object> mapping) {
+        Collection<String> fields = new ArrayList<String>();
+        mapping.values().forEach(value -> {
+            String field = (String) value;
+            if (!field.isEmpty()) {
+                fields.add((String) value);
+            }
+        });
+        return String.join(",", fields);
+    }
+
     public String buildURL() throws UnsupportedEncodingException {
         String sourceURL = this.getSourceURL();
+
+        // collect fields
+        Map<String, Object> mapping = source.getMapping();
+        String $select = buildURLFields(mapping);
+
         String _url = UriComponentsBuilder.fromUriString(sourceURL)
-                .queryParam("$limit", URLEncoder.encode(Integer.toString(paramLimit), "UTF-8"))
-                .queryParam("$offset", URLEncoder.encode(Integer.toString(paramOffset), "UTF-8"))
-                .queryParam("$order", URLEncoder.encode(orderKey, "UTF-8"))
+                .queryParam("$limit", Integer.toString(paramLimit))
+                .queryParam("$offset", Integer.toString(paramOffset))
+                .queryParam("$order", orderKey)
+                .queryParam("$select", $select)
                 .build()
                 .toUriString();
+
         this.url = _url;
         return this.url;
     }
