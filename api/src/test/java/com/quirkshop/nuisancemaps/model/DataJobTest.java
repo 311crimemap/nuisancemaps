@@ -27,8 +27,11 @@ public class DataJobTest {
 
         DataJob d = new DataJob(s, limit, offset, order_key);
         String url = d.buildURL();
+        final String select = d.buildURLFields(s.getMapping());
+
         assertThat(s.getUrl()).isEqualTo(d.getSourceURL());
-        assertThat(url).isEqualTo(s.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" + order_key);
+        assertThat(url).isEqualTo(
+                s.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" + order_key + "&$select=" + select);
         assertThat(d.getUrl()).isEqualTo(url);
     }
 }

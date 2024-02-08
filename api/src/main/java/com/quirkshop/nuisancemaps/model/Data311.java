@@ -20,7 +20,10 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
-@Table(name = "data_311", indexes = @Index(name = "idx_report_num_data_311", columnList = "reportNum"))
+@Table(name = "data_311", indexes = {
+        @Index(name = "idx_report_num_data_311", columnList = "reportNum"),
+        @Index(name = "idx_source_id_data_311", columnList = "source_id")
+})
 public class Data311 {
     // TODO: status update, other fields
 

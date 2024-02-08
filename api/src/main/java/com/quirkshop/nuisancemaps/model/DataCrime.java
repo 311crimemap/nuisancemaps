@@ -20,7 +20,10 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
-@Table(name = "data_crime", indexes = @Index(name = "idx_report_num_data_crime", columnList = "reportNum"))
+@Table(name = "data_crime", indexes = {
+        @Index(name = "idx_report_num_data_crime", columnList = "reportNum"),
+        @Index(name = "idx_source_id_data_crime", columnList = "source_id")
+})
 public class DataCrime {
 
     @Id
