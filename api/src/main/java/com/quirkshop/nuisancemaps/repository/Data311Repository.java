@@ -13,4 +13,6 @@ public interface Data311Repository extends CrudRepository<Data311, Integer> {
     Data311 findOneByReportNum(String reportNum);
 
     List<Data311> findAllByReportNumIn(List<String> reportNums);
+
+    List<Data311> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 }

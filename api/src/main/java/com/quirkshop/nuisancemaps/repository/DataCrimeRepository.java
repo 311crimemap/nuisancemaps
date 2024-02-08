@@ -13,4 +13,6 @@ public interface DataCrimeRepository extends CrudRepository<DataCrime, Integer> 
     DataCrime findOneByReportNum(String reportNum);
 
     List<DataCrime> findAllByReportNumIn(List<String> reportNums);
+
+    List<DataCrime> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 }

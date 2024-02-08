@@ -53,9 +53,41 @@ public class DataCrimeRepositoryTest {
         datacrime_repo.save(d);
         datacrime_repo.save(d2);
 
-        List<String> dataCrimes = new ArrayList<String>(List.of( "123", "abc" ));
+        List<String> dataCrimes = new ArrayList<String>(List.of("123", "abc"));
         List<DataCrime> results = datacrime_repo.findAllByReportNumIn(dataCrimes);
         assertThat(results.get(0).getReportNum()).isEqualTo("123");
         assertThat(results.get(1).getReportNum()).isEqualTo("abc");
     }
+
+    @Test
+    @Transactional
+    public void DataRepositoryFindAllBySourceIdAndReportNumTest() throws Exception {
+        Source s = new Source("category", "description", "url");
+        sourceRepository.save(s);
+        Source s2 = new Source("category", "description", "url");
+        sourceRepository.save(s2);
+
+        DataCrime d = new DataCrime(s);
+        DataCrime d2 = new DataCrime(s);
+        DataCrime d3 = new DataCrime(s2);
+        DataCrime d4 = new DataCrime(s);
+
+        d.setReportNum("123");
+        d2.setReportNum("456");
+        d3.setReportNum("abc");
+        d4.setReportNum("789");
+
+        datacrime_repo.save(d);
+        datacrime_repo.save(d2);
+        datacrime_repo.save(d3);
+        datacrime_repo.save(d4);
+
+        List<String> dataCrimes = new ArrayList<String>(List.of("123", "456", "789"));
+        List<DataCrime> results = datacrime_repo.findAllByReportNumIn(dataCrimes);
+        assertThat(results.size()).isEqualTo(3);
+        assertThat(results.get(0).getReportNum()).isEqualTo("123");
+        assertThat(results.get(1).getReportNum()).isEqualTo("456");
+        assertThat(results.get(2).getReportNum()).isEqualTo("789");
+    }
+
 }

@@ -144,7 +144,7 @@ public class DataService {
         }
 
         // query any existing
-        List<DataCrime> existing = datacrime_repo.findAllByReportNumIn(report_nums);
+        List<DataCrime> existing = datacrime_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
 
         // replace existing with new
         for (DataCrime dataCrimeDB : existing) {
@@ -204,7 +204,7 @@ public class DataService {
         }
 
         // query any existing
-        List<Data311> existing = data311_repo.findAllByReportNumIn(report_nums);
+        List<Data311> existing = data311_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
 
         // replace existing with new
         for (Data311 data311DB : existing) {
