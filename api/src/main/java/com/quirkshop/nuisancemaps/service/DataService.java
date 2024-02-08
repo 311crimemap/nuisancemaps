@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
@@ -26,6 +27,8 @@ import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,13 +53,9 @@ public class DataService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void createData(Source source, DataJob dataJob, String jsonResponse) {
-        int numFetched = 0;
-        int numProcessed = 0;
-        int errors = 0;
+    public List<Map<String, Object>> parseData(Source source, DataJob dataJob, String jsonResponse) {
+
         List<Map<String, Object>> responseList = null;
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
 
         try {
             responseList = objectMapper.readValue(jsonResponse,
@@ -68,34 +67,66 @@ public class DataService {
         } catch (JsonProcessingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (Exception e) {
+            log.info("[CreateData] Parsing Error");
+            e.printStackTrace();
+            dataJob.setStatus(DataJobStatus.PARSE_ERROR);
         }
 
+        return responseList;
+    }
+
+    public void createData(Source source, DataJob dataJob, String jsonResponse) {
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
         GeometryFactory geometryFactory = new GeometryFactory();
 
-        // for each object in list
+        List<Map<String, Object>> responseList = parseData(source, dataJob, jsonResponse);
+        int numFetched = responseList == null ? 0 : responseList.size();
+        dataJob.setNumFetched(numFetched);
+        if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
+            return;
+
+        switch (source.getCategory()) {
+
+            case "crime":
+                createDataCrimes(dataJob, source, responseList, geometryFactory, sw, pw);
+                break;
+            case "311":
+                createData311s(dataJob, source, responseList, geometryFactory, sw, pw);
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
+    public void createDataCrimes(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
+            GeometryFactory geometryFactory, StringWriter sw, PrintWriter pw) {
+        int numFetched = 0;
+        int numBuilt = 0;
+        int numProcessed = 0;
+        int errors = 0;
+
+        // build parseMap
+        Map<String, Object> mapping = source.getMapping();
+        HashMap<String, DataCrime> parseNewDataMap = new HashMap<String, DataCrime>();
+        List<String> report_nums = new ArrayList<String>(responseList.size());
+
         for (Map<String, Object> responseObject : responseList) {
-            // responseObject contains key/val (another obj)
+
             try {
+                String report_num = responseObject.get(mapping.get("report_num")).toString();
 
-                switch (source.getCategory()) {
-                    case "crime":
-                        createDataCrime(source, responseObject, geometryFactory);
-                        break;
-                    case "311":
-                        createData311(source, responseObject, geometryFactory);
-                        break;
-                    default:
-                        break;
-                }
+                DataCrime dataCrime = buildDataCrime(source, responseObject, geometryFactory);
 
-                numProcessed++;
-
-                if (numProcessed % LOG_NUM == 0) {
-                    log.info(source.getCategory() + ": " + source.getUrl() + ": Processed " + numProcessed);
-                }
-
+                parseNewDataMap.put(report_num, dataCrime);
+                report_nums.add(report_num);
+                numBuilt++;
             } catch (Exception e) {
-                log.info("[DataService] createData error");
+                log.info("[DataService] createDataCrimes error");
                 errors++;
                 e.printStackTrace(pw);
 
@@ -112,16 +143,107 @@ public class DataService {
             numFetched++;
         }
 
+        // query any existing
+        List<DataCrime> existing = datacrime_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
+
+        // replace existing with new
+        for (DataCrime dataCrimeDB : existing) {
+            int id = dataCrimeDB.getId();
+            String report_num = dataCrimeDB.getReportNum();
+            DataCrime dcNew = parseNewDataMap.getOrDefault(report_num, null);
+            dcNew.setId(id); // set id to overwrite
+        }
+
+        // saveAll
+        List<String> result = new ArrayList<String>();
+        Iterable<DataCrime> i = datacrime_repo.saveAll(parseNewDataMap.values());
+        numProcessed = Iterables.size(i);
+
+        setJobStatus(source, dataJob, errors, numFetched, numBuilt, numProcessed, existing.size());
+    }
+
+    public void createData311s(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
+            GeometryFactory geometryFactory, StringWriter sw, PrintWriter pw) {
+        int numFetched = 0;
+        int numBuilt = 0;
+        int numProcessed = 0;
+        int errors = 0;
+
+        // build parseMap
+        Map<String, Object> mapping = source.getMapping();
+        HashMap<String, Data311> parseNewDataMap = new HashMap<String, Data311>();
+        List<String> report_nums = new ArrayList<String>(responseList.size());
+
+        for (Map<String, Object> responseObject : responseList) {
+
+            try {
+                String report_num = responseObject.get(mapping.get("report_num")).toString();
+
+                Data311 data311 = buildData311(source, responseObject, geometryFactory);
+
+                parseNewDataMap.put(report_num, data311);
+                report_nums.add(report_num);
+                numBuilt++;
+
+            } catch (Exception e) {
+                log.info("[DataService] createData311s error");
+                errors++;
+                e.printStackTrace(pw);
+
+                String error_msg = StringUtils.substring(sw.toString(), 0, 255);
+                String content = StringUtils.substring(responseObject.toString(), 0, 255);
+
+                DataError dataError = new DataError(dataJob, content, error_msg);
+                dataErrorRepository.save(dataError);
+
+                log.info(content);
+                log.info(error_msg);
+            }
+
+            numFetched++;
+        }
+
+        // query any existing
+        List<Data311> existing = data311_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
+
+        // replace existing with new
+        for (Data311 data311DB : existing) {
+            int id = data311DB.getId();
+            String report_num = data311DB.getReportNum();
+            Data311 dcNew = parseNewDataMap.getOrDefault(report_num, null);
+            dcNew.setId(id); // set id to overwrite
+        }
+
+        // saveAll
+        List<String> result = new ArrayList<String>();
+        Iterable<Data311> i = data311_repo.saveAll(parseNewDataMap.values());
+        numProcessed = Iterables.size(i);
+
+        setJobStatus(source, dataJob, errors, numFetched, numBuilt, numProcessed, existing.size());
+    }
+
+    public void setJobStatus(Source source, DataJob dataJob, int numErrors, int numFetched, int numBuilt,
+            int numProcessed,
+            int numDuplicate) {
+
         // 5% error rate, mark job as failed to figure out consistent error
-        if (errors > (numProcessed / ERROR_RATE)) {
+        if (numErrors > (numProcessed / ERROR_RATE))
+
+        {
             dataJob.setStatus(DataJobStatus.ERROR);
         }
 
         dataJob.setNumFetched(numFetched);
         dataJob.setNumProcessed(numProcessed);
+        String logStats = String.format(
+                "%s - %s: Fetched: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
+                source.getCategory(), source.getDescription(), numFetched, numBuilt, numProcessed, numErrors,
+                numDuplicate);
+        log.info(logStats);
     }
 
-    public boolean createDataCrime(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {
+    public DataCrime buildDataCrime(Source source, Map<String, Object> responseObject,
+            GeometryFactory geometryFactory) {
 
         Map<String, Object> mapping = source.getMapping();
         String report_num = responseObject.get(mapping.get("report_num")).toString();
@@ -146,11 +268,7 @@ public class DataService {
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
 
-        DataCrime data_crime = datacrime_repo.findOneByReportNum(report_num);
-
-        if (data_crime == null) {
-            data_crime = new DataCrime(source);
-        }
+        DataCrime data_crime = new DataCrime(source);
 
         data_crime.setReportNum(report_num);
         data_crime.setCategory(category);
@@ -162,12 +280,10 @@ public class DataService {
         data_crime.setReportedAt(reported_at);
         data_crime.setUpdatedAt(LocalDateTime.now());
 
-        data_crime = datacrime_repo.save(data_crime);
-
-        return true;
+        return data_crime;
     }
 
-    public boolean createData311(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {
+    public Data311 buildData311(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {
         Map<String, Object> mapping = source.getMapping();
 
         String report_num = responseObject.get(mapping.get("report_num")).toString();
@@ -189,11 +305,7 @@ public class DataService {
 
         LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
 
-        Data311 data_311 = data311_repo.findOneByReportNum(report_num);
-
-        if (data_311 == null) {
-            data_311 = new Data311(source);
-        }
+        Data311 data_311 = new Data311(source);
 
         data_311.setReportNum(report_num);
         data_311.setCategory(category);
@@ -205,9 +317,6 @@ public class DataService {
         data_311.setReportedAt(reported_at);
         data_311.setUpdatedAt(LocalDateTime.now());
 
-        data_311 = data311_repo.save(data_311);
-
-        return true;
+        return data_311;
     }
-
 }

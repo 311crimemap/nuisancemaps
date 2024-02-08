@@ -1,6 +1,7 @@
 package com.quirkshop.nuisancemaps.repository;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
@@ -41,30 +42,43 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         return dataJob;
     }
 
+    default DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
+            throws UnsupportedEncodingException {
+
+        String key = source.getMapping().get("report_num").toString(); //NB: prevDataJob might exist
+        DataJob dataJob;
+
+        if (prevDataJob == null) {
+            dataJob = new DataJob(source, paramLimit, paramOffset, key);
+        } else {
+            dataJob = new DataJob(source,
+                    paramLimit,
+                    paramOffset,
+                    prevDataJob.getOrderKey());
+        }
+
+        dataJob.buildURL();
+        save(dataJob);
+        return dataJob;
+    }
+
     @Transactional
-    default DataJob createNextDataJob(Source source, Integer PARAM_LIMIT) throws UnsupportedEncodingException {
+    default DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
         //NB: Locked
         DataJob maxOffsetDataJob = findTopBySourceIdOrderByParamOffsetDesc(source.getId());
 
         // New Source job offset: 0
         if (maxOffsetDataJob == null) {
-            String key = source.getMapping().get("report_num").toString();
-            DataJob initDatajob = new DataJob(source, PARAM_LIMIT, 0, key);
-            save(initDatajob);
-            return initDatajob;
+            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
+            return newJob;
         }
 
-        // Next job
-        if (maxOffsetDataJob.getParamOffset() + PARAM_LIMIT < source.getNumRecords()) {
-
-            DataJob nextJob = new DataJob(source,
-                                          PARAM_LIMIT,
-                                          maxOffsetDataJob.getParamOffset() + PARAM_LIMIT,
-                                          maxOffsetDataJob.getOrderKey());
-
-            nextJob.buildURL();
-            nextJob.setStatus(DataJobStatus.QUEUED);
-            save(nextJob);
+        // Create next job
+        if (maxOffsetDataJob.getParamOffset() + paramLimit < source.getNumRecords()) {
+            DataJob nextJob = createNewDataJob(source,
+                                               paramLimit,
+                                               maxOffsetDataJob.getParamOffset() + paramLimit,
+                                               maxOffsetDataJob);
             return nextJob;
         }
 
@@ -73,6 +87,43 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     }
 
     @Query("SELECT d from DataJob d WHERE d.source.id = ?1 AND (d.status = DataJobStatus.COMPLETED OR d.status = DataJobStatus.QUEUED) ORDER BY id DESC LIMIT 1")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findLastDataJobBySource(Integer source_id);
 
+    @Transactional
+    default DataJob createLastDataJobBySource(Source source, Integer paramLimit, LocalDateTime cutOffTime) throws UnsupportedEncodingException {
+
+        // NB: we don't want only the last COMPLETED job, otherwise we might
+        // repeatedly create duplicates of an existing next QUEUED job
+
+        // lock
+        DataJob lastDataJob = findLastDataJobBySource(source.getId());
+
+        // start from scratch initial crawl
+        if (lastDataJob == null) {
+            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
+            return newJob;
+        }
+
+        // last job is status "QUEUED" so don't create new tasks, leave everything
+        // as-is, to be picked up by scheduled task
+        if (lastDataJob.getStatus().equals(DataJobStatus.QUEUED)) {
+            return null;
+        }
+
+        // prevent duplicate jobs; if last job was created too recently, exit
+        // (e.g. multiple workers)
+        if (cutOffTime.isBefore(lastDataJob.getCreatedAt())) {
+            return null;
+        }
+
+        // If found last "COMPLETED" job; we create a copy of that job.
+        // Our goal is to effectively "redo" the completed job. If there are
+        // updated or new records in that range, they will ingested.
+        DataJob nextJob = createNewDataJob(source,
+                                           paramLimit,
+                                           lastDataJob.getParamLimit(),
+                                           lastDataJob);
+        return nextJob;
+    }
 }
