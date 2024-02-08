@@ -6,6 +6,7 @@ public enum DataJobStatus {
     FETCH_START("FETCH_START"),
     FETCH_ERROR("FETCH_ERROR"),
     FETCH_COMPLETE("FETCH_COMPLETE"),
+    PARSE_ERROR("PARSE_ERROR"),
     PENDING("PENDING"), // pending createData
     COMPLETED("COMPLETED"),
     ERROR("ERROR");
