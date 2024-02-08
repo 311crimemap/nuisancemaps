@@ -68,6 +68,11 @@ public class DataService {
         } catch (JsonProcessingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (Exception e) {
+            log.info("[CreateData] Parsing Error");
+            e.printStackTrace();
+            dataJob.setStatus(DataJobStatus.ERROR);
+            return;
         }
 
         GeometryFactory geometryFactory = new GeometryFactory();

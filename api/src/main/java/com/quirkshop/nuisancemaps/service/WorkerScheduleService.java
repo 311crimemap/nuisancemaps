@@ -125,15 +125,19 @@ public class WorkerScheduleService {
         source.setMapping(mapping);
 
         String prefixLog = String.format("%s - %s", source.getCategory(), source.getDescription());
-        String fetchLog = String.format("[Fetching] %s | offset: %s | %s",
-                prefixLog, datajob.getParamOffset(), datajob.getUrl());
+        String logDetails = String.format("%s | offset: %s | %s",
+                                          prefixLog, datajob.getParamOffset(), datajob.getUrl());
 
-        log.info(fetchLog);
+        log.info(String.format("[Fetching] %s", logDetails));
+
         String json = dataJobRequestService.fetchJSON(datajob);
-        String fetchComplete = String.format("[Fetch Complete] %s | offset: %s | %s",
-                                             prefixLog, datajob.getParamOffset(), datajob.getUrl());
-        log.info(fetchComplete);
+        if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
+            log.info(String.format("[FetchError] %s", logDetails));
+            dataJobRepository.save(datajob);
+            return;
+        }
 
+        log.info(String.format("[FetchComplete] %s", logDetails));
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
         log.info("createData() " + prefixLog);
