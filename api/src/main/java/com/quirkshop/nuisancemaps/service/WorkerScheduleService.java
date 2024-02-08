@@ -145,7 +145,7 @@ public class WorkerScheduleService {
         dataservice.createData(source, datajob, json);
 
         // if high error rate, mark job as error and stop future jobs
-        if (datajob.getStatus() == DataJobStatus.ERROR) {
+        if (datajob.getStatus() == DataJobStatus.ERROR || datajob.getStatus() == DataJobStatus.PARSE_ERROR) {
             dataJobRepository.save(datajob);
             return;
         }
