@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
+import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
@@ -26,6 +27,7 @@ import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
+import com.quirkshop.nuisancemaps.repository.IDataEntityRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,22 +90,11 @@ public class DataService {
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
 
-        switch (source.getCategory()) {
-
-            case "crime":
-                createDataCrimes(dataJob, source, responseList, geometryFactory, sw, pw);
-                break;
-            case "311":
-                createData311s(dataJob, source, responseList, geometryFactory, sw, pw);
-                break;
-            default:
-                break;
-
-        }
-
+        createDataEntities(dataJob, source, responseList, geometryFactory, sw, pw);
     }
 
-    public void createDataCrimes(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
+
+    public void createDataEntities(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
             GeometryFactory geometryFactory, StringWriter sw, PrintWriter pw) {
         int numFetched = 0;
         int numBuilt = 0;
@@ -112,7 +103,7 @@ public class DataService {
 
         // build parseMap
         Map<String, Object> mapping = source.getMapping();
-        HashMap<String, DataCrime> parseNewDataMap = new HashMap<String, DataCrime>();
+        HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
         List<String> report_nums = new ArrayList<String>(responseList.size());
 
         for (Map<String, Object> responseObject : responseList) {
@@ -120,9 +111,9 @@ public class DataService {
             try {
                 String report_num = responseObject.get(mapping.get("report_num")).toString();
 
-                DataCrime dataCrime = buildDataCrime(source, responseObject, geometryFactory);
+                IDataEntity dataEntity = buildDataEntity(source, responseObject, geometryFactory);
 
-                parseNewDataMap.put(report_num, dataCrime);
+                parseNewDataMap.put(report_num, dataEntity);
                 report_nums.add(report_num);
                 numBuilt++;
             } catch (Exception e) {
@@ -143,80 +134,33 @@ public class DataService {
             numFetched++;
         }
 
+        IDataEntityRepository dataEntity_repo = null;
+        switch (source.getCategory()) {
+            case "crime":
+                dataEntity_repo = datacrime_repo;
+                break;
+            case "311":
+                dataEntity_repo = data311_repo;
+                break;
+            default:
+                break;
+        }
+
         // query any existing
-        List<DataCrime> existing = datacrime_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
+        List<IDataEntity> existing = dataEntity_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
 
         // replace existing with new
-        for (DataCrime dataCrimeDB : existing) {
-            int id = dataCrimeDB.getId();
-            String report_num = dataCrimeDB.getReportNum();
-            DataCrime dcNew = parseNewDataMap.getOrDefault(report_num, null);
-            dcNew.setId(id); // set id to overwrite
+        for (IDataEntity dataEntityDB : existing) {
+            int id = dataEntityDB.getId();
+            String report_num = dataEntityDB.getReportNum();
+            IDataEntity dNew = parseNewDataMap.getOrDefault(report_num, null);
+            dNew.setId(id); // set id to overwrite
         }
 
         // saveAll
         List<String> result = new ArrayList<String>();
-        Iterable<DataCrime> i = datacrime_repo.saveAll(parseNewDataMap.values());
-        numProcessed = Iterables.size(i);
 
-        setJobStatus(source, dataJob, errors, numFetched, numBuilt, numProcessed, existing.size());
-    }
-
-    public void createData311s(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
-            GeometryFactory geometryFactory, StringWriter sw, PrintWriter pw) {
-        int numFetched = 0;
-        int numBuilt = 0;
-        int numProcessed = 0;
-        int errors = 0;
-
-        // build parseMap
-        Map<String, Object> mapping = source.getMapping();
-        HashMap<String, Data311> parseNewDataMap = new HashMap<String, Data311>();
-        List<String> report_nums = new ArrayList<String>(responseList.size());
-
-        for (Map<String, Object> responseObject : responseList) {
-
-            try {
-                String report_num = responseObject.get(mapping.get("report_num")).toString();
-
-                Data311 data311 = buildData311(source, responseObject, geometryFactory);
-
-                parseNewDataMap.put(report_num, data311);
-                report_nums.add(report_num);
-                numBuilt++;
-
-            } catch (Exception e) {
-                log.info("[DataService] createData311s error");
-                errors++;
-                e.printStackTrace(pw);
-
-                String error_msg = StringUtils.substring(sw.toString(), 0, 255);
-                String content = StringUtils.substring(responseObject.toString(), 0, 255);
-
-                DataError dataError = new DataError(dataJob, content, error_msg);
-                dataErrorRepository.save(dataError);
-
-                log.info(content);
-                log.info(error_msg);
-            }
-
-            numFetched++;
-        }
-
-        // query any existing
-        List<Data311> existing = data311_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
-
-        // replace existing with new
-        for (Data311 data311DB : existing) {
-            int id = data311DB.getId();
-            String report_num = data311DB.getReportNum();
-            Data311 dcNew = parseNewDataMap.getOrDefault(report_num, null);
-            dcNew.setId(id); // set id to overwrite
-        }
-
-        // saveAll
-        List<String> result = new ArrayList<String>();
-        Iterable<Data311> i = data311_repo.saveAll(parseNewDataMap.values());
+        Iterable<IDataEntity> i = dataEntity_repo.saveAllEntities(parseNewDataMap.values());
         numProcessed = Iterables.size(i);
 
         setJobStatus(source, dataJob, errors, numFetched, numBuilt, numProcessed, existing.size());
@@ -242,7 +186,7 @@ public class DataService {
         log.info(logStats);
     }
 
-    public DataCrime buildDataCrime(Source source, Map<String, Object> responseObject,
+    public IDataEntity buildDataEntity(Source source, Map<String, Object> responseObject,
             GeometryFactory geometryFactory) {
 
         Map<String, Object> mapping = source.getMapping();
@@ -268,55 +212,33 @@ public class DataService {
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
 
-        DataCrime data_crime = new DataCrime(source);
+        IDataEntity dataEntity = null;
 
-        data_crime.setReportNum(report_num);
-        data_crime.setCategory(category);
-        data_crime.setDescription(description.isEmpty() ? null : description);
-        data_crime.setLocation(location.isEmpty() ? null : location);
-        data_crime.setLatitude(latitude);
-        data_crime.setLongitude(longitude);
-        data_crime.setPoint(point);
-        data_crime.setReportedAt(reported_at);
-        data_crime.setUpdatedAt(LocalDateTime.now());
+        switch (source.getCategory()) {
 
-        return data_crime;
-    }
-
-    public Data311 buildData311(Source source, Map<String, Object> responseObject, GeometryFactory geometryFactory) {
-        Map<String, Object> mapping = source.getMapping();
-
-        String report_num = responseObject.get(mapping.get("report_num")).toString();
-        String category = responseObject.get(mapping.get("category")).toString();
-        String description = responseObject.getOrDefault(mapping.get("description"), "").toString();
-        String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
-        String lat = responseObject.getOrDefault(mapping.get("latitude"), "").toString();
-        String lng = responseObject.getOrDefault(mapping.get("longitude"), "").toString();
-
-        Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
-        Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);
-        Coordinate coordinate = null;
-        Point point = null;
-
-        if (!lat.isEmpty() && !lng.isEmpty()) {
-            coordinate = new Coordinate(latitude, longitude);
-            point = geometryFactory.createPoint(coordinate);
+            case "crime":
+                dataEntity = new DataCrime(source);
+                break;
+            case "311":
+                dataEntity = new Data311(source);
+                break;
+            default:
+                break;
         }
 
-        LocalDateTime reported_at = LocalDateTime.parse(responseObject.get(mapping.get("reported_at")).toString());
+        if (dataEntity == null) return null;
 
-        Data311 data_311 = new Data311(source);
+        dataEntity.setReportNum(report_num);
+        dataEntity.setCategory(category);
+        dataEntity.setDescription(description.isEmpty() ? null : description);
+        dataEntity.setLocation(location.isEmpty() ? null : location);
+        dataEntity.setLatitude(latitude);
+        dataEntity.setLongitude(longitude);
+        dataEntity.setPoint(point);
+        dataEntity.setReportedAt(reported_at);
+        dataEntity.setUpdatedAt(LocalDateTime.now());
 
-        data_311.setReportNum(report_num);
-        data_311.setCategory(category);
-        data_311.setDescription(description.isEmpty() ? null : description);
-        data_311.setLocation(location.isEmpty() ? null : location);
-        data_311.setLatitude(latitude);
-        data_311.setLongitude(longitude);
-        data_311.setPoint(point);
-        data_311.setReportedAt(reported_at);
-        data_311.setUpdatedAt(LocalDateTime.now());
-
-        return data_311;
+        return dataEntity;
     }
+
 }
