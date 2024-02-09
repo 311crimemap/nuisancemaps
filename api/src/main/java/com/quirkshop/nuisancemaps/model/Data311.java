@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.GeometryFactory;
         @Index(name = "idx_report_num_data_311", columnList = "reportNum"),
         @Index(name = "idx_source_id_data_311", columnList = "source_id")
 })
-public class Data311 {
+public class Data311 implements IDataEntity {
     // TODO: status update, other fields
 
     @Id
