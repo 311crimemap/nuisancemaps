@@ -94,7 +94,7 @@ public class DataServiceTest {
 
     @Test
     @Transactional
-    public void createData311DataError() throws IOException {
+    public void createDataEntitiesError() throws IOException {
 
         // Source
         sourceLoaderService.loadJSON("data/source_config.json");
@@ -121,7 +121,7 @@ public class DataServiceTest {
         assertThat(dataErrors.size()).isEqualTo(2);
         assertThat(dataErrors.get(0).getContent()).isEqualTo(objectMapperResponse);
         assertThat(dataErrors.get(1).getContent()).isEqualTo(objectMapperResponse);
-        assertThat(dataErrors.get(1).getErrorMsg()).contains("DataService.createData311");
+        assertThat(dataErrors.get(1).getErrorMsg()).contains("DataService.createDataEntities");
         assertThat(d.getStatus()).isEqualTo(DataJobStatus.ERROR);
     }
 }

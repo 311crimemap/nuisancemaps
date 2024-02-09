@@ -117,7 +117,7 @@ public class DataService {
                 report_nums.add(report_num);
                 numBuilt++;
             } catch (Exception e) {
-                log.info("[DataService] createDataCrimes error");
+                log.info("[DataService] createDataEntities error");
                 errors++;
                 e.printStackTrace(pw);
 
