@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.GeometryFactory;
         @Index(name = "idx_report_num_data_crime", columnList = "reportNum"),
         @Index(name = "idx_source_id_data_crime", columnList = "source_id")
 })
-public class DataCrime {
+public class DataCrime implements IDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_crime_seq")
