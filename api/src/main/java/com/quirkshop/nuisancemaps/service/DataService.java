@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,17 +40,20 @@ public class DataService {
 
     private ObjectMapper objectMapper;
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
-    private final int LOG_NUM = 3000;
     private final int ERROR_RATE = 5;
 
     @Autowired
-    private DataCrimeRepository datacrime_repo;
+    private DataCrimeRepository datacrimeRepo;
 
     @Autowired
-    private Data311Repository data311_repo;
+    private Data311Repository data311Repo;
 
     @Autowired
     private DataErrorRepository dataErrorRepository;
+
+    //Types
+    private Class<? extends IDataEntity> dataEntityClass;
+    private IDataEntityRepository dataEntityRepository;
 
     public DataService() {
         this.objectMapper = new ObjectMapper();
@@ -90,9 +94,25 @@ public class DataService {
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
 
+        setTypes(source);
+
         createDataEntities(dataJob, source, responseList, geometryFactory, sw, pw);
     }
 
+    public void setTypes(Source source) {
+        switch (source.getCategory()) {
+            case "crime":
+                dataEntityRepository = datacrimeRepo;
+                dataEntityClass = DataCrime.class;
+                break;
+            case "311":
+                dataEntityRepository = data311Repo;
+                dataEntityClass = Data311.class;
+                break;
+            default:
+                break;
+        }
+    }
 
     public void createDataEntities(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
             GeometryFactory geometryFactory, StringWriter sw, PrintWriter pw) {
@@ -116,6 +136,7 @@ public class DataService {
                 parseNewDataMap.put(report_num, dataEntity);
                 report_nums.add(report_num);
                 numBuilt++;
+
             } catch (Exception e) {
                 log.info("[DataService] createDataEntities error");
                 errors++;
@@ -134,20 +155,8 @@ public class DataService {
             numFetched++;
         }
 
-        IDataEntityRepository dataEntity_repo = null;
-        switch (source.getCategory()) {
-            case "crime":
-                dataEntity_repo = datacrime_repo;
-                break;
-            case "311":
-                dataEntity_repo = data311_repo;
-                break;
-            default:
-                break;
-        }
-
         // query any existing
-        List<IDataEntity> existing = dataEntity_repo.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
+        List<IDataEntity> existing = dataEntityRepository.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
 
         // replace existing with new
         for (IDataEntity dataEntityDB : existing) {
@@ -160,7 +169,7 @@ public class DataService {
         // saveAll
         List<String> result = new ArrayList<String>();
 
-        Iterable<IDataEntity> i = dataEntity_repo.saveAllEntities(parseNewDataMap.values());
+        Iterable<IDataEntity> i = dataEntityRepository.saveAllEntities(parseNewDataMap.values());
         numProcessed = Iterables.size(i);
 
         setJobStatus(source, dataJob, errors, numFetched, numBuilt, numProcessed, existing.size());
@@ -187,7 +196,7 @@ public class DataService {
     }
 
     public IDataEntity buildDataEntity(Source source, Map<String, Object> responseObject,
-            GeometryFactory geometryFactory) {
+                                       GeometryFactory geometryFactory) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
 
         Map<String, Object> mapping = source.getMapping();
         String report_num = responseObject.get(mapping.get("report_num")).toString();
@@ -212,21 +221,8 @@ public class DataService {
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
 
-        IDataEntity dataEntity = null;
 
-        switch (source.getCategory()) {
-
-            case "crime":
-                dataEntity = new DataCrime(source);
-                break;
-            case "311":
-                dataEntity = new Data311(source);
-                break;
-            default:
-                break;
-        }
-
-        if (dataEntity == null) return null;
+        IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
         dataEntity.setReportNum(report_num);
         dataEntity.setCategory(category);

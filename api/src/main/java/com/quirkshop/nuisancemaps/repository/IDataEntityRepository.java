@@ -5,13 +5,13 @@ import com.quirkshop.nuisancemaps.model.IDataEntity;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface IDataEntityRepository<T extends IDataEntity> {
+public interface IDataEntityRepository<IDataEntity> {
     // wrap default CrudRepository method for saveAll
-    default Iterable<T> saveAllEntities(Iterable<T> entities) {
-        return ((CrudRepository<T, Integer>) this).saveAll(entities);
+    default Iterable<IDataEntity> saveAllEntities(Iterable<IDataEntity> entities) {
+        return ((CrudRepository<IDataEntity, Integer>) this).saveAll(entities);
     }
 
     // Abstract query method for findAllBySourceIdAndReportNumIn
-    List<T> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
+    List<IDataEntity> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
 }
