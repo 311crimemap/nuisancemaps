@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.service;
 
+import java.lang.Thread;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +56,6 @@ public class WorkerScheduleService {
         }
     }
 
-
-
     /*
      * SCHEDULED TASKS
      */
@@ -96,25 +96,30 @@ public class WorkerScheduleService {
             // latest queued job (DataJobStatus.QUEUED)
             //
             // This is slightly different from createNewJobs(): we want to redo the last job
-            // parameter offset because new records could be added the next day that are still within the
+            // parameter offset because new records could be added the next day that are
+            // still within the
             // same fetch range
             LocalDateTime cutOffTime = LocalDateTime.now().minusHours(3);
             DataJob datajob = dataJobRepository.createLastDataJobBySource(source, PARAM_LIMIT, cutOffTime);
-            if (datajob == null) return;
+            if (datajob == null)
+                return;
 
             String dailyJob = String.format("[createDailyDataJob] id: %s | category: %s | offset %s",
-                                            source.getSourceConfigId(), source.getCategory(), datajob.getParamOffset());
+                    source.getSourceConfigId(), source.getCategory(), datajob.getParamOffset());
             log.info(dailyJob);
         }
     }
 
+    @Async("asyncExecutor")
     @Scheduled(fixedDelay = 2000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
-        log.info("[checkDataJobQueue]");
+        String currentThreadName = Thread.currentThread().getName();
+        log.info("[checkDataJobQueue] " + currentThreadName);
 
         // NB: lock
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
+
             log.info("No Jobs Queued");
             createNewJobs();
             return;
@@ -124,9 +129,10 @@ public class WorkerScheduleService {
         Map<String, Object> mapping = sourceLoaderService.getSourceMapping(source.getSourceConfigId());
         source.setMapping(mapping);
 
-        String prefixLog = String.format("%s - %s", source.getCategory(), source.getDescription());
+        String prefixLog = String.format("%s | %s - %s", currentThreadName, source.getCategory(),
+                source.getDescription());
         String logDetails = String.format("%s | offset: %s | %s",
-                                          prefixLog, datajob.getParamOffset(), datajob.getUrl());
+                prefixLog, datajob.getParamOffset(), datajob.getUrl());
 
         log.info(String.format("[Fetching] %s", logDetails));
 
@@ -152,11 +158,10 @@ public class WorkerScheduleService {
 
         datajob.setStatus(DataJobStatus.COMPLETED);
         dataJobRepository.save(datajob);
-        String logDone = String.format("[checkDataJobQueue] Done: %s | fetched: %s | processed: %s",
-                                       datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
+        String logDone = String.format("[checkDataJobQueue] %s | Done: %s | fetched: %s | processed: %s",
+                currentThreadName, datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
         log.info(logDone);
     }
-
 
     public void createNewJobs() throws UnsupportedEncodingException {
 
