@@ -596,6 +596,74 @@ docker run \
 
 ---
 
+# Java Notes
+
+## Polymorphism via interfaces.
+
+Don't want separate code paths to create `DataCrime`, and `Data311` instances,
+when they are (up to now) virtually the same.
+
+Even `DataCrimeRepository` and `Data311Repository` are the same, except for the
+different table name.
+
+Motivated to reduce code repetition by leveraging common interfaces.
+
+### Repository
+
+`IDataEntityRepository:findAllBySourceIdAndReportNumIn`:
+
+* For `findAllBy...` method, inherit the declaration (`IDataEntityRepository`),
+  while `CrudRepository` automatically provides implementation.
+  * Assign both repositories to compatible `IDataEntityRepository` by interface
+    polymorphism.
+    * `Data311Repository extends IDataEntityRepository<Data311>,
+      CrudRepository<Data311, Integer>`
+    * `DataCrimeRepository extends IDataEntityRepository<DataCrime>,
+      CrudRepository<DataCrime, Integer>`
+* `List<IDataEntity> findAllBySourceIdAndReportNumIn`: query method defined in
+  IDataEntityRepository (called in `DataService`.)
+  * `Data311Repository`, `DataCrimeRepository` inherit the method declaration.
+  * At runtime, Spring Data JPA will provide the implementation via
+    `CrudRepository`.
+
+`IDataEntityRepository:saveAllEntities`:
+
+* This method is a wrapper around `saveAll` - which is a default method
+  implemented by the classes.
+* This is not a query method implemented by Spring Data JPA at runtime, so we
+  have to decorate the actual implementation with our own default method
+  `saveAllEntities`.
+
+```
+    default Iterable<IDataEntity> saveAllEntities(Iterable<IDataEntity> entities) {
+        return ((CrudRepository<IDataEntity, Integer>) this).saveAll(entities);
+    }
+
+```
+* Cast `this` - the object implementing the interface - to `CrudRepository` and
+  use that `saveAll()`
+* Allows `IDataEntityRepository` to have an class agnostic equivalent
+  `saveAll()` method by leveraging `CrudRepository`'s` default implementation.
+
+### Models
+
+`IDataEntity`: polymorphic single instance of `DataCrime` and `Data311`
+
+* In `DataService`, create a variable `private Class<? extends IDataEntity> dataEntityClass;`
+  * `Class`: an object of type class - e.g. `Data311.class`.
+  * `Class<? extends IDataEntity>`: Class inheritance. `?` is a generic.
+    * We need this because we cannot cast class literals
+      * `(IDataEntity.class) DataCrime.class` - does not work. We have to use compatible polymoprhism.
+* In `DataService:setTypes()`: we assign the `dataEntityClass`.
+* The `dataEntityClass` gets instantiated in `buildDataEntity`:
+  * `IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);`
+  * This is reflection: based on dynamically obtained constructor of (dynamically assigned) class.
+
+
+
+
+---
+
 ### Commands
 
 #### Spring
