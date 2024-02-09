@@ -169,6 +169,9 @@ public class WorkerScheduleService {
 
             // NB: lock
             DataJob nextJob = dataJobRepository.createNextDataJob(source, PARAM_LIMIT);
+            if (nextJob == null)
+                continue;
+
             log.info("[createNewJobs] next job: " + nextJob.getUrl());
         }
 
