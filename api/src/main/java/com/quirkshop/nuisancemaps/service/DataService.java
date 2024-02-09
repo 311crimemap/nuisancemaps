@@ -51,7 +51,7 @@ public class DataService {
     @Autowired
     private DataErrorRepository dataErrorRepository;
 
-    //Types
+    // Types
     private Class<? extends IDataEntity> dataEntityClass;
     private IDataEntityRepository dataEntityRepository;
 
@@ -189,14 +189,16 @@ public class DataService {
         dataJob.setNumFetched(numFetched);
         dataJob.setNumProcessed(numProcessed);
         String logStats = String.format(
-                "%s - %s: Fetched: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
-                source.getCategory(), source.getDescription(), numFetched, numBuilt, numProcessed, numErrors,
+                "%s - %s: | Offset: %s | Fetched: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
+                source.getCategory(), source.getDescription(), dataJob.getParamOffset(), numFetched, numBuilt,
+                numProcessed, numErrors,
                 numDuplicate);
         log.info(logStats);
     }
 
     public IDataEntity buildDataEntity(Source source, Map<String, Object> responseObject,
-                                       GeometryFactory geometryFactory) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+            GeometryFactory geometryFactory)
+            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
 
         Map<String, Object> mapping = source.getMapping();
         String report_num = responseObject.get(mapping.get("report_num")).toString();
@@ -220,7 +222,6 @@ public class DataService {
         String reported_at2 = responseObject.getOrDefault(mapping.get("reported_at2"), "").toString();
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
-
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
