@@ -25,6 +25,8 @@ spec:
           envFrom:
           - configMapRef:
               name: postgresql-config
+          - configMapRef:
+              name: spring-worker-config
           env:
           - name: POSTGRESQL_PASSWORD
             valueFrom:
