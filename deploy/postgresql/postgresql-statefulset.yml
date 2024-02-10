@@ -22,14 +22,17 @@ spec:
       containers:
       - name: postgresql
         image: bitnami/postgresql:16.1.0
+        envFrom:
+        - configMapRef:
+            name: postgresql-config
         env:
-        - name: POSTGRESQL_USER
-          value: "postgres"
-        - name: POSTGRESQL_DATABASE
-          value: "db_example"
         - name: POSTGRESQL_PASSWORD
-          value: "admin"
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: POSTGRESQL_PASSWORD
         ports:
+          # can't use configMap here (this value is explicitly for config)
         - name: postgresql
           containerPort: 5432
         volumeMounts:
@@ -39,6 +42,7 @@ spec:
   - metadata:
       name: data
     spec:
+      # NB: creates a pvc
       storageClassName: hcloud-volumes
       accessModes: ["ReadWriteOnce"]
       resources:

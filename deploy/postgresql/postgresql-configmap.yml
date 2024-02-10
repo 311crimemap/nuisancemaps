@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-config
+data:
+  POSTGRESQL_USER: "nuisancemaps"
+  POSTGRESQL_DATABASE: "nuisancemaps"
+  POSTGRESQL_URL: "jdbc:postgresql://postgresql:5432/nuisancemaps"

@@ -8,7 +8,7 @@ metadata:
 spec:
   ports:
   - name: postgresql
-    port: 5432
+    port: 5432    # hard coded
   clusterIP: None # headless (creates DNS record per pod)
   selector:
     app: postgresql
