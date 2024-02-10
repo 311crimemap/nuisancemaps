@@ -1,161 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.2</version>
-		<relativePath /> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.quirkshop</groupId>
-	<artifactId>nuisancemaps</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>nuisancemaps</name>
-	<description>Nuisance Maps</description>
-	<properties>
-		<java.version>17</java.version>
-		<jts.version>1.16.1</jts.version>
-		<!-- <start-class>com.quirkshop.nuisancemaps.WorkerApplication</start-class> -->
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.locationtech.jts</groupId>
-			<artifactId>jts-core</artifactId>
-			<version>${jts.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>6.1.7.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-spatial</artifactId>
-			<version>6.1.7.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<!-- see config/SnakeCaseNamingStrategy -->
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>33.0.0-jre</version>
-		</dependency>
-	</dependencies>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.2.2</version>
+    <relativePath /> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>com.quirkshop</groupId>
+  <artifactId>nuisancemaps</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>nuisancemaps</name>
+  <description>Nuisance Maps</description>
+  <properties>
+    <java.version>17</java.version>
+    <jts.version>1.16.1</jts.version>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<!--
-						Don't explicitly set a mainClass;
-						they're set in command line - see README.md
-					-->
-					<!--
-					<mainClass>org.springframework.boot.loader.launch.PropertiesLauncher</mainClass>
-					<mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
-					-->
-					<image>
+    <!-- dev env config for liquibase creds -->
+    <liquibase.url>${env.POSTGRESQL_URL}</liquibase.url>
+    <liquibase.username>${env.POSTGRESQL_USER}</liquibase.username>
+    <liquibase.password>${env.POSTGRESQL_PASSWORD}</liquibase.password>
+
+    <!-- <start-class>com.quirkshop.nuisancemaps.WorkerApplication</start-class> -->
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.locationtech.jts</groupId>
+      <artifactId>jts-core</artifactId>
+      <version>${jts.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.1.7.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-spatial</artifactId>
+      <version>6.1.7.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- see config/SnakeCaseNamingStrategy -->
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.0.0-jre</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <!--
+            Don't explicitly set a mainClass;
+            they're set in command line - see README.md
+          -->
+          <!--
+          <mainClass>org.springframework.boot.loader.launch.PropertiesLauncher</mainClass>
+          <mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
+          -->
+          <image>
               <name>976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/${project.artifactId}:${project.version}</name>
-					</image>
+          </image>
 
-				</configuration>
+        </configuration>
 
 
-			</plugin>
-			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>4.24.0</version>
-				<configuration>
-					<propertyFile>liquibase.properties</propertyFile>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-starter-data-jpa</artifactId>
-						<version>3.2.1</version>
-					</dependency>
-					<dependency>
-						<groupId>org.liquibase.ext</groupId>
-						<artifactId>liquibase-hibernate6</artifactId>
-						<version>4.25.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
-	</build>
+      </plugin>
+      <plugin>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-maven-plugin</artifactId>
+        <version>4.24.0</version>
+        <configuration>
+          <propertyFile>liquibase.properties</propertyFile>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>3.2.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate6</artifactId>
+            <version>4.25.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 
-	<profiles>
-		<profile>
-			<!--
-				 profile need to use liquibase-test.properties, for test database migrations
+  <profiles>
+    <profile>
+      <!--
+         profile need to use liquibase-test.properties, for test database migrations
 
-				 ./mvnw liquibase:update -P test
+         ./mvnw liquibase:update -P test
 
-				 Tests: require spring profile configuration (separate)
+         Tests: require spring profile configuration (separate)
 
-				 ./mvnw test -Dspring-profiles-active=test
+         ./mvnw test -Dspring-profiles-active=test
 
-				 Easiest to just run both:
+         Easiest to just run both:
 
-				 ./mvwn <command> -P test -Dspring-profiles-active=test
-			-->
-			<id>test</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.liquibase</groupId>
-						<artifactId>liquibase-maven-plugin</artifactId>
-						<version>4.24.0</version>
-						<configuration>
-							<propertyFile>liquibase-test.properties</propertyFile>
-						</configuration>
-						<dependencies>
-							<dependency>
-								<groupId>org.springframework.boot</groupId>
-								<artifactId>spring-boot-starter-data-jpa</artifactId>
-								<version>3.2.1</version>
-							</dependency>
-							<dependency>
-								<groupId>org.liquibase.ext</groupId>
-								<artifactId>liquibase-hibernate6</artifactId>
-								<version>4.25.0</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+         ./mvwn <command> -P test -Dspring-profiles-active=test
+      -->
+      <id>test</id>
+      <properties>
+          <!-- dev env config for liquibase creds -->
+          <liquibase.url>${env.POSTGRESQL_TEST_URL}</liquibase.url>
+          <liquibase.username>${env.POSTGRESQL_TEST_USER}</liquibase.username>
+          <liquibase.password>${env.POSTGRESQL_TEST_PASSWORD}</liquibase.password>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.24.0</version>
+            <configuration>
+              <propertyFile>liquibase-test.properties</propertyFile>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>3.2.1</version>
+              </dependency>
+              <dependency>
+                <groupId>org.liquibase.ext</groupId>
+                <artifactId>liquibase-hibernate6</artifactId>
+                <version>4.25.0</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
