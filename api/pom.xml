@@ -139,7 +139,7 @@
       -->
       <id>test</id>
       <properties>
-          <!-- dev env config for liquibase creds -->
+          <!-- test env config for liquibase creds -->
           <liquibase.url>${env.POSTGRESQL_TEST_URL}</liquibase.url>
           <liquibase.username>${env.POSTGRESQL_TEST_USER}</liquibase.username>
           <liquibase.password>${env.POSTGRESQL_TEST_PASSWORD}</liquibase.password>
