@@ -1,1 +1,3 @@
-create extension if not exists postgis;
+-- moved to init docker container script /db/01_enable_postgis.sql
+-- requires superuser privleges,
+-- create extension if not exists postgis;

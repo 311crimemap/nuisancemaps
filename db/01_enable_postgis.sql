@@ -2,4 +2,4 @@
 -- keeping as example location for docker container init scripts
 -- would put sql below:
 
--- create extension if not exists postgis;
+create extension if not exists postgis;
