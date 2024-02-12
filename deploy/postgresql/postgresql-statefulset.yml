@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+spec:
+  selector:
+    matchLabels:
+      app: postgresql
+      app.kubernetes.io/name: postgresql
+  serviceName: postgresql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        app.kubernetes.io/name: postgresql
+    spec:
+      # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
+      securityContext:
+        runAsUser: 1001
+        fsGroup: 1001
+      containers:
+      - name: postgresql
+        image: bitnami/postgresql:16.1.0
+        envFrom:
+        - configMapRef:
+            name: postgresql-config    # defines POSTGRESQL_USER & POSTGRESL_INITSCRIPTS_USERNAME
+        env:
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: POSTGRESQL_PASSWORD
+        - name: POSTGRESQL_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: POSTGRESQL_POSTGRES_PASSWORD
+        - name: POSTGRESQL_INITSCRIPTS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: POSTGRESQL_POSTGRES_PASSWORD
+        ports:
+          # can't use configMap on ports
+        - name: postgresql
+          containerPort: 5432
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/postgresql
+        - name: initdb
+          mountPath: /docker-entrypoint-initdb.d/01_enable_postgis.sql
+          subPath: 01_enable_postgis.sql
+
+      volumes:
+      - name: initdb
+        configMap:
+          name: postgresql-initdb-configmap
+          items:
+            - key: sql
+              path: 01_enable_postgis.sql
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      # NB: creates a pvc
+      storageClassName: hcloud-volumes
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi

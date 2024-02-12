@@ -1,7 +1,6 @@
 package com.quirkshop.nuisancemaps.model;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.ArrayList;

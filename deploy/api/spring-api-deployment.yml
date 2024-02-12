@@ -22,17 +22,23 @@ spec:
       containers:
         - image: 976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/nuisancemaps:0.0.1-SNAPSHOT
           name: spring-api
+          envFrom:
+          - configMapRef:
+              name: postgresql-config
           env:
-          - name: POSTGRESQL_USER
-            value: "postgres"
-          - name: POSTGRESQL_DATABASE
-            value: "db_example"
           - name: POSTGRESQL_PASSWORD
-            value: "admin"
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-secrets
+                key: POSTGRESQL_PASSWORD
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: postgresql-config
+                key: POSTGRESQL_URL
           - name: JAVA_OPTS
             value: "-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication"
-          - name: SPRING_DATASOURCE_URL
-            value: "jdbc:postgresql://postgresql:5432/db_example"
+
           ## probes
           # livenessProbe:
           #   httpGet:

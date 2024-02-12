@@ -45,7 +45,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     default DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
             throws UnsupportedEncodingException {
 
-        String key = source.getMapping().get("report_num").toString(); //NB: prevDataJob might exist
+        String key = source.getMapping().get("report_num").toString(); // NB: prevDataJob might exist
         DataJob dataJob;
 
         if (prevDataJob == null) {
@@ -64,7 +64,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     @Transactional
     default DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
-        //NB: Locked
+        // NB: Locked
         DataJob maxOffsetDataJob = findTopBySourceIdOrderByParamOffsetDesc(source.getId());
 
         // New Source job offset: 0
@@ -76,9 +76,9 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         // Create next job
         if (maxOffsetDataJob.getParamOffset() + paramLimit < source.getNumRecords()) {
             DataJob nextJob = createNewDataJob(source,
-                                               paramLimit,
-                                               maxOffsetDataJob.getParamOffset() + paramLimit,
-                                               maxOffsetDataJob);
+                    paramLimit,
+                    maxOffsetDataJob.getParamOffset() + paramLimit,
+                    maxOffsetDataJob);
             return nextJob;
         }
 
@@ -91,7 +91,8 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     DataJob findLastDataJobBySource(Integer source_id);
 
     @Transactional
-    default DataJob createLastDataJobBySource(Source source, Integer paramLimit, LocalDateTime cutOffTime) throws UnsupportedEncodingException {
+    default DataJob createLastDataJobBySource(Source source, Integer paramLimit, LocalDateTime cutOffTime)
+            throws UnsupportedEncodingException {
 
         // NB: we don't want only the last COMPLETED job, otherwise we might
         // repeatedly create duplicates of an existing next QUEUED job
@@ -121,9 +122,9 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         // Our goal is to effectively "redo" the completed job. If there are
         // updated or new records in that range, they will ingested.
         DataJob nextJob = createNewDataJob(source,
-                                           paramLimit,
-                                           lastDataJob.getParamLimit(),
-                                           lastDataJob);
+                paramLimit,
+                lastDataJob.getParamLimit(),
+                lastDataJob);
         return nextJob;
     }
 }
