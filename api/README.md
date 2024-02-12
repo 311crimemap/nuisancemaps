@@ -269,9 +269,17 @@ Liquibase modifies the database and tracks which changelogs were run.
 
 Can't use env variable credentials in `liquibase.properties` (cripple ware) but can use them on command line:
 
-    `./mvnw liquibase:update -Dusername=$POSTGRESQL_USER -Dpassword=$POSTGRESQL_PASSWORD`
+`./mvnw liquibase:update -Dusername=$POSTGRESQL_USER -Dpassword=$POSTGRESQL_PASSWORD`
 
-Will require a bash script, configMap in a job. Which I think is fine for a k3s deploy.
+NB: can specify use in `pom.xml`, alongside additional properties - can use both
+config sources at same time, just no env variables in properties:
+
+`pom.xml:<properties>`:
+
+* `liquibase.url`
+* `liquibase.username`
+* `liquibase.password`
+
 
 
 #### Liquibase CamelCase -> Snake Case (DB Naming convention)
@@ -304,6 +312,14 @@ public class SnakeCaseNamingStrategy extends PhysicalNamingStrategyStandardImpl 
 ```
 
 This ensures the diffs will be converted to snake case.
+
+#### Liquibase "reset" hash
+
+Sometimes a migration file needs to be edited / commented out. Can reset via
+`clearCheckSums` task:
+
+* ` ./mvnw liquibase:clearCheckSums`
+* ` ./mvnw liquibase:clearCheckSums -P test`
 
 
 ### Determine Main Class / Motivation

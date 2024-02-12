@@ -41,9 +41,11 @@ NB: make sure to delete pvc for fresh start
   * `POSTGRESQL_USER`: db user
   * `POSTGRESQL_PASSWORD`: as secret via .env
   * init script is in `postgresql/postgresql-configmap.yml`.
-* init scripts create postgis extension
+* init scripts needed to create postgis extension
 * DB user for migration and app connections
 
+For dev environment, currently using only superuser account, so separate init
+superuser not necessary.
 
 ---
 
