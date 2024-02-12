@@ -11,12 +11,12 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfig {
 
     // used in DataJobRequestService
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder
-        .setConnectTimeout(Duration.ofSeconds(60))
-        .setReadTimeout(Duration.ofMinutes(5))
-        .build();
-	}
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder
+                .setConnectTimeout(Duration.ofSeconds(60))
+                .setReadTimeout(Duration.ofMinutes(5))
+                .build();
+    }
 
 }

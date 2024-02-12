@@ -10,7 +10,27 @@ spec:
         image: liquibase/liquibase:4.25
         # override docker based host url to access headless service
         # NB: host address requires postgres-service enabled
-        command: ["liquibase", "update", "--url=jdbc:postgresql://postgresql:5432/db_example"]
+        command: ["liquibase", "update"]
+        envFrom:
+          - configMapRef:
+              name: postgresql-config
+        env:
+          - name: LIQUIBASE_COMMAND_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: postgresql-config
+                key: POSTGRESQL_USER
+          - name: LIQUIBASE_COMMAND_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-secrets
+                key: POSTGRESQL_PASSWORD
+          - name: LIQUIBASE_COMMAND_URL
+            valueFrom:
+              configMapKeyRef:
+                name: postgresql-config
+                key: POSTGRESQL_URL
+
         volumeMounts:
 
           - name: liquibase-properties

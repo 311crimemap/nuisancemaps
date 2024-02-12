@@ -9,7 +9,7 @@ import com.quirkshop.nuisancemaps.model.DataError;
 
 @Repository
 public interface DataErrorRepository extends CrudRepository<DataError, Integer> {
-    
+
     @Override
     List<DataError> findAll();
 }

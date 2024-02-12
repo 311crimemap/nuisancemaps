@@ -2,6 +2,53 @@
 
 Deploy Notes.
 
+## Order
+
+##### Secrets
+
+`./create-secrets.sh`:
+
+* `hcloud-secret`: hcloud-secret.yml (add TOKEN)
+* `regcred`: see description below
+* `postgresql`: ./create-secret.sh
+
+##### ConfigMap
+
+`./create-configmaps.sh`:
+
+* `hcloud-csi.yml`: hetzner classes
+* `postgresql-configmap`: /postgres
+* `create-liquibase-configmap.sh`: for migration loads configuration files
+
+##### Deployments / Service
+
+* `kubectl apply -f /postgresql`
+* `kubectl apply -f /api`
+* `kubectl apply -f /worker`
+
+
+---
+
+#### Bitnami Postgresql StatefulSet
+
+NB: make sure to delete pvc for fresh start
+
+* Create extension requires superuser postgres
+* Don't want to grant superuser privileges to database user, nor connect as superuser
+* Bitnami container can run init scripts, but needs to be run as superuser
+  * `POSTGRESQL_INITSCRIPTS_USERNAME`: postgres
+  * `POSTGRESQL_INITSCRIPTS_PASSWORD`: as secret via .env
+  * `POSTGRESQL_USER`: db user
+  * `POSTGRESQL_PASSWORD`: as secret via .env
+  * init script is in `postgresql/postgresql-configmap.yml`.
+* init scripts needed to create postgis extension
+* DB user for migration and app connections
+
+For dev environment, currently using only superuser account, so separate init
+superuser not necessary.
+
+---
+
 ### K3S Control Plane
 
 ```
