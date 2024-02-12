@@ -1,3 +1,4 @@
 package com.quirkshop.nuisancemaps.model;
 
-public record TestRecord(long id, String name) {}
+public record TestRecord(long id, String name) {
+}
