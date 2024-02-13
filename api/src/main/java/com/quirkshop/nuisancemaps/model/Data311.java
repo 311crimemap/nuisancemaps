@@ -21,7 +21,11 @@ import org.locationtech.jts.geom.GeometryFactory;
 @Entity
 @Table(name = "data_311", indexes = {
         @Index(name = "idx_report_num_data_311", columnList = "reportNum"),
-        @Index(name = "idx_source_id_data_311", columnList = "source_id")
+        @Index(name = "idx_source_id_data_311", columnList = "source_id"),
+        @Index(name = "idx_reported_at_311", columnList = "reportedAt"),
+        // NB: spatial GIST index specified via liquibase migration
+        @Index(name = "idx_point_data_311", columnList = "point")
+
 })
 public class Data311 implements IDataEntity {
     // TODO: status update, other fields

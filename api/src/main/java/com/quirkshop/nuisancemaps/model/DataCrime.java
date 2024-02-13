@@ -21,7 +21,11 @@ import org.locationtech.jts.geom.GeometryFactory;
 @Entity
 @Table(name = "data_crime", indexes = {
         @Index(name = "idx_report_num_data_crime", columnList = "reportNum"),
-        @Index(name = "idx_source_id_data_crime", columnList = "source_id")
+        @Index(name = "idx_source_id_data_crime", columnList = "source_id"),
+        @Index(name = "idx_reported_at_crime", columnList = "reportedAt"),
+        // NB: spatial GIST index specified via liquibase migration
+        @Index(name = "idx_point_data_crime", columnList = "point")
+
 })
 public class DataCrime implements IDataEntity {
 
