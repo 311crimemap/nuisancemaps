@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -85,6 +86,14 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         // all caught up - no new jobs
         return null;
     }
+
+    // NB: JPQL doesn't support enums as params
+    // but is allowed in queries (e.g. where)
+    @Transactional
+    @Modifying
+    @Query("UPDATE DataJob SET status = :status, updatedAt = :updatedAt WHERE status NOT IN :statuses AND updatedAt <= :cutOffTime")
+    int updateAllIncompleteToQueuedBefore(DataJobStatus status, LocalDateTime updatedAt,
+            List<DataJobStatus> statuses, LocalDateTime cutOffTime);
 
     @Query("SELECT d from DataJob d WHERE d.source.id = ?1 AND (d.status = DataJobStatus.COMPLETED OR d.status = DataJobStatus.QUEUED) ORDER BY id DESC LIMIT 1")
     @Lock(LockModeType.PESSIMISTIC_WRITE)
