@@ -1,14 +1,28 @@
 package com.quirkshop.nuisancemaps.controller;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 
 @RestController
@@ -25,14 +39,58 @@ public class DataJobController {
         final int LIMIT = 50;
 
         if (page != null && limit != null) {
-            return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(page, limit));
+            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, limit));
         } else if (page != null) {
-            return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(page, LIMIT));
+            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, LIMIT));
         } else if (limit != null) {
-            return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(0, limit));
+            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(0, limit));
         }
 
-        return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(0, LIMIT));
+        return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(0, LIMIT));
     }
 
+    // only want to toggle Status for now
+    // curl -H "content-type: application/json" -X PATCH -d '{"status":"QUEUED"}'
+    // localhost:8080/datajobs/1124
+
+    @PatchMapping(path = "/datajobs/{id}")
+    public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
+            @RequestBody com.fasterxml.jackson.databind.JsonNode payload) {
+
+        Map<String, String> response = new HashMap<String, String>();
+        Optional<DataJob> dataJob = dataJobRepository.findById(id);
+
+        if (dataJob.isPresent()) {
+            String status = payload.get("status").asText();
+            try {
+                DataJob d = dataJob.get();
+                d.setStatus(DataJobStatus.valueOf(status));
+                d = dataJobRepository.save(d);
+                return ResponseEntity.ok(d);
+            } catch (IllegalArgumentException e) {
+                response.put("id", Integer.toString(id));
+                response.put("error", "illegal Parameter");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+        }
+
+        response.put("id", Integer.toString(id));
+        response.put("error", "not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+    }
+
+    // restart all non completes
+    @GetMapping("/datajobs/restart")
+    public ResponseEntity<?> restartNonCompleted() {
+        List<DataJobStatus> excludedStatuses = Arrays.asList(DataJobStatus.QUEUED, DataJobStatus.COMPLETED);
+        LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
+
+        int numUpdated = dataJobRepository
+                .updateAllIncompleteToQueuedBefore(DataJobStatus.QUEUED, LocalDateTime.now(), excludedStatuses, dayAgo);
+
+        Map<String, String> response = new HashMap<String, String>();
+        response.put("numUpdated", Integer.toString(numUpdated));
+        return ResponseEntity.ok().body(response);
+    }
 }
