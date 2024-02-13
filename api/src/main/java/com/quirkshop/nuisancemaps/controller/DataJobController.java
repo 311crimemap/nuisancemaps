@@ -39,14 +39,14 @@ public class DataJobController {
         final int LIMIT = 50;
 
         if (page != null && limit != null) {
-            return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(page, limit));
+            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, limit));
         } else if (page != null) {
-            return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(page, LIMIT));
+            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, LIMIT));
         } else if (limit != null) {
-            return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(0, limit));
+            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(0, limit));
         }
 
-        return dataJobRepository.findAllByOrderByIdDesc(PageRequest.of(0, LIMIT));
+        return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(0, LIMIT));
     }
 
     // only want to toggle Status for now

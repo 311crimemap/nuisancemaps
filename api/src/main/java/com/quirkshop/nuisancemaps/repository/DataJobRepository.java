@@ -27,6 +27,8 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     List<DataJob> findAllByOrderByIdDesc(PageRequest n);
 
+    List<DataJob> findAllByOrderByUpdatedAtDesc(PageRequest n);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findTopBySourceIdOrderByParamOffsetDesc(Integer source_id);
 
