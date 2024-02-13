@@ -15,7 +15,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Index;
 
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -133,11 +132,6 @@ public class Data311 implements IDataEntity {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public Point buildPoint(double latitude, double longitude) {
-        Coordinate coordinate = new Coordinate(latitude, longitude);
-        return this._geometryFactory.createPoint(coordinate);
     }
 
     public Point getPoint() {
