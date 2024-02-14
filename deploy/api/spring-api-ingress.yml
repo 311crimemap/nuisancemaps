@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-api-ingress
+spec:
+  rules:
+    #NB: catches all when no host
+    #- host: api.example.com
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: spring-api-service
+                port:
+                  number: 8080

@@ -15,14 +15,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Index;
 
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
 @Table(name = "data_311", indexes = {
         @Index(name = "idx_report_num_data_311", columnList = "reportNum"),
-        @Index(name = "idx_source_id_data_311", columnList = "source_id")
+        @Index(name = "idx_source_id_data_311", columnList = "source_id"),
+        @Index(name = "idx_reported_at_311", columnList = "reportedAt"),
+        // NB: spatial GIST index specified via liquibase migration
+        @Index(name = "idx_point_data_311", columnList = "point")
+
 })
 public class Data311 implements IDataEntity {
     // TODO: status update, other fields
@@ -133,11 +136,6 @@ public class Data311 implements IDataEntity {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public Point buildPoint(double latitude, double longitude) {
-        Coordinate coordinate = new Coordinate(latitude, longitude);
-        return this._geometryFactory.createPoint(coordinate);
     }
 
     public Point getPoint() {
