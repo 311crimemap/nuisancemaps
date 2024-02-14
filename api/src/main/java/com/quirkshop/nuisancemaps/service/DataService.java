@@ -42,7 +42,7 @@ public class DataService {
     private ObjectMapper objectMapper;
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
     private final int ERROR_RATE = 5;
-    private final int SRID = 4326; //spatial reference id
+    private final int SRID = 4326; // spatial reference id
 
     @Autowired
     private DataCrimeRepository datacrimeRepo;
@@ -95,6 +95,13 @@ public class DataService {
         dataJob.setNumFetched(numFetched);
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
+
+        // if 0 but not last of dataset, something awry
+        if (numFetched == 0 &&
+                (dataJob.getParamOffset() + dataJob.getParamLimit() >= source.getNumRecords())) {
+            dataJob.setStatus(DataJobStatus.ERROR);
+            return;
+        }
 
         setTypes(source);
 
