@@ -203,7 +203,11 @@ e.g. `SourceRepository` extends `CrudRepository`
 
 ## Data
 
-Based on OpenData collections.
+Based on OpenData collections. What a mess. :\
+
+https://www.opendatanetwork.com/
+https://catalog.data.gov/dataset/?res_format=JSON
+
 
 To find the url, find the data page, then click API
 
@@ -228,6 +232,59 @@ https://data.austintexas.gov/resource/fdj4-gpfu.json?$query=SELECT%20*%20ORDER%2
 https://data.austintexas.gov/resource/xwdj-i9he.json
 
 https://dev.socrata.com/docs/datatypes/#,
+
+#### Update Frequency Sample
+
+GMT is +6 hours
+
+On Tues 13:
+
+| Entity      | Last Modified                 | Result      |
+|-------------|-------------------------------|-------------|
+| APD         | Mon, 05 Feb 2024 08:32:54 GMT | t-1 230 pm  |
+| Austin 311  | Tue, 13 Feb 2024 13:55:15 GMT | t: 755 am   |
+| Chicago PD  | Tue, 13 Feb 2024 11:58:27 GMT | t: 658 am   |
+| Chicago 311 | Tue, 13 Feb 2024 22:19:16 GMT | t: 419 pm   |
+| SF Crime    | Tue, 13 Feb 2024 18:31:38 GMT | t: 1231 pm  |
+| SF 311      | Tue, 13 Feb 2024 04:41:48 GMT | t-1: 1041pm |
+|             |                               |             |
+
+OK shouldn't expect any real consistency with updates.
+
+#### Size
+
+| Entity     | Rows   | Dates        | Years | DB Size | Estimate DB |
+|------------|--------|--------------|-------|---------|-------------|
+| APD        | 1.80 M | 2003 ->      | 20+   | 0.9 GB  | .9 GB       |
+| Austin 311 | 2.45 M | 2014 ->      | 9+    | 1.1 GB  | 1.2 GB      |
+| NYC 311    | 35.6 M | 2006 -> 2019 | 13    |         | 17.0 GB     |
+| NYC Crime  | 8.4  M | 2010 ->      | 13+   |         | 4.2         |
+| Chi Crime  | 8.0  M | 2001 -?      | 23+   |         | 4.0         |
+| Chi 311    | 9.5  M | 2018 ->      | 6+    |         | 5.0         |
+| SF crime   | 1 M    | 2018         | 6+    |         | .5          |
+| SF 311     | 7 M    | 2008         | 15+   |         | 3.5         |
+|            |        |              |       |         |             |
+
+Total: 36.5 GB
+~ 5GB a city for both 311 and crime?
+~ 10M rows per city
+
+2.5B rows at 250 cities?
+
+##### Address ?
+
+| Entity      | Address                                                              |
+|-------------|----------------------------------------------------------------------|
+| APD         | y                                                                    |
+| Austin 311  | y                                                                    |
+| Chicago PD  | obfuscated, precise enough via lat/lng reverse geocoding             |
+| Chicago 311 | y                                                                    |
+| SF Crime    | no (Just intersection), precise enough via lat/lng reverse geocoding |
+| SF 311      | y                                                                    |
+| NYC crime   | iffy - lat/lng not so precise, depends on geocoder                   |
+| NYC 311     | y                                                                    |
+
+
 
 ## Tables
 
