@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class DataService {
     private ObjectMapper objectMapper;
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
     private final int ERROR_RATE = 5;
+    private final int SRID = 4326; // spatial reference id
 
     @Autowired
     private DataCrimeRepository datacrimeRepo;
@@ -86,13 +88,20 @@ public class DataService {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        GeometryFactory geometryFactory = new GeometryFactory();
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
 
         List<Map<String, Object>> responseList = parseData(source, dataJob, jsonResponse);
         int numFetched = responseList == null ? 0 : responseList.size();
         dataJob.setNumFetched(numFetched);
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
+
+        // if 0 but not last of dataset, something awry
+        if (numFetched == 0 &&
+                (dataJob.getParamOffset() + dataJob.getParamLimit() >= source.getNumRecords())) {
+            dataJob.setStatus(DataJobStatus.ERROR);
+            return;
+        }
 
         setTypes(source);
 
@@ -214,7 +223,8 @@ public class DataService {
         Point point = null;
 
         if (!lat.isEmpty() && !lng.isEmpty()) {
-            coordinate = new Coordinate(latitude, longitude);
+            // GeoJSON/WKT is long, lat (order is "reversed").
+            coordinate = new Coordinate(longitude, latitude);
             point = geometryFactory.createPoint(coordinate);
         }
 

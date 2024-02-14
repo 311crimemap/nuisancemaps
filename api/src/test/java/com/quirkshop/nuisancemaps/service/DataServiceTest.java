@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,10 +16,12 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -40,6 +43,9 @@ public class DataServiceTest {
 
     @Autowired
     private DataJobRepository dataJobRepository;
+
+    @Autowired
+    private DataCrimeRepository dataCrimeRepository;
 
     @Autowired
     private DataErrorRepository dataErrorRepository;
@@ -90,6 +96,37 @@ public class DataServiceTest {
         // dataService to create instances
         dataService.createData(s, d, jsonResponse);
         assertThat(d.getNumProcessed()).isEqualTo(2);
+    }
+
+    @Test
+    @Transactional
+    public void createData311Entity() throws IOException {
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
+
+        // Source
+        sourceLoaderService.loadJSON("data/source_config.json");
+        Source s = sourceLoaderService.findBySourceConfigID(2);
+        sourceRepository.save(s);
+
+        // DataJob to crawl: stub job and fetch with json fixture response
+        // Read the content of the JSON file vs actual fetch
+        DataJob d = new DataJob(s, 1000, 100, "sr_number");
+        dataJobRepository.save(d);
+
+        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
+                StandardCharsets.UTF_8);
+
+        // dataService to create instances
+        dataService.createData(s, d, jsonResponse);
+        Iterable<DataCrime> dataCrimesIter = dataCrimeRepository.findAll();
+
+        //ensure srid and proper ordering of long/lat
+        dataCrimesIter.forEach(dataCrime -> {
+            assertThat(dataCrime.getPoint().getSRID()).isEqualTo(4326);
+            assertThat(dataCrime.getPoint().getX()).isEqualTo(dataCrime.getLongitude());
+            assertThat(dataCrime.getPoint().getY()).isEqualTo(dataCrime.getLatitude());
+        });
     }
 
     @Test

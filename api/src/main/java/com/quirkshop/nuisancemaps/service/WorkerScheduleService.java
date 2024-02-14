@@ -153,6 +153,9 @@ public class WorkerScheduleService {
         // if high error rate, mark job as error and stop future jobs
         if (datajob.getStatus() == DataJobStatus.ERROR || datajob.getStatus() == DataJobStatus.PARSE_ERROR) {
             dataJobRepository.save(datajob);
+            String logError = String.format("[checkDataJobQueue] ERROR | %s | Done: %s | fetched: %s | processed: %s",
+                    currentThreadName, datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
+            log.info(logError);
             return;
         }
 
