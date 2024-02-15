@@ -2,6 +2,8 @@ package com.quirkshop.nuisancemaps.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
@@ -35,6 +37,7 @@ public class Data311 implements IDataEntity {
     @SequenceGenerator(name = "data_311_seq", allocationSize = 1)
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
@@ -50,14 +53,17 @@ public class Data311 implements IDataEntity {
     @Transient // exclude from persistence operations (migrations)
     private GeometryFactory _geometryFactory;
 
+    @JsonIgnore
     private Point point;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime reportedAt;
 
+    @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updatedAt;
 
