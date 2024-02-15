@@ -2,14 +2,14 @@ version: '3.4'
 services:
   # these are currently setup as "dev" first.
   # Will need to build standalone executable containers.
-  # web:
-  #   image: 'vergeman/nuisancemaps/web'
-  #   build: "./web"
-  #   volumes:
-  #     - ./web:/web
-  #   command: bash -c "npm run dev"
-  #   ports:
-  #     - 5173:5173
+  web:
+    image: 'vergeman/nuisancemaps/web'
+    build: "./web"
+    volumes:
+      - ./web:/web
+    command: bash -c "npm run dev"
+    ports:
+      - 5173:5173
 
   api:
     image: eclipse-temurin:17-jdk-alpine
