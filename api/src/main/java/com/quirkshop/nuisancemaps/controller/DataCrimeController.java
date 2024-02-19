@@ -1,7 +1,9 @@
 package com.quirkshop.nuisancemaps.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
@@ -36,4 +38,27 @@ public class DataCrimeController {
 
         return dataCrimeRepository.findAllByOrderByReportedAtDesc(PageRequest.of(0, LIMIT));
     }
+
+    @CrossOrigin(origins = "${CORS_ORIGINS}")
+    @GetMapping("/datacrimes.geojson")
+    public FeatureCollectionDTO getIndexGeoJSON(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "limit", required = false) Integer limit) {
+
+        final int LIMIT = 50;
+
+        if (page != null && limit != null) {
+            return dataCrimeRepository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(page,
+                    limit));
+        } else if (page != null) {
+            return dataCrimeRepository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(page,
+                    LIMIT));
+        } else if (limit != null) {
+            return dataCrimeRepository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(0,
+                    limit));
+        }
+
+        return dataCrimeRepository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(0, LIMIT));
+    }
+
 }

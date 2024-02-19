@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.controller;
 
 import java.util.List;
 
+import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 
@@ -36,4 +37,27 @@ public class Data311Controller {
 
         return data311Repository.findAllByOrderByReportedAtDesc(PageRequest.of(0, LIMIT));
     }
+
+    @CrossOrigin(origins = "${CORS_ORIGINS}")
+    @GetMapping("/data311s.geojson")
+    public FeatureCollectionDTO getIndexGeoJSON(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "limit", required = false) Integer limit) {
+
+        final int LIMIT = 50;
+
+        if (page != null && limit != null) {
+            return data311Repository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(page,
+                    limit));
+        } else if (page != null) {
+            return data311Repository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(page,
+                    LIMIT));
+        } else if (limit != null) {
+            return data311Repository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(0,
+                    limit));
+        }
+
+        return data311Repository.findAllByOrderByReportedAtDescGeoJSON(PageRequest.of(0, LIMIT));
+    }
+
 }
