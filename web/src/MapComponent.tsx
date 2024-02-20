@@ -8,7 +8,8 @@ import data311sStyleJSON from "./assets/data311s_style.json";
 export default function MapComponent(props: any) {
 
     //const mapRef = useRef<maplibregl.Map>();
-    const [map, setMap] = useState();
+    const map = props.map;
+    const setMap = props.setMap;
 
     useEffect(() => {
 
@@ -62,6 +63,7 @@ export default function MapComponent(props: any) {
         _map.on('load', () => {
 
             for (const dataset of ['datacrime', 'data311']) {
+
                 // inspect a cluster on click
                 _map.on('click', `clusters-${dataset}`, async (e) => {
                     const features = _map.queryRenderedFeatures(e.point, {
@@ -125,6 +127,7 @@ export default function MapComponent(props: any) {
 
 
     return (
-        <div id='map' style={{ width: '100vw', height: '100vh' }}></div>
+        <div id='map' style={{ width: '75vw', height: '75vh'}}></div>
     )
 }
+
