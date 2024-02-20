@@ -1,18 +1,18 @@
 import { useState } from "react";
 
 export default function Sidebar({ map }) {
-  //TODO: send via prop
-  const dataCrimeClusters = [
-    "clusters-datacrime",
-    "cluster-count-datacrime",
-    "unclustered-point-datacrime",
-  ];
+    //TODO: send via prop
+    const dataCrimeClusters = [
+        "clusters-datacrime",
+        "cluster-count-datacrime",
+        "unclustered-point-datacrime",
+    ];
 
-  const data311Clusters = [
-    "clusters-data311",
-    "cluster-count-data311",
-    "unclustered-point-data311",
-  ];
+    const data311Clusters = [
+        "clusters-data311",
+        "cluster-count-data311",
+        "unclustered-point-data311",
+    ];
 
   const [dataCrimeCheck, setDataCrimeCheck] = useState(true);
   const [data311Check, setData311Check] = useState(true);

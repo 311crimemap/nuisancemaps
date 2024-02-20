@@ -3,6 +3,7 @@ import './App.css'
 
 import MapComponent from "./MapComponent";
 import Sidebar from "./SidebarComponent.tsx";
+import BaseComponent from "./BaseComponent.tsx";
 
 function App() {
     const style = {
@@ -13,6 +14,7 @@ function App() {
 
     useEffect(() => {
         console.log("MAP", map);
+        //console.log(map && map.getStyle().layers);
     }, [map])
 
     return (
@@ -25,9 +27,7 @@ function App() {
 
             </div>
 
-            <div id="base">
-                Base: crimes in view
-            </div>
+            <BaseComponent map={map} />
         </>
     )
 }
