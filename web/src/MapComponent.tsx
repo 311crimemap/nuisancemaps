@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import baseMapStyleJSON from "./assets/baseMapStyle.json";
@@ -8,10 +8,14 @@ import data311sStyleJSON from "./assets/data311s_style.json";
 export default function MapComponent(props: any) {
 
     //const mapRef = useRef<maplibregl.Map>();
-    const map = props.map;
-    const setMap = props.setMap;
+    //const map = props.map;
+    //const setMap = props.setMap;
+
+    //const [map, setMap] = useState(null);
 
     useEffect(() => {
+        console.log("MapComponent Hook")
+        //if (map) return;
 
         const style = {
             glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
@@ -24,9 +28,10 @@ export default function MapComponent(props: any) {
                     minzoom: 2,
                     maxzoom: 12,
                 },
+
                 datacrimes: {
                     type: "geojson",
-                    data: "http://localhost:8080/datacrimes.geojson?limit=500",
+                    data: props.dataCrimes,
                     cluster: true,
                     clusterMaxZoom: 14, // Max zoom to cluster points on
                     clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -34,7 +39,7 @@ export default function MapComponent(props: any) {
 
                 data311s: {
                     type: "geojson",
-                    data: "http://localhost:8080/data311s.geojson?limit=500",
+                    data: props.data311s,
                     cluster: true,
                     clusterMaxZoom: 14, // Max zoom to cluster points on
                     clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -49,15 +54,23 @@ export default function MapComponent(props: any) {
 
         };
 
+        console.log("NEW MAP");
         const _map = new maplibregl.Map({
             container: 'map',
-            center: [-97.7171, 30.2944], // starting position [lng, lat]
+            //center: [-97.7171, 30.2944], // starting position [lng, lat]
+            center: props.position.center,
             zoom: 12, // starting zoom
             style
         });
 
+        props.setMap(_map);
+        //setMap(_map);
+
+
+        //const _map = );
+
         //_map.showTileBoundaries = true;
-        setMap(_map);
+
 
 
         _map.on('load', () => {
@@ -88,13 +101,6 @@ export default function MapComponent(props: any) {
                     const coordinates = e.features[0].geometry.coordinates.slice();
                     const category = e.features[0].properties.category;
 
-                    /*
-                       reportNum
-                       category
-                       location
-                       reportedAt
-                    */
-
                     // Ensure that if the map is zoomed out such that
                     // multiple copies of the feature are visible, the
                     // popup appears over the copy being pointed to.
@@ -113,21 +119,50 @@ export default function MapComponent(props: any) {
 
         });
 
+
+
+        _map.on('moveend', async () => {
+            const position = {
+                zoom: _map.getZoom(),
+                center: _map.getCenter(),
+                bounds: _map.getBounds()
+            };
+
+            props.setPosition(position);
+        })
+
+
         //mapRef.current = _map;
+        //props.setMap(_map);
+
 
         return (() => {
 
-            if (map) {
-                map.remove();
-                maplibregl.removeProtocol("pmtiles");
+            if (_map) {
+                _map.remove();
+                //maplibregl.removeProtocol("pmtiles");
             }
         });
+
 
     }, [])
 
 
+    useEffect(() => {
+
+        if (!props.map) return;
+
+        const dataCrimesSource = props.map.getSource('datacrimes');
+        const data311sSource = props.map.getSource('data311s');
+
+        dataCrimesSource.setData(props.dataCrimes);
+        data311sSource.setData(props.data311s);
+
+    }, [props.dataCrimes, props.data311s])
+
+
     return (
-        <div id='map' style={{ width: '75vw', height: '75vh'}}></div>
+        <div id='map' style={{ width: '75vw', height: '75vh' }}></div>
     )
 }
 

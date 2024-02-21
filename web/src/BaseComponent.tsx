@@ -116,7 +116,10 @@ export default function BaseComponent({map}) {
         <div id="base">
             <ul>
                 {visibleCrimes.map(crime => {
-                    return <li>{crime.properties.reportNum} | {crime.properties.category}</li>
+
+                    const location = crime.properties.location
+
+                    return <li>{crime.properties.reportNum} | {location} | {crime.properties.category}</li>
                 })
                 }
             </ul>
