@@ -7,6 +7,7 @@ export default function BaseComponent({map}) {
 
     const [visibleCrimes, setVisibleCrimes] = useState([]);
     const [visible311s, setVisible311s] = useState([]);
+
     const dataCrimeClusters = [
         "clusters-datacrime",
         "cluster-count-datacrime",
@@ -18,7 +19,7 @@ export default function BaseComponent({map}) {
         const uniqueFeatures = [];
         for (const feature of features) {
             const id = feature.properties[comparatorProperty];
-            if (!uniqueIds.has(id)) {
+            if (id && !uniqueIds.has(id)) {
                 uniqueIds.add(id);
                 uniqueFeatures.push(feature);
             }
@@ -31,13 +32,35 @@ export default function BaseComponent({map}) {
     useEffect(() => {
         console.log("RenderBase hook");
 
-        //WORKING HERE
         if (!map) return;
+
+
         const moveendHandler = async () => {
             const clusterSource = map.getSource('datacrimes');
             if (!clusterSource) return;
 
-            const features = map.queryRenderedFeatures({ layers: dataCrimeClusters });
+            console.log("ZOOM", map.getZoom());
+            console.log("CENTER", map.getCenter());
+            console.log("BOUNDS", map.getBounds());
+
+            /*
+            const dataCrimes = map.querySourceFeatures("datacrimes",
+                                                       {filter: ["==", "category", "FAMILY DISTURBANCE"]});
+            console.log("DC", dataCrimes);
+            //clusterSource.setData(dataCrimes);
+            */
+
+            //layer filter (cluster, number, uncluster)
+            //but category doesn't apply to cluster
+            //map.setFilter('unclustered-point-datacrime', ['==', 'category', 'FAMILY DISTURBANCE']);
+
+            //queries on visible in window
+            const features = map.queryRenderedFeatures({
+                layers: dataCrimeClusters,
+
+                //any filter here will only filter unclustered points (clustered don't have the category property)
+                //filter: ["==", "category", "FAMILY DISTURBANCE"]
+            });
 
             //const visibility = map.getLayoutProperty(dataCrimeClusters, "visibility");
 
@@ -51,14 +74,15 @@ export default function BaseComponent({map}) {
             }
             */
 
-            //WORKING: decide cluster, uncluster approach
-            //right now inputs are a mix so not processing corectly
-            //should be separate cluster or uncluster?
             console.log("FEATURES", features);  //the visible clusters
             console.log("FEATLEN", features.length);
 
+            //features are mix of clusters and unclustered points
+            //clusters need to be deliberately unpacked (getClusterLeaves()) to get individual features
+            //unclustered points need to be collected
+            //each type is slightly different (different property with getUniqueFeatures)
             const uniqueFeatures = getUniqueFeatures(features, 'cluster_id');
-            console.log("UF", uniqueFeatures);
+            const unClusteredFeatures = getUniqueFeatures(features, 'reportNum');
 
             let reports = [];
             for (let feature of uniqueFeatures) {
@@ -72,6 +96,9 @@ export default function BaseComponent({map}) {
 
                 reports.push(feature);
             }
+
+            reports.push(...unClusteredFeatures);
+
 
             let res = await Promise.all(reports);
             res = res.flat();
