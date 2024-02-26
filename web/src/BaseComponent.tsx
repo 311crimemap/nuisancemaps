@@ -10,7 +10,7 @@ export default function BaseComponent({map}) {
 
     const dataCrimeClusters = [
         "clusters-datacrime",
-        "cluster-count-datacrime",
+        //"cluster-count-datacrime",
         "unclustered-point-datacrime",
     ];
 
