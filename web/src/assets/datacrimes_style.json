@@ -1,0 +1,54 @@
+[
+    {
+        "id": "clusters-datacrime",
+        "type": "symbol",
+        "source": "datacrimes",
+        "filter": [
+            "has",
+            "point_count"
+        ],
+        "layout": {
+            "icon-image": "cluster",
+            "icon-allow-overlap": true
+        }
+    },
+    {
+        "id": "cluster-count-datacrime",
+        "type": "symbol",
+        "source": "datacrimes",
+        "filter": [
+            "has",
+            "point_count"
+        ],
+        "layout": {
+            "text-field": [
+                "get",
+                "point_count_abbreviated"
+            ],
+            "text-font": [
+                "Noto Sans Regular"
+            ],
+            "text-size": 12
+        }
+    },
+    {
+        "id": "unclustered-point-datacrime",
+        "type": "symbol",
+        "source": "datacrimes",
+        "filter": [
+            "!",
+            [
+                "has",
+                "point_count"
+            ]
+        ],
+        "layout": {
+            "icon-image": [
+                "get",
+                "icon-category"
+            ],
+            "icon-size": 1,
+            "icon-allow-overlap": true
+        }
+    }
+]
