@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
+
+import MapComponent from "./MapComponent";
+import Sidebar from "./SidebarComponent.tsx";
+import BaseComponent from "./BaseComponent.tsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const style = {
+    display: "flex",
+  };
 
+  const [map, setMap] = useState(null);
+  const [position, setPosition] = useState({
+    center: [-97.7171, 30.2944],
+  });
+
+  const defaultData = {
+    type: "FeatureCollection",
+    features: [],
+  };
+  const [dataCrimes, setDataCrimes] = useState(defaultData);
+  const [data311s, setData311s] = useState(defaultData);
+
+  const getData = async (url: string) => {
+    return fetch(url).then((res) => res.json());
+  };
+
+  useEffect(() => {
+    console.log("FETCH");
+    const limit = 500;
+    const center = position.center;
+    const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?center=${center}&limit=${limit}`;
+    const data311sURL = `http://localhost:8080/data311s.geojson?center=${center}limit=${limit}`;
+
+    Promise.all([getData(dataCrimesURL), getData(data311sURL)]).then(
+      ([dataCrimes, data311s]) => {
+        setDataCrimes(dataCrimes);
+        setData311s(data311s);
+      }
+    );
+
+    //to make new request
+    //position.center - too sensitive, even zoom will trigger
+  }, []);
+
+  console.log("RENDER", position, dataCrimes);
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div style={style}>
+        <MapComponent
+          map={map}
+          setMap={setMap}
+          position={position}
+          setPosition={setPosition}
+          dataCrimes={dataCrimes}
+          data311s={data311s}
+        />
+
+        <Sidebar map={map} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <BaseComponent map={map} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

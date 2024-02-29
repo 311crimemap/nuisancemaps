@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nazka/map-gl-js-spiderfy": "^1.2.1",
+    "lodash": "^4.17.21",
+    "maplibre-gl": "^4.0.1",
+    "pmtiles": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

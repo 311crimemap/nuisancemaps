@@ -1,5 +1,15 @@
 # React + TypeScript + Vite
 
+Preview Prod in local dev
+
+```
+docker exec -it nuisancemaps_web_1 bash
+npm run build
+npm run preview
+```
+
+---
+
 ## Install Notes
 
 * created basic Node lts Dockerfile w/ typescript template

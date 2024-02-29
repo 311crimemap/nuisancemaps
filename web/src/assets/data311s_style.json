@@ -1,0 +1,52 @@
+[
+    {
+        "id": "clusters-data311",
+        "type": "symbol",
+        "source": "data311s",
+        "filter": [
+            "has",
+            "point_count"
+        ],
+        "layout": {
+            "icon-image": "cluster",
+            "icon-allow-overlap": true
+        }
+},
+    {
+        "id": "cluster-count-data311",
+        "type": "symbol",
+        "source": "data311s",
+        "filter": [
+            "has",
+            "point_count"
+        ],
+        "layout": {
+            "text-field": [
+                "get",
+                "point_count_abbreviated"
+            ],
+            "text-font": [
+                "Noto Sans Regular"
+            ],
+            "text-size": 12
+        }
+    },
+    {
+        "id": "unclustered-point-data311",
+        "type": "circle",
+        "source": "data311s",
+        "filter": [
+            "!",
+            [
+                "has",
+                "point_count"
+            ]
+        ],
+        "paint": {
+            "circle-color": "red",
+            "circle-radius": 6,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#fff"
+        }
+    }
+]
