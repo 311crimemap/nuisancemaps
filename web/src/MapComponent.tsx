@@ -104,7 +104,50 @@ export default function MapComponent(props: any) {
 
             var spiderfyCrime = new Spiderfy(_map, {
                 onLeafClick: (f, e) => {
-                    console.log("E", e)
+                    //console.log("Feature", f)
+                    console.log("Element", e)
+                    const features = _map.queryRenderedFeatures(e.point);
+                    const sources = _map.getStyle().sources;
+                    console.log("Features", features)
+
+                    const leaf = features.find(f => f.layer.id.includes(`spiderfy-leaf`));
+
+                    if (leaf) {
+                        console.log("LEAF", leaf);
+                        console.log("SOURCES", sources);
+                        console.log("THIS", this, spiderfyCrime);
+
+                        //TODO: call setClickedID/setActiveID(leaf.properties['reportNum'])
+                        //to trigger panel format, detail view parallel to map handlers
+
+                        //active leaf
+                        _map.setLayoutProperty(leaf.layer.id, 'icon-image',
+                            [
+                                'match',
+                                ['get', 'reportNum'], // get the feature id
+                                leaf.properties['reportNum'],
+                                'robbery', //image when id is the clicked feature id
+                                leaf.properties['icon-category']  //default
+                            ]
+                        )
+
+                        //inactive leaves layers
+                        const layers = Object.keys(sources);
+                        const inActiveLeafIds = layers.filter(l => l.includes('spiderfy-leaf') &&
+                                                                 l != leaf.layer.id);
+                        console.log("InActiveLEafIds", inActiveLeafIds);
+                        for (const layerID of inActiveLeafIds) {
+                            const origFeature = sources[layerID].data.features[0];
+                            const origIcon = origFeature.properties['icon-category'];
+                            _map.setLayoutProperty(layerID, 'icon-image', origIcon);
+
+                        }
+
+
+                    }
+
+
+
                     //const coordinates = f.geometry.coordinates.slice();
                     const coordinates = [e.lngLat.lng, e.lngLat.lat, 0]; //cursor click
                     const category = f.properties.category;
