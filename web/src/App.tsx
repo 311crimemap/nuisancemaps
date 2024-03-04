@@ -3,12 +3,10 @@ import "./App.css";
 
 import MapComponent from "./MapComponent";
 import Sidebar from "./SidebarComponent.tsx";
-import BaseComponent from "./BaseComponent.tsx";
+import SpiderListComponent from "./SpiderListComponent.tsx";
+import BottomSheetComponent from "./BottomSheetComponent.tsx";
 
 function App() {
-  const style = {
-    display: "flex",
-  };
 
   const [map, setMap] = useState(null);
   const [position, setPosition] = useState({
@@ -46,23 +44,26 @@ function App() {
 
   console.log("RENDER", position, dataCrimes);
   return (
-    <>
-      <div style={style}>
-        <MapComponent
-          map={map}
-          setMap={setMap}
-          position={position}
-          setPosition={setPosition}
-          dataCrimes={dataCrimes}
-          data311s={data311s}
-        />
+        <>
+            <div id="container">
 
-        <Sidebar map={map} />
-      </div>
+                <Sidebar map={map} />
 
-      <BaseComponent map={map} />
-    </>
-  );
+                <MapComponent
+                    map={map}
+                    setMap={setMap}
+                    position={position}
+                    setPosition={setPosition}
+                    dataCrimes={dataCrimes}
+                    data311s={data311s}
+                />
+
+                <SpiderListComponent />
+            </div>
+
+            <BottomSheetComponent map={map} />
+        </>
+    );
 }
 
 export default App;

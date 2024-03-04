@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {debounce} from 'lodash';
 
 
-export default function BaseComponent({map}) {
+export default function BottomSheetComponent({map}) {
     if (!map) return null;
 
     const [visibleCrimes, setVisibleCrimes] = useState([]);
@@ -113,7 +113,7 @@ export default function BaseComponent({map}) {
     }, [map]);
 
     return (
-        <div id="base">
+        <div id="bottomsheet">
             <ul>
                 {visibleCrimes.map(crime => {
 
