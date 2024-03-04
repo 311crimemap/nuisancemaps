@@ -343,6 +343,6 @@ export default function MapComponent(props: any) {
     }
 
     return (
-        <div id='map' style={{ width: '75vw', height: '75vh' }}></div>
+        <div id='map'></div>
     )
 }
