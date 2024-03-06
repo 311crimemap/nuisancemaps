@@ -9,6 +9,17 @@
 #sidebar {
     width: 360px;
     padding: 1rem;
+
+    /* NB: height accommodate top/bottom padding */
+    height: calc(100vh - var(--navbar-height) - 2*(1rem));
+    overflow: auto;
+}
+
+#sidebar-nav {
+    display: flex;
+    list-style: none;
+    justify-content: space-evenly;
+    padding-left: 0;
 }
 
 #bottomsheet {
