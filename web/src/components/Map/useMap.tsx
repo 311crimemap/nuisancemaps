@@ -1,29 +1,23 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect } from "react";
 import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
 
-import baseMapStyleJSON from "./assets/baseMapStyle.json";
-import dataCrimesStyleJSON from "./assets/datacrimes_style.json";
-import data311sStyleJSON from "./assets/data311s_style.json";
-
-import gunSVG from "./assets/gun.svg";
-import maskSVG from "./assets/mask.svg";
-import robberySVG from "./assets/robbery.svg";
+import baseMapStyleJSON from "../../assets/baseMapStyle.json";
+import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
+import data311sStyleJSON from "../../assets/data311s_style.json";
+import AssetLoader from "./AssetLoader";
 
 import Spiderfy from '@nazka/map-gl-js-spiderfy';
 
-export default function MapComponent(props: any) {
+export default function useMap(props) {
 
     //const mapRef = useRef<maplibregl.Map>();
-    //const map = props.map;
-    //const setMap = props.setMap;
-
-    //const [map, setMap] = useState(null);
-
+    const [map, setMap] = useState(null);
+    const assetLoader = new AssetLoader();
 
     useEffect(() => {
-        console.log("MapComponent Hook")
-        //if (map) return;
+        console.log("[useMap] Hook Init")
+
+        if (!props.isDataLoaded) return; //NB: wait until data fetched before creating map
 
         const style = {
             glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
@@ -71,39 +65,15 @@ export default function MapComponent(props: any) {
             style
         });
 
-        props.setMap(_map);
-
         //_map.showTileBoundaries = true;
-
 
         _map.on('load', async () => {
 
-            const { data: image } = await _map.loadImage(
-                'https://raw.githubusercontent.com/nazka/map-gl-js-spiderfy/dev/demo/img/circle-yellow.png'
-            );
-
-            try {
-
-                for (const svg of [{ name: 'robbery', url: robberySVG },
-                                   { name: 'mask', url: maskSVG },
-                                   { name: 'gun', url: gunSVG }]) {
-
-                    let img = new Image(20, 20)
-                    img.onload = () => _map.addImage(svg.name, img)
-                    img.src = svg.url;
-                }
-
-            } catch (e) {
-                console.log("ERR", e);
-            }
-
-
-            //sdf is optimziation for monochromatic png; esp for paint ontop.
-            _map.addImage('cluster', image);
-
+            await assetLoader.init(_map);
 
             var spiderfyCrime = new Spiderfy(_map, {
                 onLeafClick: (f, e) => {
+
                     //console.log("Feature", f)
                     console.log("Element", e)
                     const features = _map.queryRenderedFeatures(e.point);
@@ -134,7 +104,7 @@ export default function MapComponent(props: any) {
                         //inactive leaves layers
                         const layers = Object.keys(sources);
                         const inActiveLeafIds = layers.filter(l => l.includes('spiderfy-leaf') &&
-                                                                 l != leaf.layer.id);
+                            l != leaf.layer.id);
                         console.log("InActiveLEafIds", inActiveLeafIds);
                         for (const layerID of inActiveLeafIds) {
                             const origFeature = sources[layerID].data.features[0];
@@ -143,7 +113,6 @@ export default function MapComponent(props: any) {
 
                         }
 
-
                     }
 
 
@@ -151,7 +120,7 @@ export default function MapComponent(props: any) {
                     //const coordinates = f.geometry.coordinates.slice();
                     const coordinates = [e.lngLat.lng, e.lngLat.lat, 0]; //cursor click
                     const category = f.properties.category;
-
+                    const reportNum = f.properties.reportNum;
                     //while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                     // }
@@ -164,6 +133,9 @@ export default function MapComponent(props: any) {
                         )
                         .addTo(_map);
 
+                    //setActiveReportNum
+                    props.setActiveReportNum(reportNum);
+
                     console.log(f)
                 },
 
@@ -173,7 +145,7 @@ export default function MapComponent(props: any) {
                 spiderLeavesLayout: {
                     "icon-image": ["get", "icon-category"],
                 },
-                minZoomLevel: 17,
+                minZoomLevel: props.spiderZoomLevel,
                 zoomIncrement: 2,
 
             });
@@ -185,10 +157,12 @@ export default function MapComponent(props: any) {
             //need separate spider per source, or it can trigger auto close
             var spiderfy311 = new Spiderfy(_map, {
                 onLeafClick: (f, e) => {
+
                     console.log("E", e)
                     //const coordinates = f.geometry.coordinates.slice();
                     const coordinates = [e.lngLat.lng, e.lngLat.lat, 0]; //cursor click
                     const category = f.properties.category;
+                    const reportNum = f.properties.reportNum;
 
                     //while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -202,13 +176,15 @@ export default function MapComponent(props: any) {
                         )
                         .addTo(_map);
 
+                    props.setActiveReportNum(reportNum);
+
                     console.log(f)
                 },
 
                 closeOnLeafClick: false,
                 //clustered can't be styled into distinct unclustered - all the "same" except location
                 //spiderLeavesPaint: {},
-                minZoomLevel: 17,
+                minZoomLevel: props.spiderZoomLevel,
                 zoomIncrement: 2,
 
             });
@@ -216,37 +192,80 @@ export default function MapComponent(props: any) {
 
             spiderfy311.applyTo('clusters-data311');
 
-            for (const dataset of ['datacrime', 'data311']) {
-
-                // When a click event occurs on a feature in
-                // the unclustered-point layer, open a popup at
-                // the location of the feature, with
-                // description HTML from its properties.
-
-                _map.on('click', `unclustered-point-${dataset}`, (e) => {
-
-                    const coordinates = e.features[0].geometry.coordinates.slice();
-                    const category = e.features[0].properties.category;
-
-                    // Ensure that if the map is zoomed out such that
-                    // multiple copies of the feature are visible, the
-                    // popup appears over the copy being pointed to.
-                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    }
-
-                    new maplibregl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(
-                            `${category}`
-                        )
-                        .addTo(_map);
-                });
-
-            }
 
         });
 
+
+        for (const dataset of ['datacrime', 'data311']) {
+
+            // When a click event occurs on a feature in
+            // the unclustered-point layer, open a popup at
+            // the location of the feature, with
+            // description HTML from its properties.
+
+            _map.on('click', `unclustered-point-${dataset}`, (e) => {
+
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const category = e.features[0].properties.category;
+                const reportNum = e.features[0].properties.reportNum;
+
+                // Ensure that if the map is zoomed out such that
+                // multiple copies of the feature are visible, the
+                // popup appears over the copy being pointed to.
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+
+                new maplibregl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(
+                        `${category}`
+                    )
+                    .addTo(_map);
+
+                props.setActiveReportNum(reportNum);
+                props.setActiveSpiderList({});
+            });
+
+            //click on a clustered point
+            _map.on('click', `clusters-${dataset}`, async (e) => {
+
+                const source = e.features[0].source;
+                const cluster_id = e.features[0].properties.cluster_id;
+                const point_count = e.features[0].properties.point_count;
+
+                const clusterSource = _map.getSource(source);
+
+                const features = await clusterSource.getClusterLeaves(cluster_id, point_count, 0);
+
+                //1. get list of individual elements in cluster (ids)
+                //2. set open
+                const spiderListFeatures = {
+                    source,
+                    features
+                }
+
+                props.setActiveSpiderList(spiderListFeatures);
+            });
+
+        }
+
+
+        /*
+         * "general" click handler
+         * this is clicking anywhere not a "point" (cluster / uncluster)
+         * so anywhere that's not base source protomaps
+         * used to clear displays like spider list
+         */
+        _map.on('click', (e) => {
+            const features = _map.queryRenderedFeatures(e.point)
+                                 .filter(f => f.source != "protomaps");
+
+            if (features.length === 0) {
+                //clear
+                props.setActiveSpiderList({});
+            }
+        })
 
 
         _map.on('moveend', async () => {
@@ -260,89 +279,22 @@ export default function MapComponent(props: any) {
             props.setPosition(position);
         })
 
+        _map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 
         //mapRef.current = _map;
-        //props.setMap(_map);
-
+        setMap(_map);
 
         return (() => {
 
             if (_map) {
+                console.log("[useMap] Remove")
                 _map.remove();
                 //maplibregl.removeProtocol("pmtiles");
             }
         });
 
 
-    }, [])
+    }, [props.isDataLoaded])
 
-    useEffect(() => {
-
-        if (!props.map) return;
-
-        try {
-            const dataCrimesSource = props.map.getSource('datacrimes');
-            const data311sSource = props.map.getSource('data311s');
-
-            dataCrimesSource.setData(props.dataCrimes);
-            data311sSource.setData(props.data311s);
-
-            setIconCategory(props.dataCrimes);
-            //TODO: setIconCategory(props.data311s);
-
-        } catch (e) {
-            console.error(e)
-        }
-    }, [props.position.center, props.dataCrimes, props.data311s])
-
-
-    //TODO: separate class, add to this useMap above init
-    //load keywords as json input
-    //should have crime and 311 icon sets
-    //iconLoader
-    //icon mapper: icon name -> file/dimen
-    //  calls loadImage
-    //load keyword mapping
-    //priority by order and unique
-    //apply(data)
-    const setIconCategory = (data: any) => {
-
-        const keywords = [
-            {
-                keyword: "theft",
-                //filename / dim?
-                icon: "robbery",
-            },
-            {
-                keyword: "assault",
-                icon: "gun",
-            },
-            {
-                keyword: "criminal",
-                icon: "mask",
-            },
-        ];
-
-        console.time("keyword");
-        if (!data.features.length) return;
-        for (const feature of data.features) {
-
-            for (const ki of keywords) {
-                if (feature.properties.category.toLowerCase().includes(ki.keyword)) {
-                    feature.properties['icon-category'] = ki.icon;
-                    break;
-                }
-            }
-            //default
-            if (!feature.properties['icon-category']) {
-                feature.properties['icon-category'] = "cluster"
-            }
-        }
-        console.timeEnd("keyword");
-
-    }
-
-    return (
-        <div id='map'></div>
-    )
+    return map;
 }

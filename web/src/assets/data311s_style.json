@@ -8,7 +8,7 @@
             "point_count"
         ],
         "layout": {
-            "icon-image": "cluster",
+            "icon-image": "cluster-sdf",
             "icon-allow-overlap": true
         }
 },
