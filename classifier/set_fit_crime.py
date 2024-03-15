@@ -26,7 +26,7 @@ candidate_labels = [category['text'] for category in categories['crime']]
 # all_data = [ { "text": "crime", "label": 6}, ...]
 #
 #
-json_file = open("./data/train.json")
+json_file = open("./data/train-crime.json")
 all_data = json.load(json_file)
 
 # Initializing a new SetFit model

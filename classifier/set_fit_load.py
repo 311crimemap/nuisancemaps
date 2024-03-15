@@ -10,7 +10,7 @@ candidate_labels = [category['text'] for category in categories['crime']]
 model = SetFitModel.from_pretrained("models/setfit-bge-small-v1.5-sst2-8-shot-aws") # Load from a local directory
 
 # Performing inference
-json_file = open("./data/test.json")
+json_file = open("./data/test-crime.json")
 data = json.load(json_file)
 inputs = [d['text'] for d in data]
 

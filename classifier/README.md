@@ -3,7 +3,7 @@
 Goal of classifier is to generate category labels for quick comparison. The
 expectation is to still perform a manual pass, but just make it faster.
 
-Currently:
+## Training:
 
 * Approach: few shot learning, fine-tuning via hugging face SetFit framework.
 * Training data: ATX, NYC, CHI, SFO labels
@@ -18,13 +18,13 @@ Training Notes:
 * Make sure use compatible image: OSS Nvidia image (spot ~ .20/hr)
 
 ```
-# on instance:
+# on aws instance:
 
 pip install torch==2.2.1 transformers==4.38.2 scikit-learn evaluate accelerate datasets setfit
 
 python3.9 set_fit_crime.py
 
-# on inference machine
+# for inference machine
 
 docker exec -it <nuisancemap container> bash
 
@@ -35,7 +35,7 @@ Test set
 
 * Boston: crime - .89
 * Dallas: crime - .85
-
+* Aggregate: crime - .887
 
 ## Files
 
@@ -44,12 +44,12 @@ Test set
 * `set_fit_crime.py`: trains model, saves and creates zip archive of model
 * `set_fit_load.py`: loads saved model, model.predicts on inputs array.
 * `data/`: crime or 311 data; filtered by field(s)
-  * `train.json`: training set of atx, nyc, chi, sfo
-  * `test.json`: bos, dfw
-* `setfit-bge-small . . ./`: dir saved model contents
+  * `train-crime.json`: training set of atx, nyc, chi, sfo
+  * `test-crime.json`: bos, dfw
+* `models/setfit-bge-small . . ./`: dir saved model contents
 * `examples/`: scratchpad
 
-## Process
+## Process To Label New Source
 
 1. Find new data url, identify fields for import
 
