@@ -17,15 +17,9 @@ from datasets import load_dataset, Dataset
 import pandas as pd
 import json
 
-candidate_labels = [
-    "Violent",
-    "Property",
-    "Theft",
-    "Fraud / Forgery",
-    "Vice Drugs Weapon",
-    "Public Order",
-    "Other"
-]
+json_file = open("./classifier_categories.json")
+categories = json.load(json_file)
+candidate_labels = [category['text'] for category in categories['crime']]
 
 #
 # example data format:

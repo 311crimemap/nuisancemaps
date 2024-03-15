@@ -4,6 +4,7 @@
 FROM continuumio/miniconda3:24.1.2-0
 
 COPY ./ /classifier
+COPY ../api/src/main/resources/data/classifier_categories.json /classifier_categories.json
 WORKDIR /classifier
 
 RUN conda install --yes pytorch::pytorch=2.2.1 cpuonly

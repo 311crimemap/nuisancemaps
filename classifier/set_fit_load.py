@@ -3,22 +3,16 @@ from datasets import load_dataset, Dataset
 import pandas as pd
 import json
 
-candidate_labels = [
-    "Violent",
-    "Property",
-    "Theft",
-    "Fraud / Forgery",
-    "Vice Drugs Weapon",
-    "Public Order",
-    "Other"
-]
+json_file = open("./classifier_categories.json")
+categories = json.load(json_file)
+candidate_labels = [category['text'] for category in categories['crime']]
 
 model = SetFitModel.from_pretrained("models/setfit-bge-small-v1.5-sst2-8-shot-aws") # Load from a local directory
 
 # Performing inference
 json_file = open("./data/test.json")
 data = json.load(json_file)
-inputs = [d['text' ] for d in data]
+inputs = [d['text'] for d in data]
 
 preds = model.predict(inputs)
 
