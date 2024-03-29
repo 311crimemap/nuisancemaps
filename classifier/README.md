@@ -1,7 +1,17 @@
 # Classifier
 
-Goal of classifier is to generate category labels for quick comparison. The
-expectation is to still perform a manual pass, but just make it faster.
+Currently using ChatGPT API as a "zero-shot" classifier. Hugging Face models are
+poor on 311 data - because the data is very 'vague' and requires context).
+
+Hugging Face Slow enough that it's not worth spinning up and provisioning an
+entire GPU instance for a helper utility.
+
+## ChatGPT Classifier
+
+
+---
+
+_Deprecated Training Setup Below__
 
 ## Training:
 
@@ -20,7 +30,8 @@ Training Notes:
 ```
 # on aws instance:
 
-pip install torch==2.2.1 transformers==4.38.2 scikit-learn evaluate accelerate datasets setfit
+pip install torch==2.2.1 transformers==4.38.2 huggingface_hub==0.21.4 \
+    scikit-learn evaluate accelerate datasets setfit
 
 python3.9 set_fit_crime.py
 
@@ -41,12 +52,16 @@ Test set
 
 * `Dockerfile`: environment for python classifier
 * `data.ods`: excel sheet to compare test/train data
-* `set_fit_crime.py`: trains model, saves and creates zip archive of model
-* `set_fit_load.py`: loads saved model, model.predicts on inputs array.
+* `classifier-demo`: transformer and hugging face pipeline
+* `zero_shot_311.py`: zero shot model w/ hugging face pipeline
+* `set_fit_crime.py`: few shot model using hugging face setfit framework
+* `set_fit_311.py`: few shot model using hugging face setfit framework
+* `set_fit_load_311.py`: few shot model using hugging face setfit framework
+* `set_fit_load_crime.py`: few shot model using hugging face setfit framework
 * `data/`: crime or 311 data; filtered by field(s)
-  * `train-crime.json`: training set of atx, nyc, chi, sfo
-  * `test-crime.json`: bos, dfw
-* `models/setfit-bge-small . . ./`: dir saved model contents
+  * `train-crime.json`: merged training set of atx, nyc, chi, sfo labeled classes
+  * `test-crime.json`: bos, dfw labeled classes
+* `models/setfit-bge-small . . ./`: dir for any saved models used for inference reloading
 * `examples/`: scratchpad
 
 ## Process To Label New Source
