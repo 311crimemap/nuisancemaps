@@ -10,7 +10,7 @@ Original file is located at
 # python set_fit_crime.py / set_fit_load.py
 #
 # in colab or aws:
-# !pip install torch==2.2.1 transformers==4.38.2 scikit-learn evaluate accelerate datasets setfit
+# !pip install torch==2.2.1 transformers==4.38.2 huggingface_hub==0.21.4 scikit-learn evaluate accelerate datasets setfit
 
 from setfit import SetFitModel, Trainer, TrainingArguments, sample_dataset
 from datasets import load_dataset, Dataset
@@ -19,21 +19,26 @@ import json
 
 json_file = open("./classifier_categories.json")
 categories = json.load(json_file)
-candidate_labels = [category['text'] for category in categories['crime']]
+
+candidate_labels = []
+for headCategory in categories['311']:
+    for category in headCategory['subcategories']:
+        candidate_labels.append( category['text'] )
 
 #
 # example data format:
 # all_data = [ { "text": "crime", "label": 6}, ...]
 #
 #
-json_file = open("./data/train-crime.json")
+json_file = open("./data/train-311.json")
 all_data = json.load(json_file)
 
 # Initializing a new SetFit model
 m = "BAAI/bge-small-en-v1.5"
 #m = "sentence-transformers/all-MiniLM-L6-v2"
 
-dir = "setfit-bge-small-v1.5-sst2-8-shot"
+dir = "setfit-bge-small-v1.5-sst2-8-shot-311-aws"
+#dir = "setfit-all-MiniLM-L6-v2-311-aws"
 
 model = SetFitModel.from_pretrained(m, labels=candidate_labels)
 
@@ -41,7 +46,7 @@ model = SetFitModel.from_pretrained(m, labels=candidate_labels)
 
 datasets = Dataset.from_list(all_data).shuffle(seed=42)\
                   .class_encode_column("label")\
-                  .train_test_split(test_size=0.125, stratify_by_column="label")
+                  .train_test_split(test_size=0.20, stratify_by_column="label")
 
 print( len(datasets['train']))
 print( len(datasets['test']))
@@ -85,10 +90,10 @@ model.save_pretrained(dir)
 
 # sanity check inference
 preds = model.predict([
-    "ASSAULT 3 & RELATED OFFENSES",
-    "BURGLARY",
-    "CANNABIS RELATED OFFENSES",
-    "CHILD ABANDONMENT/NON SUPPORT"
+    "Animal - Proper Care",
+    "APH - Graffiti Abatement - Public Property",
+    "Parking Ticket Complaint",
+    "WPD - Standing Water",
 ])
 
 print(preds)
