@@ -29,6 +29,12 @@ To extract text / labels from result:
 * `cat $OUTPUT_FILE | jq -r '.choices[0].message.content' | jq '.examples[].text'`
 * `cat $OUTPUT_FILE | jq -r '.choices[0].message.content' | jq '.examples[].index'`
 
+Submission to API:
+
+* Build a json array in excel with `{text, label}` data
+* Place in `/submit-data`
+* Upload: `curl -X POST -d @file.json api_host/raw_text_categories`  - TODO: finalize this endpoint
+
 ## Results Output
 
 TODO:
