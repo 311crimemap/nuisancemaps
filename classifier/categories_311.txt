@@ -1,0 +1,15 @@
+Animal: 0
+Noise Complaint: 1
+Vagrancy and Vandalism: 2
+Code Compliance: 3
+Consumer Complaints: 4
+Streets, Roads, Bridge, Sidewalk Maintenance / Repair: 5
+Traffic Signs, Signals, Engineering: 6
+Storm Drainage / Flooding: 7
+Street Hazards: 8
+Mobility and Parking: 9
+Parks, Environmental / Trees, Schools: 10
+Telecom, Water, Utilities: 11
+Waste & Recycling: 12
+Public Health: 13
+Other: 14

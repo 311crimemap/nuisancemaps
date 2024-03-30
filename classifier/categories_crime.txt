@@ -1,0 +1,8 @@
+Violent: 0
+Property: 1
+Theft: 2
+Fraud / Forgery: 3
+Vice Drugs Weapon: 4
+Public Order: 5
+Other: 6
+
