@@ -12,6 +12,15 @@ services:
       - 5173:5173  # dev server
       - 4173:4173  # prod build preview
 
+  classifier:
+    image: "vergeman/nuisancemaps/classifier"
+    build: "./classifier"
+    volumes:
+      - ./classifier:/classifier
+      - ./api/src/main/resources/data/classifier_categories.json:/classifier/classifier_categories.json
+    env_file:
+      - .env.dev
+
   api:
     image: eclipse-temurin:17-jdk-alpine
     volumes:
