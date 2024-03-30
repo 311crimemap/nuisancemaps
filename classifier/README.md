@@ -8,6 +8,38 @@ entire GPU instance for a helper utility.
 
 ## ChatGPT Classifier
 
+Make sure `OPENAI_API_KEY` is set in env.
+
+Bash scripts are basically copies with variables to 311 and crime related txt
+files.
+
+Adjust the `LIMIT` and `OFFSET` variables in the script to run multiple times.
+Make sure preserve `out_X.json`.
+
+* `./openai_311.sh`
+  * uses `prompt_311.txt`, `categories_311.txt`
+  * modify `data_311.txt`
+* `./openai_crime.sh`
+  * uses `prompt_crime.txt`, `categories_crime.txt`
+  * modify `data_crime.txt`
+
+
+To extract text / labels from result:
+
+* `cat $OUTPUT_FILE | jq -r '.choices[0].message.content' | jq '.examples[].text'`
+* `cat $OUTPUT_FILE | jq -r '.choices[0].message.content' | jq '.examples[].index'`
+
+## Results Output
+
+TODO:
+
+* figuring out process. So far...
+* Data with missing category -> skip? vs send to error bin
+  * There shouldn't be that many categories; we can still label them even if we
+    aren't saving that data.
+
+Put these into Excel and then use as guide for labeling the categories.
+
 
 ---
 
@@ -153,6 +185,3 @@ Test set
 
 
 ```
-
-
-
