@@ -1,0 +1,3 @@
+huggingface/models/*
+!huggingface/models/.gitkeep
+out*.json
