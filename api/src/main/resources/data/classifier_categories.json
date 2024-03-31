@@ -27,6 +27,10 @@
         {
             "text": "Other",
             "label": 6
+        },
+        {
+            "text": "Skip",
+            "label": 7
         }
     ],
     "311": [
@@ -125,6 +129,10 @@
                     "label": 14
                 }
             ]
+        },
+        {
+            "text": "Skip",
+            "label": 15
         }
   ]
 }
