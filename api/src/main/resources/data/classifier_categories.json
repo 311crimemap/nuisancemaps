@@ -1,5 +1,5 @@
 {
-    "crime": [
+    "dataCrimes": [
         {
             "text": null,
             "label": null,
@@ -75,13 +75,13 @@
             "label": null,
             "subcategories": [
                 {
-                    "text": "Skip",
+                    "text": "SKIP",
                     "label": 7
                 }
             ]
         }
     ],
-    "311": [
+    "data311s": [
         {
             "text": "Quality of Life",
             "label": null,
@@ -183,7 +183,7 @@
             "label": null,
             "subcategories": [
                 {
-                    "text": "Skip",
+                    "text": "SKIP",
                     "label": 15
                 }
             ]

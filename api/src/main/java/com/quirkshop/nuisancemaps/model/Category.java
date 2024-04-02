@@ -12,8 +12,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.CascadeType;
+
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -34,6 +38,9 @@ public class Category {
     @JoinColumn(name = "parent_id", nullable = true)
     private Category parent;
 
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private List<Category> subcategories;
+
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
@@ -47,6 +54,18 @@ public class Category {
         this.createdAt = now;
         this.updatedAt = now;
     }
+
+    public Category(String dataType, String text, Integer label, Category parent) {
+        this.dataType = dataType;
+        this.text = text;
+        this.label = label;
+        this.parent = parent;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
 
     public Integer getId() {
         return id;
@@ -102,6 +121,14 @@ public class Category {
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public List<Category> getSubcategories() {
+        return subcategories;
+    }
+
+    public void setSubcategories(List<Category> subcategories) {
+        this.subcategories = subcategories;
     }
 
 }
