@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.CategoryGroupDTO;
 import com.quirkshop.nuisancemaps.model.Category;
@@ -15,9 +16,12 @@ import com.quirkshop.nuisancemaps.service.CategoryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +38,7 @@ public class CategoryController {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
+    //curl localhost:8080/categories
     //@CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/categories")
     public ResponseEntity<?> getIndex() {
@@ -50,6 +55,46 @@ public class CategoryController {
         Map<String, String> response = new HashMap<String, String>();
         response.put("numCreated", Integer.toString(numCreated));
         return ResponseEntity.ok().body(response);
+    }
+
+    //
+    //curl-H'content-type:application/json'  -X POST -d '{"dataType":"crime", "text":"test", "label": "16"}' localhost:8080/categories/203
+    //
+    // or for standalone submit with random non-existent parentId:
+    //
+    // curl -H 'content-type: application/json' -X POST -d '{"dataType":"crime",
+    // "text":"test", "label": "16"}' localhost:8080/categories/0
+
+    @PostMapping("/categories/{parentId}")
+    public ResponseEntity<?> create(@PathVariable(value = "parentId") final int parentId,
+                                    @RequestBody Category jsonCategory) {
+
+        Category parent = categoryRepository.findById(parentId).orElse(null);
+
+        Category category = new Category(jsonCategory.getDataType(),
+                                         jsonCategory.getText(),
+                                         jsonCategory.getLabel(),
+                                         parent);
+
+
+        category = categoryRepository.save(category);
+
+        return ResponseEntity.ok().body(category);
+    }
+
+    // curl -X DELETE localhost:8080/categories/<id>
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") final int id) {
+        Map<String, String> response = new HashMap<String, String>();
+        response.put("numDeleted", "0");
+
+        if(categoryRepository.existsById(id)) {
+            categoryRepository.deleteById(id);
+            response.put("numDeleted", "1");
+            return ResponseEntity.ok().body(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
 }
