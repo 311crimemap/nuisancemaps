@@ -3,6 +3,8 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -38,6 +40,7 @@ public class Category {
     @JoinColumn(name = "parent_id", nullable = true)
     private Category parent;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Category> subcategories;
 
