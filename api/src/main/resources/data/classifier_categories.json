@@ -1,35 +1,87 @@
 {
-    "crime": [
+    "dataCrimes": [
         {
-            "text": "Violent",
-            "label": 0
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "Violent",
+                    "label": 0
+                }
+            ]
         },
         {
-            "text": "Property",
-            "label": 1
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "Property",
+                    "label": 1
+                }
+            ]
         },
         {
-            "text": "Theft",
-            "label": 2
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "Theft",
+                    "label": 2
+                }
+            ]
         },
         {
-            "text": "Fraud / Forgery",
-            "label": 3
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "Fraud / Forgery",
+                    "label": 3
+                }
+            ]
         },
         {
-            "text": "Vice Drugs Weapon",
-            "label": 4
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "Vice Drugs Weapon",
+                    "label": 4
+                }
+            ]
         },
         {
-            "text": "Public Order",
-            "label": 5
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "Public Order",
+                    "label": 5
+                }
+            ]
         },
         {
-            "text": "Other",
-            "label": 6
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "Other",
+                    "label": 6
+                }
+            ]
+        },
+        {
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "SKIP",
+                    "label": 7
+                }
+            ]
         }
     ],
-    "311": [
+    "data311s": [
         {
             "text": "Quality of Life",
             "label": null,
@@ -125,6 +177,16 @@
                     "label": 14
                 }
             ]
+        },
+        {
+            "text": null,
+            "label": null,
+            "subcategories": [
+                {
+                    "text": "SKIP",
+                    "label": 15
+                }
+            ]
         }
-  ]
+    ]
 }

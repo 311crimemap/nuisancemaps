@@ -1,0 +1,158 @@
+package com.quirkshop.nuisancemaps.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.dto.CategoryAPIDTO;
+import com.quirkshop.nuisancemaps.dto.CategoryGroupDTO;
+import com.quirkshop.nuisancemaps.model.Category;
+import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.service.CategoryService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class CategoryController {
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    CategoryService categoryService;
+
+    private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
+
+    // curl localhost:8080/categories
+    // @CrossOrigin(origins = "${CORS_ORIGINS}")
+    @GetMapping("/categories")
+    public ResponseEntity<?> getIndex() {
+        Iterable<Category> categoriesIter = categoryRepository.findAll();
+        CategoryAPIDTO<Iterable<Category>> categoryAPIDTO = new CategoryAPIDTO<Iterable<Category>>("success",
+                categoriesIter);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryAPIDTO);
+    }
+
+    // curl -H 'content-type:application/json' -X POST -d
+    // @src/main/resources/data/classifier_categories.json localhost:8080/categories
+    // @CrossOrigin(origins = "${CORS_ORIGINS}")
+    @PostMapping("/categories")
+    public ResponseEntity<?> create(@RequestBody CategoryGroupDTO categoryGroupDTO) {
+        int numCreated = categoryService.createCategoriesDTO(categoryGroupDTO);
+        HashMap<String, Integer> response = new HashMap<String, Integer>();
+        response.put("numCreated", numCreated);
+        CategoryAPIDTO<HashMap<String, Integer>> categoryAPIDTO = new CategoryAPIDTO<HashMap<String, Integer>>(
+                "success", response);
+        return ResponseEntity.ok().body(categoryAPIDTO);
+    }
+
+    //
+    // curl-H'content-type:application/json' -X POST -d '{"dataType":"crime",
+    // "text":"test", "label": "16"}' localhost:8080/categories/203
+    //
+    // or for standalone submit with random non-existent parentId:
+    //
+    // curl -H 'content-type: application/json' -X POST -d '{"dataType":"crime",
+    // "text":"test", "label": "16"}' localhost:8080/categories/0
+
+    @PostMapping("/categories/{parentId}")
+    public ResponseEntity<?> create(@PathVariable(value = "parentId") final int parentId,
+            @RequestBody Category jsonCategory) {
+
+        Category parent = categoryRepository.findById(parentId).orElse(null);
+
+        Category category = new Category(jsonCategory.getDataType(),
+                jsonCategory.getText(),
+                jsonCategory.getLabel(),
+                parent);
+
+        CategoryAPIDTO<Category> categoryDTOAPI = new CategoryAPIDTO<Category>("success", category);
+        try {
+            category = categoryRepository.save(category);
+        } catch (DataIntegrityViolationException e) {
+            log.error(e.getMessage());
+            categoryDTOAPI.setStatus("error");
+            return ResponseEntity.badRequest().body(categoryDTOAPI);
+        }
+
+        return ResponseEntity.ok().body(categoryDTOAPI);
+    }
+
+    // curl -X DELETE localhost:8080/categories/<id>
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") final int id) {
+
+        HashMap<String, String> response = new HashMap<String, String>();
+        response.put("numDeleted", "0");
+
+        CategoryAPIDTO<HashMap<String, String>> categoryDTOAPI = new CategoryAPIDTO<HashMap<String, String>>("success",
+                response);
+
+        if (categoryRepository.existsById(id)) {
+            try {
+                categoryRepository.deleteById(id);
+                response.put("numDeleted", "1");
+                categoryDTOAPI.setData(response);
+                return ResponseEntity.ok().body(categoryDTOAPI);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                categoryDTOAPI.setStatus("error");
+                return ResponseEntity.badRequest().body(categoryDTOAPI);
+            }
+        }
+
+        categoryDTOAPI.setStatus("error");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryDTOAPI);
+    }
+
+    // curl -H "content-type: application/json" -X PATCH -d '{"text":"hello"}'
+    // localhost:8080/categories/244
+    @PatchMapping("/categories/{id}")
+    public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
+            @RequestBody Category jsonCategory) {
+
+        CategoryAPIDTO<Category> categoryDTOAPI = new CategoryAPIDTO<Category>("success", null);
+        Optional<Category> category = categoryRepository.findById(id);
+
+        if (category.isPresent()) {
+            Category c = category.get();
+
+            if (!jsonCategory.getText().isBlank())
+                c.setText(jsonCategory.getText());
+
+            if (jsonCategory.getLabel() != null)
+                c.setLabel(jsonCategory.getLabel());
+
+            try {
+                c = categoryRepository.save(c);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                categoryDTOAPI.setStatus("error");
+                return ResponseEntity.badRequest().body(categoryDTOAPI);
+            }
+
+            categoryDTOAPI.setData(c);
+            return ResponseEntity.ok().body(categoryDTOAPI);
+        }
+
+        categoryDTOAPI.setStatus("error");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryDTOAPI);
+    }
+
+}
