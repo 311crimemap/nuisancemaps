@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,12 +16,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 
 import java.util.List;
 
 @Entity
-@Table(name = "category")
+@Table(name = "category",
+       uniqueConstraints = {
+           @UniqueConstraint(name = "UniqueTextAndLabel", columnNames = { "text", "label" })
+       })
 public class Category {
 
     @Id
@@ -33,7 +37,6 @@ public class Category {
     private String dataType; // 311 or crime
 
     private String text;
-
     private Integer label; // want null for parents
 
     @ManyToOne
