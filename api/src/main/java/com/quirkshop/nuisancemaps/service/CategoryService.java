@@ -1,10 +1,14 @@
 package com.quirkshop.nuisancemaps.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.dto.CategoryGroupDTO;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import java.util.List;
 
 @Service
 public class CategoryService {
+    private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -35,24 +40,35 @@ public class CategoryService {
             Category parent = null;
 
             // parent
+            // if dupe, catch, but ensure we have old parent for any new children
             if (text != null) {
-                parent = new Category(dataType, text, label, null);
-                parent = categoryRepository.save(parent);
-                num++;
+                parent = categoryRepository.findByDataTypeAndTextAndLabel(dataType, text, label);
+                if (parent == null) {
+                    parent = new Category(dataType, text, label, null);
+                    try {
+                        parent = categoryRepository.save(parent);
+                        num++;
+                    } catch(DataIntegrityViolationException e) {
+                        log.error(e.getMessage());
+                    }
+                }
             }
 
             // subcategories
-            ArrayList<Category> cats = new ArrayList<Category>();
+            // if dupe, catch and move next
             for (Category subCategoryDTO : categoryDTO.getSubcategories()) {
                 String childText = subCategoryDTO.getText();
                 Integer childLabel = subCategoryDTO.getLabel();
 
                 Category child = new Category(dataType, childText, childLabel, parent);
-                cats.add(child);
-            }
 
-            categoryRepository.saveAll(cats);
-            num += cats.size();
+                try {
+                    categoryRepository.save(child);
+                    num++;
+                } catch (DataIntegrityViolationException e) {
+                    log.error(e.getMessage());
+                }
+            }
 
         }
 

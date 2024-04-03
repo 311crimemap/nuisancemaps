@@ -9,4 +9,6 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
     // auto implemented
 
     List<Category> findAllByDataType(String dataType);
+
+    Category findByDataTypeAndTextAndLabel(String dataType, String text, Integer label);
 }
