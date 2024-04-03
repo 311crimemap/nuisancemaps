@@ -3,11 +3,11 @@ package com.quirkshop.nuisancemaps.controller;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.CategoryGroupDTO;
 import com.quirkshop.nuisancemaps.model.Category;
@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,12 +89,40 @@ public class CategoryController {
         Map<String, String> response = new HashMap<String, String>();
         response.put("numDeleted", "0");
 
-        if(categoryRepository.existsById(id)) {
+        if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
             response.put("numDeleted", "1");
             return ResponseEntity.ok().body(response);
         }
 
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    // curl -H "content-type: application/json" -X PATCH -d '{"text":"hello"}'
+    // localhost:8080/categories/244
+    @PatchMapping("/categories/{id}")
+    public ResponseEntity<?> patch(@PathVariable(value="id") final int id,
+                                   @RequestBody Category jsonCategory) {
+        Map<String, String> response = new HashMap<String, String>();
+
+
+        Optional<Category> category = categoryRepository.findById(id);
+
+        if(category.isPresent()) {
+            Category c = category.get();
+
+            if (!jsonCategory.getText().isBlank())
+                c.setText(jsonCategory.getText());
+
+            if (jsonCategory.getLabel() != null)
+                c.setLabel(jsonCategory.getLabel());
+
+            c = categoryRepository.save(c);
+
+            return ResponseEntity.ok().body(c);
+        }
+
+        response.put("status", "Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
