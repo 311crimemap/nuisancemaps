@@ -142,6 +142,10 @@ So the initial DataJob will deserialize the Source, which will deserialize the D
 * `@JsonIgnore`: removes field
 * `@JsonBackReference`: the reverse part of the reference; the fields/collections -> NOT serialised.
 * `@JsonManagedReference`: the forward part of the reference and gets -> Serialised.
+* `@JsonProperty`: toggle access to property if writing
+  (JsonProperty.Access.WRITE_ONLY) or reading. Allows creation of objects, but
+  can avoids infinite nesting by excluding on read. (In this case, `Category`
+  instance has array of `subcategories` - of `Category` instances.)
 
 
 ### Tests
