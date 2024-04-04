@@ -10,18 +10,26 @@ import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.CategoryAPIDTO;
 import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
 import com.quirkshop.nuisancemaps.model.TextCategory;
+import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TextCategoryController {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
+
+    @Autowired
+    TextCategoryRepository textCategoryRepository;
 
     @Autowired
     TextCategoryService textCategoryService;
@@ -49,4 +57,26 @@ public class TextCategoryController {
         return ResponseEntity.ok().body(categoryAPIDTO);
     }
 
+
+    @GetMapping("/textcategories")
+    public ResponseEntity<?> getIndex(
+                                      @RequestParam(name = "page", required = false) Integer page,
+                                      @RequestParam(name = "limit", required = false) Integer limit) {
+        final int LIMIT = 50;
+
+        Iterable<TextCategory> textCategoriesIter = null;
+
+        if (page != null && limit != null) {
+            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, limit));
+        } else if (page != null) {
+            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, LIMIT));
+        } else if (limit != null) {
+            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, limit));
+        }
+
+        CategoryAPIDTO<Iterable<TextCategory>> categoryAPIDTO = new CategoryAPIDTO<Iterable<TextCategory>>("success",
+                textCategoriesIter);
+
+        return ResponseEntity.status(HttpStatus.OK).body(categoryAPIDTO);
+    }
 }
