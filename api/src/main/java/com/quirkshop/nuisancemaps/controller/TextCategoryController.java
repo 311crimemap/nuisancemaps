@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -79,4 +81,33 @@ public class TextCategoryController {
 
         return ResponseEntity.status(HttpStatus.OK).body(categoryAPIDTO);
     }
+
+
+    // curl -X DELETE localhost:8080/textcategories/<id>
+    @DeleteMapping("/textcategories/{id}")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") final int id) {
+
+        HashMap<String, String> response = new HashMap<String, String>();
+        response.put("numDeleted", "0");
+
+        CategoryAPIDTO<HashMap<String, String>> categoryAPIDTO = new CategoryAPIDTO<HashMap<String, String>>("success",
+                response);
+
+        if (textCategoryRepository.existsById(id)) {
+            try {
+                textCategoryRepository.deleteById(id);
+                response.put("numDeleted", "1");
+                categoryAPIDTO.setData(response);
+                return ResponseEntity.ok().body(categoryAPIDTO);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                categoryAPIDTO.setStatus("error");
+                return ResponseEntity.badRequest().body(categoryAPIDTO);
+            }
+        }
+
+        categoryAPIDTO.setStatus("error");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryAPIDTO);
+    }
+
 }
