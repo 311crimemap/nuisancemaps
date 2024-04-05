@@ -34,22 +34,31 @@ public class TextCategoryService {
     CategoryService categoryService;
 
     private HashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap;
-    private HashMap<Integer, Integer> data311CategoryLabeltoIdMap;
+    private HashMap<Integer, Integer> data311CategoryLabelToIdMap;
+    private HashMap<String, Integer> dataCrimeTextToCategoryIdMap;
+    private HashMap<String, Integer> data311TextToCategoryIdMap;
 
     public TextCategoryService() {
         dataCrimeCategoryLabelToIdMap = new HashMap<Integer, Integer>();
-        data311CategoryLabeltoIdMap = new HashMap<Integer, Integer>();
+        data311CategoryLabelToIdMap = new HashMap<Integer, Integer>();
+        dataCrimeTextToCategoryIdMap = new HashMap<String, Integer>();
+        data311TextToCategoryIdMap = new HashMap<String, Integer>();
     }
 
     @PostConstruct
     public void initMaps() {
+        log.info("[TextCategoryService] initMap");
+
         // only want labels
-        initMap(dataCrimeCategoryLabelToIdMap, "crime");
-        initMap(data311CategoryLabeltoIdMap, "311");
+        initCategoryLabelMap(dataCrimeCategoryLabelToIdMap, "crime");
+        initCategoryLabelMap(data311CategoryLabelToIdMap, "311");
+
+        // lookups text -> category_id during data creation
+        loadTextCategoryIdMap(dataCrimeTextToCategoryIdMap, "crime");
+        loadTextCategoryIdMap(data311TextToCategoryIdMap, "311");
     }
 
-    public void initMap(HashMap<Integer, Integer> map, String dataType) {
-        log.info("[TextCategoryService] initMap: " + dataType);
+    public void initCategoryLabelMap(HashMap<Integer, Integer> map, String dataType) {
 
         List<Category> data = categoryRepository.findAllByDataType(dataType);
 
@@ -57,6 +66,13 @@ public class TextCategoryService {
             if (category.getLabel() == null)
                 continue;
             map.put(category.getLabel(), category.getId());
+        }
+    }
+
+    public void loadTextCategoryIdMap(HashMap<String, Integer> map, String dataType) {
+        List<TextCategory> textCategories = textCategoryRepository.findAllByDataType(dataType);
+        for (TextCategory textCategory: textCategories) {
+            map.put(textCategory.getText(), textCategory.getCategory().getId());
         }
     }
 
@@ -75,7 +91,7 @@ public class TextCategoryService {
             if (textLabelDTO.getDataType().equals("crime")) {
                 mapping = dataCrimeCategoryLabelToIdMap;
             } else {
-                mapping = data311CategoryLabeltoIdMap;
+                mapping = data311CategoryLabelToIdMap;
             }
 
             category_id = mapping.getOrDefault(textLabelDTO.getLabel(), null);
@@ -111,11 +127,55 @@ public class TextCategoryService {
     }
 
     public HashMap<Integer, Integer> getData311CategoryLabelToIdMap() {
-        return data311CategoryLabeltoIdMap;
+        return data311CategoryLabelToIdMap;
     }
 
     public void setData311CategoryLabelToIdMap(HashMap<Integer, Integer> data311Map) {
-        this.data311CategoryLabeltoIdMap = data311Map;
+        this.data311CategoryLabelToIdMap = data311Map;
+    }
+
+    public static Logger getLog() {
+        return log;
+    }
+
+    public CategoryRepository getCategoryRepository() {
+        return categoryRepository;
+    }
+
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    public TextCategoryRepository getTextCategoryRepository() {
+        return textCategoryRepository;
+    }
+
+    public void setTextCategoryRepository(TextCategoryRepository textCategoryRepository) {
+        this.textCategoryRepository = textCategoryRepository;
+    }
+
+    public CategoryService getCategoryService() {
+        return categoryService;
+    }
+
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    public HashMap<String, Integer> getDataCrimeTextToCategoryIdMap() {
+        return dataCrimeTextToCategoryIdMap;
+    }
+
+    public void setDataCrimeTextToCategoryIdMap(HashMap<String, Integer> dataCrimeTextToCategoryIdMap) {
+        this.dataCrimeTextToCategoryIdMap = dataCrimeTextToCategoryIdMap;
+    }
+
+    public HashMap<String, Integer> getData311TextToCategoryIdMap() {
+        return data311TextToCategoryIdMap;
+    }
+
+    public void setData311TextToCategoryIdMap(HashMap<String, Integer> data311TextToCategoryIdMap) {
+        this.data311TextToCategoryIdMap = data311TextToCategoryIdMap;
     }
 
 }

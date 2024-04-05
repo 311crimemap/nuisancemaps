@@ -12,4 +12,6 @@ public interface TextCategoryRepository extends CrudRepository<TextCategory, Int
     public List<TextCategory> findAllByOrderByCreatedAtDesc(PageRequest n);
 
     public TextCategory findByDataTypeAndText(String dataType, String text);
+
+    public List<TextCategory> findAllByDataType(String dataType);
 }

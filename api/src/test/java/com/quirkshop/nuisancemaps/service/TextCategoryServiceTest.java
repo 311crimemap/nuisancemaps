@@ -11,6 +11,7 @@ import com.quirkshop.nuisancemaps.dto.CategoryGroupDTO;
 import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.TextCategory;
+import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -29,6 +30,9 @@ public class TextCategoryServiceTest {
     private ResourceLoader resourceLoader;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private TextCategoryRepository textCategoryRepository;
 
     @Autowired
@@ -43,7 +47,7 @@ public class TextCategoryServiceTest {
      */
     @Test
     @Transactional
-    public void postConstructorTest() throws IOException {
+    public void postConstructorCategoryLabelTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Resource jsonResource = resourceLoader.getResource("classpath:data/classifier_categories.json");
         CategoryGroupDTO categoryGroupDTO = objectMapper.readValue(jsonResource.getFile(),
@@ -70,6 +74,35 @@ public class TextCategoryServiceTest {
 
         assertThat(data311CategoryLabelToIdMap.size()).isEqualTo(num311);
         assertThat(dataCrimeCategoryLabelToIdMap.size()).isEqualTo(numCrime);
+    }
+
+    @Test
+    @Transactional
+    public void postConstructorTextCategoryIdTest() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Resource jsonResource = resourceLoader.getResource("classpath:data/classifier_categories.json");
+        CategoryGroupDTO categoryGroupDTO = objectMapper.readValue(jsonResource.getFile(),
+                CategoryGroupDTO.class);
+
+        categoryService.createCategoriesDTO(categoryGroupDTO);
+
+        List<Category> cat311s = categoryRepository.findAllByDataType("311");
+        List<Category> catCrimes = categoryRepository.findAllByDataType("crime");
+        TextCategory t1 = new TextCategory("311", "test1", cat311s.get(0));
+        TextCategory t2 = new TextCategory("crime", "test2", catCrimes.get(0));
+        textCategoryRepository.save(t1);
+        textCategoryRepository.save(t2);
+
+        textCategoryService.initMaps();
+
+        HashMap<String, Integer> data311TextCatMap = textCategoryService.getData311TextToCategoryIdMap();
+        HashMap<String, Integer> dataCrimeTextCatMap = textCategoryService.getDataCrimeTextToCategoryIdMap();
+
+        assertThat(data311TextCatMap.size()).isEqualTo(1);
+        assertThat(dataCrimeTextCatMap.size()).isEqualTo(1);
+
+        assertThat(data311TextCatMap.get(t1.getText())).isEqualTo(t1.getCategory().getId());
+        assertThat(dataCrimeTextCatMap.get(t2.getText())).isEqualTo(t2.getCategory().getId());
     }
 
     @Test
