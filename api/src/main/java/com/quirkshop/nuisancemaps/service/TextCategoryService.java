@@ -16,7 +16,6 @@ import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.annotation.PostConstruct;
 
@@ -34,19 +33,19 @@ public class TextCategoryService {
     @Autowired
     CategoryService categoryService;
 
-    private HashMap<Integer, Integer> dataCrimeLabelToIdMap;
-    private HashMap<Integer, Integer> data311LabeltoIdMap;
+    private HashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap;
+    private HashMap<Integer, Integer> data311CategoryLabeltoIdMap;
 
     public TextCategoryService() {
-        dataCrimeLabelToIdMap = new HashMap<Integer, Integer>();
-        data311LabeltoIdMap = new HashMap<Integer, Integer>();
+        dataCrimeCategoryLabelToIdMap = new HashMap<Integer, Integer>();
+        data311CategoryLabeltoIdMap = new HashMap<Integer, Integer>();
     }
 
     @PostConstruct
     public void initMaps() {
         // only want labels
-        initMap(dataCrimeLabelToIdMap, "crime");
-        initMap(data311LabeltoIdMap, "311");
+        initMap(dataCrimeCategoryLabelToIdMap, "crime");
+        initMap(data311CategoryLabeltoIdMap, "311");
     }
 
     public void initMap(HashMap<Integer, Integer> map, String dataType) {
@@ -74,9 +73,9 @@ public class TextCategoryService {
         for (TextLabelDTO textLabelDTO : textLabelDTOs) {
 
             if (textLabelDTO.getDataType().equals("crime")) {
-                mapping = dataCrimeLabelToIdMap;
+                mapping = dataCrimeCategoryLabelToIdMap;
             } else {
-                mapping = data311LabeltoIdMap;
+                mapping = data311CategoryLabeltoIdMap;
             }
 
             category_id = mapping.getOrDefault(textLabelDTO.getLabel(), null);
@@ -103,20 +102,20 @@ public class TextCategoryService {
         return res;
     }
 
-    public HashMap<Integer, Integer> getDataCrimeLabelToIdMap() {
-        return dataCrimeLabelToIdMap;
+    public HashMap<Integer, Integer> getDataCrimeCategoryLabelToIdMap() {
+        return dataCrimeCategoryLabelToIdMap;
     }
 
-    public void setDataCrimeLabelToIdMap(HashMap<Integer, Integer> dataCrimeMap) {
-        this.dataCrimeLabelToIdMap = dataCrimeMap;
+    public void setDataCrimeCategoryLabelToIdMap(HashMap<Integer, Integer> dataCrimeMap) {
+        this.dataCrimeCategoryLabelToIdMap = dataCrimeMap;
     }
 
-    public HashMap<Integer, Integer> getData311LabelToIdMap() {
-        return data311LabeltoIdMap;
+    public HashMap<Integer, Integer> getData311CategoryLabelToIdMap() {
+        return data311CategoryLabeltoIdMap;
     }
 
-    public void setData311LabelToIdMap(HashMap<Integer, Integer> data311Map) {
-        this.data311LabeltoIdMap = data311Map;
+    public void setData311CategoryLabelToIdMap(HashMap<Integer, Integer> data311Map) {
+        this.data311CategoryLabeltoIdMap = data311Map;
     }
 
 }

@@ -53,8 +53,8 @@ public class TextCategoryServiceTest {
 
         textCategoryService.initMaps();
 
-        HashMap<Integer, Integer> data311LabelToIdMap = textCategoryService.getData311LabelToIdMap();
-        HashMap<Integer, Integer> dataCrimeLabelToIdMap = textCategoryService.getDataCrimeLabelToIdMap();
+        HashMap<Integer, Integer> data311CategoryLabelToIdMap = textCategoryService.getData311CategoryLabelToIdMap();
+        HashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap = textCategoryService.getDataCrimeCategoryLabelToIdMap();
 
         // count number of categories with labels (no parents, just
         // subcategories)
@@ -68,8 +68,8 @@ public class TextCategoryServiceTest {
             numCrime += c.getSubcategories().size();
         }
 
-        assertThat(data311LabelToIdMap.size()).isEqualTo(num311);
-        assertThat(dataCrimeLabelToIdMap.size()).isEqualTo(numCrime);
+        assertThat(data311CategoryLabelToIdMap.size()).isEqualTo(num311);
+        assertThat(dataCrimeCategoryLabelToIdMap.size()).isEqualTo(numCrime);
     }
 
     @Test
