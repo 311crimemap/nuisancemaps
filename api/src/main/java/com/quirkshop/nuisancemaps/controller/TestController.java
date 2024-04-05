@@ -83,7 +83,7 @@ public class TestController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
         DataCrime d = new DataCrime(s);
         d.setReportNum("2024240131387");
-        d.setCategory("DWI 2nd");
+        d.setReportCategory("DWI 2nd");
         d.setDescription("abdef");
         d.setLocation("PARKING/ DROP LOT/ GARAGE");
         d.setLatitude(lat);

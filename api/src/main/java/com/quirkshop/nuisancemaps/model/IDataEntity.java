@@ -13,7 +13,7 @@ public interface IDataEntity {
 
     public void setReportNum(String reportNum);
 
-    public void setCategory(String category);
+    public void setReportCategory(String category);
 
     public void setDescription(String description);
 

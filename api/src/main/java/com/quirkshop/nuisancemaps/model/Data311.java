@@ -43,7 +43,7 @@ public class Data311 implements IDataEntity {
     private Source source;
 
     private String reportNum; // indexed in db
-    private String category;
+    private String reportCategory;
     private String description;
     private String location;
 
@@ -108,12 +108,12 @@ public class Data311 implements IDataEntity {
         this.reportNum = reportNum;
     }
 
-    public String getCategory() {
-        return category;
+    public String getReportCategory() {
+        return reportCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setReportCategory(String reportCategory) {
+        this.reportCategory = reportCategory;
     }
 
     public String getDescription() {

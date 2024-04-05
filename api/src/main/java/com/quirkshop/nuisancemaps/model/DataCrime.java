@@ -42,7 +42,7 @@ public class DataCrime implements IDataEntity {
     private Source source;
 
     private String reportNum;
-    private String category;
+    private String reportCategory;
     private String description;
     private String location;
 
@@ -107,12 +107,12 @@ public class DataCrime implements IDataEntity {
         this.reportNum = reportNum;
     }
 
-    public String getCategory() {
-        return category;
+    public String getReportCategory() {
+        return reportCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setReportCategory(String category) {
+        this.reportCategory = category;
     }
 
     public String getDescription() {

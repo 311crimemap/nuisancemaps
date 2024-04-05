@@ -218,7 +218,7 @@ public class DataService {
 
         Map<String, Object> mapping = source.getMapping();
         String report_num = responseObject.get(mapping.get("report_num")).toString();
-        String category = responseObject.get(mapping.get("category")).toString();
+        String reportCategory = responseObject.get(mapping.get("category")).toString();
         String description = responseObject.getOrDefault(mapping.get("description"), "").toString();
         String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
         String lat = responseObject.getOrDefault(mapping.get("latitude"), "").toString();
@@ -248,10 +248,10 @@ public class DataService {
         //source.category: crime / 311 / etc
         //dataEntity.category: data report instance from raw data
         //Category: our created, labeled categories
-        Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), category);
+        Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
 
         dataEntity.setReportNum(report_num);
-        dataEntity.setCategory(category);
+        dataEntity.setReportCategory(reportCategory);
         dataEntity.setDescription(description.isEmpty() ? null : description);
         dataEntity.setLocation(location.isEmpty() ? null : location);
         dataEntity.setOrgCategory(orgCategory);
