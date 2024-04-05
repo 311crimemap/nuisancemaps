@@ -47,6 +47,10 @@ public class Data311 implements IDataEntity {
     private String description;
     private String location;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = true)
+    private Category orgCategory;
+
     private Double latitude;
     private Double longitude;
 
@@ -126,6 +130,14 @@ public class Data311 implements IDataEntity {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Category getOrgCategory() {
+        return orgCategory;
+    }
+
+    public void setOrgCategory(Category orgCategory) {
+        this.orgCategory = orgCategory;
     }
 
     public Double getLatitude() {
