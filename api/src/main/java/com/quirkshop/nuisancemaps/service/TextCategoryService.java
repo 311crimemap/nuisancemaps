@@ -76,6 +76,31 @@ public class TextCategoryService {
         }
     }
 
+    public void refreshTextCategoryIdMap() {
+        loadTextCategoryIdMap(dataCrimeTextToCategoryIdMap, "crime");
+        loadTextCategoryIdMap(data311TextToCategoryIdMap, "311");
+    }
+
+    public Category lookupCategory(String dataType, String text) {
+
+        Integer id = null;
+
+        //default crime
+        HashMap<String, Integer> map = dataCrimeTextToCategoryIdMap;
+
+        if (dataType.equals("311"))
+            map = data311TextToCategoryIdMap;
+
+
+        id = map.getOrDefault(text, null);
+
+        if (id == null) return null;
+
+        Category c = new Category();
+        c.setId(id);
+        return c;
+    }
+
     // takes (text, label) array,
     // look up each label to get associated category id
     // save in TextCategory (text, cat_id)

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
@@ -52,6 +53,9 @@ public class DataService {
 
     @Autowired
     private DataErrorRepository dataErrorRepository;
+
+    @Autowired
+    private TextCategoryService textCategoryService;
 
     // Types
     private Class<? extends IDataEntity> dataEntityClass;
@@ -134,6 +138,9 @@ public class DataService {
         Map<String, Object> mapping = source.getMapping();
         HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
         List<String> report_nums = new ArrayList<String>(responseList.size());
+
+        //refresh lookups TextCategoryIdMap
+        textCategoryService.refreshTextCategoryIdMap();
 
         for (Map<String, Object> responseObject : responseList) {
 
@@ -234,6 +241,12 @@ public class DataService {
                 : LocalDateTime.parse(reported_at1);
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
+
+        //categories clarification
+        //source.category: crime / 311 / etc
+        //dataEntity.category: data report instance from raw data
+        //Category: our created, labeled categories
+        Category temp = textCategoryService.lookupCategory(source.getCategory(), category);
 
         dataEntity.setReportNum(report_num);
         dataEntity.setCategory(category);
