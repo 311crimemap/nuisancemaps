@@ -64,14 +64,15 @@ public class TextCategoryService {
     // takes (text, label) array,
     // look up each label to get associated category id
     // save in TextCategory (text, cat_id)
-    public Iterable<TextCategory> createTextCategories(List<TextLabelDTO> textLabelDTOs) {
-        int num = 0;
+    public List<TextCategory> createTextCategories(List<TextLabelDTO> textLabelDTOs) {
+
         List<TextCategory> res = new ArrayList<TextCategory>();
 
         // lookup each in map
         Integer category_id = null;
         HashMap<Integer, Integer> mapping = null;
         for (TextLabelDTO textLabelDTO : textLabelDTOs) {
+
             if (textLabelDTO.getDataType().equals("crime")) {
                 mapping = dataCrimeLabelToIdMap;
             } else {
@@ -84,21 +85,22 @@ public class TextCategoryService {
                 continue;
             }
 
-            // create new TextCategory
-            //Category temp = new Category();
             Category temp = categoryRepository.findById(category_id).orElse(null);
 
             TextCategory tc = new TextCategory(textLabelDTO.getDataType(),
                     textLabelDTO.getText(),
                     temp);
 
-            res.add(tc);
-            num++;
+            try {
+                textCategoryRepository.save(tc);
+                res.add(tc);
+            } catch(DataIntegrityViolationException e) {
+                log.error(e.getMessage());
+            }
 
         }
 
-        //marked as transactional
-        return textCategoryRepository.saveAll(res);
+        return res;
     }
 
     public HashMap<Integer, Integer> getDataCrimeLabelToIdMap() {

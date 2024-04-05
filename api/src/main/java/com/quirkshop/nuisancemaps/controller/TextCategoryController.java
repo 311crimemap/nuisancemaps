@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,28 +43,28 @@ public class TextCategoryController {
 
     @PostMapping("/textcategories")
     public ResponseEntity<?> create(@RequestBody List<TextLabelDTO> textLabelDTOs) {
-        HashMap<String, Iterable<TextCategory>> response = new HashMap<String, Iterable<TextCategory>>();
-        CategoryAPIDTO<HashMap<String, Iterable<TextCategory>>> categoryAPIDTO;
+        CategoryAPIDTO<List<TextCategory>> categoryAPIDTO;
 
         try {
-            Iterable<TextCategory> res = textCategoryService.createTextCategories(textLabelDTOs);
-            response.put("data", res);
-            categoryAPIDTO = new CategoryAPIDTO<HashMap<String, Iterable<TextCategory>>>("success", response);
+            List<TextCategory> res = textCategoryService.createTextCategories(textLabelDTOs);
+            if (res.size() > 0) {
+                categoryAPIDTO = new CategoryAPIDTO<List<TextCategory>>("success", res);
+            } else {
+                categoryAPIDTO = new CategoryAPIDTO<List<TextCategory>>("nothing saved", res);
+            }
+
         } catch (Exception e) {
             log.error(e.getMessage());
-            HashMap<String, String> error = new HashMap<String, String>();
-            error.put("message", e.getMessage());
-            return ResponseEntity.badRequest().body(new CategoryAPIDTO<HashMap<String, String>>("error", error));
+            return ResponseEntity.badRequest().body(new CategoryAPIDTO<String>("error", e.getMessage()));
         }
 
         return ResponseEntity.ok().body(categoryAPIDTO);
     }
 
-
     @GetMapping("/textcategories")
     public ResponseEntity<?> getIndex(
-                                      @RequestParam(name = "page", required = false) Integer page,
-                                      @RequestParam(name = "limit", required = false) Integer limit) {
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "limit", required = false) Integer limit) {
         final int LIMIT = 50;
 
         Iterable<TextCategory> textCategoriesIter = null;
@@ -74,6 +75,8 @@ public class TextCategoryController {
             textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, LIMIT));
         } else if (limit != null) {
             textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, limit));
+        } else {
+            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(null);
         }
 
         CategoryAPIDTO<Iterable<TextCategory>> categoryAPIDTO = new CategoryAPIDTO<Iterable<TextCategory>>("success",
@@ -82,32 +85,26 @@ public class TextCategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryAPIDTO);
     }
 
-
     // curl -X DELETE localhost:8080/textcategories/<id>
     @DeleteMapping("/textcategories/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") final int id) {
 
-        HashMap<String, String> response = new HashMap<String, String>();
-        response.put("numDeleted", "0");
-
-        CategoryAPIDTO<HashMap<String, String>> categoryAPIDTO = new CategoryAPIDTO<HashMap<String, String>>("success",
-                response);
-
         if (textCategoryRepository.existsById(id)) {
+
             try {
+                TextCategory tc = textCategoryRepository.findById(id).orElse(null);
                 textCategoryRepository.deleteById(id);
-                response.put("numDeleted", "1");
-                categoryAPIDTO.setData(response);
-                return ResponseEntity.ok().body(categoryAPIDTO);
+
+                return ResponseEntity.ok().body(new CategoryAPIDTO<TextCategory>("success", tc));
             } catch (Exception e) {
                 log.error(e.getMessage());
-                categoryAPIDTO.setStatus("error");
-                return ResponseEntity.badRequest().body(categoryAPIDTO);
+                return ResponseEntity.badRequest()
+                        .body(new CategoryAPIDTO<String>("error", e.getMessage()));
             }
         }
 
-        categoryAPIDTO.setStatus("error");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryAPIDTO);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new CategoryAPIDTO<String>("Not Found", null));
     }
 
 }
