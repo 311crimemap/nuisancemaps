@@ -19,6 +19,8 @@ public interface IDataEntity {
 
     public void setLocation(String location);
 
+    public void setOrgCategory(Category orgCategory);
+
     public void setLatitude(Double latitude);
 
     public void setLongitude(Double longitude);

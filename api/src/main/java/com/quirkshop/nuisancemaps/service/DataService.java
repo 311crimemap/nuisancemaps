@@ -242,16 +242,19 @@ public class DataService {
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
+        //TODO: refactor
+        //
         //categories clarification
         //source.category: crime / 311 / etc
         //dataEntity.category: data report instance from raw data
         //Category: our created, labeled categories
-        Category temp = textCategoryService.lookupCategory(source.getCategory(), category);
+        Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), category);
 
         dataEntity.setReportNum(report_num);
         dataEntity.setCategory(category);
         dataEntity.setDescription(description.isEmpty() ? null : description);
         dataEntity.setLocation(location.isEmpty() ? null : location);
+        dataEntity.setOrgCategory(orgCategory);
         dataEntity.setLatitude(latitude);
         dataEntity.setLongitude(longitude);
         dataEntity.setPoint(point);
