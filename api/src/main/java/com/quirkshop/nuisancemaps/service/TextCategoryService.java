@@ -70,6 +70,7 @@ public class TextCategoryService {
     }
 
     public void loadTextCategoryIdMap(HashMap<String, Integer> map, String dataType) {
+        map.clear();
         List<TextCategory> textCategories = textCategoryRepository.findAllByDataType(dataType);
         for (TextCategory textCategory: textCategories) {
             map.put(textCategory.getText(), textCategory.getCategory().getId());

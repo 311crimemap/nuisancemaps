@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
@@ -139,7 +140,7 @@ public class DataService {
         HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
         List<String> report_nums = new ArrayList<String>(responseList.size());
 
-        //refresh lookups TextCategoryIdMap
+        // refresh lookups TextCategoryIdMap
         textCategoryService.refreshTextCategoryIdMap();
 
         for (Map<String, Object> responseObject : responseList) {
@@ -214,7 +215,8 @@ public class DataService {
 
     public IDataEntity buildDataEntity(Source source, Map<String, Object> responseObject,
             GeometryFactory geometryFactory)
-            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
+            MissingCategoryException {
 
         Map<String, Object> mapping = source.getMapping();
         String report_num = responseObject.get(mapping.get("report_num")).toString();
@@ -242,13 +244,18 @@ public class DataService {
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
-        //TODO: refactor
+        // TODO: refactor
         //
-        //categories clarification
-        //source.category: crime / 311 / etc
-        //dataEntity.report_category: data report instance from raw data
-        //Category: our created, labeled categories
+        // categories clarification
+        // source.category: crime / 311 / etc
+        // dataEntity.report_category: data report instance from raw data
+        // Category: our created, labeled categories
         Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
+        if (orgCategory == null) {
+            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s", reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
+                    source.getUrl());
+            throw new MissingCategoryException(errString);
+        }
 
         dataEntity.setReportNum(report_num);
         dataEntity.setReportCategory(reportCategory);
