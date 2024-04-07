@@ -1,30 +1,43 @@
 package com.quirkshop.nuisancemaps.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.assertj.core.util.Arrays;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.FileCopyUtils;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
+import com.quirkshop.nuisancemaps.model.Category;
+import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.TextCategory;
+import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class DataServiceTest {
@@ -48,7 +61,38 @@ public class DataServiceTest {
     private DataCrimeRepository dataCrimeRepository;
 
     @Autowired
+    private Data311Repository data311Repository;
+
+    @Autowired
     private DataErrorRepository dataErrorRepository;
+
+    @Autowired
+    private TextCategoryRepository textCategoryRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TextCategoryService textCategoryService;
+
+    @BeforeEach
+    public void setUp() {
+        //require textCategory mapping to exist before successful save
+        //otherwise will throw MissingCategoryException and skip
+        Category cat = new Category("crime", "Public Order", 0, null);
+        Category cat2 = new Category("crime", "Theft", 1, null);
+        categoryRepository.save(cat);
+        categoryRepository.save(cat2);
+        TextCategory tc = new TextCategory("crime", "DWI 2ND", cat);
+        TextCategory tc2 = new TextCategory("crime", "THEFT BY SHOPLIFTING", cat2);
+        textCategoryRepository.save(tc);
+        textCategoryRepository.save(tc2);
+
+        cat = new Category("311", "Noise", 1, null);
+        categoryRepository.save(cat);
+        tc = new TextCategory("311", "APD - Non Emergency Noise/Alarm", cat);
+        textCategoryRepository.save(tc);
+    }
 
     @Test
     @Transactional
@@ -160,5 +204,38 @@ public class DataServiceTest {
         assertThat(dataErrors.get(1).getContent()).isEqualTo(objectMapperResponse);
         assertThat(dataErrors.get(1).getErrorMsg()).contains("DataService.createDataEntities");
         assertThat(d.getStatus()).isEqualTo(DataJobStatus.ERROR);
+    }
+
+    @Test
+    @Transactional
+    public void createDataEntityMissingCategoryException() throws IOException {
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
+
+        // Source
+        sourceLoaderService.loadJSON("data/source_config.json");
+        Source s = sourceLoaderService.findBySourceConfigID(2);
+        sourceRepository.save(s);
+
+        // DataJob to crawl: stub job and fetch with json fixture response
+        // Read the content of the JSON file vs actual fetch
+        DataJob d = new DataJob(s, 1000, 100, "sr_number");
+        dataJobRepository.save(d);
+
+        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
+                StandardCharsets.UTF_8);
+
+        // remove mapping
+        textCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
+        textCategoryService.refreshTextCategoryIdMap();
+
+        // trigger error with missing textCategory lookup in buildDataEntity
+        List<Map<String, Object>> responseList = dataService.parseData(s, d, jsonResponse);
+        Map<String, Object> responseObject = responseList.get(0);
+        GeometryFactory geometryFactory = new GeometryFactory();
+        assertThrows(MissingCategoryException.class, () -> {
+                dataService.buildDataEntity(s, responseObject, geometryFactory);
+            });
     }
 }

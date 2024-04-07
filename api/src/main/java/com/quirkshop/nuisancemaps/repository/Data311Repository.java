@@ -33,7 +33,7 @@ public interface Data311Repository extends IDataEntityRepository<Data311>, CrudR
 
                     GeometryDTO g = new GeometryDTO("Point",
                             new Double[] { data311.getLongitude(), data311.getLatitude(), 0.0 });
-                    PropertiesDTO p = new PropertiesDTO(data311.getCategory(),
+                    PropertiesDTO p = new PropertiesDTO(data311.getReportCategory(),
                             data311.getLocation(),
                             data311.getReportedAt(), data311.getReportNum());
                     FeatureDTO f = new FeatureDTO("Feature", g, p);

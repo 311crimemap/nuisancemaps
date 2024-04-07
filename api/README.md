@@ -47,6 +47,22 @@ Reminds and Notes on Spring Boot Setup
 
 This serves as an ORM description (via hibernate), but the database backing "migration" is managed via liquibase.
 
+##### TextCategory / Category
+
+These are all submitted prior to worker requests.
+
+* `Category` is best-guess,predefined
+* `TextCategory` submitted via api. The initial labels are generated via
+  openAI's api, using `classifer/openai_311.sh`, and `classifer/openai_crime.sh`
+  scripts. They are then reviewed manually for accuracy.
+
+
+* Each `dataEntity` (311/crime) has a label - used for grouping, filtering.
+* These are predefined as `Category` records
+* `TextCategoryService` has a lookup function, mapping `reportCategory` -> `category_id` for each `TextCategory`.
+  * `TextCategory` contains all instances of labeled mappings.
+
+
 ### Repository Class
 
 An interface for a model, based on extending a pre-existing repository class. Separate of concerns. [https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/package-summary.html](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/package-summary.html)
@@ -686,7 +702,7 @@ Motivated to reduce code repetition by leveraging common interfaces.
 
 ### Commands
 
-#### Spring
+\#### Spring
 
 * `mvnw dependency:tree`: `pom.xml` libs, dependencies and their versions
 * `mvnw spring-boot:run`

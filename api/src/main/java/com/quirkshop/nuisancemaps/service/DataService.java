@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
+import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
@@ -52,6 +54,9 @@ public class DataService {
 
     @Autowired
     private DataErrorRepository dataErrorRepository;
+
+    @Autowired
+    private TextCategoryService textCategoryService;
 
     // Types
     private Class<? extends IDataEntity> dataEntityClass;
@@ -135,6 +140,9 @@ public class DataService {
         HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
         List<String> report_nums = new ArrayList<String>(responseList.size());
 
+        // refresh lookups TextCategoryIdMap
+        textCategoryService.refreshTextCategoryIdMap();
+
         for (Map<String, Object> responseObject : responseList) {
 
             try {
@@ -207,11 +215,12 @@ public class DataService {
 
     public IDataEntity buildDataEntity(Source source, Map<String, Object> responseObject,
             GeometryFactory geometryFactory)
-            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
+            MissingCategoryException {
 
         Map<String, Object> mapping = source.getMapping();
         String report_num = responseObject.get(mapping.get("report_num")).toString();
-        String category = responseObject.get(mapping.get("category")).toString();
+        String reportCategory = responseObject.get(mapping.get("report_category")).toString();
         String description = responseObject.getOrDefault(mapping.get("description"), "").toString();
         String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
         String lat = responseObject.getOrDefault(mapping.get("latitude"), "").toString();
@@ -235,10 +244,24 @@ public class DataService {
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
+        // TODO: refactor
+        //
+        // categories clarification
+        // source.category: crime / 311 / etc
+        // dataEntity.report_category: data report instance from raw data
+        // Category: our created, labeled categories
+        Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
+        if (orgCategory == null) {
+            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s", reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
+                    source.getUrl());
+            throw new MissingCategoryException(errString);
+        }
+
         dataEntity.setReportNum(report_num);
-        dataEntity.setCategory(category);
+        dataEntity.setReportCategory(reportCategory);
         dataEntity.setDescription(description.isEmpty() ? null : description);
         dataEntity.setLocation(location.isEmpty() ? null : location);
+        dataEntity.setOrgCategory(orgCategory);
         dataEntity.setLatitude(latitude);
         dataEntity.setLongitude(longitude);
         dataEntity.setPoint(point);

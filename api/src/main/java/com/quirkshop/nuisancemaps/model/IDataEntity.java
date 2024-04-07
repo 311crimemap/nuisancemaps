@@ -13,11 +13,13 @@ public interface IDataEntity {
 
     public void setReportNum(String reportNum);
 
-    public void setCategory(String category);
+    public void setReportCategory(String category);
 
     public void setDescription(String description);
 
     public void setLocation(String location);
+
+    public void setOrgCategory(Category orgCategory);
 
     public void setLatitude(Double latitude);
 
