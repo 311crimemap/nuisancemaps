@@ -39,7 +39,7 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
 
                     GeometryDTO g = new GeometryDTO("Point",
                                                     new Double[] { dataCrime.getLongitude(), dataCrime.getLatitude(), 0.0 });
-                    PropertiesDTO p = new PropertiesDTO(dataCrime.getCategory(),
+                    PropertiesDTO p = new PropertiesDTO(dataCrime.getReportCategory(),
                                                         dataCrime.getLocation(),
                                                         dataCrime.getReportedAt(), dataCrime.getReportNum());
                     FeatureDTO f = new FeatureDTO("Feature", g, p);

@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 public class PropertiesDTO {
     private String reportNum;
-    private String category;
+    private String reportCategory;
     private String location;
     private LocalDateTime reportedAt;
 
-    public PropertiesDTO(String category, String location, LocalDateTime reportedAt, String reportNum) {
-        this.category = category;
+    public PropertiesDTO(String reportCategory, String location, LocalDateTime reportedAt, String reportNum) {
+        this.reportCategory = reportCategory;
         this.location = location;
         this.reportedAt = reportedAt;
         this.reportNum = reportNum;
@@ -23,12 +23,12 @@ public class PropertiesDTO {
         this.reportNum = reportNum;
     }
 
-    public String getCategory() {
-        return category;
+    public String getReportCategory() {
+        return reportCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setReportCategory(String category) {
+        this.reportCategory = category;
     }
 
     public String getLocation() {
