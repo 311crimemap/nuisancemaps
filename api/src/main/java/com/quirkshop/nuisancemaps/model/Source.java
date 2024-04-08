@@ -40,7 +40,7 @@ public class Source {
     private String url;
     private Integer numRecords;
 
-    @OneToOne
+    @OneToOne //NB: creates unique constraint mapping_id
     @JoinColumn(name = "mapping_id", nullable = false)
     private Mapping mapping;
 

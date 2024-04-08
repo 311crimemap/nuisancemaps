@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.repository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
+import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
@@ -23,15 +25,35 @@ public class DataJobRepositoryTest {
     DataJobRepository dataJobRepository;
 
     @Autowired
+    public MappingRepository mappingRepository;
+
+    @Autowired
     public SourceRepository sourceRepository;
+
+    private Mapping mapping;
+    private Mapping mapping2;
+    private Source source;
+    private Source source2;
+
+
+    @BeforeEach
+    public void setUp() {
+        mapping = new Mapping();
+        mapping2 = new Mapping();
+        mappingRepository.save(mapping);
+        mappingRepository.save(mapping2);
+        source = new Source("category", "description", "url");
+        source2 = new Source("category", "description", "url");
+        source.setMapping(mapping);
+        source2.setMapping(mapping2);
+        sourceRepository.save(source);
+        sourceRepository.save(source2);
+    }
+
 
     @Test
     @Transactional
     public void findLastDataJobBySourceTest() {
-        Source source = new Source("category", "description", "url");
-        Source source2 = new Source("category", "description", "url");
-        sourceRepository.save(source);
-        sourceRepository.save(source2);
 
         DataJob datajob = new DataJob(source, 0, 0, "id");
         DataJob datajob2 = new DataJob(source2, 0, 0, "id");
@@ -45,10 +67,6 @@ public class DataJobRepositoryTest {
     @Test
     @Transactional
     public void findTopBySourceIdOrderByOffsetDescTest() {
-        Source source = new Source("category", "description", "url");
-        Source source2 = new Source("category", "description", "url");
-        sourceRepository.save(source);
-        sourceRepository.save(source2);
 
         DataJob datajob = new DataJob(source, 0, 0, "id");
         DataJob datajob2 = new DataJob(source2, 0, 1000, "id");
@@ -62,9 +80,6 @@ public class DataJobRepositoryTest {
     @Test
     @Transactional
     public void updateAllIncompleteBeforeTest() {
-
-        Source source = new Source("category", "description", "url");
-        sourceRepository.save(source);
 
         DataJob datajob1 = new DataJob(source, 0, 0, "id");
         DataJob datajob2 = new DataJob(source, 0, 1000, "id");
