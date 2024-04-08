@@ -9,11 +9,15 @@ import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 
 //@SpringBootTest
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class SourceRepositoryTest {
+
+    @Autowired
+    public MappingRepository mappingRepository;
 
     @Autowired
     public SourceRepository srepo;
@@ -24,7 +28,14 @@ public class SourceRepositoryTest {
     @Test
     @Transactional
     public void SourceRepositoryFindOrCreate() throws Exception {
+        Mapping m = new Mapping();
+        Mapping m2 = new Mapping();
+        mappingRepository.save(m);
+        mappingRepository.save(m2);
+
         Source s = new Source("category", "description", "url");
+        s.setMapping(m);
+
         assertThat(s.getId()).isNull();
         s = srepo.findOrCreate(s);
         assertThat(s.getId()).isNotNull();
@@ -33,6 +44,7 @@ public class SourceRepositoryTest {
         assertThat(s.getId()).isEqualTo(t.getId());
 
         Source x = new Source("category2", "description2", "url2");
+        x.setMapping(m2);
         Source y = srepo.findOrCreate(x);
         assertThat(y.getId()).isNotEqualTo(s.getId());
 

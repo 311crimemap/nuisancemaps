@@ -14,13 +14,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.repository.MappingRepository;
+import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
+
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class SourceLoaderServiceTest {
 
     @Mock
     private RestTemplate restTemplate;
+
+    @Mock
+    private MappingRepository mappingRepository;
 
     @InjectMocks
     private SourceLoaderService sourceLoaderService;
@@ -32,8 +38,8 @@ public class SourceLoaderServiceTest {
         HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
         Source s = sourceMap.get(1);
         assertThat(s).isInstanceOf(Source.class);
-        Map<String, Object> m = s.getMapping();
-        assertThat(m.get("report_num").toString()).isEqualTo("incident_report_number");
+        Mapping m = s.getMapping();
+        assertThat(m.getReportNum()).isEqualTo("incident_report_number");
     }
 
     @Test
@@ -44,7 +50,7 @@ public class SourceLoaderServiceTest {
         sourceLoaderService.loadJSON("data/source_config.json");
         HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
         Source s = sourceMap.get(1);
-        String report_num = s.getMapping().get("report_num").toString();
+        String report_num = s.getMapping().getReportNum();
         String url = sourceLoaderService.buildCountURL(s.getUrl(), report_num);
 
         when(restTemplate.getForObject(url, String.class))

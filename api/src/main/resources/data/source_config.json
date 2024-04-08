@@ -6,21 +6,16 @@
         "category": "crime",
         "description": "Austin Police",
         "numRecords": 2440821,
-        "mappings": [
-            {
-                "version": 1,
-                "mapping": {
-                    "report_num": "incident_report_number",
-                    "report_category": "crime_type",
-                    "description": "",
-                    "location": "location_type",
-                    "latitude": "latitude",
-                    "longitude": "longitude",
-                    "reported_at": "occ_date_time",
-                    "reported_at2": "rep_date_time"
-                }
-            }
-        ]
+        "mapping": {
+            "report_num": "incident_report_number",
+            "report_category": "crime_type",
+            "description": "",
+            "location": "location_type",
+            "latitude": "latitude",
+            "longitude": "longitude",
+            "reported_at": "occ_date_time",
+            "reported_at2": "rep_date_time"
+        }
     },
     {
         "source_config_id": 2,
@@ -29,19 +24,15 @@
         "category": "311",
         "description": "Austin 311",
         "numRecords": 1778332,
-        "mappings": [
-            {
-                "version": 1,
-                "mapping": {
-                    "report_num": "sr_number",
-                    "report_category": "sr_type_desc",
-                    "description": "",
-                    "location": "sr_location",
-                    "latitude": "sr_location_lat",
-                    "longitude": "sr_location_long",
-                    "reported_at": "sr_created_date"
-                }
-            }
-        ]
+        "mapping": {
+            "report_num": "sr_number",
+            "report_category": "sr_type_desc",
+            "description": "",
+            "location": "sr_location",
+            "latitude": "sr_location_lat",
+            "longitude": "sr_location_long",
+            "reported_at": "sr_created_date",
+            "reported_at2": ""
+        }
     }
 ]

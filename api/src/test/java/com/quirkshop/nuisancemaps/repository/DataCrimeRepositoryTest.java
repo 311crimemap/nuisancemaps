@@ -1,10 +1,10 @@
 package com.quirkshop.nuisancemaps.repository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.DataCrime;
+import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
@@ -22,13 +23,34 @@ public class DataCrimeRepositoryTest {
     public DataCrimeRepository datacrime_repo;
 
     @Autowired
+    public MappingRepository mappingRepository;
+
+    @Autowired
     public SourceRepository sourceRepository;
+
+    private Mapping mapping;
+    private Mapping mapping2;
+    private Source s;
+    private Source s2;
+
+    @BeforeEach
+    public void setUp() {
+        mapping = new Mapping();
+        mappingRepository.save(mapping);
+        s = new Source("category", "description", "url");
+        s.setMapping(mapping);
+        sourceRepository.save(s);
+
+        mapping2 = new Mapping();
+        mappingRepository.save(mapping2);
+        s2 = new Source("category", "description", "url");
+        s2.setMapping(mapping2);
+        sourceRepository.save(s2);
+    }
 
     @Test
     @Transactional
     public void DataRepositoryFindByReportNumTest() throws Exception {
-        Source s = new Source("category", "description", "url");
-        sourceRepository.save(s);
         DataCrime d = new DataCrime(s);
         DataCrime d2 = new DataCrime(s);
         d.setReportNum("123");
@@ -44,8 +66,6 @@ public class DataCrimeRepositoryTest {
     @Test
     @Transactional
     public void DataRepositoryFindAllByReportNumTest() throws Exception {
-        Source s = new Source("category", "description", "url");
-        sourceRepository.save(s);
         DataCrime d = new DataCrime(s);
         DataCrime d2 = new DataCrime(s);
         d.setReportNum("123");
@@ -62,10 +82,6 @@ public class DataCrimeRepositoryTest {
     @Test
     @Transactional
     public void DataRepositoryFindAllBySourceIdAndReportNumTest() throws Exception {
-        Source s = new Source("category", "description", "url");
-        sourceRepository.save(s);
-        Source s2 = new Source("category", "description", "url");
-        sourceRepository.save(s2);
 
         DataCrime d = new DataCrime(s);
         DataCrime d2 = new DataCrime(s);
