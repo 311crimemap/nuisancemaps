@@ -245,15 +245,14 @@ public class DataService {
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
-        // TODO: refactor
-        //
         // categories clarification
         // source.category: crime / 311 / etc
         // dataEntity.report_category: data report instance from raw data
         // Category: our created, labeled categories
         Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
         if (orgCategory == null) {
-            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s", reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
+            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s",
+                    reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
                     source.getUrl());
             throw new MissingCategoryException(errString);
         }
