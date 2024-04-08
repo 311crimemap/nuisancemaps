@@ -31,7 +31,8 @@
             "location": "sr_location",
             "latitude": "sr_location_lat",
             "longitude": "sr_location_long",
-            "reported_at": "sr_created_date"
+            "reported_at": "sr_created_date",
+            "reported_at2": ""
         }
     }
 ]
