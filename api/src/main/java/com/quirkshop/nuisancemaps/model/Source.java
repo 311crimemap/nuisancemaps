@@ -3,25 +3,27 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
 
 @Entity
-@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "sourceConfigEntity"))
+@Table(name = "source",
+       indexes = @Index(name = "source_config_entity_idx", columnList = "sourceConfigEntity"))
 public class Source {
 
     @Id
@@ -31,13 +33,16 @@ public class Source {
 
     private Integer sourceConfigId; // per json entry
     private String sourceConfigEntity; // City, State: maybe same location but old/new config endpoints
+    private String sourceConfigNotes;
+
     private String category;
     private String description;
     private String url;
     private Integer numRecords;
 
-    @Transient
-    private Map<String, Object> mapping;
+    @OneToOne
+    @JoinColumn(name = "mapping_id", nullable = false)
+    private Mapping mapping;
 
     @JsonIgnore
     @OneToMany(mappedBy = "source", fetch = FetchType.LAZY)
@@ -86,6 +91,14 @@ public class Source {
 
     public void setSourceConfigEntity(String sourceConfigEntity) {
         this.sourceConfigEntity = sourceConfigEntity;
+    }
+
+    public String getSourceConfigNotes() {
+        return sourceConfigNotes;
+    }
+
+    public void setSourceConfigNotes(String sourceConfigNotes) {
+        this.sourceConfigNotes = sourceConfigNotes;
     }
 
     public List<Data311> getData311s() {
@@ -168,11 +181,11 @@ public class Source {
         this.updatedAt = updatedAt;
     }
 
-    public Map<String, Object> getMapping() {
+    public Mapping getMapping() {
         return mapping;
     }
 
-    public void setMapping(Map<String, Object> mapping) {
+    public void setMapping(Mapping mapping) {
         this.mapping = mapping;
     }
 
