@@ -87,7 +87,7 @@ public class SourceLoaderService {
             String category = responseObject.get("category").toString();
             String url = responseObject.get("url").toString();
             String description = responseObject.get("description").toString();
-            int numRecords = (int) responseObject.get("numRecords");
+            int numRecords = (int) responseObject.get("num_records");
             Map<String, Object> mappingJSON = (Map<String, Object>) responseObject.get("mapping");
 
             Mapping mapping = new Mapping(mappingJSON.get("report_num").toString(),

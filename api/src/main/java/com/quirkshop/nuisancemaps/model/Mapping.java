@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
@@ -36,9 +38,11 @@ public class Mapping {
     private Integer id;
 
     // mapped parse Fields
+    @JsonProperty("report_num")
     @Mapped
     private String reportNum;
 
+    @JsonProperty("report_category")
     @Mapped
     private String reportCategory;
 
@@ -54,9 +58,11 @@ public class Mapping {
     @Mapped
     private String longitude;
 
+    @JsonProperty("reported_at")
     @Mapped
     private String reportedAt;
 
+    @JsonProperty("reported_at2")
     @Mapped
     private String reportedAt2;
 
