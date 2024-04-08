@@ -1,6 +1,8 @@
 package com.quirkshop.nuisancemaps.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,9 +13,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
+
 @Entity
 @Table(name = "mapping")
 public class Mapping {
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface Mapped {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mapping_seq")
@@ -21,13 +36,28 @@ public class Mapping {
     private Integer id;
 
     // mapped parse Fields
+    @Mapped
     private String reportNum;
+
+    @Mapped
     private String reportCategory;
+
+    @Mapped
     private String description;
+
+    @Mapped
     private String location;
+
+    @Mapped
     private String latitude;
+
+    @Mapped
     private String longitude;
+
+    @Mapped
     private String reportedAt;
+
+    @Mapped
     private String reportedAt2;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -56,6 +86,36 @@ public class Mapping {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
+    }
+
+    /*
+     * collects value returned by getters of @Mapped annotated fields
+     */
+    public List<String> getFields() {
+        List<String> fieldValues = new ArrayList<>();
+        Class<?> clazz = this.getClass();
+        Method[] methods = clazz.getMethods();
+        try {
+            for (Method method : methods) {
+                if (isGetter(method)) {
+                    Annotation annotation = method.getAnnotation(Mapped.class);
+                    if (annotation != null) {
+                        Object value = method.invoke(this);
+                        String stringVal = value != null ? value.toString() : null;
+                        fieldValues.add(stringVal);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exception appropriately
+        }
+        return fieldValues;
+    }
+
+    private boolean isGetter(Method method) {
+        return method.getName().startsWith("get") &&
+                method.getParameterCount() == 0 &&
+            !void.class.equals(method.getReturnType()); //return type not void
     }
 
     public Integer getId() {
