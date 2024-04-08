@@ -14,14 +14,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
+
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class SourceLoaderServiceTest {
 
     @Mock
     private RestTemplate restTemplate;
+
+    @Mock
+    private MappingRepository mappingRepository;
 
     @InjectMocks
     private SourceLoaderService sourceLoaderService;

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.model.Mapping;
 
 @Service
@@ -28,6 +29,9 @@ public class SourceLoaderService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private MappingRepository mappingRepository;
 
     private ObjectMapper objectMapper;
     private HashMap<Integer, Source> sourceMap;
@@ -103,6 +107,7 @@ public class SourceLoaderService {
             source.setNumRecords(numRecords);
 
             source.setMapping(mapping);
+            mappingRepository.save(mapping);
 
             this.sourceMap.put(source_config_id, source);
         }
