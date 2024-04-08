@@ -86,11 +86,7 @@ public class WorkerScheduleService {
 
         for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
 
-            // NB: Anticipate modifying mapping fields, so allowing for config change of
-            // same Source entity
-            Map<String, Object> mapping = sourceLoaderService.getSourceMapping(entry.getKey());
             Source source = sourceRepository.findOrCreate(entry.getValue());
-            source.setMapping(mapping);
 
             // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
             // latest queued job (DataJobStatus.QUEUED)
@@ -126,9 +122,6 @@ public class WorkerScheduleService {
         }
 
         Source source = datajob.getSource();
-        Map<String, Object> mapping = sourceLoaderService.getSourceMapping(source.getSourceConfigId());
-        source.setMapping(mapping);
-
         String prefixLog = String.format("%s | %s - %s", currentThreadName, source.getCategory(),
                 source.getDescription());
         String logDetails = String.format("%s | offset: %s | %s",
@@ -171,9 +164,7 @@ public class WorkerScheduleService {
         HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
 
         for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
-            Map<String, Object> mapping = sourceLoaderService.getSourceMapping(entry.getKey());
             Source source = sourceRepository.findOrCreate(entry.getValue());
-            source.setMapping(mapping);
 
             // NB: lock
             DataJob nextJob = dataJobRepository.createNextDataJob(source, PARAM_LIMIT);

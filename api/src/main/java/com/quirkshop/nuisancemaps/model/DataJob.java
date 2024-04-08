@@ -81,11 +81,15 @@ public class DataJob {
         this.updatedAt = now;
     }
 
-    public String buildURLFields(Map<String, Object> mapping) {
-        Collection<String> fields = new ArrayList<String>();
-        mapping.values().forEach(value -> {
+    // Map<String, Object> mapping
+    public String buildURLFields(Mapping mapping) {
+
+        List<String> fields = mapping.getFields();
+
+        fields.forEach(value -> {
             String field = (String) value;
-            if (!field.isEmpty()) {
+
+            if (field != null && !field.isEmpty()) {
                 fields.add((String) value);
             }
         });
@@ -96,7 +100,7 @@ public class DataJob {
         String sourceURL = this.getSourceURL();
 
         // collect fields
-        Map<String, Object> mapping = source.getMapping();
+        Mapping mapping = source.getMapping();
         String $select = buildURLFields(mapping);
 
         String _url = UriComponentsBuilder.fromUriString(sourceURL)

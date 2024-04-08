@@ -21,6 +21,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.repository.MappingRepository;
+import com.quirkshop.nuisancemaps.model.Mapping;
 
 @Service
 public class SourceLoaderService {
@@ -28,19 +30,15 @@ public class SourceLoaderService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private MappingRepository mappingRepository;
+
     private ObjectMapper objectMapper;
     private HashMap<Integer, Source> sourceMap;
 
     SourceLoaderService() {
         this.objectMapper = new ObjectMapper();
         this.sourceMap = new HashMap<Integer, Source>();
-    }
-
-    public Map<String, Object> getSourceMapping(int source_config_id) {
-        if (this.sourceMap.containsKey(source_config_id)) {
-            return this.sourceMap.get(source_config_id).getMapping();
-        }
-        return null;
     }
 
     public HashMap<Integer, Source> getSourceMap() {
@@ -90,7 +88,16 @@ public class SourceLoaderService {
             String url = responseObject.get("url").toString();
             String description = responseObject.get("description").toString();
             int numRecords = (int) responseObject.get("numRecords");
-            List<Map<String, Object>> mappings = (List<Map<String, Object>>) responseObject.get("mappings");
+            Map<String, Object> mappingJSON = (Map<String, Object>) responseObject.get("mapping");
+
+            Mapping mapping = new Mapping(mappingJSON.get("report_num").toString(),
+                                          mappingJSON.get("report_category").toString(),
+                                          mappingJSON.get("description").toString(),
+                                          mappingJSON.get("location").toString(),
+                                          mappingJSON.get("latitude").toString(),
+                                          mappingJSON.get("longitude").toString(),
+                                          mappingJSON.get("reported_at").toString(),
+                                          mappingJSON.get("reported_at2").toString());
 
             source.setSourceConfigEntity(source_config_entity);
             source.setSourceConfigId(source_config_id);
@@ -99,10 +106,8 @@ public class SourceLoaderService {
             source.setDescription(description);
             source.setNumRecords(numRecords);
 
-            // TODO: first of mapping list - not sure how to handle multiple config
-            // from same url (e.g. data changes)
-            Map<String, Object> mapping = (Map<String, Object>) mappings.get(0).get("mapping");
             source.setMapping(mapping);
+            mappingRepository.save(mapping);
 
             this.sourceMap.put(source_config_id, source);
         }
@@ -113,11 +118,11 @@ public class SourceLoaderService {
 
         String sourceURL = source.getUrl();
 
-        Map<String, Object> mapping = source.getMapping();
+        Mapping mapping = source.getMapping();
         if (mapping == null)
             return null;
 
-        String id = mapping.getOrDefault("report_num", null).toString();
+        String id = mapping.getReportNum();
         if (id == null)
             return null;
 

@@ -48,7 +48,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     default DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
             throws UnsupportedEncodingException {
 
-        String key = source.getMapping().get("report_num").toString(); // NB: prevDataJob might exist
+        String key = source.getMapping().getReportNum(); // NB: prevDataJob might exist
         DataJob dataJob;
 
         if (prevDataJob == null) {

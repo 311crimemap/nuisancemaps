@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
@@ -136,7 +137,7 @@ public class DataService {
         int errors = 0;
 
         // build parseMap
-        Map<String, Object> mapping = source.getMapping();
+        Mapping mapping = source.getMapping();
         HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
         List<String> report_nums = new ArrayList<String>(responseList.size());
 
@@ -146,7 +147,7 @@ public class DataService {
         for (Map<String, Object> responseObject : responseList) {
 
             try {
-                String report_num = responseObject.get(mapping.get("report_num")).toString();
+                String report_num = responseObject.get(mapping.getReportNum()).toString();
 
                 IDataEntity dataEntity = buildDataEntity(source, responseObject, geometryFactory);
 
@@ -218,13 +219,15 @@ public class DataService {
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
             MissingCategoryException {
 
-        Map<String, Object> mapping = source.getMapping();
-        String report_num = responseObject.get(mapping.get("report_num")).toString();
-        String reportCategory = responseObject.get(mapping.get("report_category")).toString();
-        String description = responseObject.getOrDefault(mapping.get("description"), "").toString();
-        String location = responseObject.getOrDefault(mapping.get("location"), "").toString();
-        String lat = responseObject.getOrDefault(mapping.get("latitude"), "").toString();
-        String lng = responseObject.getOrDefault(mapping.get("longitude"), "").toString();
+        Mapping mapping = source.getMapping();
+        String report_num = responseObject.get(mapping.getReportNum()).toString();
+        String reportCategory = responseObject.get(mapping.getReportCategory()).toString();
+        String description = responseObject.getOrDefault(mapping.getDescription(), "").toString();
+        String location = responseObject.getOrDefault(mapping.getLocation(), "").toString();
+        String lat = responseObject.getOrDefault(mapping.getLatitude(), "").toString();
+        String lng = responseObject.getOrDefault(mapping.getLongitude(), "").toString();
+        String reported_at1 = responseObject.getOrDefault(mapping.getReportedAt(), "").toString();
+        String reported_at2 = responseObject.getOrDefault(mapping.getReportedAt2(), "").toString();
 
         Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
         Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);
@@ -237,22 +240,19 @@ public class DataService {
             point = geometryFactory.createPoint(coordinate);
         }
 
-        String reported_at1 = responseObject.getOrDefault(mapping.get("reported_at"), "").toString();
-        String reported_at2 = responseObject.getOrDefault(mapping.get("reported_at2"), "").toString();
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
-        // TODO: refactor
-        //
         // categories clarification
         // source.category: crime / 311 / etc
         // dataEntity.report_category: data report instance from raw data
         // Category: our created, labeled categories
         Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
         if (orgCategory == null) {
-            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s", reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
+            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s",
+                    reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
                     source.getUrl());
             throw new MissingCategoryException(errString);
         }
