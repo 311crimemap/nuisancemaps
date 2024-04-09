@@ -6,6 +6,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -24,8 +26,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.RestTemplate;
@@ -65,9 +69,14 @@ public class DataJobRequestServiceTest {
                 StandardCharsets.UTF_8);
 
         // Source
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(1);
-        s.setId(1);
+        //sourceLoaderService.loadJSON("data/source_config.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+
+        List<Source> sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {});
+
+        Source s = sources.get(0);
+
         when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
 
         // DataJob
