@@ -16,6 +16,7 @@ public interface SourceRepository extends CrudRepository<Source, Integer> {
 
     // auto implemented
     public Source findOneByUrl(String url);
+    public Source findOneBySourceConfigId(Integer id);
 
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
