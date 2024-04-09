@@ -18,6 +18,7 @@ public interface SourceRepository extends CrudRepository<Source, Integer> {
     public Source findOneByUrl(String url);
     public Source findOneBySourceConfigId(Integer id);
 
+    // deprecated
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     default Source findOrCreate(Source source) {

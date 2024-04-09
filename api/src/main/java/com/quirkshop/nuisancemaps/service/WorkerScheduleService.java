@@ -4,6 +4,7 @@ import java.lang.Thread;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -46,8 +47,6 @@ public class WorkerScheduleService {
 
     @PostConstruct // method called once after beans all loaded
     public void initialize() throws UnsupportedEncodingException {
-        sourceLoaderService.loadJSON("data/source_config.json");
-        log.info("loaded source_config.json");
 
         // init seed
         if (dataJobRepository.count() == 0) {
@@ -62,11 +61,11 @@ public class WorkerScheduleService {
 
     @Scheduled(cron = "@daily")
     public void fetchAndUpdateNumSourceRecords() {
-        HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
 
-        for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
+        Iterable<Source> sources = sourceRepository.findAll();
 
-            Source source = sourceRepository.findOrCreate(entry.getValue());
+        for (Source source : sources) {
+
             // NB: Single Lock
             LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
             boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source, nowMinusHours);
@@ -80,13 +79,10 @@ public class WorkerScheduleService {
     @Scheduled(cron = "@daily")
     public void createDailyDataJobs() throws UnsupportedEncodingException {
         log.info("[createDailyDataJob]");
-        HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
+        // HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
+        Iterable<Source> sources = sourceRepository.findAll();
 
-        log.info("source_config.json num entries: " + sourceMap.size());
-
-        for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
-
-            Source source = sourceRepository.findOrCreate(entry.getValue());
+        for (Source source : sources) {
 
             // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
             // latest queued job (DataJobStatus.QUEUED)
@@ -161,10 +157,9 @@ public class WorkerScheduleService {
 
     public void createNewJobs() throws UnsupportedEncodingException {
 
-        HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
+        Iterable<Source> sources = sourceRepository.findAll();
 
-        for (Map.Entry<Integer, Source> entry : sourceMap.entrySet()) {
-            Source source = sourceRepository.findOrCreate(entry.getValue());
+        for (Source source : sources) {
 
             // NB: lock
             DataJob nextJob = dataJobRepository.createNextDataJob(source, PARAM_LIMIT);
