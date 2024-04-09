@@ -52,9 +52,6 @@ public class DataJobRequestServiceTest {
     @Autowired
     private ResourceLoader resourceLoader;
 
-    @Autowired
-    private SourceLoaderService sourceLoaderService;
-
     @InjectMocks
     private DataJobRequestServiceImpl dataJobRequestService;
 
@@ -69,7 +66,6 @@ public class DataJobRequestServiceTest {
                 StandardCharsets.UTF_8);
 
         // Source
-        //sourceLoaderService.loadJSON("data/source_config.json");
         ObjectMapper objectMapper = new ObjectMapper();
         File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
 

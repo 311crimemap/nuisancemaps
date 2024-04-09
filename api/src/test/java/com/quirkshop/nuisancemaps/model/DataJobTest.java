@@ -2,25 +2,31 @@ package com.quirkshop.nuisancemaps.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.UnsupportedEncodingException;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.core.io.ResourceLoader;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.service.SourceLoaderService;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class DataJobTest {
 
     @Autowired
-    SourceLoaderService sourceLoaderService;
+    private ResourceLoader resourceLoader;
 
     @Test
-    public void DataJobBuildURLTest() throws UnsupportedEncodingException {
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(1);
+    public void DataJobBuildURLTest() throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        List<Source> sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {});
+
+        Source s = sources.get(0);
         final int limit = 10000;
         final int offset = 20000;
         final String order_key = "id";

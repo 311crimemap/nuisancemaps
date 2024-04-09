@@ -5,11 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
-import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -37,7 +34,6 @@ import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
-import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
@@ -53,9 +49,6 @@ public class DataServiceTest {
     private ResourceLoader resourceLoader;
 
     @Autowired
-    private SourceLoaderService sourceLoaderService;
-
-    @Autowired
     private DataService dataService;
 
     @Autowired
@@ -69,9 +62,6 @@ public class DataServiceTest {
 
     @Autowired
     private DataCrimeRepository dataCrimeRepository;
-
-    @Autowired
-    private Data311Repository data311Repository;
 
     @Autowired
     private DataErrorRepository dataErrorRepository;
@@ -92,7 +82,8 @@ public class DataServiceTest {
         // Source
         ObjectMapper objectMapper = new ObjectMapper();
         File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
-        sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {});
+        sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
+        });
         for (Source s : sources) {
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
