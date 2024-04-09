@@ -15,6 +15,7 @@ import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class SourceController {
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
     @PostMapping("/sources")
+    @Transactional
     public ResponseEntity<?> create(@RequestBody Source source) {
         mappingRepository.save(source.getMapping());
         sourceRepository.save(source);
@@ -42,6 +44,7 @@ public class SourceController {
     }
 
     @PostMapping("/sources/batch")
+    @Transactional
     public ResponseEntity<?> createBatch(@RequestBody List<Source> sources) {
         List<Source> res = new ArrayList<Source>();
 
