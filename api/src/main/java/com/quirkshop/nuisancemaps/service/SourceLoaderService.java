@@ -13,9 +13,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
+import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,10 +28,26 @@ public class SourceLoaderService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    MappingRepository mappingRepository;
+
+    @Autowired
+    SourceRepository sourceRepository;
+
     private ObjectMapper objectMapper;
 
     SourceLoaderService() {
         this.objectMapper = new ObjectMapper();
+    }
+
+    //wrap this so @Transactional throws error inside
+    //the API controller scope (versus @Transactional on the controller action)
+    //which would need handling outside
+    @Transactional
+    public Source saveTransaction(Source source) {
+        mappingRepository.save(source.getMapping());
+        source = sourceRepository.save(source);
+        return source;
     }
 
     public Integer fetchCount(Source source) {

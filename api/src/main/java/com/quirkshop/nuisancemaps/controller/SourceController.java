@@ -11,8 +11,10 @@ import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.service.SourceLoaderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.util.ReflectionUtils;
 
+import com.quirkshop.nuisancemaps.dto.JSendDTO;
+
 @RestController
 public class SourceController {
 
@@ -33,25 +37,47 @@ public class SourceController {
     @Autowired
     SourceRepository sourceRepository;
 
+    @Autowired
+    SourceLoaderService sourceLoaderService;
+
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
     @PostMapping("/sources")
-    @Transactional
     public ResponseEntity<?> create(@RequestBody Source source) {
-        mappingRepository.save(source.getMapping());
-        sourceRepository.save(source);
-        return ResponseEntity.ok().body(source);
+        JSendDTO jSendDTO;
+
+        try {
+            source = sourceLoaderService.saveTransaction(source);
+            jSendDTO = new JSendDTO("success", source);
+        } catch(DataIntegrityViolationException e) {
+            log.error(e.getMessage());
+            jSendDTO = new JSendDTO("error", e.getMessage());
+            return ResponseEntity.badRequest().body(jSendDTO);
+        }
+
+        return ResponseEntity.ok().body(jSendDTO);
     }
 
     @PostMapping("/sources/batch")
     @Transactional
     public ResponseEntity<?> createBatch(@RequestBody List<Source> sources) {
+        JSendDTO jSendDTO;
         List<Source> res = new ArrayList<Source>();
 
         for (Source source : sources) {
-            mappingRepository.save(source.getMapping());
-            Source s = sourceRepository.save(source);
-            res.add(s);
+            try {
+                source = sourceLoaderService.saveTransaction(source);
+                res.add(source);
+            } catch (DataIntegrityViolationException e) {
+                log.error(e.getMessage());
+            }
+
+        }
+
+        if (res.size() > 0) {
+            jSendDTO = new JSendDTO("success", res);
+        } else {
+            jSendDTO = new JSendDTO("nothing saved", res);
         }
 
         return ResponseEntity.ok().body(res);
