@@ -163,6 +163,10 @@ So the initial DataJob will deserialize the Source, which will deserialize the D
   can avoids infinite nesting by excluding on read. (In this case, `Category`
   instance has array of `subcategories` - of `Category` instances.)
 
+#### Quirks
+
+* Sometimes findById, simple queries break and don't return anything - typically
+indicates a missing [association]()https://stackoverflow.com/questions/57049480/jpa-repository-findbyid-returns-null-but-the-value-is-exist-on-db)
 
 ### Tests
 

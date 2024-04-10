@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.dto.CategoryAPIDTO;
+import com.quirkshop.nuisancemaps.dto.JSendDTO;
 import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
@@ -43,22 +43,22 @@ public class TextCategoryController {
 
     @PostMapping("/textcategories")
     public ResponseEntity<?> create(@RequestBody List<TextLabelDTO> textLabelDTOs) {
-        CategoryAPIDTO<List<TextCategory>> categoryAPIDTO;
+        JSendDTO<List<TextCategory>> jSendDTO;
 
         try {
             List<TextCategory> res = textCategoryService.createTextCategories(textLabelDTOs);
             if (res.size() > 0) {
-                categoryAPIDTO = new CategoryAPIDTO<List<TextCategory>>("success", res);
+                jSendDTO = new JSendDTO<List<TextCategory>>("success", res);
             } else {
-                categoryAPIDTO = new CategoryAPIDTO<List<TextCategory>>("nothing saved", res);
+                jSendDTO = new JSendDTO<List<TextCategory>>("nothing saved", res);
             }
 
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(new CategoryAPIDTO<String>("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(new JSendDTO<String>("error", e.getMessage()));
         }
 
-        return ResponseEntity.ok().body(categoryAPIDTO);
+        return ResponseEntity.ok().body(jSendDTO);
     }
 
     @GetMapping("/textcategories")
@@ -79,10 +79,10 @@ public class TextCategoryController {
             textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(null);
         }
 
-        CategoryAPIDTO<Iterable<TextCategory>> categoryAPIDTO = new CategoryAPIDTO<Iterable<TextCategory>>("success",
+        JSendDTO<Iterable<TextCategory>> jSendDTO = new JSendDTO<Iterable<TextCategory>>("success",
                 textCategoriesIter);
 
-        return ResponseEntity.status(HttpStatus.OK).body(categoryAPIDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
 
     // curl -X DELETE localhost:8080/textcategories/<id>
@@ -95,16 +95,16 @@ public class TextCategoryController {
                 TextCategory tc = textCategoryRepository.findById(id).orElse(null);
                 textCategoryRepository.deleteById(id);
 
-                return ResponseEntity.ok().body(new CategoryAPIDTO<TextCategory>("success", tc));
+                return ResponseEntity.ok().body(new JSendDTO<TextCategory>("success", tc));
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return ResponseEntity.badRequest()
-                        .body(new CategoryAPIDTO<String>("error", e.getMessage()));
+                        .body(new JSendDTO<String>("error", e.getMessage()));
             }
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new CategoryAPIDTO<String>("Not Found", null));
+                .body(new JSendDTO<String>("Not Found", null));
     }
 
 }
