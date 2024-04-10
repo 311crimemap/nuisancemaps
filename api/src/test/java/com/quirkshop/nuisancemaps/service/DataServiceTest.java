@@ -5,18 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.FileCopyUtils;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.io.File;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
-import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -32,24 +34,25 @@ import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
-import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DataServiceTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
 
     @Autowired
-    private SourceLoaderService sourceLoaderService;
+    private DataService dataService;
 
     @Autowired
-    private DataService dataService;
+    private MappingRepository mappingRepository;
 
     @Autowired
     private SourceRepository sourceRepository;
@@ -59,9 +62,6 @@ public class DataServiceTest {
 
     @Autowired
     private DataCrimeRepository dataCrimeRepository;
-
-    @Autowired
-    private Data311Repository data311Repository;
 
     @Autowired
     private DataErrorRepository dataErrorRepository;
@@ -75,9 +75,30 @@ public class DataServiceTest {
     @Autowired
     private TextCategoryService textCategoryService;
 
+    private List<Source> sources;
+
+    @BeforeAll
+    public void setUpOnce() throws IOException {
+        // Source
+        ObjectMapper objectMapper = new ObjectMapper();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
+        });
+        for (Source s : sources) {
+            mappingRepository.save(s.getMapping());
+            sourceRepository.save(s);
+        }
+    }
+
+    @AfterAll
+    public void tearDown() throws IOException {
+        sourceRepository.deleteAll();
+        mappingRepository.deleteAll();
+    }
+
     @BeforeEach
-    public void setUp() {
-        //require textCategory mapping to exist before successful save
+    public void setUp() throws IOException {
+        // require textCategory mapping to exist before successful save
         //otherwise will throw MissingCategoryException and skip
         Category cat = new Category("crime", "Public Order", 0, null);
         Category cat2 = new Category("crime", "Theft", 1, null);
@@ -100,10 +121,7 @@ public class DataServiceTest {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/crime-atx.json");
 
-        // Source
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(1);
-        sourceRepository.save(s);
+        Source s = sourceRepository.findOneBySourceConfigId(1);
 
         // DataJob to crawl: replace job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
@@ -124,10 +142,7 @@ public class DataServiceTest {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
 
-        // Source
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(2);
-        sourceRepository.save(s);
+        Source s = sourceRepository.findOneBySourceConfigId(2);
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
@@ -148,10 +163,7 @@ public class DataServiceTest {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
 
-        // Source
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(2);
-        sourceRepository.save(s);
+        Source s = sourceRepository.findOneBySourceConfigId(2);
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
@@ -177,10 +189,7 @@ public class DataServiceTest {
     @Transactional
     public void createDataEntitiesError() throws IOException {
 
-        // Source
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(2);
-        sourceRepository.save(s);
+        Source s = sourceRepository.findOneBySourceConfigId(1);
 
         // trigger error with missing fields
         String jsonResponse = "[{ \"sr_missing_all_fields\": true}, { \"sr_missing_all_fields\": true}]";
@@ -211,11 +220,7 @@ public class DataServiceTest {
     public void createDataEntityMissingCategoryException() throws IOException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
-
-        // Source
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(2);
-        sourceRepository.save(s);
+        Source s = sourceRepository.findOneBySourceConfigId(2);
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch

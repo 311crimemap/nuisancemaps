@@ -3,9 +3,9 @@ package com.quirkshop.nuisancemaps.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,41 +15,65 @@ import org.springframework.web.client.RestTemplate;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
-import com.quirkshop.nuisancemaps.model.Mapping;
+import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.model.Source;
-
+import org.springframework.transaction.annotation.Transactional;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.io.File;
+import org.springframework.core.io.ResourceLoader;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SourceLoaderServiceTest {
 
     @Mock
     private RestTemplate restTemplate;
 
-    @Mock
+    @Autowired
     private MappingRepository mappingRepository;
+
+    @Autowired
+    private SourceRepository sourceRepository;
 
     @InjectMocks
     private SourceLoaderService sourceLoaderService;
 
-    @Test
-    public void loadJSONTest() {
-        sourceLoaderService.loadJSON("data/source_config.json");
-        assertThat(sourceLoaderService.getSourceMap()).isNotNull();
-        HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
-        Source s = sourceMap.get(1);
-        assertThat(s).isInstanceOf(Source.class);
-        Mapping m = s.getMapping();
-        assertThat(m.getReportNum()).isEqualTo("incident_report_number");
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+    private List<Source> sources;
+
+    @BeforeAll
+    public void setUpOnce() throws IOException {
+        // Source
+        ObjectMapper objectMapper = new ObjectMapper();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
+        });
+        for (Source s : sources) {
+            mappingRepository.save(s.getMapping());
+            sourceRepository.save(s);
+        }
+    }
+
+    @AfterAll
+    public void tearDown() throws IOException {
+        sourceRepository.deleteAll();
+        mappingRepository.deleteAll();
     }
 
     @Test
+    @Transactional
     public void fetchCountTest() throws UnsupportedEncodingException {
         int val = 123;
         String jsonFixtureContent = String.format("[ { \"count_incident_report_number\" : \"%s\"} ]", val);
 
-        sourceLoaderService.loadJSON("data/source_config.json");
-        HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
-        Source s = sourceMap.get(1);
+        Source s = sourceRepository.findOneBySourceConfigId(1);
         String report_num = s.getMapping().getReportNum();
         String url = sourceLoaderService.buildCountURL(s.getUrl(), report_num);
 
@@ -60,12 +84,4 @@ public class SourceLoaderServiceTest {
 
         assertThat(num).isEqualTo(val);
     }
-
-    @Test
-    public void findBySourceConfigIDTest() {
-        sourceLoaderService.loadJSON("data/source_config.json");
-        Source s = sourceLoaderService.findBySourceConfigID(1);
-        assertThat(s.getSourceConfigId()).isEqualTo(1);
-    }
-
 }

@@ -1,13 +1,11 @@
 package com.quirkshop.nuisancemaps.dto;
 
-import com.quirkshop.nuisancemaps.model.Category;
-
-public class CategoryAPIDTO<T> {
+public class JSendDTO<T> {
 
     private String status;
     private T data;
 
-    public CategoryAPIDTO(String status, T data) {
+    public JSendDTO(String status, T data) {
         this.status = status;
         this.data = data;
     }

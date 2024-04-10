@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,13 +33,21 @@ public class Source {
     @SequenceGenerator(name = "source_seq", allocationSize = 1)
     private Integer id;
 
+    @Column(unique = true)
+    @JsonProperty("source_config_id")
     private Integer sourceConfigId; // per json entry
+
+    @JsonProperty("source_config_entity")
     private String sourceConfigEntity; // City, State: maybe same location but old/new config endpoints
+
+    @JsonProperty("source_config_notes")
     private String sourceConfigNotes;
 
     private String category;
     private String description;
     private String url;
+
+    @JsonProperty("num_records")
     private Integer numRecords;
 
     @OneToOne //NB: creates unique constraint mapping_id
