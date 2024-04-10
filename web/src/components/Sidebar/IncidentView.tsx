@@ -20,13 +20,13 @@ export default function IncidentView({ map, visibleCrimes, visible311s, activeRe
             <ul>
                 {visibleElements.map(element => {
 
-                    const { location, reportNum, category } = element.properties;
+                    const { location, reportNum, reportCategory } = element.properties;
 
                     /* Detail View */
                     if (reportNum == activeReportNum) {
                         return (
                             <li key={reportNum} style={style}>
-                                {reportNum} | {location} | {category}
+                                {reportNum} | {location} | {reportCategory}
                             </li>
                         );
                     }
@@ -35,7 +35,7 @@ export default function IncidentView({ map, visibleCrimes, visible311s, activeRe
                     return (
                         <li key={reportNum}
                             onClick={() => setActiveReportNum(reportNum)}>
-                            {reportNum} | {location} | {category}
+                            {reportNum} | {location} | {reportCategory}
                         </li>
                     )
                 })
