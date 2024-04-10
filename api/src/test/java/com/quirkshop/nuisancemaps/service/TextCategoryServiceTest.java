@@ -1,21 +1,23 @@
 package com.quirkshop.nuisancemaps.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.CategoryGroupDTO;
 import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
-import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,7 +60,8 @@ public class TextCategoryServiceTest {
         textCategoryService.initMaps();
 
         HashMap<Integer, Integer> data311CategoryLabelToIdMap = textCategoryService.getData311CategoryLabelToIdMap();
-        HashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap = textCategoryService.getDataCrimeCategoryLabelToIdMap();
+        HashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap = textCategoryService
+                .getDataCrimeCategoryLabelToIdMap();
 
         // count number of categories with labels (no parents, just
         // subcategories)
@@ -139,6 +142,28 @@ public class TextCategoryServiceTest {
 
     @Test
     @Transactional
+    public void verifySkipSet() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Resource jsonResource = resourceLoader.getResource("classpath:data/classifier_categories.json");
+        CategoryGroupDTO categoryGroupDTO = objectMapper.readValue(jsonResource.getFile(),
+                CategoryGroupDTO.class);
+
+        categoryService.createCategoriesDTO(categoryGroupDTO);
+
+        textCategoryService.initMaps();
+
+        HashSet<Integer> skipSet = textCategoryService.getSkipSet();
+        assertThat(skipSet.size()).isEqualTo(2);
+
+        List<Category> cats = categoryRepository.findAllByText("SKIP");
+        for (Category cat : cats) {
+            assertThat(skipSet.contains(cat.getId())).isTrue();
+            assertThat(textCategoryService.lookupIsSkip(cat.getId())).isTrue();
+        }
+    }
+
+    @Test
+    @Transactional
     public void createTextCategoriesTest() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Resource jsonResource = resourceLoader.getResource("classpath:data/classifier_categories.json");
@@ -174,14 +199,14 @@ public class TextCategoryServiceTest {
             assertThat(textCat).isNotNull();
         }
 
-        //non-existent labels - should not be saved to db (no mapping)
+        // non-existent labels - should not be saved to db (no mapping)
         textLabelDTOs = new ArrayList<TextLabelDTO>() {
-                {
-                    add(new TextLabelDTO("311", "test100", 100));
-                    add(new TextLabelDTO("311", "test101", 101));
+            {
+                add(new TextLabelDTO("311", "test100", 100));
+                add(new TextLabelDTO("311", "test101", 101));
 
-                }
-            };
+            }
+        };
 
         res = textCategoryService.createTextCategories(textLabelDTOs);
         results = ImmutableList.copyOf(res);
