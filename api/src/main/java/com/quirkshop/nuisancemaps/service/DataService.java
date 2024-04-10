@@ -132,6 +132,7 @@ public class DataService {
     public void createDataEntities(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
             GeometryFactory geometryFactory, StringWriter sw, PrintWriter pw) {
         int numFetched = 0;
+        int numSkipped = 0;
         int numBuilt = 0;
         int numProcessed = 0;
         int errors = 0;
@@ -150,6 +151,14 @@ public class DataService {
                 String report_num = responseObject.get(mapping.getReportNum()).toString();
 
                 IDataEntity dataEntity = buildDataEntity(source, responseObject, geometryFactory);
+                // skip case
+                Category orgCategory = dataEntity.getOrgCategory();
+                if (orgCategory != null &&
+                        textCategoryService.lookupIsSkip(orgCategory.getId())) {
+                    numSkipped++;
+                    numFetched++;
+                    continue;
+                }
 
                 parseNewDataMap.put(report_num, dataEntity);
                 report_nums.add(report_num);
@@ -190,10 +199,11 @@ public class DataService {
         Iterable<IDataEntity> i = dataEntityRepository.saveAllEntities(parseNewDataMap.values());
         numProcessed = Iterables.size(i);
 
-        setJobStatus(source, dataJob, errors, numFetched, numBuilt, numProcessed, existing.size());
+        setJobStatus(source, dataJob, errors, numFetched, numSkipped, numBuilt, numProcessed, existing.size());
     }
 
-    public void setJobStatus(Source source, DataJob dataJob, int numErrors, int numFetched, int numBuilt,
+    public void setJobStatus(Source source, DataJob dataJob, int numErrors, int numFetched, int numSkipped,
+            int numBuilt,
             int numProcessed,
             int numDuplicate) {
 
@@ -207,8 +217,9 @@ public class DataService {
         dataJob.setNumFetched(numFetched);
         dataJob.setNumProcessed(numProcessed);
         String logStats = String.format(
-                "%s - %s: | Offset: %s | Fetched: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
-                source.getCategory(), source.getDescription(), dataJob.getParamOffset(), numFetched, numBuilt,
+                "%s - %s: | Offset: %s | Fetched: %s | Skipped: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
+                source.getCategory(), source.getDescription(), dataJob.getParamOffset(), numFetched, numSkipped,
+                numBuilt,
                 numProcessed, numErrors,
                 numDuplicate);
         log.info(logStats);
