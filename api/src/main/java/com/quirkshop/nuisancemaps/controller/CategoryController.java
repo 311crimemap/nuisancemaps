@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.dto.CategoryAPIDTO;
+import com.quirkshop.nuisancemaps.dto.JSendDTO;
 import com.quirkshop.nuisancemaps.dto.CategoryGroupDTO;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
@@ -44,9 +44,9 @@ public class CategoryController {
     @GetMapping("/categories")
     public ResponseEntity<?> getIndex() {
         Iterable<Category> categoriesIter = categoryRepository.findAll();
-        CategoryAPIDTO<Iterable<Category>> categoryAPIDTO = new CategoryAPIDTO<Iterable<Category>>("success",
+        JSendDTO<Iterable<Category>> jSendDTO = new JSendDTO<Iterable<Category>>("success",
                 categoriesIter);
-        return ResponseEntity.status(HttpStatus.OK).body(categoryAPIDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
 
     // curl -H 'content-type:application/json' -X POST -d
@@ -57,9 +57,9 @@ public class CategoryController {
         int numCreated = categoryService.createCategoriesDTO(categoryGroupDTO);
         HashMap<String, Integer> response = new HashMap<String, Integer>();
         response.put("numCreated", numCreated);
-        CategoryAPIDTO<HashMap<String, Integer>> categoryAPIDTO = new CategoryAPIDTO<HashMap<String, Integer>>(
+        JSendDTO<HashMap<String, Integer>> jSendDTO = new JSendDTO<HashMap<String, Integer>>(
                 "success", response);
-        return ResponseEntity.ok().body(categoryAPIDTO);
+        return ResponseEntity.ok().body(jSendDTO);
     }
 
     //
@@ -82,16 +82,16 @@ public class CategoryController {
                 jsonCategory.getLabel(),
                 parent);
 
-        CategoryAPIDTO<Category> categoryDTOAPI = new CategoryAPIDTO<Category>("success", category);
+        JSendDTO<Category> jSendDTO = new JSendDTO<Category>("success", category);
         try {
             category = categoryRepository.save(category);
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
-            categoryDTOAPI.setStatus("error");
-            return ResponseEntity.badRequest().body(categoryDTOAPI);
+            jSendDTO.setStatus("error");
+            return ResponseEntity.badRequest().body(jSendDTO);
         }
 
-        return ResponseEntity.ok().body(categoryDTOAPI);
+        return ResponseEntity.ok().body(jSendDTO);
     }
 
     // curl -X DELETE localhost:8080/categories/<id>
@@ -101,24 +101,24 @@ public class CategoryController {
         HashMap<String, String> response = new HashMap<String, String>();
         response.put("numDeleted", "0");
 
-        CategoryAPIDTO<HashMap<String, String>> categoryDTOAPI = new CategoryAPIDTO<HashMap<String, String>>("success",
+        JSendDTO<HashMap<String, String>> jSendDTO = new JSendDTO<HashMap<String, String>>("success",
                 response);
 
         if (categoryRepository.existsById(id)) {
             try {
                 categoryRepository.deleteById(id);
                 response.put("numDeleted", "1");
-                categoryDTOAPI.setData(response);
-                return ResponseEntity.ok().body(categoryDTOAPI);
+                jSendDTO.setData(response);
+                return ResponseEntity.ok().body(jSendDTO);
             } catch (Exception e) {
                 log.error(e.getMessage());
-                categoryDTOAPI.setStatus("error");
-                return ResponseEntity.badRequest().body(categoryDTOAPI);
+                jSendDTO.setStatus("error");
+                return ResponseEntity.badRequest().body(jSendDTO);
             }
         }
 
-        categoryDTOAPI.setStatus("error");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryDTOAPI);
+        jSendDTO.setStatus("error");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
     }
 
     // curl -H "content-type: application/json" -X PATCH -d '{"text":"hello"}'
@@ -127,7 +127,7 @@ public class CategoryController {
     public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
             @RequestBody Category jsonCategory) {
 
-        CategoryAPIDTO<Category> categoryDTOAPI = new CategoryAPIDTO<Category>("success", null);
+        JSendDTO<Category> jSendDTO = new JSendDTO<Category>("success", null);
         Optional<Category> category = categoryRepository.findById(id);
 
         if (category.isPresent()) {
@@ -143,16 +143,16 @@ public class CategoryController {
                 c = categoryRepository.save(c);
             } catch (Exception e) {
                 log.error(e.getMessage());
-                categoryDTOAPI.setStatus("error");
-                return ResponseEntity.badRequest().body(categoryDTOAPI);
+                jSendDTO.setStatus("error");
+                return ResponseEntity.badRequest().body(jSendDTO);
             }
 
-            categoryDTOAPI.setData(c);
-            return ResponseEntity.ok().body(categoryDTOAPI);
+            jSendDTO.setData(c);
+            return ResponseEntity.ok().body(jSendDTO);
         }
 
-        categoryDTOAPI.setStatus("error");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryDTOAPI);
+        jSendDTO.setStatus("error");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
     }
 
 }
