@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,12 +38,14 @@ public class TextCategoryService {
     private HashMap<Integer, Integer> data311CategoryLabelToIdMap;
     private HashMap<String, Integer> dataCrimeTextToCategoryIdMap;
     private HashMap<String, Integer> data311TextToCategoryIdMap;
+    private HashSet<Integer> skipSet;
 
     public TextCategoryService() {
         dataCrimeCategoryLabelToIdMap = new HashMap<Integer, Integer>();
         data311CategoryLabelToIdMap = new HashMap<Integer, Integer>();
         dataCrimeTextToCategoryIdMap = new HashMap<String, Integer>();
         data311TextToCategoryIdMap = new HashMap<String, Integer>();
+        skipSet = new HashSet<Integer>();
     }
 
     @PostConstruct
@@ -54,8 +57,7 @@ public class TextCategoryService {
         initCategoryLabelMap(data311CategoryLabelToIdMap, "311");
 
         // lookups text -> category_id during data creation
-        loadTextCategoryIdMap(dataCrimeTextToCategoryIdMap, "crime");
-        loadTextCategoryIdMap(data311TextToCategoryIdMap, "311");
+        refreshTextCategoryIdMap();
     }
 
     public void initCategoryLabelMap(HashMap<Integer, Integer> map, String dataType) {
@@ -69,33 +71,42 @@ public class TextCategoryService {
         }
     }
 
-    public void loadTextCategoryIdMap(HashMap<String, Integer> map, String dataType) {
-        map.clear();
-        List<TextCategory> textCategories = textCategoryRepository.findAllByDataType(dataType);
-        for (TextCategory textCategory: textCategories) {
-            map.put(textCategory.getText(), textCategory.getCategory().getId());
+    public void loadCategorySkipSet(String skipText) {
+        List<Category> skips = categoryRepository.findAllByText(skipText);
+        for (Category skip : skips) {
+            skipSet.add(skip.getId());
         }
     }
 
+    // TODO: refactor
     public void refreshTextCategoryIdMap() {
         loadTextCategoryIdMap(dataCrimeTextToCategoryIdMap, "crime");
         loadTextCategoryIdMap(data311TextToCategoryIdMap, "311");
+        loadCategorySkipSet("SKIP");
+    }
+
+    public void loadTextCategoryIdMap(HashMap<String, Integer> map, String dataType) {
+        map.clear();
+        List<TextCategory> textCategories = textCategoryRepository.findAllByDataType(dataType);
+        for (TextCategory textCategory : textCategories) {
+            map.put(textCategory.getText(), textCategory.getCategory().getId());
+        }
     }
 
     public Category lookupCategory(String dataType, String text) {
 
         Integer id = null;
 
-        //default crime
+        // default crime
         HashMap<String, Integer> map = dataCrimeTextToCategoryIdMap;
 
         if (dataType.equals("311"))
             map = data311TextToCategoryIdMap;
 
-
         id = map.getOrDefault(text, null);
 
-        if (id == null) return null;
+        if (id == null)
+            return null;
 
         Category c = new Category();
         c.setId(id);
@@ -135,13 +146,17 @@ public class TextCategoryService {
             try {
                 textCategoryRepository.save(tc);
                 res.add(tc);
-            } catch(DataIntegrityViolationException e) {
+            } catch (DataIntegrityViolationException e) {
                 log.error(e.getMessage());
             }
 
         }
 
         return res;
+    }
+
+    public boolean lookupIsSkip(Integer category_id) {
+        return skipSet.contains(category_id);
     }
 
     public HashMap<Integer, Integer> getDataCrimeCategoryLabelToIdMap() {
@@ -202,6 +217,10 @@ public class TextCategoryService {
 
     public void setData311TextToCategoryIdMap(HashMap<String, Integer> data311TextToCategoryIdMap) {
         this.data311TextToCategoryIdMap = data311TextToCategoryIdMap;
+    }
+
+    public HashSet<Integer> getSkipSet() {
+        return skipSet;
     }
 
 }

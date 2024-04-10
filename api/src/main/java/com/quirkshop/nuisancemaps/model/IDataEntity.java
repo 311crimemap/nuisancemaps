@@ -11,6 +11,8 @@ public interface IDataEntity {
 
     public String getReportNum();
 
+    public Category getOrgCategory();
+
     public void setReportNum(String reportNum);
 
     public void setReportCategory(String category);

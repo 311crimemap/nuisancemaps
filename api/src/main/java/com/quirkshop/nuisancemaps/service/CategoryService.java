@@ -48,7 +48,7 @@ public class CategoryService {
                     try {
                         parent = categoryRepository.save(parent);
                         num++;
-                    } catch(DataIntegrityViolationException e) {
+                    } catch (DataIntegrityViolationException e) {
                         log.error(e.getMessage());
                     }
                 }
