@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,20 @@ public class CategoryController {
     CategoryService categoryService;
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
+
+    @GetMapping("/categories/{id}")
+    public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
+        JSendDTO jSendDTO;
+        Category category = categoryRepository.findById(id).orElse(null);
+
+        if (category == null) {
+            jSendDTO = new JSendDTO("Not Found", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
+        }
+
+        jSendDTO = new JSendDTO<Category>("success", category);
+        return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
+    }
 
     // curl localhost:8080/categories
     // @CrossOrigin(origins = "${CORS_ORIGINS}")
@@ -130,29 +145,31 @@ public class CategoryController {
         JSendDTO<Category> jSendDTO = new JSendDTO<Category>("success", null);
         Optional<Category> category = categoryRepository.findById(id);
 
-        if (category.isPresent()) {
-            Category c = category.get();
+        if (!category.isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
 
-            if (!jsonCategory.getText().isBlank())
-                c.setText(jsonCategory.getText());
+        final Category finalCategory = category.get();
 
-            if (jsonCategory.getLabel() != null)
-                c.setLabel(jsonCategory.getLabel());
-
-            try {
-                c = categoryRepository.save(c);
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                jSendDTO.setStatus("error");
-                return ResponseEntity.badRequest().body(jSendDTO);
+        ReflectionUtils.doWithFields(Category.class, field -> {
+            field.setAccessible(true);
+            Object value = field.get(jsonCategory);
+            if (value != null) {
+                field.set(finalCategory, value);
             }
+        });
 
-            jSendDTO.setData(c);
-            return ResponseEntity.ok().body(jSendDTO);
+        try {
+            Category res = categoryRepository.save(finalCategory);
+            jSendDTO.setData(res);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            jSendDTO.setStatus("error");
+            return ResponseEntity.badRequest().body(jSendDTO);
         }
 
-        jSendDTO.setStatus("error");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
+        jSendDTO.setData(finalCategory);
+        return ResponseEntity.ok().body(jSendDTO);
+
     }
 
 }
