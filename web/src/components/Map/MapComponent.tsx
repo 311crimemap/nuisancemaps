@@ -56,7 +56,7 @@ export default function MapComponent(props: any) {
         for (const feature of data.features) {
 
             for (const ki of keywords) {
-                if (feature.properties.category.toLowerCase().includes(ki.keyword)) {
+                if (feature.properties['reportCategory'].toLowerCase().includes(ki.keyword)) {
                     feature.properties['icon-category'] = ki.icon;
                     break;
                 }

@@ -31,8 +31,8 @@ export default function useMapMoveEndHandler({ map,
             //layers: [].concat(dataCrimeClusters, data311Clusters),
             layers: clusterLayers
 
-            //any filter here will only filter unclustered points (clustered don't have the category property)
-            //filter: ["==", "category", "FAMILY DISTURBANCE"]
+            //any filter here will only filter unclustered points (clustered don't have the reportCategory property)
+            //filter: ["==", "reportCategory", "FAMILY DISTURBANCE"]
         });
 
         //const visibility = map.getLayoutProperty(dataCrimeClusters, "visibility");

@@ -32,7 +32,7 @@ export default function SpiderListComponent({ map, activeSpiderList, spiderZoomL
                     (features || []).map(feature => {
                         return (
                             <li key={feature.properties.reportNum}>
-                                {feature.properties.category}
+                                {feature.properties.reportCategory}
                             </li>
                         )
                     })

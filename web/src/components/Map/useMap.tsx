@@ -119,7 +119,7 @@ export default function useMap(props) {
 
                     //const coordinates = f.geometry.coordinates.slice();
                     const coordinates = [e.lngLat.lng, e.lngLat.lat, 0]; //cursor click
-                    const category = f.properties.category;
+                    const reportCategory = f.properties.reportCategory;
                     const reportNum = f.properties.reportNum;
                     //while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -129,7 +129,7 @@ export default function useMap(props) {
                     new maplibregl.Popup()
                         .setLngLat(coordinates)
                         .setHTML(
-                            `${category}`
+                            `${reportCategory}`
                         )
                         .addTo(_map);
 
@@ -161,7 +161,7 @@ export default function useMap(props) {
                     console.log("E", e)
                     //const coordinates = f.geometry.coordinates.slice();
                     const coordinates = [e.lngLat.lng, e.lngLat.lat, 0]; //cursor click
-                    const category = f.properties.category;
+                    const reportCategory = f.properties.reportCategory;
                     const reportNum = f.properties.reportNum;
 
                     //while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
@@ -172,7 +172,7 @@ export default function useMap(props) {
                     new maplibregl.Popup()
                         .setLngLat(coordinates)
                         .setHTML(
-                            `${category}`
+                            `${reportCategory}`
                         )
                         .addTo(_map);
 
@@ -206,7 +206,7 @@ export default function useMap(props) {
             _map.on('click', `unclustered-point-${dataset}`, (e) => {
 
                 const coordinates = e.features[0].geometry.coordinates.slice();
-                const category = e.features[0].properties.category;
+                const reportCategory = e.features[0].properties.reportCategory;
                 const reportNum = e.features[0].properties.reportNum;
 
                 // Ensure that if the map is zoomed out such that
@@ -219,7 +219,7 @@ export default function useMap(props) {
                 new maplibregl.Popup()
                     .setLngLat(coordinates)
                     .setHTML(
-                        `${category}`
+                        `${reportCategory}`
                     )
                     .addTo(_map);
 
