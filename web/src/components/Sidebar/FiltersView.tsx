@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import DataTypeCheckBoxes from "./CheckBoxFilters/DataTypeCheckBoxes";
 
 export default function FiltersView({ map,
                                       dataCrimeCheck, setDataCrimeCheck,
@@ -44,6 +45,12 @@ export default function FiltersView({ map,
                     DataCrime
                 </label>
             </li>
+            <li>
+                <DataTypeCheckBoxes
+                    dataType="crime"
+                    categories={categories}
+                    dataTypeChecked={dataCrimeCheck} />
+            </li>
 
             <li>
                 <input
@@ -61,6 +68,13 @@ export default function FiltersView({ map,
                     Data311
                 </label>
             </li>
+            <li>
+                <DataTypeCheckBoxes
+                    dataType="311"
+                    categories={categories}
+                    dataTypeChecked={data311Check} />
+            </li>
+
         </ul>
     );
 
