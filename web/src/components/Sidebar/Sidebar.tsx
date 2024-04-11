@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { View } from "./View";
 import SidebarNav from "./SidebarNav";
@@ -22,6 +22,8 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
         "unclustered-point-data311",
     ];
 
+    const categoriesURL = `http://localhost:8080/categories`;
+
     const [view, setView] = useState(View.INCIDENTS);
 
     const [dataCrimeCheck, setDataCrimeCheck] = useState(true);
@@ -30,6 +32,12 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
     const [visibleCrimes, setVisibleCrimes] = useState([]);
     const [visible311s, setVisible311s] = useState([]);
 
+    const [categories, setCategories] = useState([]);
+
+    const initLoadCategoriesAPI = async (url: String) => {
+        return fetch(url).then(res => res.json());
+    }
+
     //sets map.onMove listener to update data in visible window
     useMapMoveEndHandler({
         map,
@@ -37,6 +45,18 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
         setVisibleCrimes, setVisible311s,
         dataCrimeCheck, data311Check
     })
+
+    // initial load of categories list
+    useEffect(() => {
+        initLoadCategoriesAPI(categoriesURL).then((res) => {
+            if (res.status == "success") {
+                setCategories(res.data);
+                console.log("CAT", res.data);
+                //cat = parseCategories
+                //setCategories(cat)
+            }
+        });
+    }, []);
 
     console.log("[Sidebar] Render");
 
@@ -55,7 +75,9 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
                 <FiltersView map={map}
                     dataCrimeCheck={dataCrimeCheck} setDataCrimeCheck={setDataCrimeCheck}
                     data311Check={data311Check} setData311Check={setData311Check}
-                    dataCrimeClusters={dataCrimeClusters} data311Clusters={data311Clusters} />
+                    dataCrimeClusters={dataCrimeClusters} data311Clusters={data311Clusters}
+                    categories={categories}
+                />
             }
 
         </div>

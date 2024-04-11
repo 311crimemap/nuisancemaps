@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 
 export default function FiltersView({ map,
                                       dataCrimeCheck, setDataCrimeCheck,
                                       data311Check, setData311Check,
-                                      dataCrimeClusters, data311Clusters }) {
-
+                                      dataCrimeClusters, data311Clusters,
+                                      categories }) {
 
     const checkHandler = (e, layers, checkFn) => {
         checkFn();
@@ -22,6 +23,8 @@ export default function FiltersView({ map,
         //e.preventDefault();
         //e.stopPropagation();
     };
+
+    console.log("[FiltersView] Render categories", categories);
 
     return (
         <ul>
