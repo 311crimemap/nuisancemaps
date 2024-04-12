@@ -1,37 +1,32 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useReducer} from "react";
 
-export default function CheckBoxLabel({id, text, parentChecked, setParentChecked, filterIdFn}) {
 
-    const [checked, setChecked] = useState(parentChecked)
+export default function CheckBoxLabel({ category, categories, activeCategoriesDispatcher}) {
 
     const checkHandler = (e) => {
-        setChecked(!checked);
 
-        if (setParentChecked) {
-            setParentChecked(!checked);
-        }
+        activeCategoriesDispatcher({
+            'type': 'toggleCheckBoxById',
+            id: category.id,
+            checked: category.checked
+        });
 
-        //call the data filter
-        //filterIdFn(id)
-    };
+        console.log("CLIKC", category, category.id, category.checked);
+    }
 
-    //works as parent override
-    useEffect( () => {
-        setChecked(parentChecked);
-    }, [parentChecked])
+
 
     return (
-            <div>
-                <input id={`${id}-checkbox`}
-                       type="checkbox"
-                       defaultChecked={checked}
-                       checked={checked}
-                       onChange={checkHandler}
-                />
-                <label htmlFor={`${id}-checkbox`}>
-                    {`${text}`}
-                </label>
-            </div>
+        <div>
+            <input id={`${category.id}-checkbox`}
+                type="checkbox"
+                checked={category.checked}
+                onChange={checkHandler}
+            />
+            <label htmlFor={`${category.id}-checkbox`}>
+                {`${category.text} - ${category.checked}`}
+            </label>
+        </div>
     )
 
 }

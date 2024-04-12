@@ -50,7 +50,11 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
     useEffect(() => {
         initLoadCategoriesAPI(categoriesURL).then((res) => {
             if (res.status == "success") {
-                setCategories(res.data);
+                const _categories = (res.data).map((category) => {
+                    category.checked = true;
+                    return category;
+                });
+                setCategories(_categories);
                 console.log("CAT", res.data);
                 //cat = parseCategories
                 //setCategories(cat)

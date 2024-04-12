@@ -1,28 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import CheckBoxLabel from "./CheckBoxLabel";
 
-export default function CheckBoxGroup({ dataType, parent, dataTypeChecked, categories }) {
+export default function CheckBoxGroup({ parent, categories, activeCategoriesDispatcher }) {
 
-    const [parentChecked, setParentChecked] = useState(dataTypeChecked);
-
-    //reset on dataTypeChecked - parent override
-    useEffect( () => {
-        setParentChecked(dataTypeChecked);
-    }, [dataTypeChecked])
-
-
-    function renderCategories(categories, parentChecked) {
+    function renderCategories(categories) {
         return (
             <ul>
                 {
-                    categories.map( (category) => {
+                    categories.map((category) => {
 
                         return (
                             <li>
-                                <CheckBoxLabel key={`checkboxlabel-${category.id}`}
-                                               id={category.id}
-                                               text={category.text}
-                                               parentChecked={parentChecked}/>
+                                <CheckBoxLabel
+                                    key={`checkboxlabel-${category.id}`}
+                                    category={category}
+                                    categories={categories}
+                                    activeCategoriesDispatcher={activeCategoriesDispatcher} />
                             </li>)
                     })
                 }
@@ -35,19 +28,20 @@ export default function CheckBoxGroup({ dataType, parent, dataTypeChecked, categ
         return (
             <ul>
                 <li>
-                    <CheckBoxLabel key={`checkboxlabel-${parent.id}`}
-                                   id={parent.id}
-                                   text={parent.text}
-                                   setParentChecked={setParentChecked}
-                                   parentChecked={parentChecked}/>
+                    <CheckBoxLabel
+                        key={`checkboxlabel-${parent.id}`}
+                        category={parent}
+                        categories={categories}
+                        activeCategoriesDispatcher={activeCategoriesDispatcher}
+                    />
                 </li>
                 {
-                    renderCategories(categories, parentChecked)
+                    renderCategories(categories)
                 }
             </ul>
         )
     }
 
-    return renderCategories(categories, parentChecked);
+    return renderCategories(categories);
 
 }

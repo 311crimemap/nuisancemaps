@@ -1,14 +1,24 @@
-import { useEffect } from "react";
 import CheckBoxGroup from "./CheckBoxGroup";
 
-export default function DataTypeCheckBoxes({ dataType, categories, dataTypeChecked }) {
+export default function DataTypeCheckBoxes({ dataType, categories, activeCategoriesDispatcher }) {
 
-    const filtered_categories = categories.filter( category => category.dataType == dataType);
+
+    let filtered_categories = [];
+    const idMap = {};
+
+    for (const category of categories) {
+        idMap[category.id] = category;
+        if (category.dataType == dataType)
+            filtered_categories.push(category)
+    }
+    //const filtered_categories = categories.filter(category => category.dataType == dataType);
 
     const checkBoxTree = {};  // parents
     const checkBoxLeaf = [];  // no parents
 
+
     for (let category of filtered_categories) {
+
         //is parent (no label) then add as key => []
         if (category.label === null && category.parent === null) {
             checkBoxTree[category.id] = checkBoxTree[category.id] || [];
@@ -31,17 +41,18 @@ export default function DataTypeCheckBoxes({ dataType, categories, dataTypeCheck
 
     console.log(`PREP: ${dataType} `, Object.entries(checkBoxTree));
 
-    return(
+    return (
 
         <div>
             {
                 Object.entries(checkBoxTree).map(([parent_id, categories]) => {
-                    const parent = categories[0] && categories[0].parent;
-                    return <CheckBoxGroup key={`group-${parent_id}`}
-                                          dataType={dataType}
-                                          parent={parent}
-                                          dataTypeChecked={dataTypeChecked}
-                                          categories={categories} />
+                    const parent = idMap[parent_id];
+
+                    return <CheckBoxGroup
+                        key={`group-${parent_id}`}
+                        parent={parent}
+                        categories={categories}
+                        activeCategoriesDispatcher={activeCategoriesDispatcher} />
                 })
             }
 

@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useReducer } from "react";
+import categoryCheckBoxReducer from "./CategoryFilterReducer.js";
+
 import DataTypeCheckBoxes from "./CheckBoxFilters/DataTypeCheckBoxes";
 
 export default function FiltersView({ map,
-                                      dataCrimeCheck, setDataCrimeCheck,
-                                      data311Check, setData311Check,
-                                      dataCrimeClusters, data311Clusters,
-                                      categories }) {
+    dataCrimeCheck, setDataCrimeCheck,
+    data311Check, setData311Check,
+    dataCrimeClusters, data311Clusters,
+    categories }) {
+
+    const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, categories);
 
     const checkHandler = (e, layers, checkFn) => {
         checkFn();
@@ -36,9 +40,14 @@ export default function FiltersView({ map,
                     type="checkbox"
                     checked={dataCrimeCheck}
                     onChange={(e) =>
-                        checkHandler(e, dataCrimeClusters, () =>
-                            setDataCrimeCheck(!dataCrimeCheck)
-                        )
+                        checkHandler(e, dataCrimeClusters, () => {
+                            setDataCrimeCheck(!dataCrimeCheck);
+                            activeCategoriesDispatcher({
+                                type: "toggleCheckBoxByDataType",
+                                dataType: "crime",
+                                checked: dataCrimeCheck
+                            });
+                        })
                     }
                 />
                 <label htmlFor="dataCrimeCheckbox" style={{ cursor: "pointer" }}>
@@ -48,8 +57,8 @@ export default function FiltersView({ map,
             <li>
                 <DataTypeCheckBoxes
                     dataType="crime"
-                    categories={categories}
-                    dataTypeChecked={dataCrimeCheck} />
+                    categories={activeCategories}
+                    activeCategoriesDispatcher={activeCategoriesDispatcher} />
             </li>
 
             <li>
@@ -59,9 +68,15 @@ export default function FiltersView({ map,
                     type="checkbox"
                     checked={data311Check}
                     onChange={(e) =>
-                        checkHandler(e, data311Clusters, () =>
-                            setData311Check(!data311Check)
-                        )
+                        checkHandler(e, data311Clusters, () => {
+                            setData311Check(!data311Check);
+                            activeCategoriesDispatcher({
+                                type:"toggleCheckBoxByDataType",
+                                dataType: "311",
+                                checked: data311Check
+                            });
+
+                        })
                     }
                 />
                 <label htmlFor="data311Checkbox" style={{ cursor: "pointer" }}>
@@ -71,8 +86,8 @@ export default function FiltersView({ map,
             <li>
                 <DataTypeCheckBoxes
                     dataType="311"
-                    categories={categories}
-                    dataTypeChecked={data311Check} />
+                    categories={activeCategories}
+                    activeCategoriesDispatcher={activeCategoriesDispatcher} />
             </li>
 
         </ul>
