@@ -1,17 +1,14 @@
-import {useState, useEffect, useReducer} from "react";
-
-
 export default function CheckBoxLabel({ category, categories, activeCategoriesDispatcher}) {
 
     const checkHandler = (e) => {
 
         activeCategoriesDispatcher({
-            'type': 'toggleCheckBoxById',
-            id: category.id,
-            checked: category.checked
+            type: 'toggleCheckBoxById',
+            category,
+
         });
 
-        console.log("CLIKC", category, category.id, category.checked);
+        console.log("CLICK", category, category.id, category.checked);
     }
 
 

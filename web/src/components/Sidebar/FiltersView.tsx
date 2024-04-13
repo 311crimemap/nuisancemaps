@@ -1,7 +1,6 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import categoryCheckBoxReducer from "./CategoryFilterReducer.js";
-
-import DataTypeCheckBoxes from "./CheckBoxFilters/DataTypeCheckBoxes";
+import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
 
 export default function FiltersView({ map,
     dataCrimeCheck, setDataCrimeCheck,
@@ -29,68 +28,33 @@ export default function FiltersView({ map,
         //e.stopPropagation();
     };
 
-    console.log("[FiltersView] Render categories", categories);
+    console.log("[FiltersView] Render categories", activeCategories);
+
+    const parentCrime = activeCategories
+        .find(cat => cat.id == "crime");
+
+    const parent311 = activeCategories
+        .find(cat => cat.id == "311");
 
     return (
-        <ul>
-            <li>
-                <input
-                    id="dataCrimeCheckbox"
-                    style={{ cursor: "pointer" }}
-                    type="checkbox"
-                    checked={dataCrimeCheck}
-                    onChange={(e) =>
-                        checkHandler(e, dataCrimeClusters, () => {
-                            setDataCrimeCheck(!dataCrimeCheck);
-                            activeCategoriesDispatcher({
-                                type: "toggleCheckBoxByDataType",
-                                dataType: "crime",
-                                checked: dataCrimeCheck
-                            });
-                        })
-                    }
-                />
-                <label htmlFor="dataCrimeCheckbox" style={{ cursor: "pointer" }}>
-                    DataCrime
-                </label>
-            </li>
-            <li>
-                <DataTypeCheckBoxes
-                    dataType="crime"
+        <div>
+            <ul>
+                <CheckBoxGroup
+                    key={`group-${parentCrime.id}`}
+                    parent={parentCrime}
                     categories={activeCategories}
-                    activeCategoriesDispatcher={activeCategoriesDispatcher} />
-            </li>
-
-            <li>
-                <input
-                    id="data311Checkbox"
-                    style={{ cursor: "pointer" }}
-                    type="checkbox"
-                    checked={data311Check}
-                    onChange={(e) =>
-                        checkHandler(e, data311Clusters, () => {
-                            setData311Check(!data311Check);
-                            activeCategoriesDispatcher({
-                                type:"toggleCheckBoxByDataType",
-                                dataType: "311",
-                                checked: data311Check
-                            });
-
-                        })
-                    }
+                    activeCategoriesDispatcher={activeCategoriesDispatcher}
                 />
-                <label htmlFor="data311Checkbox" style={{ cursor: "pointer" }}>
-                    Data311
-                </label>
-            </li>
-            <li>
-                <DataTypeCheckBoxes
-                    dataType="311"
+            </ul>
+            <ul>
+                <CheckBoxGroup
+                    key={`group-${parent311.id}`}
+                    parent={parent311}
                     categories={activeCategories}
-                    activeCategoriesDispatcher={activeCategoriesDispatcher} />
-            </li>
-
-        </ul>
+                    activeCategoriesDispatcher={activeCategoriesDispatcher}
+                />
+            </ul>
+        </div>
     );
 
 }

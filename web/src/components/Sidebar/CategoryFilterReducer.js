@@ -7,33 +7,29 @@ export default function categoryCheckBoxReducer(categories, action) {
 
             const _categories = categories.map(category => {
 
-                if (category.id == action.id) {
+                //toggle immediate clicked label
+                if (category.id == action.category.id) {
                     return { ...category, checked: !category.checked };
                 }
 
-                //for children, take parent's checked value
-                if (category.parent && category.parent.id == action.id) {
-                    return { ...category, checked: !action.checked };
+                //and traverse hierarchy of each category to find common parent
+                let hasCommonParent = false;
+                let parent = category;
+                while (parent) {
+                    if (parent.id == action.category.id) {
+                        hasCommonParent = true;
+                        break;
+                    }
+                    parent = parent.parent;
                 }
+
+                if (hasCommonParent)
+                    return { ...category, checked: !action.category.checked };
 
                 return category;
             });
 
             return _categories;;
-        }
-
-
-        //param dataType
-        case "toggleCheckBoxByDataType": {
-            const dataTypeCategories = categories
-                .map(category => {
-                    if (category.dataType == action.dataType) {
-                        return { ...category, checked: !action.checked };
-                    }
-                    return category;
-                });
-
-            return dataTypeCategories;
         }
 
         default: {
