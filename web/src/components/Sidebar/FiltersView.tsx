@@ -1,34 +1,14 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import categoryCheckBoxReducer from "./CategoryFilterReducer.js";
 import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
 
 export default function FiltersView({ map,
-    dataCrimeCheck, setDataCrimeCheck,
-    data311Check, setData311Check,
     dataCrimeClusters, data311Clusters,
     categories }) {
 
     const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, categories);
 
-    const checkHandler = (e, layers, checkFn) => {
-        checkFn();
-
-        //visibility: [none, visible]
-        for (const layer of layers) {
-            const visibility = map.getLayoutProperty(layer, "visibility");
-
-            map.setLayoutProperty(
-                layer,
-                "visibility",
-                [undefined, "visible"].includes(visibility) ? "none" : "visible"
-            );
-        }
-
-        //e.preventDefault();
-        //e.stopPropagation();
-    };
-
-    console.log("[FiltersView] Render categories", activeCategories);
+    console.log("[FiltersView] Render activeCategories", activeCategories);
 
     const parentCrime = activeCategories
         .find(cat => cat.id == "crime");

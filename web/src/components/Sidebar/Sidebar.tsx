@@ -26,9 +26,6 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
 
     const [view, setView] = useState(View.INCIDENTS);
 
-    const [dataCrimeCheck, setDataCrimeCheck] = useState(true);
-    const [data311Check, setData311Check] = useState(true);
-
     const [visibleCrimes, setVisibleCrimes] = useState([]);
     const [visible311s, setVisible311s] = useState([]);
 
@@ -38,12 +35,13 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
         return fetch(url).then(res => res.json());
     }
 
-    //sets map.onMove listener to update data in visible window
+    //sets map.onMove listener to update visible data in incidents panel
+    //given what's visible on map
+    //TODO: refactor out of Sidebar, to map - uses map.on('movend)
     useMapMoveEndHandler({
         map,
         dataCrimeClusters, data311Clusters,
         setVisibleCrimes, setVisible311s,
-        dataCrimeCheck, data311Check
     })
 
     // initial load of categories list
@@ -106,7 +104,7 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
         });
     }, []);
 
-    console.log("[Sidebar] Render");
+    console.log("[Sidebar] Render", categories);
 
     return (
         <div id="sidebar">
@@ -121,8 +119,6 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
 
             {view == View.FILTERS &&
                 <FiltersView map={map}
-                    dataCrimeCheck={dataCrimeCheck} setDataCrimeCheck={setDataCrimeCheck}
-                    data311Check={data311Check} setData311Check={setData311Check}
                     dataCrimeClusters={dataCrimeClusters} data311Clusters={data311Clusters}
                     categories={categories}
                 />
