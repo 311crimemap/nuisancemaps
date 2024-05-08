@@ -7,6 +7,7 @@ import { Sidebar } from "./components/Sidebar";
 import { SpiderListComponent } from "./components/SpiderList";
 import BottomSheetComponent from "./BottomSheetComponent.tsx";
 import categoryCheckBoxReducer from "./components/Sidebar/CategoryFilterReducer";
+import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
 
 function App() {
     const spiderZoomLevel = 17;
@@ -20,12 +21,20 @@ function App() {
         features: [],
     };
 
+    const defaultDateRange = {
+        date: {
+            startDate: (new Date()).toLocaleDateString('en-CA'),
+            endDate: (new Date()).toLocaleDateString('en-CA')
+        }
+    }
+
     const [dataCrimes, setDataCrimes] = useState(defaultData);
     const [data311s, setData311s] = useState(defaultData);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [activeReportNum, setActiveReportNum] = useState(null);
     const [activeSpiderList, setActiveSpiderList] = useState([]);
     const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, []);
+    const [filterDate, filterDateDispatcher] = useReducer(dateFilterReducer, defaultDateRange);
 
 
     const getData = async (url: string) => {
@@ -33,12 +42,20 @@ function App() {
     };
 
     useEffect(() => {
-        console.log("FETCH");
+
         const limit = 500;
         const center = position.center;
-        const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?center=${center}&limit=${limit}`;
-        const data311sURL = `http://localhost:8080/data311s.geojson?center=${center}&limit=${limit}`;
+        const params = new URLSearchParams({
+            startDate: filterDate.date.startDate,
+            endDate: filterDate.date.endDate,
+            center,
+            limit,
+        });
+
+        const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?${params.toString()}`;
+        const data311sURL = `http://localhost:8080/data311s.geojson?${params.toString()}`;
         const categoriesURL = `http://localhost:8080/categories`;
+        console.log("FETCH", dataCrimesURL, data311sURL, categoriesURL);
 
         Promise.all([getData(dataCrimesURL), getData(data311sURL), getData(categoriesURL)]).then(
             ([dataCrimes, data311s, categories]) => {
@@ -56,7 +73,7 @@ function App() {
 
         //to make new request
         //position.center - too sensitive, even zoom will trigger
-    }, []);
+    }, [filterDate.date.startDate, filterDate.date.endDate]);
 
     const map = useMap({
         position,
@@ -80,6 +97,8 @@ function App() {
                     setActiveReportNum={setActiveReportNum}
                     activeCategories={activeCategories}
                     activeCategoriesDispatcher={activeCategoriesDispatcher}
+                    filterDate={filterDate}
+                    filterDateDispatcher={filterDateDispatcher}
                 />
 
                 <MapComponent
