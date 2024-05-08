@@ -34,8 +34,8 @@ function App() {
     console.log("FETCH");
     const limit = 500;
     const center = position.center;
-    const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?center=${center}&limit=${limit}`;
-    const data311sURL = `http://localhost:8080/data311s.geojson?center=${center}&limit=${limit}`;
+    const dataCrimesURL = `http://localhost:8080/datacrimes?center=${center}&limit=${limit}`;
+    const data311sURL = `http://localhost:8080/data311s?center=${center}&limit=${limit}`;
 
     Promise.all([getData(dataCrimesURL), getData(data311sURL)]).then(
       ([dataCrimes, data311s]) => {
