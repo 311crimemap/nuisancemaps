@@ -55,7 +55,7 @@ public class CategoryController {
     }
 
     // curl localhost:8080/categories
-    // @CrossOrigin(origins = "${CORS_ORIGINS}")
+    @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/categories")
     public ResponseEntity<?> getIndex() {
         Iterable<Category> categoriesIter = categoryRepository.findAll();
@@ -66,7 +66,7 @@ public class CategoryController {
 
     // curl -H 'content-type:application/json' -X POST -d
     // @src/main/resources/data/classifier_categories.json localhost:8080/categories
-    // @CrossOrigin(origins = "${CORS_ORIGINS}")
+    @CrossOrigin(origins = "${CORS_ORIGINS}")
     @PostMapping("/categories")
     public ResponseEntity<?> create(@RequestBody CategoryGroupDTO categoryGroupDTO) {
         int numCreated = categoryService.createCategoriesDTO(categoryGroupDTO);
@@ -85,7 +85,7 @@ public class CategoryController {
     //
     // curl -H 'content-type: application/json' -X POST -d '{"dataType":"crime",
     // "text":"test", "label": "16"}' localhost:8080/categories/0
-
+    @CrossOrigin(origins = "${CORS_ORIGINS}")
     @PostMapping("/categories/{parentId}")
     public ResponseEntity<?> create(@PathVariable(value = "parentId") final int parentId,
             @RequestBody Category jsonCategory) {
@@ -110,6 +110,7 @@ public class CategoryController {
     }
 
     // curl -X DELETE localhost:8080/categories/<id>
+    @CrossOrigin(origins = "${CORS_ORIGINS}")
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") final int id) {
 
@@ -138,6 +139,7 @@ public class CategoryController {
 
     // curl -H "content-type: application/json" -X PATCH -d '{"text":"hello"}'
     // localhost:8080/categories/244
+    @CrossOrigin(origins = "${CORS_ORIGINS}")
     @PatchMapping("/categories/{id}")
     public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
             @RequestBody Category jsonCategory) {

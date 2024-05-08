@@ -1,64 +1,35 @@
+import { useEffect, useReducer } from "react";
+import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
 
-export default function FiltersView({ map,
-                                      dataCrimeCheck, setDataCrimeCheck,
-                                      data311Check, setData311Check,
-                                      dataCrimeClusters, data311Clusters }) {
+export default function FiltersView({ map, activeCategories, activeCategoriesDispatcher }) {
 
+    console.log("[FiltersView] Render activeCategories", activeCategories);
 
-    const checkHandler = (e, layers, checkFn) => {
-        checkFn();
+    const parentCrime = activeCategories
+        .find(cat => cat.id == "crime");
 
-        //visibility: [none, visible]
-        for (const layer of layers) {
-            const visibility = map.getLayoutProperty(layer, "visibility");
-
-            map.setLayoutProperty(
-                layer,
-                "visibility",
-                [undefined, "visible"].includes(visibility) ? "none" : "visible"
-            );
-        }
-
-        //e.preventDefault();
-        //e.stopPropagation();
-    };
+    const parent311 = activeCategories
+        .find(cat => cat.id == "311");
 
     return (
-        <ul>
-            <li>
-                <input
-                    id="dataCrimeCheckbox"
-                    style={{ cursor: "pointer" }}
-                    type="checkbox"
-                    checked={dataCrimeCheck}
-                    onChange={(e) =>
-                        checkHandler(e, dataCrimeClusters, () =>
-                            setDataCrimeCheck(!dataCrimeCheck)
-                        )
-                    }
+        <div>
+            <ul>
+                <CheckBoxGroup
+                    key={`group-${parentCrime.id}`}
+                    parent={parentCrime}
+                    categories={activeCategories}
+                    activeCategoriesDispatcher={activeCategoriesDispatcher}
                 />
-                <label htmlFor="dataCrimeCheckbox" style={{ cursor: "pointer" }}>
-                    DataCrime
-                </label>
-            </li>
-
-            <li>
-                <input
-                    id="data311Checkbox"
-                    style={{ cursor: "pointer" }}
-                    type="checkbox"
-                    checked={data311Check}
-                    onChange={(e) =>
-                        checkHandler(e, data311Clusters, () =>
-                            setData311Check(!data311Check)
-                        )
-                    }
+            </ul>
+            <ul>
+                <CheckBoxGroup
+                    key={`group-${parent311.id}`}
+                    parent={parent311}
+                    categories={activeCategories}
+                    activeCategoriesDispatcher={activeCategoriesDispatcher}
                 />
-                <label htmlFor="data311Checkbox" style={{ cursor: "pointer" }}>
-                    Data311
-                </label>
-            </li>
-        </ul>
+            </ul>
+        </div>
     );
 
 }

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 
-export default function useMapMoveEndHandler({ map,
-    dataCrimeClusters, data311Clusters,
-    setVisibleCrimes, setVisible311s,
-    dataCrimeCheck, data311Check }) {
-
-
+export default function useMapMoveEndHandler({
+    map,
+    dataCrimeClusters,
+    data311Clusters,
+    setSidebarDisplayCrimes,
+    setSidebarDisplay311s,
+}) {
     const getUniqueFeatures = (features, comparatorProperty) => {
         const uniqueIds = new Set();
         const uniqueFeatures = [];
@@ -18,10 +19,9 @@ export default function useMapMoveEndHandler({ map,
             }
         }
         return uniqueFeatures;
-    }
+    };
 
     const moveendHandler = async (source, clusterLayers, setDataFn) => {
-
         const clusterSource = map.getSource(source);
 
         if (!clusterSource) return;
@@ -29,7 +29,7 @@ export default function useMapMoveEndHandler({ map,
         //queries on visible in window
         const features = map.queryRenderedFeatures({
             //layers: [].concat(dataCrimeClusters, data311Clusters),
-            layers: clusterLayers
+            layers: clusterLayers,
 
             //any filter here will only filter unclustered points (clustered don't have the reportCategory property)
             //filter: ["==", "reportCategory", "FAMILY DISTURBANCE"]
@@ -37,19 +37,16 @@ export default function useMapMoveEndHandler({ map,
 
         //const visibility = map.getLayoutProperty(dataCrimeClusters, "visibility");
 
-        console.log("FEATURES", features);  //the visible clusters
-
         //features are mix of clusters and unclustered points
         //clusters need to be deliberately unpacked (getClusterLeaves()) to get individual features
         //unclustered points need to be collected
         //each type is slightly different (different property with getUniqueFeatures)
         //NB: cluster-counts are also passed in, but get unique'd out
-        const uniqueFeatures = getUniqueFeatures(features, 'cluster_id');
-        const unClusteredFeatures = getUniqueFeatures(features, 'reportNum');
+        const uniqueFeatures = getUniqueFeatures(features, "cluster_id");
+        const unClusteredFeatures = getUniqueFeatures(features, "reportNum");
 
         let reports = [];
         for (let feature of uniqueFeatures) {
-
             //if cluster process, otherwise unclustered point
             if (!!feature.properties.cluster_id) {
                 const clusterId = feature.properties.cluster_id;
@@ -62,15 +59,12 @@ export default function useMapMoveEndHandler({ map,
 
         reports.push(...unClusteredFeatures);
 
-
         let res = await Promise.all(reports);
         res = res.flat();
-        console.log("RES", res);
 
         //extracted data andrendered
         //setVisibleCrimes(res);
         setDataFn(res);
-
     };
 
     const dataCrimeDebouncedHandler = debounce(moveendHandler, 350);
@@ -82,25 +76,32 @@ export default function useMapMoveEndHandler({ map,
 
         if (!map) return;
 
-        map.on('moveend', () => dataCrimeDebouncedHandler("datacrimes", dataCrimeClusters, setVisibleCrimes));
-        map.on('moveend', () => data311DebouncedHandler("data311s", data311Clusters, setVisible311s));
+        map.on("moveend", () =>
+            dataCrimeDebouncedHandler(
+                "datacrimes",
+                dataCrimeClusters,
+                setSidebarDisplayCrimes
+            )
+        );
+        map.on("moveend", () =>
+            data311DebouncedHandler("data311s", data311Clusters, setSidebarDisplay311s)
+        );
 
-        return (() => {
-            map.off('moveend', dataCrimeDebouncedHandler);
-            map.off('moveend', data311DebouncedHandler);
-        })
+        return () => {
+            map.off("moveend", dataCrimeDebouncedHandler);
+            map.off("moveend", data311DebouncedHandler);
+        };
     }, [map]);
-
 
     //trigger update on filter (checkbox) change
     //TODO: refactor as add more filters
     useEffect(() => {
-
         if (!map) return;
 
-        dataCrimeDebouncedHandler("datacrimes", dataCrimeClusters, setVisibleCrimes);
-        data311DebouncedHandler("data311s", data311Clusters, setVisible311s);
-
-    }, [dataCrimeCheck, data311Check]);
-
+        dataCrimeDebouncedHandler(
+            "datacrimes",
+            setSidebarDisplayCrimes
+        );
+        data311DebouncedHandler("data311s", data311Clusters, setSidebarDisplay311s);
+    }, []);
 }
