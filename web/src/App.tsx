@@ -89,6 +89,7 @@ function App() {
                     activeReportNum={activeReportNum}
                     setActiveReportNum={setActiveReportNum}
                     setActiveSpiderList={setActiveSpiderList}
+                    activeCategories={activeCategories}
                     dataCrimes={dataCrimes}
                     data311s={data311s}
                 />
