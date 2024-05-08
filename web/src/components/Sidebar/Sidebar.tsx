@@ -37,9 +37,6 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum, acti
         setSidebarDisplayCrimes, setSidebarDisplay311s,
     })
 
-
-    //console.log("[Sidebar] Render", categories);
-
     return (
         <div id="sidebar">
 
@@ -53,7 +50,6 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum, acti
 
             {view == View.FILTERS &&
                 <FiltersView map={map}
-                    dataCrimeClusters={dataCrimeClusters} data311Clusters={data311Clusters}
                     activeCategories={activeCategories} activeCategoriesDispatcher={activeCategoriesDispatcher}
                 />
             }
