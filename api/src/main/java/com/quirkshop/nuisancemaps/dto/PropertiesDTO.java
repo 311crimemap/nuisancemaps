@@ -8,15 +8,15 @@ public class PropertiesDTO {
     private String reportNum;
     private String reportCategory;
     private String location;
-    private Category orgCategory;
+    private Category category;
     private LocalDateTime reportedAt;
 
-    public PropertiesDTO(String reportCategory, String location, LocalDateTime reportedAt, String reportNum, Category orgCategory) {
+    public PropertiesDTO(String reportCategory, String location, LocalDateTime reportedAt, String reportNum, Category category) {
         this.reportCategory = reportCategory;
         this.location = location;
         this.reportedAt = reportedAt;
         this.reportNum = reportNum;
-        this.orgCategory = orgCategory;
+        this.category = category;
     }
 
     public String getReportNum() {
@@ -51,11 +51,11 @@ public class PropertiesDTO {
         this.reportedAt = reportedAt;
     }
 
-    public Category getOrgCategory() {
-        return orgCategory;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setOrgCategory(Category orgCategory) {
-        this.orgCategory = orgCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

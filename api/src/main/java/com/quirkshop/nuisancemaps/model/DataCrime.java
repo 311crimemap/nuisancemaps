@@ -48,7 +48,7 @@ public class DataCrime implements IDataEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
-    private Category orgCategory;
+    private Category orgCategory; // category is common field with data; orgCategory is from classifier
 
     private Double latitude;
     private Double longitude;
