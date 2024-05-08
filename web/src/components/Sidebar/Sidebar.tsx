@@ -7,7 +7,7 @@ import FiltersView from "./FiltersView";
 
 import useMapVisiblePointsSync from "./useMapVisiblePointsSync";
 
-export default function Sidebar({ map, activeReportNum, setActiveReportNum, activeCategories, activeCategoriesDispatcher }) {
+export default function Sidebar({ map, activeReportNum, setActiveReportNum, activeCategories, activeCategoriesDispatcher, filterDate, filterDateDispatcher }) {
 
     //TODO: lift cluster declarations up
     const dataCrimeClusters = [
@@ -51,6 +51,8 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum, acti
             {view == View.FILTERS &&
                 <FiltersView map={map}
                     activeCategories={activeCategories} activeCategoriesDispatcher={activeCategoriesDispatcher}
+                    filterDate={filterDate} filterDateDispatcher={filterDateDispatcher}
+
                 />
             }
 

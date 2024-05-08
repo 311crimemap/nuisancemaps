@@ -1,28 +1,23 @@
 import { useState, useEffect, useReducer } from "react";
 import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
-import dateFilterReducer from "./DateFilterReducer";
 
 export default function FiltersView({
   map,
   activeCategories,
   activeCategoriesDispatcher,
+  filterDate,
+  filterDateDispatcher,
 }) {
-  //const [startDate, setStartDate] = useState(startMaxDate);
-  // const [endDate, setEndDate] = useState(endMaxDate);
 
   const min = new Date();
   min.setDate(min.getDate() - 365);
-    const max = new Date();
+  const max = new Date();
 
   //en-CA? need YYYY-MM-DD format string for <input>
   const startMinDate = min.toLocaleDateString("en-CA");
   const startMaxDate = max.toLocaleDateString("en-CA");
   const endMinDate = min.toLocaleDateString("en-CA");
-    const endMaxDate = max.toLocaleDateString("en-CA");
-
-  const [filterDate, filterDateDispatcher] = useReducer(dateFilterReducer, {
-    date: { startDate: startMaxDate, endDate: endMaxDate },
-  });
+  const endMaxDate = max.toLocaleDateString("en-CA");
 
   const parentCrime = activeCategories.find((cat) => cat.id == "crime");
   const parent311 = activeCategories.find((cat) => cat.id == "311");
@@ -35,10 +30,12 @@ export default function FiltersView({
         <select
           id="presetDate"
           name="presetDate"
-            onChange={(e) => filterDateDispatcher({
-                type: "calcDate",
-                value: e.target.value
-            })}
+          onChange={(e) =>
+            filterDateDispatcher({
+              type: "calcDate",
+              value: e.target.value,
+            })
+          }
         >
           <option value="1"> 1 day</option>
           <option value="3"> 3 days</option>
