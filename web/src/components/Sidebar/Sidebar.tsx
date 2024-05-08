@@ -5,7 +5,7 @@ import SidebarNav from "./SidebarNav";
 import IncidentView from "./IncidentView";
 import FiltersView from "./FiltersView";
 
-import useMapMoveEndHandler from "./useMapMoveEndHandler";
+import useMapVisiblePointsSync from "./useMapVisiblePointsSync";
 
 export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
 
@@ -26,8 +26,8 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
 
     const [view, setView] = useState(View.INCIDENTS);
 
-    const [visibleCrimes, setVisibleCrimes] = useState([]);
-    const [visible311s, setVisible311s] = useState([]);
+    const [sidebarDisplayCrimes, setSidebarDisplayCrimes] = useState([]);
+    const [sidebarDisplay311s, setSidebarDisplay311s] = useState([]);
 
     const [categories, setCategories] = useState([]);
 
@@ -37,11 +37,10 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
 
     //sets map.onMove listener to update visible data in incidents panel
     //given what's visible on map
-    //TODO: refactor out of Sidebar, to map - uses map.on('movend)
-    useMapMoveEndHandler({
+    useMapVisiblePointsSync({
         map,
         dataCrimeClusters, data311Clusters,
-        setVisibleCrimes, setVisible311s,
+        setSidebarDisplayCrimes, setSidebarDisplay311s,
     })
 
     // initial load of categories list
@@ -113,7 +112,7 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
 
             {view == View.INCIDENTS &&
                 <IncidentView map={map}
-                    visibleCrimes={visibleCrimes} visible311s={visible311s}
+                    visibleCrimes={sidebarDisplayCrimes} visible311s={sidebarDisplay311s}
                     activeReportNum={activeReportNum} setActiveReportNum={setActiveReportNum} />
             }
 
