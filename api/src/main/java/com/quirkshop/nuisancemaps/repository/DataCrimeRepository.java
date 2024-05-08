@@ -34,19 +34,18 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
         List<DataCrime> dataCrimes = findAllByOrderByReportedAtDesc(pageRequest);
 
         List<FeatureDTO> featuresDTO = dataCrimes
-            .stream()
-            .map(dataCrime -> {
+                .stream()
+                .map(dataCrime -> {
 
                     GeometryDTO g = new GeometryDTO("Point",
-                                                    new Double[] { dataCrime.getLongitude(), dataCrime.getLatitude(), 0.0 });
+                            new Double[] { dataCrime.getLongitude(), dataCrime.getLatitude(), 0.0 });
                     PropertiesDTO p = new PropertiesDTO(dataCrime.getReportCategory(),
-                                                        dataCrime.getLocation(),
-                                                        dataCrime.getReportedAt(), dataCrime.getReportNum());
+                            dataCrime.getLocation(),
+                            dataCrime.getReportedAt(), dataCrime.getReportNum(), dataCrime.getOrgCategory());
                     FeatureDTO f = new FeatureDTO("Feature", g, p);
                     return f;
 
                 }).toList();
-
 
         return new FeatureCollectionDTO("FeatureCollection", featuresDTO);
 

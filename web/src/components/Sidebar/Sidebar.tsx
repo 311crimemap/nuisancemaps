@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { View } from "./View";
 import SidebarNav from "./SidebarNav";
 import IncidentView from "./IncidentView";
 import FiltersView from "./FiltersView";
 
-import useMapMoveEndHandler from "./useMapMoveEndHandler";
+import useMapVisiblePointsSync from "./useMapVisiblePointsSync";
 
-export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
+export default function Sidebar({ map, activeReportNum, setActiveReportNum, activeCategories, activeCategoriesDispatcher }) {
 
     //TODO: lift cluster declarations up
     const dataCrimeClusters = [
@@ -22,23 +22,20 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
         "unclustered-point-data311",
     ];
 
+
     const [view, setView] = useState(View.INCIDENTS);
 
-    const [dataCrimeCheck, setDataCrimeCheck] = useState(true);
-    const [data311Check, setData311Check] = useState(true);
+    const [sidebarDisplayCrimes, setSidebarDisplayCrimes] = useState([]);
+    const [sidebarDisplay311s, setSidebarDisplay311s] = useState([]);
 
-    const [visibleCrimes, setVisibleCrimes] = useState([]);
-    const [visible311s, setVisible311s] = useState([]);
 
-    //sets map.onMove listener to update data in visible window
-    useMapMoveEndHandler({
+    //sets map.onMove listener to update visible data in incidents panel
+    //given what's visible on map
+    useMapVisiblePointsSync({
         map,
         dataCrimeClusters, data311Clusters,
-        setVisibleCrimes, setVisible311s,
-        dataCrimeCheck, data311Check
+        setSidebarDisplayCrimes, setSidebarDisplay311s,
     })
-
-    console.log("[Sidebar] Render");
 
     return (
         <div id="sidebar">
@@ -47,15 +44,14 @@ export default function Sidebar({ map, activeReportNum, setActiveReportNum }) {
 
             {view == View.INCIDENTS &&
                 <IncidentView map={map}
-                    visibleCrimes={visibleCrimes} visible311s={visible311s}
+                    visibleCrimes={sidebarDisplayCrimes} visible311s={sidebarDisplay311s}
                     activeReportNum={activeReportNum} setActiveReportNum={setActiveReportNum} />
             }
 
             {view == View.FILTERS &&
                 <FiltersView map={map}
-                    dataCrimeCheck={dataCrimeCheck} setDataCrimeCheck={setDataCrimeCheck}
-                    data311Check={data311Check} setData311Check={setData311Check}
-                    dataCrimeClusters={dataCrimeClusters} data311Clusters={data311Clusters} />
+                    activeCategories={activeCategories} activeCategoriesDispatcher={activeCategoriesDispatcher}
+                />
             }
 
         </div>

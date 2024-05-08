@@ -103,9 +103,10 @@ export default function useMap(props) {
 
                         //inactive leaves layers
                         const layers = Object.keys(sources);
-                        const inActiveLeafIds = layers.filter(l => l.includes('spiderfy-leaf') &&
-                            l != leaf.layer.id);
+                        const inActiveLeafIds = layers
+                            .filter(l => l.includes('spiderfy-leaf') && l != leaf.layer.id);
                         console.log("InActiveLEafIds", inActiveLeafIds);
+
                         for (const layerID of inActiveLeafIds) {
                             const origFeature = sources[layerID].data.features[0];
                             const origIcon = origFeature.properties['icon-category'];
