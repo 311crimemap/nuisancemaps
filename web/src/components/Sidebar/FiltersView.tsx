@@ -1,12 +1,9 @@
 import { useEffect, useReducer } from "react";
-import categoryCheckBoxReducer from "./CategoryFilterReducer.js";
 import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
 
 export default function FiltersView({ map,
     dataCrimeClusters, data311Clusters,
-    categories }) {
-
-    const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, categories);
+    activeCategories, activeCategoriesDispatcher }) {
 
     console.log("[FiltersView] Render activeCategories", activeCategories);
 

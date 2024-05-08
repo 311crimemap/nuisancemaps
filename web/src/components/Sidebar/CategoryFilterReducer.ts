@@ -1,7 +1,10 @@
 //reducer(state, action)
 export default function categoryCheckBoxReducer(categories, action) {
     switch (action.type) {
-
+        //set default available here as delayed by async request
+        case "init": {
+            return action.categories
+        }
         //param id
         case "toggleCheckBoxById": {
 
