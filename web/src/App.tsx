@@ -8,8 +8,7 @@ import { SpiderListComponent } from "./components/SpiderList";
 import BottomSheetComponent from "./BottomSheetComponent.tsx";
 
 function App() {
-
-  const spiderZoomLevel = 17
+  const spiderZoomLevel = 17;
 
   const [position, setPosition] = useState({
     center: [-97.7171, 30.2944],
@@ -34,8 +33,8 @@ function App() {
     console.log("FETCH");
     const limit = 500;
     const center = position.center;
-    const dataCrimesURL = `http://localhost:8080/datacrimes?center=${center}&limit=${limit}`;
-    const data311sURL = `http://localhost:8080/data311s?center=${center}&limit=${limit}`;
+    const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?center=${center}&limit=${limit}`;
+    const data311sURL = `http://localhost:8080/data311s.geojson?center=${center}&limit=${limit}`;
 
     Promise.all([getData(dataCrimesURL), getData(data311sURL)]).then(
       ([dataCrimes, data311s]) => {
@@ -49,43 +48,51 @@ function App() {
     //position.center - too sensitive, even zoom will trigger
   }, []);
 
-
   const map = useMap({
-      position, setPosition,
-      activeReportNum, setActiveReportNum,
-      dataCrimes, data311s,
-      setActiveSpiderList,
-      spiderZoomLevel,
-      isDataLoaded
-  })
+    position,
+    setPosition,
+    activeReportNum,
+    setActiveReportNum,
+    dataCrimes,
+    data311s,
+    setActiveSpiderList,
+    spiderZoomLevel,
+    isDataLoaded,
+  });
 
   console.log("[App] Render", position, activeReportNum);
   return (
-        <>
-            <div id="container">
+    <>
+      <div id="container">
+        <Sidebar
+          map={map}
+          activeReportNum={activeReportNum}
+          setActiveReportNum={setActiveReportNum}
+        />
 
-                <Sidebar map={map} activeReportNum={activeReportNum} setActiveReportNum={setActiveReportNum} />
+        <MapComponent
+          map={map}
+          position={position}
+          setPosition={setPosition}
+          activeReportNum={activeReportNum}
+          setActiveReportNum={setActiveReportNum}
+          setActiveSpiderList={setActiveSpiderList}
+          dataCrimes={dataCrimes}
+          data311s={data311s}
+        />
 
-                <MapComponent
-                    map={map}
-                    position={position}
-                    setPosition={setPosition}
-                    activeReportNum={activeReportNum}
-                    setActiveReportNum={setActiveReportNum}
-                    setActiveSpiderList={setActiveSpiderList}
-                    dataCrimes={dataCrimes}
-                    data311s={data311s}
-                />
+        <SpiderListComponent
+          map={map}
+          spiderZoomLevel={spiderZoomLevel}
+          activeSpiderList={activeSpiderList}
+          activeReportNum={activeReportNum}
+          setActiveReportNum={setActiveReportNum}
+        />
+      </div>
 
-                <SpiderListComponent map={map}
-                                     spiderZoomLevel={spiderZoomLevel}
-                                     activeSpiderList={activeSpiderList}
-                                     activeReportNum={activeReportNum} setActiveReportNum={setActiveReportNum} />
-            </div>
-
-            <BottomSheetComponent map={map} />
-        </>
-    );
+      <BottomSheetComponent map={map} />
+    </>
+  );
 }
 
 export default App;
