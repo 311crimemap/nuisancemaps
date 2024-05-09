@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
@@ -41,6 +42,10 @@ public class Data311Controller {
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/data311s.geojson")
     public FeatureCollectionDTO getIndexGeoJSON(
+            @RequestParam(name = "startDate", required = false) Date startDate,
+            @RequestParam(name = "endDate", required = false) Date endDate,
+            @RequestParam(name = "lat", required = false) Double lat,
+            @RequestParam(name = "lng", required = false) Double lng,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "limit", required = false) Integer limit) {
 

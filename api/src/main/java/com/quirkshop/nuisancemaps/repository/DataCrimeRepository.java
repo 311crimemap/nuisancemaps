@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
@@ -50,5 +52,21 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
         return new FeatureCollectionDTO("FeatureCollection", featuresDTO);
 
     }
+
+    // https://stackoverflow.com/questions/58342156/spring-jpa-query-is-not-recognizing-spatial-types
+    // need to escape '::' double instances otherwise query parser thinks it's
+    // inserting a variable (single ':')
+    //
+    //NB: distance * 1609.34 calculation can overflow ~ max 5700 miles
+    //
+    @Query(value = "SELECT * FROM data_crime WHERE " +
+            "ST_Within(point, ST_Buffer(ST_MakePoint(:longitude, :latitude)\\:\\:geography, :distance * 1609.34)\\:\\:geometry) " +
+            "AND reported_at BETWEEN :startDate AND :endDate ;", nativeQuery = true)
+    List<DataCrime> findCrimesWithinDistance(
+            @Param("distance") int distance,
+            @Param("latitude") double latitude,
+            @Param("longitude") double longitude,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 
 }
