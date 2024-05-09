@@ -12,10 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.quirkshop.nuisancemaps.dto.CategoryDTO;
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.dto.FeatureDTO;
 import com.quirkshop.nuisancemaps.dto.GeometryDTO;
 import com.quirkshop.nuisancemaps.dto.PropertiesDTO;
+import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 
 @Repository
@@ -31,9 +33,11 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
 
     List<DataCrime> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
-    default FeatureCollectionDTO findAllByOrderByReportedAtDescGeoJSON(PageRequest pageRequest) {
+    default FeatureCollectionDTO findAllByOrderByReportedAtDescGeoJSON(int distance, double latitude, double longitude,
+            LocalDateTime startDate, LocalDateTime endDate) {
 
-        List<DataCrime> dataCrimes = findAllByOrderByReportedAtDesc(pageRequest);
+        List<DataCrime> dataCrimes = findAllByLatLngDistanceAndBetweenDates(distance, latitude, longitude, startDate,
+                endDate);
 
         List<FeatureDTO> featuresDTO = dataCrimes
                 .stream()
@@ -41,9 +45,15 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
 
                     GeometryDTO g = new GeometryDTO("Point",
                             new Double[] { dataCrime.getLongitude(), dataCrime.getLatitude(), 0.0 });
+
+                    Category c = dataCrime.getOrgCategory();
+
+                    CategoryDTO cDTO = new CategoryDTO(c.getId(), c.getDataType(), c.getText(), c.getLabel());
+
                     PropertiesDTO p = new PropertiesDTO(dataCrime.getReportCategory(),
                             dataCrime.getLocation(),
-                            dataCrime.getReportedAt(), dataCrime.getReportNum(), dataCrime.getOrgCategory());
+                            dataCrime.getReportedAt(), dataCrime.getReportNum(), cDTO);
+
                     FeatureDTO f = new FeatureDTO("Feature", g, p);
                     return f;
 
@@ -57,12 +67,23 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
     // need to escape '::' double instances otherwise query parser thinks it's
     // inserting a variable (single ':')
     //
-    //NB: distance * 1609.34 calculation can overflow ~ max 5700 miles
+    // NB: distance * 1609.34 calculation can overflow ~ max 5700 miles
     //
-    @Query(value = "SELECT * FROM data_crime WHERE " +
-            "ST_Within(point, ST_Buffer(ST_MakePoint(:longitude, :latitude)\\:\\:geography, :distance * 1609.34)\\:\\:geometry) " +
+    // CrudRepository knows to appropriately serialize renamed cat.id -> cat_id
+    // field
+    // but it doesn't know to serialization the nested Category parent
+    // which is why its wrapped with a CategoryDTO model
+    //
+    // cat.id needs to be renamed in the sql to prevent initial conflict
+    // e.g. can't "SELECT dc.*, cat.*" with both having "id" columns.
+
+    @Query(value = "SELECT dc.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id FROM data_crime dc "
+            +
+            "JOIN category cat ON dc.category_id = cat.id WHERE " +
+            "ST_Within(point, ST_Buffer(ST_MakePoint(:longitude, :latitude)\\:\\:geography, :distance * 1609.34)\\:\\:geometry) "
+            +
             "AND reported_at BETWEEN :startDate AND :endDate ;", nativeQuery = true)
-    List<DataCrime> findCrimesWithinDistance(
+    List<DataCrime> findAllByLatLngDistanceAndBetweenDates(
             @Param("distance") int distance,
             @Param("latitude") double latitude,
             @Param("longitude") double longitude,

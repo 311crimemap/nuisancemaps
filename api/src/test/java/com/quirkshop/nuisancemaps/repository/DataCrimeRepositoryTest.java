@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.repository;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,7 +118,7 @@ public class DataCrimeRepositoryTest {
     }
 
     @Test
-    //@Transactional
+    @Transactional
     public void DataCrimeGeoJSONQuery() throws Exception {
         //test native query
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), 4326);
@@ -131,8 +132,10 @@ public class DataCrimeRepositoryTest {
         LocalDateTime tenDaysAgo = now.minusDays(10);
         LocalDateTime elevenDaysAgo = now.minusDays(11);
 
+        Category parentCat = new Category("crime", "test", 0, null);
+        categoryRepository.save(parentCat);
         DataCrime d = new DataCrime(s);
-        Category c = new Category("crime", "test", 1, null);
+        Category c = new Category("crime", "test", 1, parentCat);
         categoryRepository.save(c);
 
         d.setReportNum("1");
@@ -144,7 +147,7 @@ public class DataCrimeRepositoryTest {
         d.setReportedAt(now);
 
         DataCrime d2 = new DataCrime(s);
-        Category c2 = new Category("crime", "test2", 2, null);
+        Category c2 = new Category("crime", "test2", 2, parentCat);
         categoryRepository.save(c2);
         d2.setReportNum("2");
         d2.setOrgCategory(c2);
@@ -174,21 +177,22 @@ public class DataCrimeRepositoryTest {
         datacrime_repo.save(d3);
 
         // save 3 points, 2 within 1 mile radius, 1 between date
-        List<DataCrime> results = datacrime_repo.findCrimesWithinDistance(10, latitude, longitude,
+        List<DataCrime> results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(10, latitude, longitude,
                 tenDaysAgo, now);
+
         assertThat(results.size()).isEqualTo(2);
 
-        results = datacrime_repo.findCrimesWithinDistance(10, latitude, longitude, now, now);
+        results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(10, latitude, longitude, now, now);
         assertThat(results.size()).isEqualTo(1);
 
-        results = datacrime_repo.findCrimesWithinDistance(10, new_latitude, longitude, tenDaysAgo, now);
+        results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(10, new_latitude, longitude, tenDaysAgo, now);
         assertThat(results.size()).isEqualTo(1);
 
         //note overflow 5700 miles
-        results = datacrime_repo.findCrimesWithinDistance(100,
-                                                          new_latitude, longitude, tenDaysAgo, now);
-        assertThat(results.size()).isEqualTo(3);
+        results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(100,
+                                                                        new_latitude, longitude, tenDaysAgo, now);
 
+        assertThat(results.size()).isEqualTo(3);
     }
 
 }
