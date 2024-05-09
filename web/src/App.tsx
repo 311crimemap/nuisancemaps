@@ -13,7 +13,10 @@ function App() {
     const spiderZoomLevel = 17;
 
     const [position, setPosition] = useState({
-        center: [-97.7171, 30.2944],
+        center: {
+            lat: 30.2944,
+            lng: -97.7171
+        }
     });
 
     const defaultData = {
@@ -44,11 +47,12 @@ function App() {
     useEffect(() => {
 
         const limit = 500;
-        const center = position.center;
+        const {lat, lng} = {...position.center};
+
         const params = new URLSearchParams({
             startDate: filterDate.date.startDate,
             endDate: filterDate.date.endDate,
-            center,
+            lat, lng,
             limit,
         });
 

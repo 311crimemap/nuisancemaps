@@ -25,7 +25,7 @@ export default function useMapMoveEndHandler({
         const clusterSource = map.getSource(source);
 
         if (!clusterSource) return;
-
+        console.log("CS", clusterSource);
         //queries on visible in window
         const features = map.queryRenderedFeatures({
             //layers: [].concat(dataCrimeClusters, data311Clusters),
@@ -47,7 +47,9 @@ export default function useMapMoveEndHandler({
 
         let reports = [];
         for (let feature of uniqueFeatures) {
-            //if cluster process, otherwise unclustered point
+
+            //if its a cluster, get its constituents
+            //otherwise it's already an unclustered point
             if (!!feature.properties.cluster_id) {
                 const clusterId = feature.properties.cluster_id;
                 const point_count = feature.properties.point_count;
@@ -59,6 +61,12 @@ export default function useMapMoveEndHandler({
 
         reports.push(...unClusteredFeatures);
 
+        //TODO:
+        //issue here when linking movement with position.center
+        //onMapMove -> new position.center -> make request for new data
+        //          -> loop through clusters -> underlying data has changed -> async clutserid no longer exists
+        //
+        //want features that are in current map viewport
         let res = await Promise.all(reports);
         res = res.flat();
 
