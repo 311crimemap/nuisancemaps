@@ -12,7 +12,6 @@ export default function useMap(props) {
 
     //const mapRef = useRef<maplibregl.Map>();
     const [map, setMap] = useState(null);
-    const assetLoader = new AssetLoader();
 
     useEffect(() => {
         console.log("[useMap] Hook Init")
@@ -69,7 +68,7 @@ export default function useMap(props) {
 
         _map.on('load', async () => {
 
-            await assetLoader.init(_map);
+            await AssetLoader.load(_map);
 
             var spiderfyCrime = new Spiderfy(_map, {
                 onLeafClick: (f, e) => {
@@ -90,6 +89,9 @@ export default function useMap(props) {
                         //TODO: call setClickedID/setActiveID(leaf.properties['reportNum'])
                         //to trigger panel format, detail view parallel to map handlers
 
+                        //example of active leaf
+                        // toggle icon to robbery
+
                         //active leaf
                         _map.setLayoutProperty(leaf.layer.id, 'icon-image',
                             [
@@ -105,7 +107,8 @@ export default function useMap(props) {
                         const layers = Object.keys(sources);
                         const inActiveLeafIds = layers
                             .filter(l => l.includes('spiderfy-leaf') && l != leaf.layer.id);
-                        console.log("InActiveLEafIds", inActiveLeafIds);
+
+                        console.log("InActiveLeafIds", inActiveLeafIds);
 
                         for (const layerID of inActiveLeafIds) {
                             const origFeature = sources[layerID].data.features[0];
