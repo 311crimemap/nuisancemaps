@@ -6,12 +6,16 @@ public class CategoryDTO {
     private String dataType;
     private String text;
     private Integer label;
+    private String iconName;
+    private String iconFilename;
 
-    public CategoryDTO(Integer id, String dataType, String text, Integer label) {
+    public CategoryDTO(Integer id, String dataType, String text, Integer label, String iconName, String iconFilename) {
         this.id = id;
         this.dataType = dataType;
         this.text = text;
         this.label = label;
+        this.iconName = iconName;
+        this.iconFilename = iconFilename;
     }
 
     public Integer getId() {
@@ -45,4 +49,21 @@ public class CategoryDTO {
     public void setLabel(Integer label) {
         this.label = label;
     }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
+    }
+
+    public String getIconFilename() {
+        return iconFilename;
+    }
+
+    public void setIconFilename(String iconFilename) {
+        this.iconFilename = iconFilename;
+    }
+
 }
