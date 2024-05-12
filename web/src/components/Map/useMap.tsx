@@ -68,7 +68,7 @@ export default function useMap(props) {
 
         _map.on('load', async () => {
 
-            await AssetLoader.load(_map);
+            await AssetLoader.load(_map, props.categories);
 
             var spiderfyCrime = new Spiderfy(_map, {
                 onLeafClick: (f, e) => {

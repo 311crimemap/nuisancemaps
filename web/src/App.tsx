@@ -37,6 +37,7 @@ function App() {
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [activeReportNum, setActiveReportNum] = useState(null);
     const [activeSpiderList, setActiveSpiderList] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, []);
     const [filterDate, filterDateDispatcher] = useReducer(dateFilterReducer, defaultDateRange);
 
@@ -67,10 +68,11 @@ function App() {
 
                 //set icons to data
                 AssetLoader.setIconCategory(dataCrimes);
-                AssetLoader.setIconCategory311(data311s);
+                AssetLoader.setIconCategory(data311s);
 
                 setDataCrimes(dataCrimes);
                 setData311s(data311s);
+                setCategories(categories.data);
 
                 activeCategoriesDispatcher({
                     type: "init",
@@ -92,6 +94,7 @@ function App() {
         setActiveReportNum,
         dataCrimes,
         data311s,
+        categories,
         setActiveSpiderList,
         spiderZoomLevel,
         isDataLoaded,
