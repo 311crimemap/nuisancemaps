@@ -11,7 +11,7 @@
             "icon-image": "cluster-sdf",
             "icon-allow-overlap": true
         }
-},
+    },
     {
         "id": "cluster-count-data311",
         "type": "symbol",
@@ -33,7 +33,7 @@
     },
     {
         "id": "unclustered-point-data311",
-        "type": "circle",
+        "type": "symbol",
         "source": "data311s",
         "filter": [
             "!",
@@ -42,11 +42,13 @@
                 "point_count"
             ]
         ],
-        "paint": {
-            "circle-color": "red",
-            "circle-radius": 6,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#fff"
+        "layout": {
+            "icon-image": [
+                "get",
+                "icon-category"
+            ],
+            "icon-size": 1,
+            "icon-allow-overlap": true
         }
     }
 ]
