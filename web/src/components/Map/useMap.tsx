@@ -88,9 +88,11 @@ export default function useMap(props) {
 
                         //TODO: call setClickedID/setActiveID(leaf.properties['reportNum'])
                         //to trigger panel format, detail view parallel to map handlers
+                        //console.log("ICON PROP", leaf.properties.icon-category); //this is "original" pre click
 
                         //example of active leaf
                         // toggle icon to robbery
+                        //possible move to leaf.properties[icon-category]+"-hover" or something?
 
                         //active leaf
                         _map.setLayoutProperty(leaf.layer.id, 'icon-image',

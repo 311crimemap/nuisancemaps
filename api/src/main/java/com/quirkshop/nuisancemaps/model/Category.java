@@ -39,6 +39,9 @@ public class Category {
     private String text;
     private Integer label; // want null for parents
 
+    private String iconName;
+    private String iconFilename;
+
     @ManyToOne
     @JoinColumn(name = "parent_id", nullable = true)
     private Category parent;
@@ -72,6 +75,19 @@ public class Category {
         this.updatedAt = now;
     }
 
+    public Category(String dataType, String text, Integer label, Category parent,
+                    String iconName, String iconFilename) {
+        this.dataType = dataType;
+        this.text = text;
+        this.label = label;
+        this.parent = parent;
+        this.iconName = iconName;
+        this.iconFilename = iconFilename;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
 
     public Integer getId() {
         return id;
@@ -135,6 +151,22 @@ public class Category {
 
     public void setSubcategories(List<Category> subcategories) {
         this.subcategories = subcategories;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
+    }
+
+    public String getIconFilename() {
+        return iconFilename;
+    }
+
+    public void setIconFilename(String iconFilename) {
+        this.iconFilename = iconFilename;
     }
 
 }

@@ -29,6 +29,14 @@ import traffic from "../../assets/traffic-light-solid.svg";
 
 export default class AssetLoader {
 
+    //WORKING HERE:
+    //1. move category - icon into api?
+    //  imports done via returned url field in api?
+    // category: {icon: {format: svg, name, url} }
+    // keeps it all in one place, don't need to do mapping code.
+    // have to do Icon, migration, IconDTO
+    //
+
     static iconsCrime = {
         window, //property
         mask,//theft (alt sack)
