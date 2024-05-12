@@ -52,6 +52,7 @@ services:
       # installed at "per database" level
       - ./db/01_enable_postgis.sql:/docker-entrypoint-initdb.d/01_enable_postgis.sql
     #network_mode: "host"
+    shm_size: 1gb
     ports:
       - 5432:5432
     env_file:
