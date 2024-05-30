@@ -8,7 +8,6 @@ import { SpiderListComponent } from "./components/SpiderList";
 import BottomSheetComponent from "./BottomSheetComponent.tsx";
 import categoryCheckBoxReducer from "./components/Sidebar/CategoryFilterReducer";
 import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
-import AssetLoader from "./components/Map/AssetLoader";
 
 function App() {
     const spiderZoomLevel = 17;
@@ -65,10 +64,6 @@ function App() {
 
         Promise.all([getData(dataCrimesURL), getData(data311sURL), getData(categoriesURL)]).then(
             ([dataCrimes, data311s, categories]) => {
-
-                //set icons to data
-                AssetLoader.setIconCategory(dataCrimes);
-                AssetLoader.setIconCategory(data311s);
 
                 setDataCrimes(dataCrimes);
                 setData311s(data311s);
