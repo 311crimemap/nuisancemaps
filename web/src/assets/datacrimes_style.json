@@ -8,8 +8,17 @@
             "point_count"
         ],
         "layout": {
-            "icon-image": "cluster",
-            "icon-allow-overlap": true
+            "text-field": "\uf111",
+            "text-font": [
+                "Font Awesome 6 Free Solid"
+            ],
+            "text-allow-overlap": true,
+            "text-size": 25
+        },
+        "paint": {
+            "text-color": "#ffcd00",
+            "text-halo-color": "#000000",
+            "text-halo-width": 1
         }
     },
     {
@@ -32,6 +41,25 @@
         }
     },
     {
+        "id": "circle-datacrime-layer",
+        "type": "circle",
+        "source": "datacrimes",
+        "filter": [
+            "!",
+            [
+                "has",
+                "point_count"
+            ]
+        ],
+        "paint": {
+            "circle-radius": 16,
+            "circle-color": "#ffcd00",
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#000000",
+            "circle-stroke-opacity": 0.75
+        }
+    },
+    {
         "id": "unclustered-point-datacrime",
         "type": "symbol",
         "source": "datacrimes",
@@ -43,12 +71,24 @@
             ]
         ],
         "layout": {
-            "icon-image": [
+            "text-field": [
                 "get",
-                "icon-category"
+                "iconUnicode",
+                [
+                    "get",
+                    "category"
+                ]
             ],
-            "icon-size": 1,
-            "icon-allow-overlap": true
+            "text-font": [
+                "Font Awesome 6 Free Solid"
+            ],
+            "text-allow-overlap": true,
+            "text-size": 18,
+            "text-anchor": "center",
+            "text-justify": "center"
+        },
+        "paint": {
+            "text-color": "#000000"
         }
     }
 ]
