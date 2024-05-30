@@ -4,8 +4,6 @@ import maplibregl from "maplibre-gl";
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
-import AssetLoader from "./AssetLoader";
-
 import Spiderfy from '@nazka/map-gl-js-spiderfy';
 
 export default function useMap(props) {
@@ -19,7 +17,7 @@ export default function useMap(props) {
         if (!props.isDataLoaded) return; //NB: wait until data fetched before creating map
 
         const style = {
-            glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+            glyphs: "https://alanverga.com/basemaps-assets/fonts/{fontstack}/{range}.pbf",
             version: 8,
             sources: {
                 protomaps: {
@@ -68,11 +66,9 @@ export default function useMap(props) {
 
         _map.on('load', async () => {
 
-            await AssetLoader.load(_map, props.categories);
-
             var spiderfyCrime = new Spiderfy(_map, {
                 onLeafClick: (f, e) => {
-
+                    return true;
                     //console.log("Feature", f)
                     console.log("Element", e)
                     const features = _map.queryRenderedFeatures(e.point);
@@ -82,26 +78,34 @@ export default function useMap(props) {
                     const leaf = features.find(f => f.layer.id.includes(`spiderfy-leaf`));
 
                     if (leaf) {
+                        const circleLayerID = layer.id.includes("311") ?
+                            "circle-data311-layer" : "circle-datacrime-layer";
+
                         console.log("LEAF", leaf);
                         console.log("SOURCES", sources);
                         console.log("THIS", this, spiderfyCrime);
 
                         //TODO: call setClickedID/setActiveID(leaf.properties['reportNum'])
                         //to trigger panel format, detail view parallel to map handlers
-                        //console.log("ICON PROP", leaf.properties.icon-category); //this is "original" pre click
-
-                        //example of active leaf
-                        // toggle icon to robbery
-                        //possible move to leaf.properties[icon-category]+"-hover" or something?
-
+/*
                         //active leaf
-                        _map.setLayoutProperty(leaf.layer.id, 'icon-image',
+                        //increae icon size
+                        _map.setLayoutProperty(leaf.layer.id, 'text-size',
                             [
                                 'match',
-                                ['get', 'reportNum'], // get the feature id
-                                leaf.properties['reportNum'],
-                                'robbery', //image when id is the clicked feature id
-                                leaf.properties['icon-category']  //default
+                                ['get', 'reportNum'], reportNum, // get the feature id
+                                30, //new text-size
+                                18  //default - needs to be constant not layer reference (since it will change here)
+                            ]
+                        )
+
+                        //increase background circle radius
+                        _map.setPaintProperty(circleLayerID, 'circle-radius',
+                            [
+                                'match',
+                                ['get', 'reportNum'], reportNum,
+                                24, //new radius
+                                16  //default
                             ]
                         )
 
@@ -115,10 +119,12 @@ export default function useMap(props) {
                         for (const layerID of inActiveLeafIds) {
                             const origFeature = sources[layerID].data.features[0];
                             const origIcon = origFeature.properties['icon-category'];
-                            _map.setLayoutProperty(layerID, 'icon-image', origIcon);
+
+                            //_map.setLayoutProperty(layerID, 'icon-image', origIcon);
+                            //_map.setPaintProperty(layerID, 'icon-color', 'black');
 
                         }
-
+*/
                     }
 
 
@@ -148,9 +154,12 @@ export default function useMap(props) {
                 closeOnLeafClick: false,
                 //clustered can't be styled into distinct unclustered - all the "same" except location
                 //spiderLeavesPaint: {},
+                spiderLegsAreHidden: true,
+                /*
                 spiderLeavesLayout: {
                     "icon-image": ["get", "icon-category"],
                 },
+                */
                 minZoomLevel: props.spiderZoomLevel,
                 zoomIncrement: 2,
 
@@ -188,6 +197,7 @@ export default function useMap(props) {
                 },
 
                 closeOnLeafClick: false,
+                spiderLegsAreHidden: true,
                 //clustered can't be styled into distinct unclustered - all the "same" except location
                 //spiderLeavesPaint: {},
                 minZoomLevel: props.spiderZoomLevel,
@@ -210,6 +220,11 @@ export default function useMap(props) {
             // description HTML from its properties.
 
             _map.on('click', `unclustered-point-${dataset}`, (e) => {
+                console.log("CLICK unclustered", e.features[0]);
+
+                const layer = e.features[0].layer;
+                const circleLayerID = layer.id.includes("311") ?
+                                      "circle-data311-layer" : "circle-datacrime-layer";
 
                 const coordinates = e.features[0].geometry.coordinates.slice();
                 const reportCategory = e.features[0].properties.reportCategory;
@@ -221,6 +236,26 @@ export default function useMap(props) {
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
+
+                //increae icon size
+                _map.setLayoutProperty(layer.id, 'text-size',
+                    [
+                        'match',
+                        ['get', 'reportNum'], reportNum, // get the feature id
+                        30, //new text-size
+                        18  //default - needs to be constant not layer reference (since it will change here)
+                    ]
+                )
+
+                //increase background circle radius
+                _map.setPaintProperty(circleLayerID, 'circle-radius',
+                    [
+                        'match',
+                        ['get', 'reportNum'], reportNum,
+                        24, //new radius
+                        16  //default
+                    ]
+                )
 
                 new maplibregl.Popup()
                     .setLngLat(coordinates)
@@ -264,13 +299,40 @@ export default function useMap(props) {
          * used to clear displays like spider list
          */
         _map.on('click', (e) => {
+
             const features = _map.queryRenderedFeatures(e.point)
                                  .filter(f => f.source != "protomaps");
 
-            if (features.length === 0) {
-                //clear
-                props.setActiveSpiderList({});
+            console.log("GEN CLICK", features);
+            return;
+
+            //TODO: refactor this once default values figured out
+
+            if (features.length) {
+                if (features[0].source.includes("311")) {
+                    _map.setLayoutProperty('unclustered-point-datacrime', 'text-size', 18)
+                    _map.setPaintProperty('circle-datacrime-layer', 'circle-radius', 16);
+                } else {
+                    _map.setLayoutProperty('unclustered-point-data311', 'text-size', 18)
+                    _map.setPaintProperty('circle-data311-layer', 'circle-radius', 16);
+                }
             }
+
+            //clear all
+            if (features.length === 0) {
+
+                //clear, turn off anything in previous click handlers
+                _map.setLayoutProperty('unclustered-point-datacrime', 'text-size', 18)
+                _map.setLayoutProperty('unclustered-point-data311', 'text-size', 18)
+
+                _map.setPaintProperty('circle-datacrime-layer', 'circle-radius', 16);
+                _map.setPaintProperty('circle-data311-layer', 'circle-radius', 16);
+
+
+                props.setActiveSpiderList({});
+
+            }
+
         })
 
 
