@@ -7,15 +7,15 @@ public class CategoryDTO {
     private String text;
     private Integer label;
     private String iconName;
-    private String iconFilename;
+    private String iconUnicode;
 
-    public CategoryDTO(Integer id, String dataType, String text, Integer label, String iconName, String iconFilename) {
+    public CategoryDTO(Integer id, String dataType, String text, Integer label, String iconName, String iconUnicode) {
         this.id = id;
         this.dataType = dataType;
         this.text = text;
         this.label = label;
         this.iconName = iconName;
-        this.iconFilename = iconFilename;
+        this.iconUnicode = iconUnicode;
     }
 
     public Integer getId() {
@@ -58,12 +58,12 @@ public class CategoryDTO {
         this.iconName = iconName;
     }
 
-    public String getIconFilename() {
-        return iconFilename;
+    public String getIconUnicode() {
+        return iconUnicode;
     }
 
-    public void setIconFilename(String iconFilename) {
-        this.iconFilename = iconFilename;
+    public void setIconUnicode(String iconUnicode) {
+        this.iconUnicode = iconUnicode;
     }
 
 }

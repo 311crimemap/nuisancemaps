@@ -97,7 +97,7 @@ public class CategoryController {
                 jsonCategory.getLabel(),
                 parent,
                 jsonCategory.getIconName(),
-                jsonCategory.getIconFilename());
+                jsonCategory.getIconUnicode());
 
         JSendDTO<Category> jSendDTO = new JSendDTO<Category>("success", category);
         try {

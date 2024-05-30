@@ -45,7 +45,7 @@ public interface Data311Repository extends IDataEntityRepository<Data311>, CrudR
                     Category c = data311.getOrgCategory();
 
                     CategoryDTO cDTO = new CategoryDTO(c.getId(), c.getDataType(), c.getText(), c.getLabel(),
-                            c.getIconName(), c.getIconFilename());
+                            c.getIconName(), c.getIconUnicode());
 
                     PropertiesDTO p = new PropertiesDTO(data311.getReportCategory(),
                             data311.getLocation(),

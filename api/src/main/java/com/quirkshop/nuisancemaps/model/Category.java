@@ -18,15 +18,13 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 
 import java.util.List;
 
 @Entity
-@Table(name = "category",
-       uniqueConstraints = {
-           @UniqueConstraint(name = "UniqueTextAndLabel", columnNames = { "text", "label" })
-       })
+@Table(name = "category", uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueTextAndLabel", columnNames = { "text", "label" })
+})
 public class Category {
 
     @Id
@@ -40,7 +38,7 @@ public class Category {
     private Integer label; // want null for parents
 
     private String iconName;
-    private String iconFilename;
+    private String iconUnicode;
 
     @ManyToOne
     @JoinColumn(name = "parent_id", nullable = true)
@@ -76,13 +74,13 @@ public class Category {
     }
 
     public Category(String dataType, String text, Integer label, Category parent,
-                    String iconName, String iconFilename) {
+            String iconName, String iconUnicode) {
         this.dataType = dataType;
         this.text = text;
         this.label = label;
         this.parent = parent;
         this.iconName = iconName;
-        this.iconFilename = iconFilename;
+        this.iconUnicode = iconUnicode;
 
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
@@ -161,12 +159,12 @@ public class Category {
         this.iconName = iconName;
     }
 
-    public String getIconFilename() {
-        return iconFilename;
+    public String getIconUnicode() {
+        return iconUnicode;
     }
 
-    public void setIconFilename(String iconFilename) {
-        this.iconFilename = iconFilename;
+    public void setIconUnicode(String iconUnicode) {
+        this.iconUnicode = iconUnicode;
     }
 
 }

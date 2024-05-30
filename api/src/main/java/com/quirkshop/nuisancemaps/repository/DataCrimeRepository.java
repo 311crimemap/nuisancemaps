@@ -49,7 +49,7 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
                     Category c = dataCrime.getOrgCategory();
 
                     CategoryDTO cDTO = new CategoryDTO(c.getId(), c.getDataType(), c.getText(), c.getLabel(),
-                            c.getIconName(), c.getIconFilename());
+                            c.getIconName(), c.getIconUnicode());
 
                     PropertiesDTO p = new PropertiesDTO(dataCrime.getReportCategory(),
                             dataCrime.getLocation(),
