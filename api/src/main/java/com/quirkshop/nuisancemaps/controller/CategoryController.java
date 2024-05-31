@@ -58,7 +58,7 @@ public class CategoryController {
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/categories")
     public ResponseEntity<?> getIndex() {
-        Iterable<Category> categoriesIter = categoryRepository.findAllByOrderByIdAsc();
+        Iterable<Category> categoriesIter = categoryRepository.findAllByTextNotOrderByIdAsc("SKIP");
         JSendDTO<Iterable<Category>> jSendDTO = new JSendDTO<Iterable<Category>>("success",
                 categoriesIter);
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
