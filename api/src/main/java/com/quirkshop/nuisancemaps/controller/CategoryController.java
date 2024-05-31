@@ -58,7 +58,7 @@ public class CategoryController {
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/categories")
     public ResponseEntity<?> getIndex() {
-        Iterable<Category> categoriesIter = categoryRepository.findAll();
+        Iterable<Category> categoriesIter = categoryRepository.findAllByOrderByIdAsc();
         JSendDTO<Iterable<Category>> jSendDTO = new JSendDTO<Iterable<Category>>("success",
                 categoriesIter);
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
@@ -95,7 +95,9 @@ public class CategoryController {
         Category category = new Category(jsonCategory.getDataType(),
                 jsonCategory.getText(),
                 jsonCategory.getLabel(),
-                parent);
+                parent,
+                jsonCategory.getIconName(),
+                jsonCategory.getIconUnicode());
 
         JSendDTO<Category> jSendDTO = new JSendDTO<Category>("success", category);
         try {

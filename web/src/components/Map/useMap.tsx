@@ -4,15 +4,12 @@ import maplibregl from "maplibre-gl";
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
-import AssetLoader from "./AssetLoader";
-
 import Spiderfy from '@nazka/map-gl-js-spiderfy';
 
 export default function useMap(props) {
 
     //const mapRef = useRef<maplibregl.Map>();
     const [map, setMap] = useState(null);
-    const assetLoader = new AssetLoader();
 
     useEffect(() => {
         console.log("[useMap] Hook Init")
@@ -20,7 +17,7 @@ export default function useMap(props) {
         if (!props.isDataLoaded) return; //NB: wait until data fetched before creating map
 
         const style = {
-            glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+            glyphs: "https://alanverga.com/basemaps-assets/fonts/{fontstack}/{range}.pbf",
             version: 8,
             sources: {
                 protomaps: {
@@ -35,7 +32,7 @@ export default function useMap(props) {
                     type: "geojson",
                     data: props.dataCrimes,
                     cluster: true,
-                    clusterMaxZoom: 19, // Max zoom to cluster points on
+                    clusterMaxZoom: 18, // Max zoom to cluster points on
                     clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
                 },
 
@@ -43,7 +40,7 @@ export default function useMap(props) {
                     type: "geojson",
                     data: props.data311s,
                     cluster: true,
-                    clusterMaxZoom: 19, // Max zoom to cluster points on
+                    clusterMaxZoom: 18, // Max zoom to cluster points on
                     clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
                 }
 
@@ -68,132 +65,7 @@ export default function useMap(props) {
         //_map.showTileBoundaries = true;
 
         _map.on('load', async () => {
-
-            await assetLoader.init(_map);
-
-            var spiderfyCrime = new Spiderfy(_map, {
-                onLeafClick: (f, e) => {
-
-                    //console.log("Feature", f)
-                    console.log("Element", e)
-                    const features = _map.queryRenderedFeatures(e.point);
-                    const sources = _map.getStyle().sources;
-                    console.log("Features", features)
-
-                    const leaf = features.find(f => f.layer.id.includes(`spiderfy-leaf`));
-
-                    if (leaf) {
-                        console.log("LEAF", leaf);
-                        console.log("SOURCES", sources);
-                        console.log("THIS", this, spiderfyCrime);
-
-                        //TODO: call setClickedID/setActiveID(leaf.properties['reportNum'])
-                        //to trigger panel format, detail view parallel to map handlers
-
-                        //active leaf
-                        _map.setLayoutProperty(leaf.layer.id, 'icon-image',
-                            [
-                                'match',
-                                ['get', 'reportNum'], // get the feature id
-                                leaf.properties['reportNum'],
-                                'robbery', //image when id is the clicked feature id
-                                leaf.properties['icon-category']  //default
-                            ]
-                        )
-
-                        //inactive leaves layers
-                        const layers = Object.keys(sources);
-                        const inActiveLeafIds = layers
-                            .filter(l => l.includes('spiderfy-leaf') && l != leaf.layer.id);
-                        console.log("InActiveLEafIds", inActiveLeafIds);
-
-                        for (const layerID of inActiveLeafIds) {
-                            const origFeature = sources[layerID].data.features[0];
-                            const origIcon = origFeature.properties['icon-category'];
-                            _map.setLayoutProperty(layerID, 'icon-image', origIcon);
-
-                        }
-
-                    }
-
-
-
-                    //const coordinates = f.geometry.coordinates.slice();
-                    const coordinates = [e.lngLat.lng, e.lngLat.lat, 0]; //cursor click
-                    const reportCategory = f.properties.reportCategory;
-                    const reportNum = f.properties.reportNum;
-                    //while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                    //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    // }
-
-                    //console.log("adjcoords", coordinates);
-                    new maplibregl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(
-                            `${reportCategory}`
-                        )
-                        .addTo(_map);
-
-                    //setActiveReportNum
-                    props.setActiveReportNum(reportNum);
-
-                    console.log(f)
-                },
-
-                closeOnLeafClick: false,
-                //clustered can't be styled into distinct unclustered - all the "same" except location
-                //spiderLeavesPaint: {},
-                spiderLeavesLayout: {
-                    "icon-image": ["get", "icon-category"],
-                },
-                minZoomLevel: props.spiderZoomLevel,
-                zoomIncrement: 2,
-
-            });
-
-            //apply to layerID
-            spiderfyCrime.applyTo('clusters-datacrime');
-
-
-            //need separate spider per source, or it can trigger auto close
-            var spiderfy311 = new Spiderfy(_map, {
-                onLeafClick: (f, e) => {
-
-                    console.log("E", e)
-                    //const coordinates = f.geometry.coordinates.slice();
-                    const coordinates = [e.lngLat.lng, e.lngLat.lat, 0]; //cursor click
-                    const reportCategory = f.properties.reportCategory;
-                    const reportNum = f.properties.reportNum;
-
-                    //while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                    //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    // }
-
-                    //console.log("adjcoords", coordinates);
-                    new maplibregl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(
-                            `${reportCategory}`
-                        )
-                        .addTo(_map);
-
-                    props.setActiveReportNum(reportNum);
-
-                    console.log(f)
-                },
-
-                closeOnLeafClick: false,
-                //clustered can't be styled into distinct unclustered - all the "same" except location
-                //spiderLeavesPaint: {},
-                minZoomLevel: props.spiderZoomLevel,
-                zoomIncrement: 2,
-
-            });
-
-
-            spiderfy311.applyTo('clusters-data311');
-
-
+            console.log("Load");
         });
 
 
@@ -205,6 +77,11 @@ export default function useMap(props) {
             // description HTML from its properties.
 
             _map.on('click', `unclustered-point-${dataset}`, (e) => {
+                console.log("CLICK unclustered");
+
+                const layer = e.features[0].layer;
+                const circleLayerID = layer.id.includes("311") ?
+                                      "circle-data311-layer" : "circle-datacrime-layer";
 
                 const coordinates = e.features[0].geometry.coordinates.slice();
                 const reportCategory = e.features[0].properties.reportCategory;
@@ -216,6 +93,26 @@ export default function useMap(props) {
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
+
+                //increae icon size
+                _map.setLayoutProperty(layer.id, 'text-size',
+                    [
+                        'match',
+                        ['get', 'reportNum'], reportNum, // get the feature id
+                        30, //new text-size
+                        18  //default - needs to be constant not layer reference (since it will change here)
+                    ]
+                )
+
+                //increase background circle radius
+                _map.setPaintProperty(circleLayerID, 'circle-radius',
+                    [
+                        'match',
+                        ['get', 'reportNum'], reportNum,
+                        24, //new radius
+                        16  //default
+                    ]
+                )
 
                 new maplibregl.Popup()
                     .setLngLat(coordinates)
@@ -230,17 +127,28 @@ export default function useMap(props) {
 
             //click on a clustered point
             _map.on('click', `clusters-${dataset}`, async (e) => {
+                console.log("CLICK Cluster", e);
 
                 const source = e.features[0].source;
                 const cluster_id = e.features[0].properties.cluster_id;
+                const coordinates = e.features[0].geometry.coordinates;
                 const point_count = e.features[0].properties.point_count;
 
                 const clusterSource = _map.getSource(source);
 
-                const features = await clusterSource.getClusterLeaves(cluster_id, point_count, 0);
+                //TODO: consistent layer id /source name
+                const zoom = await _map.getSource(`${dataset}s`).getClusterExpansionZoom(cluster_id);
+                _map.easeTo({
+                    center: coordinates,
+                    zoom
+                });
+
 
                 //1. get list of individual elements in cluster (ids)
                 //2. set open
+
+                const features = await clusterSource.getClusterLeaves(cluster_id, point_count, 0);
+                console.log("FE", features);
                 const spiderListFeatures = {
                     source,
                     features
@@ -259,13 +167,39 @@ export default function useMap(props) {
          * used to clear displays like spider list
          */
         _map.on('click', (e) => {
+
             const features = _map.queryRenderedFeatures(e.point)
                                  .filter(f => f.source != "protomaps");
 
-            if (features.length === 0) {
-                //clear
-                props.setActiveSpiderList({});
+            console.log("GEN CLICK", features);
+
+            //TODO: refactor this once default values figured out
+
+            if (features.length) {
+                if (features[0].source.includes("311")) {
+                    _map.setLayoutProperty('unclustered-point-datacrime', 'text-size', 18)
+                    _map.setPaintProperty('circle-datacrime-layer', 'circle-radius', 16);
+                } else {
+                    _map.setLayoutProperty('unclustered-point-data311', 'text-size', 18)
+                    _map.setPaintProperty('circle-data311-layer', 'circle-radius', 16);
+                }
             }
+
+            //clear all
+            if (features.length === 0) {
+
+                //clear, turn off anything in previous click handlers
+                _map.setLayoutProperty('unclustered-point-datacrime', 'text-size', 18)
+                _map.setLayoutProperty('unclustered-point-data311', 'text-size', 18)
+
+                _map.setPaintProperty('circle-datacrime-layer', 'circle-radius', 16);
+                _map.setPaintProperty('circle-data311-layer', 'circle-radius', 16);
+
+
+                props.setActiveSpiderList({});
+
+            }
+
         })
 
 
