@@ -13,7 +13,22 @@
                 "Font Awesome 6 Free Solid"
             ],
             "text-allow-overlap": true,
-            "text-size": 32
+            "text-size": [
+                "step",
+                [
+                    "get",
+                    "point_count"
+                ],
+                32,
+                10, 36,
+                25, 40,
+                50, 44,
+                100, 50,
+                200, 56,
+                400, 62,
+                800, 68,
+                1000, 76
+            ]
         },
         "paint": {
             "text-color": "#ffffff",
