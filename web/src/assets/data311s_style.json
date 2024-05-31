@@ -13,7 +13,7 @@
                 "Font Awesome 6 Free Solid"
             ],
             "text-allow-overlap": true,
-            "text-size": 25
+            "text-size": 32
         },
         "paint": {
             "text-color": "#ffffff",
@@ -37,7 +37,8 @@
             "text-font": [
                 "Noto Sans Regular"
             ],
-            "text-size": 12
+            "text-allow-overlap": true,
+            "text-size": 14
         }
     },
     {
