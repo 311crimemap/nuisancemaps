@@ -18,15 +18,13 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 
 import java.util.List;
 
 @Entity
-@Table(name = "category",
-       uniqueConstraints = {
-           @UniqueConstraint(name = "UniqueTextAndLabel", columnNames = { "text", "label" })
-       })
+@Table(name = "category", uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueTextAndLabel", columnNames = { "text", "label" })
+})
 public class Category {
 
     @Id
@@ -38,6 +36,9 @@ public class Category {
 
     private String text;
     private Integer label; // want null for parents
+
+    private String iconName;
+    private String iconUnicode;
 
     @ManyToOne
     @JoinColumn(name = "parent_id", nullable = true)
@@ -72,6 +73,19 @@ public class Category {
         this.updatedAt = now;
     }
 
+    public Category(String dataType, String text, Integer label, Category parent,
+            String iconName, String iconUnicode) {
+        this.dataType = dataType;
+        this.text = text;
+        this.label = label;
+        this.parent = parent;
+        this.iconName = iconName;
+        this.iconUnicode = iconUnicode;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
 
     public Integer getId() {
         return id;
@@ -135,6 +149,22 @@ public class Category {
 
     public void setSubcategories(List<Category> subcategories) {
         this.subcategories = subcategories;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
+    }
+
+    public String getIconUnicode() {
+        return iconUnicode;
+    }
+
+    public void setIconUnicode(String iconUnicode) {
+        this.iconUnicode = iconUnicode;
     }
 
 }

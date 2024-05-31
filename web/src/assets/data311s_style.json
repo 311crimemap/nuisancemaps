@@ -8,10 +8,34 @@
             "point_count"
         ],
         "layout": {
-            "icon-image": "cluster-sdf",
-            "icon-allow-overlap": true
+            "text-field": "\uf111",
+            "text-font": [
+                "Font Awesome 6 Free Solid"
+            ],
+            "text-allow-overlap": true,
+            "text-size": [
+                "step",
+                [
+                    "get",
+                    "point_count"
+                ],
+                32,
+                10, 36,
+                25, 40,
+                50, 44,
+                100, 50,
+                200, 56,
+                400, 62,
+                800, 68,
+                1000, 76
+            ]
+        },
+        "paint": {
+            "text-color": "#A5D6A7",
+            "text-halo-color": "#000000",
+            "text-halo-width": 1
         }
-},
+    },
     {
         "id": "cluster-count-data311",
         "type": "symbol",
@@ -28,11 +52,12 @@
             "text-font": [
                 "Noto Sans Regular"
             ],
-            "text-size": 12
+            "text-allow-overlap": true,
+            "text-size": 14
         }
     },
     {
-        "id": "unclustered-point-data311",
+        "id": "circle-data311-layer",
         "type": "circle",
         "source": "data311s",
         "filter": [
@@ -43,10 +68,45 @@
             ]
         ],
         "paint": {
-            "circle-color": "red",
-            "circle-radius": 6,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#fff"
+            "circle-radius": 16,
+            "circle-color": "#A5D6A7",
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#000000",
+            "circle-stroke-opacity": 0.75
+        }
+    },
+    {
+        "id": "unclustered-point-data311",
+        "type": "symbol",
+        "source": "data311s",
+        "filter": [
+            "!",
+            [
+                "has",
+                "point_count"
+            ]
+        ],
+        "layout": {
+            "text-field": [
+                "get",
+                "iconUnicode",
+                [
+                    "get",
+                    "category"
+                ]
+            ],
+            "text-font": [
+                "Font Awesome 6 Free Solid"
+            ],
+            "text-allow-overlap": true,
+            "text-size": 18,
+            "text-anchor": "center",
+            "text-justify": "center"
+        },
+        "paint": {
+            "text-color": "#000000",
+            "text-halo-color": "#f0f0f0",
+            "text-halo-width": 1
         }
     }
 ]

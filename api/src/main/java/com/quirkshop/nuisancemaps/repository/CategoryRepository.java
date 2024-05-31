@@ -12,5 +12,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
     List<Category> findAllByText(String text);
 
+    List<Category> findAllByOrderByIdAsc();
+
     Category findByDataTypeAndTextAndLabel(String dataType, String text, Integer label);
 }
