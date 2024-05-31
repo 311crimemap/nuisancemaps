@@ -32,7 +32,7 @@ export default function useMap(props) {
                     type: "geojson",
                     data: props.dataCrimes,
                     cluster: true,
-                    clusterMaxZoom: 19, // Max zoom to cluster points on
+                    clusterMaxZoom: 18, // Max zoom to cluster points on
                     clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
                 },
 
@@ -40,7 +40,7 @@ export default function useMap(props) {
                     type: "geojson",
                     data: props.data311s,
                     cluster: true,
-                    clusterMaxZoom: 19, // Max zoom to cluster points on
+                    clusterMaxZoom: 18, // Max zoom to cluster points on
                     clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
                 }
 
@@ -77,7 +77,7 @@ export default function useMap(props) {
             // description HTML from its properties.
 
             _map.on('click', `unclustered-point-${dataset}`, (e) => {
-                console.log("CLICK unclustered", e.features[0]);
+                console.log("CLICK unclustered");
 
                 const layer = e.features[0].layer;
                 const circleLayerID = layer.id.includes("311") ?
@@ -127,17 +127,28 @@ export default function useMap(props) {
 
             //click on a clustered point
             _map.on('click', `clusters-${dataset}`, async (e) => {
+                console.log("CLICK Cluster", e);
 
                 const source = e.features[0].source;
                 const cluster_id = e.features[0].properties.cluster_id;
+                const coordinates = e.features[0].geometry.coordinates;
                 const point_count = e.features[0].properties.point_count;
 
                 const clusterSource = _map.getSource(source);
 
-                const features = await clusterSource.getClusterLeaves(cluster_id, point_count, 0);
+                //TODO: consistent layer id /source name
+                const zoom = await _map.getSource(`${dataset}s`).getClusterExpansionZoom(cluster_id);
+                _map.easeTo({
+                    center: coordinates,
+                    zoom
+                });
+
 
                 //1. get list of individual elements in cluster (ids)
                 //2. set open
+
+                const features = await clusterSource.getClusterLeaves(cluster_id, point_count, 0);
+                console.log("FE", features);
                 const spiderListFeatures = {
                     source,
                     features
