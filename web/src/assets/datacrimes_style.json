@@ -31,7 +31,7 @@
             ]
         },
         "paint": {
-            "text-color": "#ffcd00",
+            "text-color": "#BBDEFB",
             "text-halo-color": "#000000",
             "text-halo-width": 1
         }
@@ -69,7 +69,7 @@
         ],
         "paint": {
             "circle-radius": 16,
-            "circle-color": "#ffcd00",
+            "circle-color": "#BBDEFB",
             "circle-stroke-width": 2,
             "circle-stroke-color": "#000000",
             "circle-stroke-opacity": 0.75
@@ -104,7 +104,9 @@
             "text-justify": "center"
         },
         "paint": {
-            "text-color": "#000000"
+            "text-color": "#000000",
+            "text-halo-color": "#f0f0f0",
+            "text-halo-width": 1
         }
     }
 ]
