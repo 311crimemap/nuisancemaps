@@ -4,13 +4,13 @@ import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
 import { MapComponent } from "./components/Map";
 import { Sidebar } from "./components/Sidebar";
-import { SpiderListComponent } from "./components/SpiderList";
+import { FeatureListComponent } from "./components/FeatureList";
 import BottomSheetComponent from "./BottomSheetComponent.tsx";
 import categoryCheckBoxReducer from "./components/Sidebar/CategoryFilterReducer";
 import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
 
 function App() {
-    const spiderZoomLevel = 17;
+    const featureZoomLevel = 17;
 
     const [position, setPosition] = useState({
         center: {
@@ -35,7 +35,7 @@ function App() {
     const [data311s, setData311s] = useState(defaultData);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [activeReportNum, setActiveReportNum] = useState(null);
-    const [activeSpiderList, setActiveSpiderList] = useState([]);
+    const [activeFeatureList, setActiveFeatureList] = useState([]);
     const [categories, setCategories] = useState([]);
     const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, []);
     const [filterDate, filterDateDispatcher] = useReducer(dateFilterReducer, defaultDateRange);
@@ -90,8 +90,8 @@ function App() {
         dataCrimes,
         data311s,
         categories,
-        setActiveSpiderList,
-        spiderZoomLevel,
+        setActiveFeatureList,
+        featureZoomLevel,
         isDataLoaded,
     });
 
@@ -115,16 +115,16 @@ function App() {
                     setPosition={setPosition}
                     activeReportNum={activeReportNum}
                     setActiveReportNum={setActiveReportNum}
-                    setActiveSpiderList={setActiveSpiderList}
+                    setActiveFeatureList={setActiveFeatureList}
                     activeCategories={activeCategories}
                     dataCrimes={dataCrimes}
                     data311s={data311s}
                 />
 
-                <SpiderListComponent
+                <FeatureListComponent
                     map={map}
-                    spiderZoomLevel={spiderZoomLevel}
-                    activeSpiderList={activeSpiderList}
+                    featureZoomLevel={featureZoomLevel}
+                    activeFeatureList={activeFeatureList}
                     activeReportNum={activeReportNum}
                     setActiveReportNum={setActiveReportNum}
                 />

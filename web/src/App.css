@@ -25,7 +25,7 @@
 #bottomsheet {
 }
 
-#spider-list-component {
+#feature-list-component {
     position: absolute;
     top: calc(var(--navbar-height) + 1rem);
     right: 1rem;
