@@ -22,9 +22,6 @@
     padding-left: 0;
 }
 
-#bottomsheet {
-}
-
 #feature-list-component {
     position: absolute;
     top: calc(var(--navbar-height) + 1rem);

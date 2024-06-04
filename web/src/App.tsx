@@ -5,7 +5,6 @@ import useMap from "./components/Map/useMap";
 import { MapComponent } from "./components/Map";
 import { Sidebar } from "./components/Sidebar";
 import { FeatureListComponent } from "./components/FeatureList";
-import BottomSheetComponent from "./BottomSheetComponent.tsx";
 import categoryCheckBoxReducer from "./components/Sidebar/CategoryFilterReducer";
 import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
 
@@ -130,7 +129,6 @@ function App() {
                 />
             </div>
 
-            <BottomSheetComponent map={map} />
         </>
     );
 }
