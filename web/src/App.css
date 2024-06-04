@@ -24,8 +24,7 @@
 
 #feature-list-component {
     position: absolute;
-    top: calc(var(--navbar-height) + 1rem);
-    right: 1rem;
+    top: calc(var(--navbar-height) + 2rem);
     padding: 1rem;
 
     min-width: 360px;

@@ -4,7 +4,6 @@ import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
 import { ControlBar } from "./components/ControlBar";
 import { MapComponent } from "./components/Map";
-import { Sidebar } from "./components/Sidebar";
 import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/Sidebar/CategoryFilterReducer";
 import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
@@ -26,7 +25,7 @@ function App() {
 
     const defaultDateRange = {
         date: {
-            startDate: (new Date()).toLocaleDateString('en-CA'),
+            startDate: (new Date('01-01-2024')).toLocaleDateString('en-CA'),
             endDate: (new Date()).toLocaleDateString('en-CA')
         }
     }
@@ -102,16 +101,6 @@ function App() {
 
             <div id="container">
 
-                <Sidebar
-                    map={map}
-                    activeReportNum={activeReportNum}
-                    setActiveReportNum={setActiveReportNum}
-                    activeCategories={activeCategories}
-                    activeCategoriesDispatcher={activeCategoriesDispatcher}
-                    filterDate={filterDate}
-                    filterDateDispatcher={filterDateDispatcher}
-                />
-
                 <MapComponent
                     map={map}
                     position={position}
@@ -131,6 +120,7 @@ function App() {
                     activeReportNum={activeReportNum}
                     setActiveReportNum={setActiveReportNum}
                 />
+
             </div>
 
         </>
