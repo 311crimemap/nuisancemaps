@@ -2,6 +2,7 @@ import { useState, useEffect, useReducer } from "react";
 import "./App.css";
 import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
+import { ControlBar } from "./components/ControlBar";
 import { MapComponent } from "./components/Map";
 import { Sidebar } from "./components/Sidebar";
 import { FeatureListComponent } from "./components/FeatureList";
@@ -97,7 +98,10 @@ function App() {
     console.log("[App] Render", position, activeReportNum);
     return (
         <>
+            <ControlBar />
+
             <div id="container">
+
                 <Sidebar
                     map={map}
                     activeReportNum={activeReportNum}
