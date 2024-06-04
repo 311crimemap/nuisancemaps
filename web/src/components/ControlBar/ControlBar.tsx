@@ -3,12 +3,12 @@ import {Search} from "./Search"
 import {DateComponent } from "./DateComponent";
 import { DropDownFilter } from "./DropDownFilter";
 
-export default function ControlBar(props: any) {
+export default function ControlBar({filterDate, filterDateDispatcher}) {
 
     return(
         <div className = "navbar bg-base-100">
             <Search />
-            <DateComponent />
+            <DateComponent filterDate={filterDate} filterDateDispatcher={filterDateDispatcher}/>
             <DropDownFilter type="crime" />
             <DropDownFilter type="311" />
             {

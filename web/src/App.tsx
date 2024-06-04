@@ -97,7 +97,10 @@ function App() {
     console.log("[App] Render", position, activeReportNum);
     return (
         <>
-            <ControlBar />
+            <ControlBar
+                filterDate={filterDate}
+                filterDateDispatcher={filterDateDispatcher}
+            />
 
             <div id="container">
 
