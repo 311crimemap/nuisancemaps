@@ -1,11 +1,14 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import {DateComponent } from "./DateComponent";
+import { DropDownFilter } from "./DropDownFilter";
 
 export default function ControlBar(props: any) {
 
     return(
-        <div>
+        <div className = "navbar bg-base-100">
             <DateComponent />
+            <DropDownFilter type="crime" />
+            <DropDownFilter type="311" />
             {
                 /*
                         <Sidebar
