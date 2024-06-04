@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
+import {DateComponent } from "./DateComponent";
+
 export default function ControlBar(props: any) {
 
     return(
         <div>
-            ControlBar
+            <DateComponent />
             {
                 /*
                         <Sidebar
