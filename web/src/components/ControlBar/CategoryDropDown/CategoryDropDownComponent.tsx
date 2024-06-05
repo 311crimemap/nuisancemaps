@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
 
 /*
@@ -8,33 +8,38 @@ import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
  * because dropdown will close on click elsewhere;
  * detail / summary remains open unless explicitly clicked to minimize parent
  */
-export function DropDownFilter({type, activeCategories, activeCategoriesDispatcher}) {
-    const [icon, setIcon] = useState(faChevronUp);
-    const parent = activeCategories.find((cat) => cat.id == type);
+export function DropDownFilter({
+  type,
+  activeCategories,
+  activeCategoriesDispatcher,
+}) {
+  const [icon, setIcon] = useState(faChevronUp);
+  const parent = activeCategories.find((cat) => cat.id == type);
 
-    return (
+  return (
+    <div className="dropdown dropdown-bottom flex w-full">
+      <div
+        tabIndex={0}
+        role="button"
+        className="btn btn-sm"
+        onBlur={() => setIcon(faChevronUp)}
+        onFocus={() => setIcon(faChevronDown)}
+      >
+        {type}
+        <FontAwesomeIcon icon={icon} />
+      </div>
 
-        <div className="dropdown dropdown-bottom">
-
-            <div tabIndex={0} role="button" className="btn btn-sm"
-                onBlur={() => setIcon(faChevronUp)}
-                onFocus={() => setIcon(faChevronDown)}>
-                {type}
-                <FontAwesomeIcon icon={icon} />
-            </div>
-
-            <ul className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-52"
-                onFocus={() => setIcon(faChevronDown)}
-            >
-                <CheckBoxGroup
-                    key={`group-${parent.id}`}
-                    parent={parent}
-                    categories={activeCategories}
-                    activeCategoriesDispatcher={activeCategoriesDispatcher}
-                />
-
-            </ul>
-
-        </div>
-    )
+      <ul
+        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box"
+        onFocus={() => setIcon(faChevronDown)}
+      >
+        <CheckBoxGroup
+          key={`group-${parent.id}`}
+          parent={parent}
+          categories={activeCategories}
+          activeCategoriesDispatcher={activeCategoriesDispatcher}
+        />
+      </ul>
+    </div>
+  );
 }

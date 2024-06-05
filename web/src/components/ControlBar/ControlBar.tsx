@@ -13,21 +13,28 @@ export default function ControlBar({
 
   return (
     <div className="navbar bg-base-100">
-      <Search />
-      <DateComponent
-        filterDate={filterDate}
-        filterDateDispatcher={filterDateDispatcher}
-      />
-      <DropDownFilter
-        type="crime"
-        activeCategories={activeCategories}
-        activeCategoriesDispatcher={activeCategoriesDispatcher}
-      />
-      <DropDownFilter
-        type="311"
-        activeCategories={activeCategories}
-        activeCategoriesDispatcher={activeCategoriesDispatcher}
-      />
+      <div className="flex flex-col sm:flex-row">
+        <div className="w-full sm:w-1/2">
+          <Search />
+        </div>
+
+        <div className="flex w-full sm:w-1/2">
+          <DateComponent
+            filterDate={filterDate}
+            filterDateDispatcher={filterDateDispatcher}
+          />
+          <DropDownFilter
+            type="crime"
+            activeCategories={activeCategories}
+            activeCategoriesDispatcher={activeCategoriesDispatcher}
+          />
+          <DropDownFilter
+            type="311"
+            activeCategories={activeCategories}
+            activeCategoriesDispatcher={activeCategoriesDispatcher}
+          />
+        </div>
+      </div>
     </div>
   );
 }
