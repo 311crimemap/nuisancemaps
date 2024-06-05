@@ -5,8 +5,8 @@ import useMap from "./components/Map/useMap";
 import { ControlBar } from "./components/ControlBar";
 import { MapComponent } from "./components/Map";
 import { FeatureListComponent } from "./components/FeatureList";
-import categoryCheckBoxReducer from "./components/ControlBar/CategoryFilterReducer";
-import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
+import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
+import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
 
 function App() {
     const featureZoomLevel = 17;

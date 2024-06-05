@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Search } from "./Search";
-import { DateComponent } from "./DateComponent";
-import { DropDownFilter } from "./DropDownFilter";
+import { DateComponent } from "./DateDropDown/DateComponent";
+import { DropDownFilter } from "./CategoryDropDown/CategoryDropDownComponent";
 
 export default function ControlBar({
   activeCategories,
