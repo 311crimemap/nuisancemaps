@@ -77,7 +77,7 @@ export default function useMap(props) {
 
             _map.on('click', `unclustered-point-${dataset}`, (e) => {
                 console.log("CLICK unclustered");
-
+                const source = e.features[0].source;
                 const layer = e.features[0].layer;
                 const circleLayerID = layer.id.includes("311") ?
                                       "circle-data311-layer" : "circle-datacrime-layer";
@@ -85,6 +85,7 @@ export default function useMap(props) {
                 const coordinates = e.features[0].geometry.coordinates.slice();
                 const reportCategory = e.features[0].properties.reportCategory;
                 const reportNum = e.features[0].properties.reportNum;
+                const features = e.features;
 
                 // Ensure that if the map is zoomed out such that
                 // multiple copies of the feature are visible, the
@@ -121,7 +122,13 @@ export default function useMap(props) {
                     .addTo(_map);
 
                 props.setActiveReportNum(reportNum);
-                props.setActiveFeatureList({});
+
+                const featureList = {
+                    source,
+                    features
+                }
+
+                props.setActiveFeatureList(featureList);
             });
 
             //click on a clustered point

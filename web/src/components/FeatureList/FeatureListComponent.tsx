@@ -13,7 +13,15 @@ export default function FeatureListComponent({ map, activeFeatureList, featureZo
     const { source, features } = activeFeatureList;
 
     useEffect( ()=> {
-        if (!features || map.getZoom() < featureZoomLevel) {
+
+        //1. unclustered feature  at any zoom -> show
+        //2. random click, or cluster at high zoom (large clusters)
+        //    don't toggle, allow default behavior to zoom in
+        //3. else it's a cluster at acceptable zoom -> show
+
+        if (features && features.length == 1) {
+            setIsVisible(true);
+        } else if (!features || map.getZoom() < featureZoomLevel) {
             setIsVisible(false);
         } else {
             setIsVisible(true);
