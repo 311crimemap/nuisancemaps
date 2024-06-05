@@ -28,17 +28,6 @@ export default function ControlBar({
         activeCategories={activeCategories}
         activeCategoriesDispatcher={activeCategoriesDispatcher}
       />
-      {/*
-                        <Sidebar
-                            map={map}
-                            activeReportNum={activeReportNum}
-                            setActiveReportNum={setActiveReportNum}
-                            activeCategories={activeCategories}
-                            activeCategoriesDispatcher={activeCategoriesDispatcher}
-                            filterDate={filterDate}
-                            filterDateDispatcher={filterDateDispatcher}
-                        />
-                */}
     </div>
   );
 }
