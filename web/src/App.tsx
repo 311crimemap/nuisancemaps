@@ -5,7 +5,7 @@ import useMap from "./components/Map/useMap";
 import { ControlBar } from "./components/ControlBar";
 import { MapComponent } from "./components/Map";
 import { FeatureListComponent } from "./components/FeatureList";
-import categoryCheckBoxReducer from "./components/Sidebar/CategoryFilterReducer";
+import categoryCheckBoxReducer from "./components/ControlBar/CategoryFilterReducer";
 import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
 
 function App() {
@@ -98,6 +98,8 @@ function App() {
     return (
         <>
             <ControlBar
+                activeCategories={activeCategories}
+                activeCategoriesDispatcher={activeCategoriesDispatcher}
                 filterDate={filterDate}
                 filterDateDispatcher={filterDateDispatcher}
             />
