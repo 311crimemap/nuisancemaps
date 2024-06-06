@@ -15,9 +15,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --navbar-height: 2rem;
+  --controlbar-height: 4rem;
+  --navbar-height: 3rem
 }
-
+#root {
+    overflow:hidden;
+}
 body {
     margin: 0;
 }
