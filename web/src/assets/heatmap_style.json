@@ -3,7 +3,6 @@
         "id": "heatmap-dataCrimes",
         "type": "heatmap",
         "source": "heatMapDataCrimes",
-        "maxzoom": 19,
         "layout" : {
             "visibility": "none"
         },
@@ -41,7 +40,6 @@
         "id": "heatmap-data311s",
         "type": "heatmap",
         "source": "heatMapData311s",
-        "maxzoom": 19,
         "layout" : {
             "visibility": "none"
         },
