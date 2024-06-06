@@ -39,6 +39,39 @@ function App() {
     const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, []);
     const [filterDate, filterDateDispatcher] = useReducer(dateFilterReducer, defaultDateRange);
 
+    enum DATASOURCES {
+        Data311s = "data311s",
+        DataCrimes = "dataCrimes",
+        HeatMapDataCrimes = "heatMapDataCrimes",
+        HeatMapData311s = "heatMapData311s",
+    }
+
+    const dataSources = {
+        [DATASOURCES.Data311s]: {
+            type: "geojson",
+            data: data311s,
+            cluster: true,
+            clusterMaxZoom: 18, // Max zoom to cluster points on
+            clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+        },
+        [DATASOURCES.DataCrimes]: {
+            type: "geojson",
+            data: dataCrimes,
+            cluster: true,
+            clusterMaxZoom: 18, // Max zoom to cluster points on
+            clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+        },
+        [DATASOURCES.HeatMapDataCrimes]: {
+            type: "geojson",
+            data: dataCrimes,
+            cluster: false,
+        },
+        [DATASOURCES.HeatMapData311s]: {
+            type: "geojson",
+            data: data311s,
+            cluster: false,
+        },
+    };
 
     const getData = async (url: string) => {
         return fetch(url).then((res) => res.json());
@@ -86,6 +119,8 @@ function App() {
         setPosition,
         activeReportNum,
         setActiveReportNum,
+        DATASOURCES,
+        dataSources,
         dataCrimes,
         data311s,
         categories,
@@ -114,6 +149,7 @@ function App() {
                     setActiveReportNum={setActiveReportNum}
                     setActiveFeatureList={setActiveFeatureList}
                     activeCategories={activeCategories}
+                    DATASOURCES={DATASOURCES}
                     dataCrimes={dataCrimes}
                     data311s={data311s}
                 />

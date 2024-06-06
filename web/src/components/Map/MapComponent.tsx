@@ -14,8 +14,8 @@ export default function MapComponent(props: any) {
 
         try {
 
-            const dataCrimesSource = props.map.getSource('datacrimes');
-            const data311sSource = props.map.getSource('data311s');
+            const dataCrimesSource = props.map.getSource(props.DATASOURCES.DataCrimes);
+            const data311sSource = props.map.getSource(props.DATASOURCES.Data311s);
 
             const activeCategoriesIds = props.activeCategories.filter(c => c.checked).map(c => c.id);
 

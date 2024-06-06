@@ -8,32 +8,11 @@ import data311sStyleJSON from "../../assets/data311s_style.json";
 export default function useMap(props) {
   //const mapRef = useRef<maplibregl.Map>();
   const [map, setMap] = useState(null);
-  enum DATASOURCES {
-    Data311s = "data311s",
-    DataCrimes = "dataCrimes",
-  }
 
   useEffect(() => {
     console.log("[useMap] Hook Init");
 
     if (!props.isDataLoaded) return; //NB: wait until data fetched before creating map
-
-    const dataSources = {
-      [DATASOURCES.Data311s]: {
-        type: "geojson",
-        data: props.data311s,
-        cluster: true,
-        clusterMaxZoom: 18, // Max zoom to cluster points on
-        clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
-      },
-      [DATASOURCES.DataCrimes]: {
-        type: "geojson",
-        data: props.dataCrimes,
-        cluster: true,
-        clusterMaxZoom: 18, // Max zoom to cluster points on
-        clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
-      },
-    };
 
     const style = {
       glyphs:
@@ -48,7 +27,7 @@ export default function useMap(props) {
           minzoom: 2,
           maxzoom: 12,
         },
-        ...dataSources,
+        ...props.dataSources,
       },
       layers: [
         ...baseMapStyleJSON,
@@ -72,7 +51,7 @@ export default function useMap(props) {
       console.log("Load");
     });
 
-    for (const dataset of Object.values(DATASOURCES)) {
+    for (const dataset of Object.values(props.DATASOURCES).slice(0, 2)) {
       // When a click event occurs on a feature in
       // the unclustered-point layer, open a popup at
       // the location of the feature, with
