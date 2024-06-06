@@ -4,6 +4,9 @@
         "type": "heatmap",
         "source": "heatMapDataCrimes",
         "maxzoom": 19,
+        "layout" : {
+            "visibility": "none"
+        },
         "paint": {
             "heatmap-weight": 1,
             "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 0, 1, 7, 1.25],
@@ -38,15 +41,10 @@
         "id": "heatmap-data311s",
         "type": "heatmap",
         "source": "heatMapData311s",
-        "filter" : [
-            "!",
-            [
-                "has",
-                "point_count"
-            ]
-        ],
-
         "maxzoom": 19,
+        "layout" : {
+            "visibility": "none"
+        },
         "paint": {
             "heatmap-weight": 1,
             "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 0, 1, 7, 1.25],

@@ -2,8 +2,11 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { Search } from "./Search";
 import { DateComponent } from "./DateDropDown/DateComponent";
 import { DropDownFilter } from "./CategoryDropDown/CategoryDropDownComponent";
+import { ToggleComponent } from "./Toggle/ToggleComponent";
 
 export default function ControlBar({
+  map,
+  DATASOURCES,
   activeCategories,
   activeCategoriesDispatcher,
   filterDate,
@@ -46,11 +49,7 @@ export default function ControlBar({
             />
           </div>
           <div className="flex items-center">
-            <input
-              type="checkbox"
-              className="toggle toggle-xs sm:toggle-sm ml-2"
-            />
-            <span className="ml-2">Heatmap</span>
+            <ToggleComponent map={map} DATASOURCES={DATASOURCES} />
           </div>
         </div>
       </div>
