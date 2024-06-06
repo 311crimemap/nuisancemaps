@@ -55,6 +55,6 @@ export default function CheckBoxGroup({ parent, categories, activeCategoriesDisp
     })
 
 
-    return components.concat(<ul>{checkBoxLabeledGroup}</ul>);
+    return components.concat(<ul className="ml-4">{checkBoxLabeledGroup}</ul>);
 
 }

@@ -1,19 +1,27 @@
 /*
  * TODO:
- * toggle visible and pass spider cluster elements when spider cluster is clicked
- * make sure to hook into spider close event
+ * toggle visible and pass cluster elements when cluster is clicked
+ * make sure to hook into close event
  */
 
 import {useState, useEffect} from "react";
 
-export default function SpiderListComponent({ map, activeSpiderList, spiderZoomLevel }) {
+export default function FeatureListComponent({ map, activeFeatureList, featureZoomLevel }) {
 
     const [isVisible, setIsVisible] = useState(false);
 
-    const { source, features } = activeSpiderList;
+    const { source, features } = activeFeatureList;
 
     useEffect( ()=> {
-        if (!features || map.getZoom() < spiderZoomLevel) {
+
+        //1. unclustered feature  at any zoom -> show
+        //2. random click, or cluster at high zoom (large clusters)
+        //    don't toggle, allow default behavior to zoom in
+        //3. else it's a cluster at acceptable zoom -> show
+
+        if (features && features.length == 1) {
+            setIsVisible(true);
+        } else if (!features || map.getZoom() < featureZoomLevel) {
             setIsVisible(false);
         } else {
             setIsVisible(true);
@@ -26,7 +34,7 @@ export default function SpiderListComponent({ map, activeSpiderList, spiderZoomL
     }
 
     return (
-        <div id="spider-list-component" style={style}>
+        <div id="feature-list-component" style={style}>
             <ul>
                 {
                     (features || []).map(feature => {
