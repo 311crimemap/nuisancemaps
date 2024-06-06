@@ -7,6 +7,7 @@ import { ToggleComponent } from "./Toggle/ToggleComponent";
 export default function ControlBar({
   map,
   DATASOURCES,
+  setActiveFeatureList,
   activeCategories,
   activeCategoriesDispatcher,
   filterDate,
@@ -49,7 +50,11 @@ export default function ControlBar({
             />
           </div>
           <div className="flex items-center">
-            <ToggleComponent map={map} DATASOURCES={DATASOURCES} />
+            <ToggleComponent
+              map={map}
+              DATASOURCES={DATASOURCES}
+              setActiveFeatureList={setActiveFeatureList}
+            />
           </div>
         </div>
       </div>

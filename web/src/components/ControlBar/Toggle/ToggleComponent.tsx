@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function ToggleComponent({ map, DATASOURCES }) {
+export function ToggleComponent({ map, DATASOURCES, setActiveFeatureList }) {
   const [isActive, setIsActive] = useState(false);
 
   const toggleHandler = (e) => {
@@ -38,6 +38,7 @@ export function ToggleComponent({ map, DATASOURCES }) {
       }
     }
 
+    setActiveFeatureList({}); //clear any active display
     setIsActive(!isActive);
   };
 

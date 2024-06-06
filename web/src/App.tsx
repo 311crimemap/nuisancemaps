@@ -145,6 +145,7 @@ function App() {
       <ControlBar
         map={map}
         DATASOURCES={DATASOURCES}
+        setActiveFeatureList={setActiveFeatureList}
         activeCategories={activeCategories}
         activeCategoriesDispatcher={activeCategoriesDispatcher}
         filterDate={filterDate}
