@@ -1,6 +1,6 @@
 [
     {
-        "id": "clusters-data311",
+        "id": "clusters-data311s",
         "type": "symbol",
         "source": "data311s",
         "filter": [
@@ -37,7 +37,7 @@
         }
     },
     {
-        "id": "cluster-count-data311",
+        "id": "clusters-count-data311s",
         "type": "symbol",
         "source": "data311s",
         "filter": [
@@ -57,7 +57,7 @@
         }
     },
     {
-        "id": "circle-data311-layer",
+        "id": "point-circle-data311s",
         "type": "circle",
         "source": "data311s",
         "filter": [
@@ -76,7 +76,7 @@
         }
     },
     {
-        "id": "unclustered-point-data311",
+        "id": "point-data311s",
         "type": "symbol",
         "source": "data311s",
         "filter": [

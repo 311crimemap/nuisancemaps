@@ -1,8 +1,8 @@
 [
     {
-        "id": "clusters-datacrime",
+        "id": "clusters-dataCrimes",
         "type": "symbol",
-        "source": "datacrimes",
+        "source": "dataCrimes",
         "filter": [
             "has",
             "point_count"
@@ -37,9 +37,9 @@
         }
     },
     {
-        "id": "cluster-count-datacrime",
+        "id": "clusters-count-dataCrimes",
         "type": "symbol",
-        "source": "datacrimes",
+        "source": "dataCrimes",
         "filter": [
             "has",
             "point_count"
@@ -57,9 +57,9 @@
         }
     },
     {
-        "id": "circle-datacrime-layer",
+        "id": "point-circle-dataCrimes",
         "type": "circle",
-        "source": "datacrimes",
+        "source": "dataCrimes",
         "filter": [
             "!",
             [
@@ -76,9 +76,9 @@
         }
     },
     {
-        "id": "unclustered-point-datacrime",
+        "id": "point-dataCrimes",
         "type": "symbol",
-        "source": "datacrimes",
+        "source": "dataCrimes",
         "filter": [
             "!",
             [
