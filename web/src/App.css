@@ -5,30 +5,18 @@
     width: 100%;
     height: calc(100vh - var(--navbar-height));
 }
-
-#sidebar {
-    width: 360px;
-    padding: 1rem;
-
-    /* NB: height accommodate top/bottom padding */
-    height: calc(100vh - var(--navbar-height) - 2*(1rem));
-    overflow: auto;
-}
-
-#sidebar-nav {
-    display: flex;
-    list-style: none;
-    justify-content: space-evenly;
-    padding-left: 0;
-}
-
 #feature-list-component {
     position: absolute;
-    top: calc(var(--navbar-height) + 2rem);
+    top: calc(var(--navbar-height) + 5rem);
     padding: 1rem;
 
-    min-width: 360px;
+    /*min-width: 360px;*/
     background: white;
 
     /* TODO: on mobile move to bottom sheet */
+    /*
+      bottom: 0px;
+      overflow: scroll;
+      max-height: 8rem;
+   */
 }

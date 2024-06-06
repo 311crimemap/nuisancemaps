@@ -17,11 +17,11 @@ export function DropDownFilter({
   const parent = activeCategories.find((cat) => cat.id == type);
 
   return (
-    <div className="dropdown dropdown-bottom flex w-full">
+    <div className="dropdown dropdown-bottom flex">
       <div
         tabIndex={0}
         role="button"
-        className="btn btn-sm"
+        className="btn m-2"
         onBlur={() => setIcon(faChevronUp)}
         onFocus={() => setIcon(faChevronDown)}
       >

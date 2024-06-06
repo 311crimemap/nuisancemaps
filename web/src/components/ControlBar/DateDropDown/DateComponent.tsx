@@ -15,17 +15,17 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
   const endMaxDate = max.toLocaleDateString("en-CA");
 
   return (
-    <div className="dropdown dropdown-bottom flex w-full">
+    <div className="dropdown dropdown-bottom flex">
       {/* Dropdown */}
 
       <div
         tabIndex={0}
         role="button"
-        className="btn btn-sm"
+        className="btn m-2"
         onBlur={() => setIcon(faChevronUp)}
         onFocus={() => setIcon(faChevronDown)}
       >
-        Date Range
+        Date
         <FontAwesomeIcon icon={icon} />
       </div>
 
