@@ -2,15 +2,14 @@ import { useState, useEffect, useReducer } from "react";
 import "./App.css";
 import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
+import { ControlBar } from "./components/ControlBar";
 import { MapComponent } from "./components/Map";
-import { Sidebar } from "./components/Sidebar";
-import { SpiderListComponent } from "./components/SpiderList";
-import BottomSheetComponent from "./BottomSheetComponent.tsx";
-import categoryCheckBoxReducer from "./components/Sidebar/CategoryFilterReducer";
-import dateFilterReducer from "./components/Sidebar/DateFilterReducer";
+import { FeatureListComponent } from "./components/FeatureList";
+import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
+import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
 
 function App() {
-    const spiderZoomLevel = 17;
+    const featureZoomLevel = 17;
 
     const [position, setPosition] = useState({
         center: {
@@ -26,7 +25,7 @@ function App() {
 
     const defaultDateRange = {
         date: {
-            startDate: (new Date()).toLocaleDateString('en-CA'),
+            startDate: (new Date('01-01-2024')).toLocaleDateString('en-CA'),
             endDate: (new Date()).toLocaleDateString('en-CA')
         }
     }
@@ -35,7 +34,7 @@ function App() {
     const [data311s, setData311s] = useState(defaultData);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [activeReportNum, setActiveReportNum] = useState(null);
-    const [activeSpiderList, setActiveSpiderList] = useState([]);
+    const [activeFeatureList, setActiveFeatureList] = useState([]);
     const [categories, setCategories] = useState([]);
     const [activeCategories, activeCategoriesDispatcher] = useReducer(categoryCheckBoxReducer, []);
     const [filterDate, filterDateDispatcher] = useReducer(dateFilterReducer, defaultDateRange);
@@ -90,24 +89,22 @@ function App() {
         dataCrimes,
         data311s,
         categories,
-        setActiveSpiderList,
-        spiderZoomLevel,
+        setActiveFeatureList,
+        featureZoomLevel,
         isDataLoaded,
     });
 
     console.log("[App] Render", position, activeReportNum);
     return (
         <>
+            <ControlBar
+                activeCategories={activeCategories}
+                activeCategoriesDispatcher={activeCategoriesDispatcher}
+                filterDate={filterDate}
+                filterDateDispatcher={filterDateDispatcher}
+            />
+
             <div id="container">
-                <Sidebar
-                    map={map}
-                    activeReportNum={activeReportNum}
-                    setActiveReportNum={setActiveReportNum}
-                    activeCategories={activeCategories}
-                    activeCategoriesDispatcher={activeCategoriesDispatcher}
-                    filterDate={filterDate}
-                    filterDateDispatcher={filterDateDispatcher}
-                />
 
                 <MapComponent
                     map={map}
@@ -115,22 +112,22 @@ function App() {
                     setPosition={setPosition}
                     activeReportNum={activeReportNum}
                     setActiveReportNum={setActiveReportNum}
-                    setActiveSpiderList={setActiveSpiderList}
+                    setActiveFeatureList={setActiveFeatureList}
                     activeCategories={activeCategories}
                     dataCrimes={dataCrimes}
                     data311s={data311s}
                 />
 
-                <SpiderListComponent
+                <FeatureListComponent
                     map={map}
-                    spiderZoomLevel={spiderZoomLevel}
-                    activeSpiderList={activeSpiderList}
+                    featureZoomLevel={featureZoomLevel}
+                    activeFeatureList={activeFeatureList}
                     activeReportNum={activeReportNum}
                     setActiveReportNum={setActiveReportNum}
                 />
+
             </div>
 
-            <BottomSheetComponent map={map} />
         </>
     );
 }

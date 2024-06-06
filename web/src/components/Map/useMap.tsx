@@ -4,7 +4,6 @@ import maplibregl from "maplibre-gl";
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
-import Spiderfy from '@nazka/map-gl-js-spiderfy';
 
 export default function useMap(props) {
 
@@ -78,7 +77,7 @@ export default function useMap(props) {
 
             _map.on('click', `unclustered-point-${dataset}`, (e) => {
                 console.log("CLICK unclustered");
-
+                const source = e.features[0].source;
                 const layer = e.features[0].layer;
                 const circleLayerID = layer.id.includes("311") ?
                                       "circle-data311-layer" : "circle-datacrime-layer";
@@ -86,6 +85,7 @@ export default function useMap(props) {
                 const coordinates = e.features[0].geometry.coordinates.slice();
                 const reportCategory = e.features[0].properties.reportCategory;
                 const reportNum = e.features[0].properties.reportNum;
+                const features = e.features;
 
                 // Ensure that if the map is zoomed out such that
                 // multiple copies of the feature are visible, the
@@ -122,7 +122,13 @@ export default function useMap(props) {
                     .addTo(_map);
 
                 props.setActiveReportNum(reportNum);
-                props.setActiveSpiderList({});
+
+                const featureList = {
+                    source,
+                    features
+                }
+
+                props.setActiveFeatureList(featureList);
             });
 
             //click on a clustered point
@@ -149,12 +155,12 @@ export default function useMap(props) {
 
                 const features = await clusterSource.getClusterLeaves(cluster_id, point_count, 0);
                 console.log("FE", features);
-                const spiderListFeatures = {
+                const featureList = {
                     source,
                     features
                 }
 
-                props.setActiveSpiderList(spiderListFeatures);
+                props.setActiveFeatureList(featureList);
             });
 
         }
@@ -164,7 +170,7 @@ export default function useMap(props) {
          * "general" click handler
          * this is clicking anywhere not a "point" (cluster / uncluster)
          * so anywhere that's not base source protomaps
-         * used to clear displays like spider list
+         * used to clear displays like feature list
          */
         _map.on('click', (e) => {
 
@@ -196,7 +202,7 @@ export default function useMap(props) {
                 _map.setPaintProperty('circle-data311-layer', 'circle-radius', 16);
 
 
-                props.setActiveSpiderList({});
+                props.setActiveFeatureList({});
 
             }
 
