@@ -6,6 +6,7 @@ import { ToggleComponent } from "./Toggle/ToggleComponent";
 
 export default function ControlBar({
   map,
+  mapController,
   DATASOURCES,
   setActiveFeatureList,
   activeCategories,
@@ -19,7 +20,7 @@ export default function ControlBar({
     <div className="navbar bg-base-100">
       <div className="flex flex-col sm:flex-row w-full">
         <div className="w-full sm:w-auto">
-          <Search />
+          <Search mapController={mapController} />
         </div>
 
         <div className="flex flex-row w-full sm:w-auto -ml-4 sm:ml-2">

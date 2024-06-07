@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import maplibregl from "maplibre-gl";
+import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
+import "@maptiler/geocoding-control/style.css";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
@@ -9,6 +11,7 @@ import heatMapStyleJSON from "../../assets/heatmap_style.json";
 export default function useMap(props) {
   //const mapRef = useRef<maplibregl.Map>();
   const [map, setMap] = useState(null);
+  const [mapController, setMapController] = useState(null);
 
   useEffect(() => {
     console.log("[useMap] Hook Init");
@@ -202,6 +205,7 @@ export default function useMap(props) {
 
     //mapRef.current = _map;
     setMap(_map);
+    setMapController(createMapLibreGlMapController(_map, maplibregl));
 
     return () => {
       if (_map) {
@@ -212,5 +216,5 @@ export default function useMap(props) {
     };
   }, [props.isDataLoaded]);
 
-  return map;
+  return { map, mapController };
 }
