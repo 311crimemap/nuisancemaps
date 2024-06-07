@@ -124,7 +124,7 @@ function App() {
     //position.center - too sensitive, even zoom will trigger
   }, [filterDate.date.startDate, filterDate.date.endDate]);
 
-  const map = useMap({
+  const { map, mapController } = useMap({
     position,
     setPosition,
     activeReportNum,
@@ -140,10 +140,13 @@ function App() {
   });
 
   console.log("[App] Render", position, activeReportNum);
+  console.log("MapController", mapController, position.zoom, position.center);
+
   return (
     <>
       <ControlBar
         map={map}
+        mapController={mapController}
         DATASOURCES={DATASOURCES}
         setActiveFeatureList={setActiveFeatureList}
         activeCategories={activeCategories}
