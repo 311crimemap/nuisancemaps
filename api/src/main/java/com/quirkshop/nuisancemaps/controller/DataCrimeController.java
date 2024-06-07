@@ -48,6 +48,10 @@ public class DataCrimeController {
             @RequestParam(name = "endDate", required = false) String endDate,
             @RequestParam(name = "lat", required = false) String lat,
             @RequestParam(name = "lng", required = false) String lng,
+            @RequestParam(name = "sw_lat", required = false) String sw_lat,
+            @RequestParam(name = "sw_lng", required = false) String sw_lng,
+            @RequestParam(name = "ne_lat", required = false) String ne_lat,
+            @RequestParam(name = "ne_lng", required = false) String ne_lng,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "limit", required = false) Integer limit) {
 
@@ -57,6 +61,10 @@ public class DataCrimeController {
         int distance = 1;
         double latitude = 30.2944;
         double longitude = -97.7171;
+        double _sw_lat = latitude;
+        double _sw_lng = longitude;
+        double _ne_lat = latitude;
+        double _ne_lng = longitude;
         LocalDateTime startDateTime = LocalDateTime.now().minusYears(1);
         LocalDateTime endDateTime = LocalDateTime.now();
 
@@ -66,12 +74,15 @@ public class DataCrimeController {
             endDateTime = LocalDateTime.parse(endDate + " 0:00", formatter);
             latitude = Double.parseDouble(lat);
             longitude = Double.parseDouble(lng);
-
+            _sw_lat = Double.parseDouble(sw_lat);
+            _sw_lng = Double.parseDouble(sw_lng);
+            _ne_lat = Double.parseDouble(ne_lat);
+            _ne_lng = Double.parseDouble(ne_lng);
         } catch (Exception e) {
             System.err.println("[Err] parse args " + e.getMessage());
         }
 
-        return dataCrimeRepository.findAllByOrderByReportedAtDescGeoJSON(distance, latitude, longitude,
+        return dataCrimeRepository.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
                 startDateTime, endDateTime);
     }
 

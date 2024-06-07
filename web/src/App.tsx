@@ -16,6 +16,10 @@ function App() {
       lat: 30.2944,
       lng: -97.7171,
     },
+    bounds: {
+      _sw: { lat: null, lng: null },
+      _ne: { lat: null, lng: null },
+    },
   });
 
   const defaultData = {
@@ -88,13 +92,19 @@ function App() {
 
   useEffect(() => {
     const limit = 500;
+
     const { lat, lng } = { ...position.center };
+    const { _sw, _ne } = { ...position.bounds };
 
     const params = new URLSearchParams({
       startDate: filterDate.date.startDate,
       endDate: filterDate.date.endDate,
       lat,
       lng,
+      sw_lat: _sw.lat,
+      sw_lng: _sw.lng,
+      ne_lat: _ne.lat,
+      ne_lng: _ne.lng,
       limit,
     });
 
@@ -140,7 +150,13 @@ function App() {
   });
 
   console.log("[App] Render", position, activeReportNum);
-  console.log("MapController", mapController, position.zoom, position.center);
+  console.log(
+    "MapController",
+    mapController,
+    position.center,
+    position.zoom,
+    position.bounds
+  );
 
   return (
     <>
