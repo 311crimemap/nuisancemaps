@@ -116,16 +116,19 @@ function App() {
     Promise.all([
       getData(dataCrimesURL),
       getData(data311sURL),
-      getData(categoriesURL),
-    ]).then(([dataCrimes, data311s, categories]) => {
+      categories.length == 0 ? getData(categoriesURL) : Promise.resolve(categories),
+    ]).then(([dataCrimes, data311s, dataCategories]) => {
       setDataCrimes(dataCrimes);
       setData311s(data311s);
-      setCategories(categories.data);
 
-      activeCategoriesDispatcher({
-        type: "init",
-        categories: Categories.buildHierarchy(categories.data),
-      });
+      //preserve any checked filters
+      if (categories.length == 0) {
+        setCategories(dataCategories.data);
+        activeCategoriesDispatcher({
+          type: "init",
+          categories: Categories.buildHierarchy(dataCategories.data),
+        });
+      }
 
       setIsDataLoaded(true);
     });
