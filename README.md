@@ -35,6 +35,16 @@ sure to manually do so in liquibase migration.
 * `::geography`: casting from geometry to the geography type
 
 
+Current: All points within query between start and end dates:
+
+This is relatively fast
+```
+SELECT dc.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id FROM data_crime dc
+JOIN category cat ON dc.category_id = cat.id WHERE
+ST_Within( point, ST_MakeEnvelope(-97.83187224, 30.2776401, -97.5973828, 30.3056545, 4326 )::geometry)
+AND reported_at BETWEEN '2024-01-01' AND '2024-06-07';
+```
+
 See `Point` data from hex to text:
 
 `select id, category, ST_AsText(ST_GeomFromEWKB(decode(point, 'hex'))) from data_crime limit 20;`
