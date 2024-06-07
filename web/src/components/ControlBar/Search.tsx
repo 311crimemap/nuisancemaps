@@ -14,6 +14,7 @@ export function Search({ mapController }) {
           apiKey={API_KEY}
           mapController={mapController}
           country="us"
+          showFullGeometry={false}
           flyTo={{ speed: 30, duration: 2 }}
         />
       </div>
