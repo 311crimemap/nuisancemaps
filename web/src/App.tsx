@@ -122,7 +122,7 @@ function App() {
 
     //to make new request
     //position.center - too sensitive, even zoom will trigger
-  }, [filterDate.date.startDate, filterDate.date.endDate]);
+  }, [position.center, filterDate.date.startDate, filterDate.date.endDate]);
 
   const { map, mapController } = useMap({
     position,
