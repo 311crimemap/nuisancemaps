@@ -17,8 +17,8 @@ function App() {
       lng: -97.7171,
     },
     bounds: {
-      _sw: { lat: null, lng: null },
-      _ne: { lat: null, lng: null },
+      _sw: { lat: 30.259261190163073, lng: -97.77095608156225 },
+      _ne: { lat: 30.30730791957427, lng: -97.68701127709589 },
     },
   });
 
@@ -116,7 +116,9 @@ function App() {
     Promise.all([
       getData(dataCrimesURL),
       getData(data311sURL),
-      categories.length == 0 ? getData(categoriesURL) : Promise.resolve(categories),
+      categories.length == 0
+        ? getData(categoriesURL)
+        : Promise.resolve(categories),
     ]).then(([dataCrimes, data311s, dataCategories]) => {
       setDataCrimes(dataCrimes);
       setData311s(data311s);
