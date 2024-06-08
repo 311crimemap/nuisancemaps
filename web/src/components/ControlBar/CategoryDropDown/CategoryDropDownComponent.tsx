@@ -30,6 +30,7 @@ export function DropDownFilter({
       </div>
 
       <ul
+        tabIndex={0}
         className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box"
         onFocus={() => setIcon(faChevronDown)}
       >
