@@ -1,8 +1,13 @@
 package com.quirkshop.nuisancemaps.controller;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.util.ReflectionUtils;
 
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
+import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 @RestController
 public class SourceController {
@@ -49,7 +55,7 @@ public class SourceController {
         try {
             source = sourceLoaderService.saveTransaction(source);
             jSendDTO = new JSendDTO("success", source);
-        } catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
             jSendDTO = new JSendDTO("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
@@ -100,7 +106,7 @@ public class SourceController {
 
     @PatchMapping("/sources/{id}")
     public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
-            @RequestBody Source jsonSource) {
+            @RequestBody SourceDTO sourceDTO) {
 
         Optional<Source> optionalSource = sourceRepository.findById(id);
         if (!optionalSource.isPresent())
@@ -108,15 +114,49 @@ public class SourceController {
 
         final Source finalSource = optionalSource.get();
 
-        ReflectionUtils.doWithFields(Source.class, field -> {
+        ReflectionUtils.doWithFields(SourceDTO.class, field -> {
             field.setAccessible(true);
-            Object value = field.get(jsonSource);
-            if (value != null) {
-                field.set(finalSource, value);
+            Object value = field.get(sourceDTO);
+
+            Field sourceField;
+            if (value != null && !field.getName().equals("location")) {
+                try {
+                    sourceField = Source.class.getDeclaredField(field.getName());
+                    sourceField.setAccessible(true);
+                    sourceField.set(finalSource, value);
+                } catch (NoSuchFieldException e) {
+
+                }
             }
         });
 
-        Source res = sourceRepository.save(finalSource);
+        // Convert location array to Point
+        if (sourceDTO.getLocation() != null && sourceDTO.getLocation().length == 2) {
+            final int SRID=4326;
+            Double lng = sourceDTO.getLocation()[0];
+            Double lat = sourceDTO.getLocation()[1];
+            GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
+
+            Coordinate coordinate = new Coordinate(lng, lat);
+            Point point = geometryFactory.createPoint(coordinate);
+            finalSource.setLocation(point);
+        }
+
+        Source source = sourceRepository.save(finalSource);
+
+        Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+
+        SourceDTO res = new SourceDTO(source.getSourceConfigId(),
+                source.getSourceConfigEntity(),
+                source.getSourceConfigNotes(),
+                location,
+                source.getIconName(),
+                source.getIconUnicode(),
+                source.getCategory(),
+                source.getDescription(),
+                source.getUrl(),
+                source.getNumRecords());
+
         return ResponseEntity.status(HttpStatus.OK).body(res);
 
     }
