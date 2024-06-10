@@ -1,17 +1,17 @@
 [
     {
-        "source_config_id": 1,
-        "source_config_entity": "Austin, TX",
+        "sourceConfigId": 1,
+        "sourceConfigEntity": "Austin, TX",
         "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
         "location": [
             -97.73996,
             30.27415
         ],
-        "icon_name": "building",
-        "icon_unicode": "\uf1ad",
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "Austin Police",
-        "num_records": 2440821,
+        "numRecords": 2440821,
         "mapping": {
             "report_num": "incident_report_number",
             "report_category": "crime_type",
@@ -24,18 +24,18 @@
         }
     },
     {
-        "source_config_id": 2,
-        "source_config_entity": "Austin, TX",
+        "sourceConfigId": 2,
+        "sourceConfigEntity": "Austin, TX",
         "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
         "location": [
             -97.73996,
             30.27415
         ],
-        "icon_name": "building",
-        "icon_unicode": "\uf1ad",
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "Austin 311",
-        "num_records": 1778332,
+        "numRecords": 1778332,
         "mapping": {
             "report_num": "sr_number",
             "report_category": "sr_type_desc",
