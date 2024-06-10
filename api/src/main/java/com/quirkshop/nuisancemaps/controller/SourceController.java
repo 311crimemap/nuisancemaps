@@ -54,7 +54,21 @@ public class SourceController {
 
         try {
             source = sourceLoaderService.saveTransaction(source);
-            jSendDTO = new JSendDTO("success", source);
+
+            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+
+            SourceDTO res = new SourceDTO(source.getSourceConfigId(),
+                    source.getSourceConfigEntity(),
+                    source.getSourceConfigNotes(),
+                    location,
+                    source.getIconName(),
+                    source.getIconUnicode(),
+                    source.getCategory(),
+                    source.getDescription(),
+                    source.getUrl(),
+                    source.getNumRecords());
+
+            jSendDTO = new JSendDTO("success", res);
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
             jSendDTO = new JSendDTO("error", e.getMessage());
@@ -68,12 +82,26 @@ public class SourceController {
     @Transactional
     public ResponseEntity<?> createBatch(@RequestBody List<Source> sources) {
         JSendDTO jSendDTO;
-        List<Source> res = new ArrayList<Source>();
+        List<SourceDTO> res = new ArrayList<SourceDTO>();
 
         for (Source source : sources) {
             try {
                 source = sourceLoaderService.saveTransaction(source);
-                res.add(source);
+
+                Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+
+                SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
+                        source.getSourceConfigEntity(),
+                        source.getSourceConfigNotes(),
+                        location,
+                        source.getIconName(),
+                        source.getIconUnicode(),
+                        source.getCategory(),
+                        source.getDescription(),
+                        source.getUrl(),
+                        source.getNumRecords());
+
+                res.add(sourceDTO);
             } catch (DataIntegrityViolationException e) {
                 log.error(e.getMessage());
             }
@@ -92,14 +120,49 @@ public class SourceController {
     @GetMapping("/sources")
     public ResponseEntity<?> index() {
         Iterable<Source> sourceIter = sourceRepository.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(sourceIter);
+        ArrayList<SourceDTO> res = new ArrayList<SourceDTO>();
+
+        for (Source source: sourceIter) {
+
+            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+
+            SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
+                    source.getSourceConfigEntity(),
+                    source.getSourceConfigNotes(),
+                    location,
+                    source.getIconName(),
+                    source.getIconUnicode(),
+                    source.getCategory(),
+                    source.getDescription(),
+                    source.getUrl(),
+                    source.getNumRecords());
+
+            res.add(sourceDTO);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping("/sources/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
         Source source = sourceRepository.findById(id).orElse(null);
-        if (source != null)
-            return ResponseEntity.status(HttpStatus.OK).body(source);
+        if (source != null) {
+
+            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+
+            SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
+                                                source.getSourceConfigEntity(),
+                                                source.getSourceConfigNotes(),
+                                                location,
+                                                source.getIconName(),
+                                                source.getIconUnicode(),
+                                                source.getCategory(),
+                                                source.getDescription(),
+                                                source.getUrl(),
+                                                source.getNumRecords());
+
+            return ResponseEntity.status(HttpStatus.OK).body(sourceDTO);
+        }
 
         return ResponseEntity.status(404).body(null);
     }
