@@ -28,7 +28,7 @@ public class DataCrimeController {
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "limit", required = false) Integer limit) {
 
-        final int LIMIT = 50;
+        final int LIMIT = 10000;
 
         if (page != null && limit != null) {
             return dataCrimeRepository.findAllByOrderByReportedAtDesc(PageRequest.of(page, limit));
@@ -55,7 +55,7 @@ public class DataCrimeController {
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "limit", required = false) Integer limit) {
 
-        final int LIMIT = 50;
+        final int LIMIT = 10000;
 
         // defaults
         int distance = 1;
@@ -83,7 +83,7 @@ public class DataCrimeController {
         }
 
         return dataCrimeRepository.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
-                startDateTime, endDateTime);
+                startDateTime, endDateTime, Math.min(LIMIT, limit));
     }
 
 }

@@ -54,7 +54,7 @@ public class Data311Controller {
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "limit", required = false) Integer limit) {
 
-        final int LIMIT = 50;
+        final int LIMIT = 10000;
 
         // defaults
         int distance = 1;
@@ -82,7 +82,7 @@ public class Data311Controller {
         }
 
         return data311Repository.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
-                startDateTime, endDateTime);
+                startDateTime, endDateTime, Math.min(limit, LIMIT));
 
     }
 
