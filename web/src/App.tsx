@@ -48,6 +48,7 @@ function App() {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [activeReportNum, setActiveReportNum] = useState(null);
   const [activeFeatureList, setActiveFeatureList] = useState([]);
+  const [sources, setSources] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeCategories, activeCategoriesDispatcher] = useReducer(
     categoryCheckBoxReducer,
@@ -119,25 +120,26 @@ function App() {
 
     const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?${params.toString()}`;
     const data311sURL = `http://localhost:8080/data311s.geojson?${params.toString()}`;
-    const categoriesURL = `http://localhost:8080/categories`;
-    console.log("FETCH", dataCrimesURL, data311sURL, categoriesURL);
+    const initURL = `http://localhost:8080/init`;
+
+    console.log("FETCH", dataCrimesURL, data311sURL, initURL);
 
     Promise.all([
       getData(dataCrimesURL),
       getData(data311sURL),
-      categories.length == 0
-        ? getData(categoriesURL)
-        : Promise.resolve(categories),
-    ]).then(([dataCrimes, data311s, dataCategories]) => {
+      categories.length == 0 ? getData(initURL) : Promise.resolve(categories),
+    ]).then(([dataCrimes, data311s, dataSourceCategories]) => {
       setDataCrimes(dataCrimes);
       setData311s(data311s);
 
       //preserve any checked filters
       if (categories.length == 0) {
-        setCategories(dataCategories.data);
+        setCategories(dataSourceCategories.data.categories);
+        setSources(dataSourceCategories.data.sources);
+
         activeCategoriesDispatcher({
           type: "init",
-          categories: Categories.buildHierarchy(dataCategories.data),
+          categories: Categories.buildHierarchy(dataSourceCategories.data.categories),
         });
       }
 
