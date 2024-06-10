@@ -100,7 +100,7 @@ function App() {
   };
 
   useEffect(() => {
-    const limit = 500;
+    const limit = 10000;
 
     const { lat, lng } = { ...position.center };
     const { sw, ne } = { ...position.maxBounds };

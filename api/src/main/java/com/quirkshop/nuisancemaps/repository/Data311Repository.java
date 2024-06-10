@@ -73,13 +73,11 @@ public interface Data311Repository extends IDataEntityRepository<Data311>, CrudR
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
 
-
     default FeatureCollectionDTO findAllByBoundsOrderByReportedAtDescGeoJSON(double sw_lat, double sw_lng,
-            double ne_lat,
-            double ne_lng, LocalDateTime startDate, LocalDateTime endDate) {
+            double ne_lat, double ne_lng, LocalDateTime startDate, LocalDateTime endDate, int limit) {
 
         List<Data311> dataCrimes = findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng, startDate,
-                endDate);
+                endDate, limit);
 
         List<FeatureDTO> featuresDTO = dataCrimes
                 .stream()
@@ -106,17 +104,16 @@ public interface Data311Repository extends IDataEntityRepository<Data311>, CrudR
 
     }
 
-
     @Query(value = "SELECT dc.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id FROM data_311 dc "
             + "JOIN category cat ON dc.category_id = cat.id WHERE " +
             "ST_Within( point, ST_MakeEnvelope(:sw_lng, :sw_lat, :ne_lng, :ne_lat, 4326 )\\:\\:geometry)"
-            + "AND reported_at BETWEEN :startDate AND :endDate ;", nativeQuery = true)
+            + "AND reported_at BETWEEN :startDate AND :endDate ORDER BY dc.reported_at DESC LIMIT :limit ;", nativeQuery = true)
     List<Data311> findAllByLatLngBoundsAndBetweenDates(
             @Param("sw_lat") double sw_lat,
             @Param("sw_lng") double sw_lng,
             @Param("ne_lat") double ne_lat,
             @Param("ne_lng") double ne_lng,
             @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate);
-
+            @Param("endDate") LocalDateTime endDate,
+            @Param("limit") int limit);
 }
