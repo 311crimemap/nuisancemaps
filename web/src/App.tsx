@@ -1,4 +1,5 @@
 import { useState, useEffect, useReducer } from "react";
+import { LngLat } from "maplibre-gl";
 import "./App.css";
 import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
@@ -11,16 +12,8 @@ import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterRe
 function App() {
   const featureZoomLevel = 17;
 
-  const [position, setPosition] = useState({
-    center: {
-      lat: 30.2944,
-      lng: -97.7171,
-    },
-    bounds: {
-      _sw: { lat: 30.259261190163073, lng: -97.77095608156225 },
-      _ne: { lat: 30.30730791957427, lng: -97.68701127709589 },
-    },
-  });
+  const sw = new LngLat(-97.77095608156225, 30.259261190163073);
+  const ne = new LngLat(-97.68701127709589, 30.30730791957427);
 
   const defaultData = {
     type: "FeatureCollection",
@@ -33,6 +26,22 @@ function App() {
       endDate: new Date().toLocaleDateString("en-CA"),
     },
   };
+
+  const [position, setPosition] = useState({
+    center: {
+      lat: 30.2944,
+      lng: -97.7171,
+    },
+    bounds: {
+      sw,
+      ne,
+    },
+    maxBounds: {
+      sw: new LngLat(Math.floor(sw.lng), Math.floor(sw.lat)),
+      ne: new LngLat(Math.ceil(ne.lng), Math.ceil(ne.lat)),
+    },
+    refresh: true,
+  });
 
   const [dataCrimes, setDataCrimes] = useState(defaultData);
   const [data311s, setData311s] = useState(defaultData);
@@ -91,20 +100,20 @@ function App() {
   };
 
   useEffect(() => {
-    const limit = 500;
+    const limit = 10000;
 
     const { lat, lng } = { ...position.center };
-    const { _sw, _ne } = { ...position.bounds };
+    const { sw, ne } = { ...position.maxBounds };
 
     const params = new URLSearchParams({
       startDate: filterDate.date.startDate,
       endDate: filterDate.date.endDate,
       lat,
       lng,
-      sw_lat: _sw.lat,
-      sw_lng: _sw.lng,
-      ne_lat: _ne.lat,
-      ne_lng: _ne.lng,
+      sw_lat: sw.lat,
+      sw_lng: sw.lng,
+      ne_lat: ne.lat,
+      ne_lng: ne.lng,
       limit,
     });
 
@@ -132,12 +141,16 @@ function App() {
         });
       }
 
+      setPosition({
+        ...position,
+        refresh: false,
+      });
       setIsDataLoaded(true);
     });
 
     //to make new request
     //position.center - too sensitive, even zoom will trigger
-  }, [position.center, filterDate.date.startDate, filterDate.date.endDate]);
+  }, [position.refresh, filterDate.date.startDate, filterDate.date.endDate]);
 
   const { map, mapController } = useMap({
     position,

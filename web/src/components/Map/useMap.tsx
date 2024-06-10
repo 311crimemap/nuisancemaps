@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import maplibregl from "maplibre-gl";
+import { LngLat, LngLatBounds } from "maplibre-gl";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
 
@@ -192,13 +193,41 @@ export default function useMap(props) {
     });
 
     _map.on("moveend", async () => {
-      const position = {
+      const bounds = _map.getBounds();
+      const maxBounds = new LngLatBounds(
+        props.position.maxBounds.sw,
+        props.position.maxBounds.ne
+      );
+
+      //test if exceeds, set new maxBounds
+      const refresh = !(
+        maxBounds.contains(bounds.getSouthWest()) &&
+        maxBounds.contains(bounds.getNorthEast())
+      );
+
+      console.log("onMove position fetch refresh:", refresh);
+
+      const _position = {
+        ...props.position,
         zoom: _map.getZoom(),
         center: _map.getCenter(),
-        bounds: _map.getBounds(),
+        bounds,
+        maxBounds: refresh
+          ? {
+              sw: new LngLat(
+                Math.floor(bounds.getSouthWest().lng),
+                Math.floor(bounds.getSouthWest().lat)
+              ),
+              ne: new LngLat(
+                Math.ceil(bounds.getNorthEast().lng),
+                Math.ceil(bounds.getNorthEast().lat)
+              ),
+            }
+          : props.position.maxBounds,
+        refresh,
       };
 
-      props.setPosition(position);
+      props.setPosition(_position);
     });
 
     _map.addControl(new maplibregl.NavigationControl(), "bottom-right");
