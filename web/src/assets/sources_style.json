@@ -3,6 +3,7 @@
         "id": "point-circle-sources",
         "type": "circle",
         "source": "sources",
+        "maxzoom": 10,
         "paint": {
             "circle-radius": 16,
             "circle-color": "yellow",
@@ -15,6 +16,7 @@
         "id": "point-sources",
         "type": "symbol",
         "source": "sources",
+        "maxzoom": 10,
         "layout": {
             "text-field": [
                 "get",

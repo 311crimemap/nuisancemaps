@@ -3,6 +3,7 @@
         "id": "clusters-dataCrimes",
         "type": "symbol",
         "source": "dataCrimes",
+        "minzoom": 10,
         "filter": [
             "has",
             "point_count"
@@ -20,14 +21,22 @@
                     "point_count"
                 ],
                 32,
-                10, 36,
-                25, 40,
-                50, 44,
-                100, 50,
-                200, 56,
-                400, 62,
-                800, 68,
-                1000, 76
+                10,
+                36,
+                25,
+                40,
+                50,
+                44,
+                100,
+                50,
+                200,
+                56,
+                400,
+                62,
+                800,
+                68,
+                1000,
+                76
             ]
         },
         "paint": {
@@ -40,6 +49,7 @@
         "id": "clusters-count-dataCrimes",
         "type": "symbol",
         "source": "dataCrimes",
+        "minzoom": 10,
         "filter": [
             "has",
             "point_count"
@@ -60,6 +70,7 @@
         "id": "point-circle-dataCrimes",
         "type": "circle",
         "source": "dataCrimes",
+        "minzoom": 10,
         "filter": [
             "!",
             [
@@ -79,6 +90,7 @@
         "id": "point-dataCrimes",
         "type": "symbol",
         "source": "dataCrimes",
+        "minzoom": 10,
         "filter": [
             "!",
             [
