@@ -65,7 +65,6 @@ public class SourceController {
                     source.getIconUnicode(),
                     source.getCategory(),
                     source.getDescription(),
-                    source.getUrl(),
                     source.getNumRecords());
 
             jSendDTO = new JSendDTO("success", res);
@@ -98,7 +97,6 @@ public class SourceController {
                         source.getIconUnicode(),
                         source.getCategory(),
                         source.getDescription(),
-                        source.getUrl(),
                         source.getNumRecords());
 
                 res.add(sourceDTO);
@@ -134,7 +132,6 @@ public class SourceController {
                     source.getIconUnicode(),
                     source.getCategory(),
                     source.getDescription(),
-                    source.getUrl(),
                     source.getNumRecords());
 
             res.add(sourceDTO);
@@ -158,7 +155,6 @@ public class SourceController {
                                                 source.getIconUnicode(),
                                                 source.getCategory(),
                                                 source.getDescription(),
-                                                source.getUrl(),
                                                 source.getNumRecords());
 
             return ResponseEntity.status(HttpStatus.OK).body(sourceDTO);
@@ -217,7 +213,6 @@ public class SourceController {
                 source.getIconUnicode(),
                 source.getCategory(),
                 source.getDescription(),
-                source.getUrl(),
                 source.getNumRecords());
 
         return ResponseEntity.status(HttpStatus.OK).body(res);

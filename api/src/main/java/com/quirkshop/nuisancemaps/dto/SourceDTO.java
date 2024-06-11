@@ -17,7 +17,7 @@ public class SourceDTO {
     private Integer numRecords;
 
     public SourceDTO(Integer sourceConfigId, String sourceConfigEntity, String sourceConfigNotes, Double[] location,
-            String iconName, String iconUnicode, String category, String description, String url, Integer numRecords) {
+            String iconName, String iconUnicode, String category, String description, Integer numRecords) {
         this.sourceConfigId = sourceConfigId;
         this.sourceConfigEntity = sourceConfigEntity;
         this.sourceConfigNotes = sourceConfigNotes;
@@ -26,7 +26,6 @@ public class SourceDTO {
         this.iconUnicode = iconUnicode;
         this.category = category;
         this.description = description;
-        this.url = url;
         this.numRecords = numRecords;
     }
 
@@ -92,14 +91,6 @@ public class SourceDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public Integer getNumRecords() {
