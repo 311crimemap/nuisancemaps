@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.locationtech.jts.geom.Point;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -42,6 +43,15 @@ public class Source {
 
     @JsonProperty("source_config_notes")
     private String sourceConfigNotes;
+
+    @JsonProperty("location")
+    private Point location;
+
+    @JsonProperty("icon_name")
+    private String iconName;
+
+    @JsonProperty("icon_unicode")
+    private String iconUnicode;
 
     private String category;
     private String description;
@@ -197,6 +207,30 @@ public class Source {
 
     public void setMapping(Mapping mapping) {
         this.mapping = mapping;
+    }
+
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
+    }
+
+    public String getIconUnicode() {
+        return iconUnicode;
+    }
+
+    public void setIconUnicode(String iconUnicode) {
+        this.iconUnicode = iconUnicode;
     }
 
 }

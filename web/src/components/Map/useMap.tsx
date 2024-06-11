@@ -5,6 +5,7 @@ import { createMapLibreGlMapController } from "@maptiler/geocoding-control/mapli
 import "@maptiler/geocoding-control/style.css";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
+import dataSourcesStyleJSON from "../../assets/sources_style.json";
 import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
@@ -36,6 +37,7 @@ export default function useMap(props) {
       },
       layers: [
         ...baseMapStyleJSON,
+        ...dataSourcesStyleJSON,
         ...dataCrimesStyleJSON,
         ...data311sStyleJSON,
         ...heatMapStyleJSON,
