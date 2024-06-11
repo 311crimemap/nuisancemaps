@@ -60,6 +60,7 @@ function App() {
   );
 
   enum DATASOURCES {
+    Sources = "sources",
     Data311s = "data311s",
     DataCrimes = "dataCrimes",
     HeatMapDataCrimes = "heatMapDataCrimes",
@@ -67,6 +68,10 @@ function App() {
   }
 
   const dataSources = {
+    [DATASOURCES.Sources]: {
+        type: "geojson",
+        data: sources,    // zoomed out city points
+    },
     [DATASOURCES.Data311s]: {
       type: "geojson",
       data: data311s,
