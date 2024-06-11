@@ -59,7 +59,10 @@ export default function useMap(props) {
       console.log("Load");
     });
 
-    for (const dataset of Object.values(props.DATASOURCES).slice(0, 2)) {
+    for (const dataset of [
+      props.DATASOURCES.Data311s,
+      props.DATASOURCES.DataCrimes,
+    ]) {
       // When a click event occurs on a feature in
       // the unclustered-point layer, open a popup at
       // the location of the feature, with
