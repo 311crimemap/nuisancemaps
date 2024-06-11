@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.quirkshop.nuisancemaps.dto.GeometryDTO;
 import com.quirkshop.nuisancemaps.dto.InitDTO;
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
+import com.quirkshop.nuisancemaps.dto.SourceFeatureCollectionDTO;
+import com.quirkshop.nuisancemaps.dto.SourceFeatureDTO;
 
 @RestController
 public class InitController {
@@ -39,12 +42,14 @@ public class InitController {
         JSendDTO jSendDTO;
 
         try {
-            ArrayList<SourceDTO> sourceDTOs = new ArrayList<SourceDTO>();
+            ArrayList<SourceFeatureDTO> sourceFeatureDTOs = new ArrayList<SourceFeatureDTO>();
             Iterable<Source> sources = sourceRepository.findAll();
             List<Category> categories = categoryRepository.findAllByTextNotOrderByIdAsc("SKIP");
 
             for (Source source : sources) {
                 Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+                GeometryDTO g = new GeometryDTO("Point", location);
+
                 SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
                         source.getSourceConfigEntity(),
                         source.getSourceConfigNotes(),
@@ -53,13 +58,16 @@ public class InitController {
                         source.getIconUnicode(),
                         source.getCategory(),
                         source.getDescription(),
-                        source.getUrl(),
                         source.getNumRecords());
 
-                sourceDTOs.add(sourceDTO);
+                SourceFeatureDTO sourceFeatureDTO = new SourceFeatureDTO("Feature", g, sourceDTO);
+                sourceFeatureDTOs.add(sourceFeatureDTO);
             }
+            SourceFeatureCollectionDTO sf = new SourceFeatureCollectionDTO("FeatureCollection",
+                    sourceFeatureDTOs);
 
-            InitDTO initDTO = new InitDTO(sourceDTOs, categories);
+            InitDTO initDTO = new InitDTO(sf, categories);
+
             jSendDTO = new JSendDTO("success", initDTO);
 
         } catch (DataIntegrityViolationException e) {
