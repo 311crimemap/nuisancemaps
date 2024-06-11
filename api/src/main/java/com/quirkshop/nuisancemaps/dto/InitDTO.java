@@ -6,19 +6,19 @@ import com.quirkshop.nuisancemaps.model.Category;
 
 public class InitDTO {
 
-    private List<SourceDTO> sources;
+    private SourceFeatureCollectionDTO sources;
     private List<Category> categories;
 
-    public InitDTO(List<SourceDTO> sources, List<Category> categories) {
+    public InitDTO(SourceFeatureCollectionDTO sources, List<Category> categories) {
         this.sources = sources;
         this.categories = categories;
     }
 
-    public List<SourceDTO> getSources() {
+    public SourceFeatureCollectionDTO getSources() {
         return sources;
     }
 
-    public void setSources(List<SourceDTO> sources) {
+    public void setSources(SourceFeatureCollectionDTO sources) {
         this.sources = sources;
     }
 
