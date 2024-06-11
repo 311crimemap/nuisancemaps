@@ -103,18 +103,12 @@ export default function useMap(props) {
           16, //default
         ]);
 
-        new maplibregl.Popup()
-          .setLngLat(coordinates)
-          .setHTML(`${reportCategory}`)
-          .addTo(_map);
-
-        props.setActiveReportNum(reportNum);
-
         const featureList = {
           source,
           features,
         };
 
+        props.setActiveReportNum(reportNum);
         props.setActiveFeatureList(featureList);
       });
 
