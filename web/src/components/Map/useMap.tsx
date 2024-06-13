@@ -70,28 +70,15 @@ export default function useMap(props) {
 
       _map.on("click", `point-${dataset}`, (e) => {
         console.log("CLICK unclustered");
-        if (e.clickOnLayer) {
-          return;
-        }
+        if (e.clickOnLayer) return;
         e.clickOnLayer = true;
 
         const source = e.features[0].source;
         const layer = e.features[0].layer;
-        const circleLayerID = layer.id.includes("311")
-          ? `point-circle-${dataset}`
-          : `point-circle-${dataset}`;
+        const circleLayerID = `point-circle-${dataset}`;
 
-        const coordinates = e.features[0].geometry.coordinates.slice();
-        const reportCategory = e.features[0].properties.reportCategory;
         const reportNum = e.features[0].properties.reportNum;
         const features = e.features;
-
-        // Ensure that if the map is zoomed out such that
-        // multiple copies of the feature are visible, the
-        // popup appears over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
 
         //increae icon size
         _map.setLayoutProperty(layer.id, "text-size", [
@@ -123,9 +110,7 @@ export default function useMap(props) {
       //click on a clustered point
       _map.on("click", `clusters-${dataset}`, async (e) => {
         console.log("CLICK Cluster", e);
-        if (e.clickOnLayer) {
-          return;
-        }
+        if (e.clickOnLayer) return;
         e.clickOnLayer = true;
 
         const source = e.features[0].source;
@@ -135,7 +120,6 @@ export default function useMap(props) {
 
         const clusterSource = _map.getSource(source);
 
-        //TODO: consistent layer id /source name
         const zoom = await _map
           .getSource(dataset)
           .getClusterExpansionZoom(cluster_id);
