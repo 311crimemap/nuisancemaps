@@ -43,6 +43,7 @@
     min-width: 24rem;
     max-height: 24rem;
 
+    bottom: auto; /* "clear" */
     top: 8rem;
     margin-left: 0.5rem;
     border-radius: 0.5rem;

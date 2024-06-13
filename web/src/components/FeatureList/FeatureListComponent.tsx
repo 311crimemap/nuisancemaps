@@ -45,7 +45,8 @@ export default function FeatureListComponent({
   };
 
   return (
-    <div id="feature-list-component" style={style}>
+
+    <div id="feature-list-component" className="shadow-md" style={style}>
       <ul>
         {(sorted_features || []).map((feature) => {
           return (
@@ -59,5 +60,6 @@ export default function FeatureListComponent({
         })}
       </ul>
     </div>
+
   );
 }
