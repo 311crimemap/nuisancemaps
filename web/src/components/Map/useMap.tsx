@@ -59,7 +59,10 @@ export default function useMap(props) {
       console.log("Load");
     });
 
-    for (const dataset of Object.values(props.DATASOURCES).slice(0, 2)) {
+    for (const dataset of [
+      props.DATASOURCES.Data311s,
+      props.DATASOURCES.DataCrimes,
+    ]) {
       // When a click event occurs on a feature in
       // the unclustered-point layer, open a popup at
       // the location of the feature, with
@@ -103,18 +106,12 @@ export default function useMap(props) {
           16, //default
         ]);
 
-        new maplibregl.Popup()
-          .setLngLat(coordinates)
-          .setHTML(`${reportCategory}`)
-          .addTo(_map);
-
-        props.setActiveReportNum(reportNum);
-
         const featureList = {
           source,
           features,
         };
 
+        props.setActiveReportNum(reportNum);
         props.setActiveFeatureList(featureList);
       });
 
