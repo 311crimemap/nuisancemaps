@@ -70,6 +70,11 @@ export default function useMap(props) {
 
       _map.on("click", `point-${dataset}`, (e) => {
         console.log("CLICK unclustered");
+        if (e.clickOnLayer) {
+          return;
+        }
+        e.clickOnLayer = true;
+
         const source = e.features[0].source;
         const layer = e.features[0].layer;
         const circleLayerID = layer.id.includes("311")
@@ -118,6 +123,10 @@ export default function useMap(props) {
       //click on a clustered point
       _map.on("click", `clusters-${dataset}`, async (e) => {
         console.log("CLICK Cluster", e);
+        if (e.clickOnLayer) {
+          return;
+        }
+        e.clickOnLayer = true;
 
         const source = e.features[0].source;
         const cluster_id = e.features[0].properties.cluster_id;
