@@ -48,12 +48,13 @@ export default function FeatureListComponent({
 
     <div id="feature-list-component" className="shadow-md" style={style}>
       <ul>
-        {(sorted_features || []).map((feature) => {
+        {(sorted_features || []).map((feature, i) => {
           return (
             <FeatureView
               key={`view-${feature.properties.reportNum}`}
               feature={feature}
               featuresLen={featuresLen}
+              isLast={i+1 == features.length}
               initListMode={featuresLen > LIST_VIEW_COUNT}
             />
           );

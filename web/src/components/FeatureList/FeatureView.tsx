@@ -1,5 +1,5 @@
 import { useState } from "react";
-export default function FeatureView({ feature, featuresLen, initListMode }) {
+export default function FeatureView({ feature, featuresLen, isLast, initListMode }) {
   /*
    TODO: fix max width of card
 
@@ -11,13 +11,13 @@ export default function FeatureView({ feature, featuresLen, initListMode }) {
 
   //clusters are set to string by maplibre
   //points are objects
-  let category = feature.properties.category;
+  let category = properties.category;
   if (typeof category == "string")
-    category = JSON.parse(feature.properties.category);
+    category = JSON.parse(properties.category);
 
   const dateOptions = { year: "2-digit", month: "short", day: "2-digit" };
   const reportedAtDate = new Date(
-    feature.properties.reportedAt
+    properties.reportedAt
   ).toLocaleDateString(navigator.language || "en-US", dateOptions);
 
   const iconStyle = {
@@ -31,7 +31,7 @@ export default function FeatureView({ feature, featuresLen, initListMode }) {
   return (
     <li
       className="w-full sm:w-96"
-      key={feature.properties.reportNum}
+      key={properties.reportNum}
       onClick={() => setListMode(!listMode)}
     >
       <div>
@@ -40,14 +40,14 @@ export default function FeatureView({ feature, featuresLen, initListMode }) {
           <div className="flex gap-3">
             <span style={iconStyle}>{category.iconUnicode}</span>
             <span>
-              <strong>{feature.properties.reportCategory}</strong>
+              <strong>{properties.reportCategory}</strong>
             </span>
           </div>
 
           <div className="w-24 text-sm text-right">{reportedAtDate}</div>
         </div>
 
-        {listMode && <hr className="mb-2" />}
+        {listMode && !isLast && <hr className="mb-2" />}
 
         {/* details toggle expand*/}
         {!listMode && (
@@ -56,11 +56,11 @@ export default function FeatureView({ feature, featuresLen, initListMode }) {
               <dl>
                 <dt className="text-neutral-content">Report ID</dt>
                 <dd className="text-neutral mb-4">
-                  {feature.properties.reportNum}
+                  {properties.reportNum}
                 </dd>
                 <dt className="text-neutral-content">Location</dt>
                 <dd className="text-neutral mb-4">
-                  {feature.properties.location}
+                  {properties.location}
                 </dd>
               </dl>
               <dl>
@@ -70,7 +70,7 @@ export default function FeatureView({ feature, featuresLen, initListMode }) {
                 </dd>
               </dl>
             </div>
-            {featuresLen > 1 && <hr className="mb-2" />}
+            {!isLast && <hr className="mb-2" />}
           </>
         )}
       </div>
