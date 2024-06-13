@@ -38,6 +38,8 @@ export default function FeatureListComponent({
       new Date(b.properties.reportedAt) - new Date(a.properties.reportedAt)
   );
 
+  const featuresLen = (features || []).length;
+
   const style = {
     display: isVisible ? "block" : "none",
   };
@@ -48,8 +50,10 @@ export default function FeatureListComponent({
         {(sorted_features || []).map((feature) => {
           return (
             <FeatureView
+              key={`view-${feature.properties.reportNum}`}
               feature={feature}
-              initListMode={features.length > LIST_VIEW_COUNT}
+              featuresLen={featuresLen}
+              initListMode={featuresLen > LIST_VIEW_COUNT}
             />
           );
         })}

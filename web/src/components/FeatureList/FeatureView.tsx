@@ -1,5 +1,5 @@
 import { useState } from "react";
-export default function FeatureView({ feature, initListMode }) {
+export default function FeatureView({ feature, featuresLen, initListMode }) {
   /*
    TODO: fix max width of card
 
@@ -7,7 +7,6 @@ export default function FeatureView({ feature, initListMode }) {
   if (!feature) return null;
 
   const [listMode, setListMode] = useState(initListMode);
-
   const properties = feature.properties;
 
   //clusters are set to string by maplibre
@@ -19,56 +18,60 @@ export default function FeatureView({ feature, initListMode }) {
   const dateOptions = { year: "2-digit", month: "short", day: "2-digit" };
   const reportedAtDate = new Date(
     feature.properties.reportedAt
-  ).toLocaleDateString("en-US", dateOptions);
+  ).toLocaleDateString(navigator.language || "en-US", dateOptions);
 
-  console.log("Feature", properties);
-  console.log("Category", category);
   const iconStyle = {
     fontFamily: "Font Awesome\\ 6 Free",
     fontWeight: 900,
+    fontSize: "1.5rem",
+    alignContent: "center",
+    padding: "0 .25rem",
   };
-
-    /*
-       TODO: restart w/ mobile get widths aligned
-       icon | text | date - 
-     */
 
   return (
     <li
-      className=""
-      style={{width: "400px"}}
+      className="w-full sm:w-96"
       key={feature.properties.reportNum}
       onClick={() => setListMode(!listMode)}
     >
       <div>
         {/* head */}
-        <div className="flex justify-between text-sm mb-2">
+        <div className="min-h-8 flex justify-between items-center text-sm mb-2 cursor-pointer">
           <div className="flex gap-3">
             <span style={iconStyle}>{category.iconUnicode}</span>
-            <span><strong>{feature.properties.reportCategory}</strong></span>
+            <span>
+              <strong>{feature.properties.reportCategory}</strong>
+            </span>
           </div>
 
-          <div className="text-sm">{reportedAtDate}</div>
+          <div className="w-24 text-sm text-right">{reportedAtDate}</div>
         </div>
+
+        {listMode && <hr className="mb-2" />}
 
         {/* details toggle expand*/}
         {!listMode && (
-            <>
-                <hr className="mb-2"/>
-          <div className="flex justify-between text-sm mb-4">
+          <>
+            <div className="flex justify-between text-sm">
               <dl>
-              <dt className="text-neutral-content">Report ID</dt>
-              <dd className="text-neutral mb-4">{feature.properties.reportNum}</dd>
-              <dt className="text-neutral-content">Location</dt>
-              <dd className="text-neutral mb-4">{feature.properties.location}</dd>
-            </dl>
-                      <dl>
-                          <dt className="text-neutral-content">Report Type</dt>
-                          <dd className="text-neutral text-right mb-4">{category.dataType}</dd>
-                      </dl>
-
-          </div>
-            </>
+                <dt className="text-neutral-content">Report ID</dt>
+                <dd className="text-neutral mb-4">
+                  {feature.properties.reportNum}
+                </dd>
+                <dt className="text-neutral-content">Location</dt>
+                <dd className="text-neutral mb-4">
+                  {feature.properties.location}
+                </dd>
+              </dl>
+              <dl>
+                <dt className="text-neutral-content">Report Type</dt>
+                <dd className="text-neutral text-right mb-4">
+                  {category.dataType}
+                </dd>
+              </dl>
+            </div>
+            {featuresLen > 1 && <hr className="mb-2" />}
+          </>
         )}
       </div>
     </li>
