@@ -69,8 +69,8 @@ function App() {
 
   const dataSources = {
     [DATASOURCES.Sources]: {
-        type: "geojson",
-        data: sources,    // zoomed out city points
+      type: "geojson",
+      data: sources, // zoomed out city points
     },
     [DATASOURCES.Data311s]: {
       type: "geojson",
@@ -144,7 +144,9 @@ function App() {
 
         activeCategoriesDispatcher({
           type: "init",
-          categories: Categories.buildHierarchy(dataSourceCategories.data.categories),
+          categories: Categories.buildHierarchy(
+            dataSourceCategories.data.categories
+          ),
         });
       }
 
