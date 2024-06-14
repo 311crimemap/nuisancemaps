@@ -112,6 +112,7 @@ export default function useMap(props) {
       //click on a clustered point
       _map.on("click", `clusters-${dataset}`, async (e) => {
         console.log("CLICK Cluster", e);
+
         if (e.clickOnLayer) return;
         e.clickOnLayer = true;
 
@@ -121,27 +122,37 @@ export default function useMap(props) {
         const point_count = e.features[0].properties.point_count;
 
         const clusterSource = _map.getSource(source);
+        const clusterMaxZoom = props.dataSources[dataset].clusterMaxZoom;
 
-        const zoom = await _map
+        //getClusterExpansionZoom returns (clusterMaxZoom + 1) when
+        //the cluster is "terminal". Meaning any deeper zoom will not
+        //break up the cluster.
+        const clusterExpansionZoom = await _map
           .getSource(dataset)
           .getClusterExpansionZoom(cluster_id);
-        _map.easeTo({
-          center: coordinates,
-          zoom,
-        });
 
         //1. get list of individual elements in cluster (ids)
         //2. set open
-
         const features = await clusterSource.getClusterLeaves(
           cluster_id,
           point_count,
           0
         );
 
+        //if the next cluster zoom is less than max, zoom in.
+        //otherwise we're at "terminal" cluster, no need to zoom any further
+        if (clusterExpansionZoom < clusterMaxZoom) {
+          _map.easeTo({
+            center: coordinates,
+            zoom: clusterExpansionZoom,
+          });
+        }
+
         const featureList = {
           source,
           features,
+          clusterExpansionZoom,
+          clusterMaxZoom,
         };
 
         props.setActiveFeatureList(featureList);
