@@ -1,3 +1,4 @@
+import debounce from "lodash/debounce";
 import { useState, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { LngLat, LngLatBounds } from "maplibre-gl";
@@ -9,6 +10,7 @@ import dataSourcesStyleJSON from "../../assets/sources_style.json";
 import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
+import DuplicatePointNudge from "./DuplicatePointNudge";
 
 export default function useMap(props) {
   //const mapRef = useRef<maplibregl.Map>();
@@ -70,23 +72,15 @@ export default function useMap(props) {
 
       _map.on("click", `point-${dataset}`, (e) => {
         console.log("CLICK unclustered");
+        if (e.clickOnLayer) return;
+        e.clickOnLayer = true;
+
         const source = e.features[0].source;
         const layer = e.features[0].layer;
-        const circleLayerID = layer.id.includes("311")
-          ? `point-circle-${dataset}`
-          : `point-circle-${dataset}`;
+        const circleLayerID = `point-circle-${dataset}`;
 
-        const coordinates = e.features[0].geometry.coordinates.slice();
-        const reportCategory = e.features[0].properties.reportCategory;
         const reportNum = e.features[0].properties.reportNum;
         const features = e.features;
-
-        // Ensure that if the map is zoomed out such that
-        // multiple copies of the feature are visible, the
-        // popup appears over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
 
         //increae icon size
         _map.setLayoutProperty(layer.id, "text-size", [
@@ -119,34 +113,46 @@ export default function useMap(props) {
       _map.on("click", `clusters-${dataset}`, async (e) => {
         console.log("CLICK Cluster", e);
 
+        if (e.clickOnLayer) return;
+        e.clickOnLayer = true;
+
         const source = e.features[0].source;
         const cluster_id = e.features[0].properties.cluster_id;
         const coordinates = e.features[0].geometry.coordinates;
         const point_count = e.features[0].properties.point_count;
 
         const clusterSource = _map.getSource(source);
+        const clusterMaxZoom = props.dataSources[dataset].clusterMaxZoom;
 
-        //TODO: consistent layer id /source name
-        const zoom = await _map
+        //getClusterExpansionZoom returns (clusterMaxZoom + 1) when
+        //the cluster is "terminal". Meaning any deeper zoom will not
+        //break up the cluster.
+        const clusterExpansionZoom = await _map
           .getSource(dataset)
           .getClusterExpansionZoom(cluster_id);
-        _map.easeTo({
-          center: coordinates,
-          zoom,
-        });
 
         //1. get list of individual elements in cluster (ids)
         //2. set open
-
         const features = await clusterSource.getClusterLeaves(
           cluster_id,
           point_count,
           0
         );
 
+        //if the next cluster zoom is less than max, zoom in.
+        //otherwise we're at "terminal" cluster, no need to zoom any further
+        if (clusterExpansionZoom < clusterMaxZoom) {
+          _map.easeTo({
+            center: coordinates,
+            zoom: clusterExpansionZoom,
+          });
+        }
+
         const featureList = {
           source,
           features,
+          clusterExpansionZoom,
+          clusterMaxZoom,
         };
 
         props.setActiveFeatureList(featureList);
@@ -191,7 +197,39 @@ export default function useMap(props) {
       }
     });
 
-    _map.on("moveend", async () => {
+    const debouncedZoomNudgeHandler = debounce((e) => {
+      console.log("debouncedZoom", e);
+
+      const sourceData311s = _map.getSource("data311s");
+      const sourceDataCrimes = _map.getSource("dataCrimes");
+
+      let sd311 = sourceData311s._data;
+      let sdCrime = sourceDataCrimes._data;
+
+      const layers = [
+        "clusters-dataCrimes",
+        "clusters-data311s",
+        "point-data311s",
+        "point-dataCrimes",
+      ];
+
+      const features = _map
+        .queryRenderedFeatures({ layers })
+        .filter((f) => f.source != "protomaps");
+
+      const duplicatePoint = new DuplicatePointNudge(features);
+      duplicatePoint.init();
+
+      duplicatePoint.nudge(sd311, "311");
+      duplicatePoint.nudge(sdCrime, "crime");
+
+      sourceData311s.setData(sd311);
+      sourceDataCrimes.setData(sdCrime);
+    }, 300);
+
+    _map.on("zoom", debouncedZoomNudgeHandler);
+
+    _map.on("moveend", async (e) => {
       const bounds = _map.getBounds();
       const maxBounds = new LngLatBounds(
         props.position.maxBounds.sw,

@@ -16,19 +16,16 @@ export default function FeatureListComponent({
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const { source, features } = activeFeatureList;
+  const { source, features, clusterExpansionZoom, clusterMaxZoom } =
+    activeFeatureList;
 
   useEffect(() => {
-    //1. unclustered feature  at any zoom -> show
-    //2. random click, or cluster at high zoom (large clusters)
-    //    don't toggle, allow default behavior to zoom in
-    //3. else it's a cluster at acceptable zoom -> show
-
-    if (features && features.length == 1) {
-      setIsVisible(true);
-    } else if (!features || map.getZoom() < featureZoomLevel) {
+    //no features, or we can continue to zoom and break upt he cluster
+    //in this case, don't show the featureList
+    if (!features || clusterExpansionZoom < clusterMaxZoom) {
       setIsVisible(false);
     } else {
+      //arrived at some terminal cluster or individual point, show the panel
       setIsVisible(true);
     }
   }, [features]);
@@ -45,7 +42,6 @@ export default function FeatureListComponent({
   };
 
   return (
-
     <div id="feature-list-component" className="shadow-md" style={style}>
       <ul>
         {(sorted_features || []).map((feature, i) => {
@@ -54,13 +50,12 @@ export default function FeatureListComponent({
               key={`view-${feature.properties.reportNum}`}
               feature={feature}
               featuresLen={featuresLen}
-              isLast={i+1 == features.length}
+              isLast={i + 1 == features.length}
               initListMode={featuresLen > LIST_VIEW_COUNT}
             />
           );
         })}
       </ul>
     </div>
-
   );
 }
