@@ -1,3 +1,4 @@
+import debounce from "lodash/debounce";
 import { useState, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { LngLat, LngLatBounds } from "maplibre-gl";
@@ -9,6 +10,7 @@ import dataSourcesStyleJSON from "../../assets/sources_style.json";
 import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
+import DuplicatePointNudge from "./DuplicatePointNudge";
 
 export default function useMap(props) {
   //const mapRef = useRef<maplibregl.Map>();
@@ -184,7 +186,39 @@ export default function useMap(props) {
       }
     });
 
-    _map.on("moveend", async () => {
+    const debouncedZoomNudgeHandler = debounce((e) => {
+      console.log("debouncedZoom", e);
+
+      const sourceData311s = _map.getSource("data311s");
+      const sourceDataCrimes = _map.getSource("dataCrimes");
+
+      let sd311 = sourceData311s._data;
+      let sdCrime = sourceDataCrimes._data;
+
+      const layers = [
+        "clusters-dataCrimes",
+        "clusters-data311s",
+        "point-data311s",
+        "point-dataCrimes",
+      ];
+
+      const features = _map
+        .queryRenderedFeatures({ layers })
+        .filter((f) => f.source != "protomaps");
+
+      const duplicatePoint = new DuplicatePointNudge(features);
+      duplicatePoint.init();
+
+      duplicatePoint.nudge(sd311, "311");
+      duplicatePoint.nudge(sdCrime, "crime");
+
+      sourceData311s.setData(sd311);
+      sourceDataCrimes.setData(sdCrime);
+    }, 300);
+
+    _map.on("zoom", debouncedZoomNudgeHandler);
+
+    _map.on("moveend", async (e) => {
       const bounds = _map.getBounds();
       const maxBounds = new LngLatBounds(
         props.position.maxBounds.sw,
