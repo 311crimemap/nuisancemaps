@@ -25,6 +25,9 @@ export default class DuplicatePointNudge {
   }
 
   nudge(data: [any], dataType: String) {
+
+    if (Object.keys(this.featMap).length == 0) return;
+
     for (let i = 0; i < data.features.length; i++) {
       const feature = data.features[i];
       const overlapFeature = this.featMap[feature.properties.reportNum];
