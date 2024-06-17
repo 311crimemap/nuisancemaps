@@ -1,11 +1,22 @@
-import { useState } from "react";
-
+import { useState, useMemo, useEffect, useCallback } from "react";
 import debounce from "lodash/debounce";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import InputDate from "./InputDate";
 
 export function DateComponent({ filterDate, filterDateDispatcher }) {
+  //intermediate date state to avoid re-renders from top
+  const [inputDate, setInputDate] = useState({
+    startDate: {
+      date: filterDate.date.startDate,
+      isValid: true,
+    },
+    endDate: {
+      date: filterDate.date.endDate,
+      isValid: true,
+    },
+  });
+
   const [icon, setIcon] = useState(faChevronUp);
   const min = new Date();
   min.setDate(min.getDate() - 365);
@@ -17,6 +28,40 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
   const startMaxDate = max.toLocaleDateString("en-CA");
   const endMinDate = min.toLocaleDateString("en-CA");
   const endMaxDate = max.toLocaleDateString("en-CA");
+
+  const debounceFilterDateDispatcher = useMemo(() => {
+    return debounce(filterDateDispatcher, 350);
+  }, []);
+
+  //only request on valid date ranges
+  useEffect(() => {
+
+    if (inputDate.startDate.isValid && inputDate.endDate.isValid) {
+
+      debounceFilterDateDispatcher({
+        type: "setDate",
+        date: {
+          startDate: inputDate.startDate.date,
+          endDate: inputDate.endDate.date,
+        },
+      });
+    }
+  }, [inputDate]);
+
+  //if date presets are changed, reload to display values in controls
+  useEffect(() => {
+
+    setInputDate({
+      startDate: {
+        date: filterDate.date.startDate,
+        isValid: true,
+      },
+      endDate: {
+        date: filterDate.date.endDate,
+        isValid: true,
+      },
+    });
+  }, [filterDate.date.startDate, filterDate.date.endDate]);
 
   return (
     <div className="dropdown dropdown-bottom flex">
@@ -66,10 +111,10 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             <InputDate
               id="startDate"
               name="startDate"
-              date={filterDate.date.startDate}
               minDate={startMinDate}
               maxDate={startMaxDate}
-              filterDateDispatcher={filterDateDispatcher}
+              inputDate={inputDate}
+              setInputDate={setInputDate}
             />
           </div>
 
@@ -78,10 +123,10 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             <InputDate
               id="endDate"
               name="endDate"
-              date={filterDate.date.endDate}
               minDate={endMinDate}
               maxDate={endMaxDate}
-              filterDateDispatcher={filterDateDispatcher}
+              inputDate={inputDate}
+              setInputDate={setInputDate}
             />
           </div>
         </div>
