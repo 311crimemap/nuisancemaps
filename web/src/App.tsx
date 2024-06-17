@@ -20,10 +20,13 @@ function App() {
     features: [],
   };
 
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() - 1);
+
   const defaultDateRange = {
     date: {
       startDate: new Date("01-01-2024").toLocaleDateString("en-CA"),
-      endDate: new Date().toLocaleDateString("en-CA"),
+      endDate: endDate.toLocaleDateString("en-CA"),
     },
   };
 
