@@ -1,12 +1,16 @@
 import { useState } from "react";
+
+import debounce from "lodash/debounce";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import InputDate from "./InputDate";
 
 export function DateComponent({ filterDate, filterDateDispatcher }) {
   const [icon, setIcon] = useState(faChevronUp);
   const min = new Date();
   min.setDate(min.getDate() - 365);
   const max = new Date();
+  max.setDate(max.getDate() - 1);
 
   //en-CA? need YYYY-MM-DD format string for <input>
   const startMinDate = min.toLocaleDateString("en-CA");
@@ -32,7 +36,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
       {/* Date */}
 
       <ul
-        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-52"
+        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-72"
         onBlur={() => setIcon(faChevronUp)}
         onFocus={() => setIcon(faChevronDown)}
       >
@@ -59,41 +63,25 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
         <div>
           <div>
             <label for="start">Start:</label>
-            <input
-              type="date"
+            <InputDate
               id="startDate"
-              name="start"
-              value={filterDate.date.startDate}
-              min={startMinDate}
-              max={startMaxDate}
-              onChange={(e) =>
-                filterDateDispatcher({
-                  type: "setDate",
-                  date: {
-                    startDate: e.target.value,
-                  },
-                })
-              }
+              name="startDate"
+              date={filterDate.date.startDate}
+              minDate={startMinDate}
+              maxDate={startMaxDate}
+              filterDateDispatcher={filterDateDispatcher}
             />
           </div>
 
           <div>
             <label for="end">End:</label>
-            <input
-              type="date"
+            <InputDate
               id="endDate"
-              name="end"
-              value={filterDate.date.endDate}
-              min={endMinDate}
-              max={endMaxDate}
-              onChange={(e) =>
-                filterDateDispatcher({
-                  type: "setDate",
-                  date: {
-                    endDate: e.target.value,
-                  },
-                })
-              }
+              name="endDate"
+              date={filterDate.date.endDate}
+              minDate={endMinDate}
+              maxDate={endMaxDate}
+              filterDateDispatcher={filterDateDispatcher}
             />
           </div>
         </div>
