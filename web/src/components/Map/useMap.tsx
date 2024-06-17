@@ -271,7 +271,7 @@ export default function useMap(props) {
 
     //mapRef.current = _map;
     setMap(_map);
-    setMapController(createMapLibreGlMapController(_map, maplibregl));
+    setMapController(createMapLibreGlMapController(_map, maplibregl, false));
 
     return () => {
       if (_map) {
