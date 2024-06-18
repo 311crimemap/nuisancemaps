@@ -21,7 +21,7 @@ export default function CheckBoxLabel({
           checked={category.checked}
           onChange={checkHandler}
         />
-        <span className="label-text">{`${category.text} - ${category.checked}`}</span>
+        <span className="label-text pl-2">{`${category.text}`}</span>
       </label>
     </div>
   );
