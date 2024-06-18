@@ -19,7 +19,7 @@ export default function ControlBar({
   return (
     <div className="navbar bg-base-100">
       <div className="flex flex-col sm:flex-row w-full">
-        <div className="w-full sm:w-auto">
+        <div className="w-full sm:w-auto mb-2 sm:mb-0">
           <Search mapController={mapController} />
         </div>
 
@@ -29,16 +29,7 @@ export default function ControlBar({
             filterDateDispatcher={filterDateDispatcher}
           />
 
-          {/* TODO: merge crime/311 filters in mobile view */}
-          <div className="flex sm:hidden">
-            <DropDownFilter
-              type="crime"
-              activeCategories={activeCategories}
-              activeCategoriesDispatcher={activeCategoriesDispatcher}
-            />
-          </div>
-
-          <div className="hidden sm:flex">
+          <div className="flex">
             <DropDownFilter
               type="crime"
               activeCategories={activeCategories}
@@ -50,7 +41,7 @@ export default function ControlBar({
               activeCategoriesDispatcher={activeCategoriesDispatcher}
             />
           </div>
-          <div className="flex items-center">
+          <div className="flex flex-col justify-center items-center">
             <ToggleComponent
               map={map}
               DATASOURCES={DATASOURCES}
