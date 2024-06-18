@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
+import CheckBoxLabel from "./CheckBoxFilters/CheckBoxLabel";
 
 /*
  * use dropdown button versus <details> / <summary> tags
@@ -25,7 +26,12 @@ export function DropDownFilter({
         onBlur={() => setIcon(faChevronUp)}
         onFocus={() => setIcon(faChevronDown)}
       >
-        {type}
+        <CheckBoxLabel
+          key={`checkboxlabel-${parent.id}`}
+          category={parent}
+          categories={[]}
+          activeCategoriesDispatcher={activeCategoriesDispatcher}
+        />
         <FontAwesomeIcon icon={icon} />
       </div>
 
