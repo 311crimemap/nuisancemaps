@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
+
 import debounce from "lodash/debounce";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import DropDown from "../DropDown/index.tsx";
 import InputDate from "./InputDate";
 
 export function DateComponent({ filterDate, filterDateDispatcher }) {
@@ -17,9 +17,6 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     },
   });
 
-  const [icon, setIcon] = useState(faChevronUp);
-  const [isBusy, setIsBusy] = useState(false);
-
   const min = new Date();
   min.setDate(min.getDate() - 365);
   const max = new Date();
@@ -34,13 +31,6 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
   const debounceFilterDateDispatcher = useMemo(() => {
     return debounce(filterDateDispatcher, 350);
   }, []);
-
-  const onClickHandler = (e) => {
-    console.log("[label] CLICK", isBusy);
-    if (document.activeElement == e.currentTarget && !isBusy) {
-      e.currentTarget.blur(); //close?
-    }
-  };
 
   //only request on valid date ranges
   useEffect(() => {
@@ -69,40 +59,11 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     });
   }, [filterDate.date.startDate, filterDate.date.endDate]);
 
-  const setIconDown = () => {
-    setIsBusy(true);
-    setIcon(faChevronDown);
-
-    //without delay of setIsCloseable toggle, the onClickHandler will
-    //see div with focus, and close immediately - looks like a flash open/close.
-    //By adding delay, we can make sure dropdown stays open until a subsequent click.
-    setTimeout(() => {
-      setIsBusy(false);
-    }, 50);
-  };
   return (
-    <div className="dropdown dropdown-bottom flex">
-      {/* Dropdown */}
+    <DropDown>
+      <div>Date</div>
 
-      <div
-        tabIndex={0}
-        role="button"
-        className="btn m-2 p-2 sm:px-4 bg-base-100 hover:bg-secondary-content focus:border-indigo-300 focus:bg-neutral-content/75"
-        onBlur={() => setIcon(faChevronUp)}
-        onFocus={() => setIconDown()}
-        onClick={onClickHandler}
-      >
-        Date
-        <FontAwesomeIcon icon={icon} />
-      </div>
-
-      {/* Date */}
-
-      <ul
-        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-80"
-        onBlur={() => setIcon(faChevronUp)}
-        onFocus={() => setIcon(faChevronDown)}
-      >
+      <div>
         <div>
           <label for="preset">Presets</label>
           <select
@@ -148,7 +109,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             />
           </div>
         </div>
-      </ul>
-    </div>
+      </div>
+    </DropDown>
   );
 }

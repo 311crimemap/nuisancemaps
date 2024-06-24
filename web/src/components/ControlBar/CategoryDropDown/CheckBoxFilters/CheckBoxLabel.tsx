@@ -14,9 +14,12 @@ export default function CheckBoxLabel({
     });
   };
 
-  // on checkbox click, prevent focus from opening dropdown
-  // for use on "root" level "toggle all" labels
   const onFocusHandler = (e) => {
+    // vanilla inputs, behave normally
+    if (inclusiveCheck) return;
+
+    // on checkbox click, prevent focus from opening dropdown
+    // for use on "root" level "toggle all" labels
     console.log("[label] FOCUS");
     e.currentTarget.blur(); //close
     e.stopPropagation();
