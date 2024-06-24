@@ -29,7 +29,7 @@ export default function ControlBar({
             filterDateDispatcher={filterDateDispatcher}
           />
 
-          <div className="flex">
+
             <DropDownFilter
               type="crime"
               activeCategories={activeCategories}
@@ -40,7 +40,7 @@ export default function ControlBar({
               activeCategories={activeCategories}
               activeCategoriesDispatcher={activeCategoriesDispatcher}
             />
-          </div>
+
           <div className="flex flex-col justify-center items-center">
             <ToggleComponent
               map={map}

@@ -18,6 +18,8 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
   });
 
   const [icon, setIcon] = useState(faChevronUp);
+  const [isBusy, setIsBusy] = useState(false);
+
   const min = new Date();
   min.setDate(min.getDate() - 365);
   const max = new Date();
@@ -33,11 +35,16 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     return debounce(filterDateDispatcher, 350);
   }, []);
 
+  const onClickHandler = (e) => {
+    console.log("[label] CLICK", isBusy);
+    if (document.activeElement == e.currentTarget && !isBusy) {
+      e.currentTarget.blur(); //close?
+    }
+  };
+
   //only request on valid date ranges
   useEffect(() => {
-
     if (inputDate.startDate.isValid && inputDate.endDate.isValid) {
-
       debounceFilterDateDispatcher({
         type: "setDate",
         date: {
@@ -50,7 +57,6 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
 
   //if date presets are changed, reload to display values in controls
   useEffect(() => {
-
     setInputDate({
       startDate: {
         date: filterDate.date.startDate,
@@ -63,6 +69,17 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     });
   }, [filterDate.date.startDate, filterDate.date.endDate]);
 
+  const setIconDown = () => {
+    setIsBusy(true);
+    setIcon(faChevronDown);
+
+    //without delay of setIsCloseable toggle, the onClickHandler will
+    //see div with focus, and close immediately - looks like a flash open/close.
+    //By adding delay, we can make sure dropdown stays open until a subsequent click.
+    setTimeout(() => {
+      setIsBusy(false);
+    }, 50);
+  };
   return (
     <div className="dropdown dropdown-bottom flex">
       {/* Dropdown */}
@@ -70,9 +87,10 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
       <div
         tabIndex={0}
         role="button"
-        className="btn m-2"
+        className="btn m-2 p-2 sm:px-4 bg-base-100 hover:bg-secondary-content focus:border-indigo-300 focus:bg-neutral-content/75"
         onBlur={() => setIcon(faChevronUp)}
-        onFocus={() => setIcon(faChevronDown)}
+        onFocus={() => setIconDown()}
+        onClick={onClickHandler}
       >
         Date
         <FontAwesomeIcon icon={icon} />
@@ -81,7 +99,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
       {/* Date */}
 
       <ul
-        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-72"
+        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-80"
         onBlur={() => setIcon(faChevronUp)}
         onFocus={() => setIcon(faChevronDown)}
       >
