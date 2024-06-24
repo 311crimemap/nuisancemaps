@@ -27,13 +27,13 @@ export default function CheckBoxLabel({
 
   return (
     <div>
+      {/* TODO: match to w-72 Dropdown index.tsx */}
       {inclusiveCheck ? (
-        <label>
+        <label className="w-60 cursor-pointer">
           <input
             id={`${category.id}-checkbox`}
             type="checkbox"
             checked={category.checked}
-            className="cursor-pointer"
             onChange={checkHandler}
           />
           <span className="label-text pl-2">{`${category.text}`}</span>
@@ -51,7 +51,7 @@ export default function CheckBoxLabel({
               onChange={checkHandler}
             />
           </label>
-          <span className="label-text pl-2">{`${category.text}`}</span>
+          <span className="label-text pl-2 w-full">{`${category.text}`}</span>
         </>
       )}
     </div>
