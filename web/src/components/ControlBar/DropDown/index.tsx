@@ -16,7 +16,7 @@ export default function DropDown({ children }) {
   };
 
   return (
-    <div className="dropdown dropdown-bottom flex">
+    <div className="flex dropdown dropdown-bottom dropdown-responsive">
       <div
         tabIndex={0}
         role="button"
@@ -30,7 +30,7 @@ export default function DropDown({ children }) {
 
       <ul
         tabIndex={0}
-        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-full w-72"
+        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-80 max-h-screen overflow-y-scroll overflow-x-hidden"
         onFocus={() => setIcon(faChevronDown)}
       >
         {childArray[1]}
