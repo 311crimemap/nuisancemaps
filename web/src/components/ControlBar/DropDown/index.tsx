@@ -1,32 +1,18 @@
 import react from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 export default function DropDown({ children }) {
   const childArray = react.Children.toArray(children);
-
   const [icon, setIcon] = useState(faChevronUp);
-  const [isBusy, setIsBusy] = useState(false);
 
-  const onClickHandler = (e) => {
-    console.log("[label] CLICK", isBusy);
-    if (document.activeElement == e.currentTarget && !isBusy) {
-      e.currentTarget.blur(); //close
-    }
+  const onBlurHandler = (e) => {
+    setIcon(faChevronUp);
   };
 
-  const setIconDown = () => {
-    setIsBusy(true);
+  const onFocusHandler = (e) => {
     setIcon(faChevronDown);
-
-    //without added delay with isBusy toggle, the onClickHandler will
-    //see div with focus and close immediately, resulting in a flash open/close.
-    //
-    //By adding delay, we can make sure dropdown stays open until a subsequent click.
-    setTimeout(() => {
-      setIsBusy(false);
-    }, 100);
   };
 
   return (
@@ -35,9 +21,8 @@ export default function DropDown({ children }) {
         tabIndex={0}
         role="button"
         className="btn m-2 p-2 sm:px-4 capitalize bg-base-100 hover:bg-secondary-content focus:border-indigo-300"
-        onBlur={() => setIcon(faChevronUp)}
-        onFocus={() => setIconDown()}
-        onClick={onClickHandler}
+        onBlur={(e) => onBlurHandler(e)}
+        onFocus={(e) => onFocusHandler(e)}
       >
         {childArray[0]}
         <FontAwesomeIcon icon={icon} />

@@ -7,22 +7,10 @@ export default function CheckBoxLabel({
   inclusiveCheck = true, //whether checkbox ste to trigger inclusive of clicking on text
 }) {
   const checkHandler = (e) => {
-    console.log("[label] CHANGE");
     activeCategoriesDispatcher({
       type: "toggleCheckBoxById",
       category,
     });
-  };
-
-  const onFocusHandler = (e) => {
-    // vanilla inputs, behave normally
-    if (inclusiveCheck) return;
-
-    // on checkbox click, prevent focus from opening dropdown
-    // for use on "root" level "toggle all" labels
-    console.log("[label] FOCUS");
-    e.currentTarget.blur(); //close
-    e.stopPropagation();
   };
 
   return (
@@ -47,7 +35,6 @@ export default function CheckBoxLabel({
               type="checkbox"
               checked={category.checked}
               className="cursor-pointer"
-              onFocus={onFocusHandler}
               onChange={checkHandler}
             />
           </label>
