@@ -49,3 +49,12 @@
     border-radius: 0.5rem;
   }
 }
+
+.dropdown-responsive .dropdown-content {
+
+    /* align end */
+    @media (min-width: 640px) and (max-width: 1024px) {
+        inset-inline-end: 0px;
+    }
+
+}
