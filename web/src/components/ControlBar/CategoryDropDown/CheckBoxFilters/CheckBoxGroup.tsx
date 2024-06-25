@@ -9,59 +9,68 @@ export default function CheckBoxGroup({
 }) {
   //parent, and then its filtered children
   //we decide if children are group or label
+
+  //these are cats at same level
   const filtered_categories = categories.filter(
     (cat) => cat.parent && cat.parent.id == parent.id
   );
 
-  const components = [];
-
-  //HEADER label
-  //if it's root level parent (all 311, all crime checkbox) skip it
-  //this was added in dropdown, otherwise add it
-  //otherwise this is subcategory
-  if (parent.parent !== null) {
-    components.push(
-      <li className={`header`}>
-        <CheckBoxLabel
-          key={`checkboxlabel-${parent.id}`}
-          category={parent}
-          categories={filtered_categories}
-          activeCategoriesDispatcher={activeCategoriesDispatcher}
-        />
-      </li>
-    );
-  }
-
+  /*
+   * NB: this is a recusive component to enable nesting
+   */
   const checkBoxLabeledGroup = filtered_categories.map((category) => {
     const sub_categories = categories.filter(
       (c) => c.parent && c.parent.id == category.id
     );
 
-    if (category.label !== null) {
-      return (
-        <li>
-          <CheckBoxLabel
-            key={`checkboxlabel-${category.id}`}
-            category={category}
-            categories={filtered_categories}
-            activeCategoriesDispatcher={activeCategoriesDispatcher}
-          />
-        </li>
-      );
-    }
-
     return (
-      <CheckBoxGroup
-        key={`group-${category.id}`}
-        parent={category}
-        categories={sub_categories}
-        activeCategoriesDispatcher={activeCategoriesDispatcher}
-        depth={depth + 1}
-      />
+      <li>
+        {/* Parent: category with subcategories has details toggle */}
+        {sub_categories.length ? (
+          <details open={false}>
+            <summary>
+              <CheckBoxLabel
+                key={`checkboxlabel-${parent.id}`}
+                category={category}
+                categories={filtered_categories}
+                activeCategoriesDispatcher={activeCategoriesDispatcher}
+              />
+            </summary>
+            <ul>
+              <CheckBoxGroup
+                key={`group-${category.id}`}
+                parent={category}
+                categories={sub_categories}
+                activeCategoriesDispatcher={activeCategoriesDispatcher}
+                depth={depth + 1}
+              />
+            </ul>
+          </details>
+        ) : (
+          <>
+            {/* Category (no subcategories, no toggle) */}
+            <summary>
+              <CheckBoxLabel
+                key={`checkboxlabel-${category.id}`}
+                category={category}
+                categories={filtered_categories}
+                activeCategoriesDispatcher={activeCategoriesDispatcher}
+              />
+            </summary>
+            <ul>
+              <CheckBoxGroup
+                key={`group-${category.id}`}
+                parent={category}
+                categories={sub_categories}
+                activeCategoriesDispatcher={activeCategoriesDispatcher}
+                depth={depth + 1}
+              />
+            </ul>
+          </>
+        )}
+      </li>
     );
   });
 
-  return components.concat(
-    <ul className={`${depth ? "ml-4" : ""}`}>{checkBoxLabeledGroup}</ul>
-  );
+  return checkBoxLabeledGroup;
 }
