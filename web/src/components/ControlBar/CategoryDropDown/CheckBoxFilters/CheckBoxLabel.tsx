@@ -23,13 +23,11 @@ export default function CheckBoxLabel({
     display: "inline-flex",
     justifyContent: "center",
     fontSize: ".75rem",
-    marginTop: ".25rem",
-    marginLeft: ".6rem",
-    verticalAlign: "bottom",
+    marginLeft: "-.5rem",
+    verticalAlign: "baseline",
+    opacity: category.checked ? 1 : 0.25,
   };
-  const inputStyle = {
-    //verticalAlign: "middle"
-  };
+
   return (
     <div>
       {/* TODO: match to w-72 Dropdown index.tsx */}
@@ -39,8 +37,8 @@ export default function CheckBoxLabel({
             id={`${category.id}-checkbox`}
             type="checkbox"
             checked={category.checked}
-            style={inputStyle}
             onChange={checkHandler}
+            className="hidden"
           />
           <div class="fa-stack" style={circleStyle}>
             <span class="fa-regular fa-circle fa-stack-2x"></span>
