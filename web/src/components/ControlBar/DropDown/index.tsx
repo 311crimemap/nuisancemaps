@@ -30,7 +30,7 @@ export default function DropDown({ children }) {
 
       <ul
         tabIndex={0}
-        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-80 max-h-screen overflow-y-scroll overflow-x-hidden"
+        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded w-80 max-h-[70vh] overflow-y-auto overflow-x-hidden"
         onFocus={() => setIcon(faChevronDown)}
       >
         {childArray[1]}

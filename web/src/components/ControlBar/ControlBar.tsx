@@ -3,7 +3,6 @@ import { Search } from "./Search";
 import { DateComponent } from "./DateDropDown/DateComponent";
 import { DropDownFilter } from "./CategoryDropDown/CategoryDropDownComponent";
 import { ToggleComponent } from "./Toggle/ToggleComponent";
-
 export default function ControlBar({
   map,
   mapController,
@@ -23,23 +22,23 @@ export default function ControlBar({
           <Search mapController={mapController} />
         </div>
 
+        {/* Dropdowns sm+ */}
         <div className="flex flex-row w-full sm:w-auto -ml-4 sm:ml-2">
           <DateComponent
             filterDate={filterDate}
             filterDateDispatcher={filterDateDispatcher}
           />
 
-
-            <DropDownFilter
-              type="crime"
-              activeCategories={activeCategories}
-              activeCategoriesDispatcher={activeCategoriesDispatcher}
-            />
-            <DropDownFilter
-              type="311"
-              activeCategories={activeCategories}
-              activeCategoriesDispatcher={activeCategoriesDispatcher}
-            />
+          <DropDownFilter
+            type="crime"
+            activeCategories={activeCategories}
+            activeCategoriesDispatcher={activeCategoriesDispatcher}
+          />
+          <DropDownFilter
+            type="311"
+            activeCategories={activeCategories}
+            activeCategoriesDispatcher={activeCategoriesDispatcher}
+          />
 
           <div className="flex flex-col justify-center items-center">
             <ToggleComponent
