@@ -96,7 +96,14 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
           </select>
         </div>
 
-        {/* Loading Screen Divider */}
+        {/*
+         * Loading Screen Divider
+         *
+         * NB: triggering select disabled causes dropdown to lose focus and close
+         * which is undesirable. So we just have an indicator.
+         *
+         */}
+
         <div className="divider">
           {filterDate.isBusy ? (
             <>
