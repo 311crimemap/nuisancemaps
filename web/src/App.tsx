@@ -28,6 +28,7 @@ function App() {
       startDate: new Date("01-01-2024").toLocaleDateString("en-CA"),
       endDate: endDate.toLocaleDateString("en-CA"),
     },
+    isBusy: false,
   };
 
   const [position, setPosition] = useState({
@@ -109,6 +110,11 @@ function App() {
   };
 
   useEffect(() => {
+    filterDateDispatcher({
+      type: "isBusy",
+      value: true,
+    });
+
     const limit = 10000;
 
     const { lat, lng } = { ...position.center };
@@ -157,6 +163,12 @@ function App() {
         ...position,
         refresh: false,
       });
+
+      filterDateDispatcher({
+        type: "isBusy",
+        value: false,
+      });
+
       setIsDataLoaded(true);
     });
 
