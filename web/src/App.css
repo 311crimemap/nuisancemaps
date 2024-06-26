@@ -36,6 +36,7 @@
   max-height: 11rem;
 
   min-width: 100%;
+  z-index: 2;
 
   /*desktop*/
   @media not all and (max-width: 640px) {
