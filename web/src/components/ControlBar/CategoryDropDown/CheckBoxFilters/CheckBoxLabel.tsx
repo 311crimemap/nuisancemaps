@@ -29,10 +29,10 @@ export default function CheckBoxLabel({
   };
 
   return (
-    <div>
+    <div className="w-100 block">
       {/* TODO: match to w-72 Dropdown index.tsx */}
       {inclusiveCheck ? (
-        <label className="w-60 cursor-pointer">
+        <label className="w-100 block cursor-pointer">
           <input
             id={`${category.id}-checkbox`}
             type="checkbox"

@@ -25,10 +25,15 @@ export default function CheckBoxGroup({
 
     return (
       <li>
-        {/* Parent: category with subcategories has details toggle */}
+        {/*
+         * Parent: category with subcategories has details toggle
+         *
+         * NB: the grid-cols-1 is to extend the clickable width to the
+         * whole parent width (and not just the text content of <label>)
+         */}
         {sub_categories.length ? (
           <details open={false}>
-            <summary>
+            <summary className="grid grid-cols-1">
               <CheckBoxLabel
                 key={`checkboxlabel-${parent.id}`}
                 category={category}
@@ -49,7 +54,7 @@ export default function CheckBoxGroup({
         ) : (
           <>
             {/* Category (no subcategories, no toggle) */}
-            <summary>
+            <summary className="grid grid-cols-1">
               <CheckBoxLabel
                 key={`checkboxlabel-${category.id}`}
                 category={category}
