@@ -59,34 +59,66 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     });
   }, [filterDate.date.startDate, filterDate.date.endDate]);
 
+  console.log("[DateComponent]", filterDate);
   return (
     <DropDown>
       <div>Date</div>
 
-      <div>
-        <div>
-          <label for="preset">Presets</label>
+      <div className="flex flex-col gap-6">
+        {/* Preset */}
+        <div className="flex flex-col gap-2">
+          <label>
+            {" "}
+            <strong>Date Range Preset</strong>{" "}
+          </label>
           <select
             id="presetDate"
             name="presetDate"
+            className="select select-bordered w-full"
             onChange={(e) =>
-              filterDateDispatcher({
+              debounceFilterDateDispatcher({
                 type: "calcDate",
                 value: e.target.value,
               })
             }
           >
+            <option disabled selected>
+              Select timeframe from today
+            </option>
             <option value="1"> 1 day</option>
             <option value="3"> 3 days</option>
             <option value="7"> 1 week</option>
             <option value="14"> 2 weeks</option>
-            <option value="month"> 1 month </option>
+            <option value="1 month"> 1 month </option>
+            <option value="2 month"> 2 months </option>
+            <option value="3 month"> 3 months </option>
+            <option value="6 month"> 6 months </option>
           </select>
         </div>
 
-        <div>
-          <div>
-            <label for="start">Start:</label>
+        {/*
+         * Loading Screen Divider
+         *
+         * NB: triggering select disabled causes dropdown to lose focus and close
+         * which is undesirable. So we just have an indicator.
+         *
+         */}
+
+        <div className="divider">
+          {filterDate.isBusy ? (
+            <>
+              <span className="loading loading-spinner loading-lg"></span>
+            </>
+          ) : (
+            <>OR</>
+          )}
+        </div>
+
+        {/* Calendars */}
+        <div className="flex flex-col gap-4">
+          <strong>Custom Date Range</strong>
+          <div className="flex flex-col gap-2">
+            <label for="start">Start</label>
             <InputDate
               id="startDate"
               name="startDate"
@@ -97,8 +129,8 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             />
           </div>
 
-          <div>
-            <label for="end">End:</label>
+          <div className="flex flex-col gap-2">
+            <label for="end">End</label>
             <InputDate
               id="endDate"
               name="endDate"
