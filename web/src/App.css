@@ -49,3 +49,32 @@
     border-radius: 0.5rem;
   }
 }
+
+.dropdown-responsive {
+    @media (max-width: 640px) {
+        position: static !important;
+    }
+
+    .dropdown-content {
+
+        /* for tiny screens, override dropdown content to be full width */
+
+        @media (max-width: 640px) {
+
+            position: absolute !important;
+            top: 10rem !important;
+            width: calc(100vw - 2px);
+            left: 1px;
+            border-radius: 0;
+            //outline: 1px solid #000;
+            border: 1px solid #000;
+
+
+        }
+        /* align end */
+        @media (min-width: 640px) and (max-width: 1024px) {
+            inset-inline-end: 0px;
+        }
+
+    }
+}

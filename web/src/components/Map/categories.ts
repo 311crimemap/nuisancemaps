@@ -15,7 +15,7 @@ export default class Categories {
         const parentCrime = {
             dataType: "crime",
             id: "crime",
-            text: "DataCrime",
+            text: "Crime",
             label: null,
             parent: null,
             checked: true
@@ -24,7 +24,7 @@ export default class Categories {
         const parent311 = {
             dataType: "311",
             id: "311",
-            text: "Data 311",
+            text: "311",
             label: null,
             parent: null,
             checked: true

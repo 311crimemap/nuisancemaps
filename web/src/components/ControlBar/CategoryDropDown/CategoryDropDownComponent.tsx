@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import DropDown from "../DropDown/index";
 import CheckBoxGroup from "./CheckBoxFilters/CheckBoxGroup.js";
+import CheckBoxLabel from "./CheckBoxFilters/CheckBoxLabel";
 
 /*
  * use dropdown button versus <details> / <summary> tags
@@ -13,34 +13,24 @@ export function DropDownFilter({
   activeCategories,
   activeCategoriesDispatcher,
 }) {
-  const [icon, setIcon] = useState(faChevronUp);
   const parent = activeCategories.find((cat) => cat.id == type);
 
   return (
-    <div className="dropdown dropdown-bottom flex">
-      <div
-        tabIndex={0}
-        role="button"
-        className="btn m-2"
-        onBlur={() => setIcon(faChevronUp)}
-        onFocus={() => setIcon(faChevronDown)}
-      >
-        {type}
-        <FontAwesomeIcon icon={icon} />
-      </div>
+    <DropDown>
+      <CheckBoxLabel
+        key={`checkboxlabel-${parent.id}`}
+        category={parent}
+        categories={[]}
+        activeCategoriesDispatcher={activeCategoriesDispatcher}
+        inclusiveCheck={false}
+      />
 
-      <ul
-        tabIndex={0}
-        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box"
-        onFocus={() => setIcon(faChevronDown)}
-      >
-        <CheckBoxGroup
-          key={`group-${parent.id}`}
-          parent={parent}
-          categories={activeCategories}
-          activeCategoriesDispatcher={activeCategoriesDispatcher}
-        />
-      </ul>
-    </div>
+      <CheckBoxGroup
+        key={`group-${parent.id}`}
+        parent={parent}
+        categories={activeCategories}
+        activeCategoriesDispatcher={activeCategoriesDispatcher}
+      />
+    </DropDown>
   );
 }

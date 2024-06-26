@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
+
 import debounce from "lodash/debounce";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import DropDown from "../DropDown/index.tsx";
 import InputDate from "./InputDate";
 
 export function DateComponent({ filterDate, filterDateDispatcher }) {
@@ -17,7 +17,6 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     },
   });
 
-  const [icon, setIcon] = useState(faChevronUp);
   const min = new Date();
   min.setDate(min.getDate() - 365);
   const max = new Date();
@@ -35,9 +34,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
 
   //only request on valid date ranges
   useEffect(() => {
-
     if (inputDate.startDate.isValid && inputDate.endDate.isValid) {
-
       debounceFilterDateDispatcher({
         type: "setDate",
         date: {
@@ -50,7 +47,6 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
 
   //if date presets are changed, reload to display values in controls
   useEffect(() => {
-
     setInputDate({
       startDate: {
         date: filterDate.date.startDate,
@@ -64,27 +60,10 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
   }, [filterDate.date.startDate, filterDate.date.endDate]);
 
   return (
-    <div className="dropdown dropdown-bottom flex">
-      {/* Dropdown */}
+    <DropDown>
+      <div>Date</div>
 
-      <div
-        tabIndex={0}
-        role="button"
-        className="btn m-2"
-        onBlur={() => setIcon(faChevronUp)}
-        onFocus={() => setIcon(faChevronDown)}
-      >
-        Date
-        <FontAwesomeIcon icon={icon} />
-      </div>
-
-      {/* Date */}
-
-      <ul
-        className="dropdown-content z-[1] menu shadow p-2 bg-base-100 rounded-box w-72"
-        onBlur={() => setIcon(faChevronUp)}
-        onFocus={() => setIcon(faChevronDown)}
-      >
+      <div>
         <div>
           <label for="preset">Presets</label>
           <select
@@ -130,7 +109,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             />
           </div>
         </div>
-      </ul>
-    </div>
+      </div>
+    </DropDown>
   );
 }
