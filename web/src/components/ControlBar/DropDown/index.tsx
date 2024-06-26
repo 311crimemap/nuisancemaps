@@ -73,7 +73,7 @@ export default function DropDown({ children }) {
 
       <ul
         tabIndex={0}
-        className="dropdown-content z-[1] menu menu-xs shadow p-2 bg-base-100 rounded w-80 max-h-[70vh] overflow-y-auto overflow-x-hidden"
+        className="dropdown-content z-[1] menu menu-xs shadow p-4 bg-base-100 rounded w-80 max-h-[70vh] overflow-y-auto overflow-x-hidden"
         onFocus={(e) => onFocusHandler(e)}
         onBlur={(e) => onBlurHandler(e)}
       >

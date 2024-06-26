@@ -63,12 +63,17 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     <DropDown>
       <div>Date</div>
 
-      <div>
-        <div>
-          <label for="preset">Presets</label>
+      <div className="flex flex-col gap-6">
+        {/* Preset */}
+        <div className="flex flex-col gap-2">
+          <label>
+            {" "}
+            <strong>Date Range Preset</strong>{" "}
+          </label>
           <select
             id="presetDate"
             name="presetDate"
+            className="select select-bordered w-full max-w-xs"
             onChange={(e) =>
               filterDateDispatcher({
                 type: "calcDate",
@@ -76,6 +81,9 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
               })
             }
           >
+            <option disabled selected>
+              Select timeframe from today
+            </option>
             <option value="1"> 1 day</option>
             <option value="3"> 3 days</option>
             <option value="7"> 1 week</option>
@@ -83,10 +91,13 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             <option value="month"> 1 month </option>
           </select>
         </div>
+        <div className="divider">OR</div>
 
-        <div>
-          <div>
-            <label for="start">Start:</label>
+        {/* Calendars */}
+        <div className="flex flex-col gap-4">
+          <strong>Custom Date Range</strong>
+          <div className="flex flex-col gap-2">
+            <label for="start">Start</label>
             <InputDate
               id="startDate"
               name="startDate"
@@ -97,8 +108,8 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             />
           </div>
 
-          <div>
-            <label for="end">End:</label>
+          <div className="flex flex-col gap-2">
+            <label for="end">End</label>
             <InputDate
               id="endDate"
               name="endDate"

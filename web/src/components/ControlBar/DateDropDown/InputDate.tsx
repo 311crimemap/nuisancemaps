@@ -63,7 +63,7 @@ export default function InputDate({
       min={minDate}
       max={maxDate}
       onChange={(e) => setDateHandler(e, name)}
-      className={`input input-bordered ${isDateError}`}
+      className={`w-full input input-bordered ${isDateError}`}
     />
   );
 }
