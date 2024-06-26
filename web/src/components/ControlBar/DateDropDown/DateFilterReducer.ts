@@ -14,8 +14,9 @@ export default function dateFilterReducer(filterDate, action) {
 
       const value = action.value;
 
-      if (value == "month") {
-        calcDate.setMonth(calcDate.getMonth() - 1);
+      if (value.includes("month")) {
+        const months = value.split(" ")[0];
+        calcDate.setMonth(calcDate.getMonth() - months);
         return {
           date: {
             endDate: endMaxDate,
