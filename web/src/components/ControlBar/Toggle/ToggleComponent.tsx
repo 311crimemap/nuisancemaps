@@ -46,11 +46,11 @@ export function ToggleComponent({ map, DATASOURCES, setActiveFeatureList }) {
     <>
       <input
         type="checkbox"
-        className="toggle toggle-xs sm:toggle-sm ml-2"
+        className="toggle toggle-xs sm:toggle-sm ml-2 mb-1"
         checked={isActive}
         onChange={toggleHandler}
       />
-      <span className="ml-2">Heatmap</span>
+      <span className="ml-2 text-xs">Heatmap</span>
     </>
   );
 }
