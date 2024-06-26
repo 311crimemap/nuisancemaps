@@ -11,13 +11,13 @@ export default function dateFilterReducer(filterDate, action) {
       const calcDate = new Date();
       const max = new Date();
       const endMaxDate = max.toLocaleDateString("en-CA");
-
       const value = action.value;
 
       if (value.includes("month")) {
         const months = value.split(" ")[0];
         calcDate.setMonth(calcDate.getMonth() - months);
         return {
+          ...filterDate,
           date: {
             endDate: endMaxDate,
             startDate: calcDate.toLocaleDateString("en-CA"),
@@ -28,6 +28,7 @@ export default function dateFilterReducer(filterDate, action) {
       if (!isNaN(Number(value))) {
         calcDate.setDate(calcDate.getDate() - Number(value));
         return {
+          ...filterDate,
           date: {
             endDate: endMaxDate,
             startDate: calcDate.toLocaleDateString("en-CA"),
@@ -38,10 +39,17 @@ export default function dateFilterReducer(filterDate, action) {
     }
     case "setDate": {
       return {
+        ...filterDate,
         date: {
           ...filterDate.date,
           ...action.date,
         },
+      };
+    }
+    case "isBusy": {
+      return {
+        ...filterDate,
+        isBusy: action.value,
       };
     }
     default: {
