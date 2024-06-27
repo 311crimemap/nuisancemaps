@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,7 +121,7 @@ public class SourceController {
         Iterable<Source> sourceIter = sourceRepository.findAll();
         ArrayList<SourceDTO> res = new ArrayList<SourceDTO>();
 
-        for (Source source: sourceIter) {
+        for (Source source : sourceIter) {
 
             Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
 
@@ -148,16 +149,50 @@ public class SourceController {
             Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
 
             SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
-                                                source.getSourceConfigEntity(),
-                                                source.getSourceConfigNotes(),
-                                                location,
-                                                source.getIconName(),
-                                                source.getIconUnicode(),
-                                                source.getCategory(),
-                                                source.getDescription(),
-                                                source.getNumRecords());
+                    source.getSourceConfigEntity(),
+                    source.getSourceConfigNotes(),
+                    location,
+                    source.getIconName(),
+                    source.getIconUnicode(),
+                    source.getCategory(),
+                    source.getDescription(),
+                    source.getNumRecords());
 
             return ResponseEntity.status(HttpStatus.OK).body(sourceDTO);
+        }
+
+        return ResponseEntity.status(404).body(null);
+    }
+
+    @GetMapping("/sources/{id}/updateNumRecords")
+    public ResponseEntity<?> updateNumRecords(@PathVariable(value = "id") final int id) {
+        JSendDTO jSendDTO;
+        Source source = sourceRepository.findById(id).orElse(null);
+
+        if (source != null) {
+            log.info("Source ID: " + source.getId() + " Fetch updateNumRecords");
+
+            int numRecords = sourceLoaderService.fetchCount(source);
+            log.info("prev: " + source.getNumRecords() + " new: " + numRecords);
+
+            source.setNumRecords(numRecords);
+            source = sourceLoaderService.saveTransaction(source);
+
+            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+
+            SourceDTO res = new SourceDTO(source.getSourceConfigId(),
+                    source.getSourceConfigEntity(),
+                    source.getSourceConfigNotes(),
+                    location,
+                    source.getIconName(),
+                    source.getIconUnicode(),
+                    source.getCategory(),
+                    source.getDescription(),
+                    source.getNumRecords());
+
+            jSendDTO = new JSendDTO("success", res);
+
+            return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
         }
 
         return ResponseEntity.status(404).body(null);
@@ -191,7 +226,7 @@ public class SourceController {
 
         // Convert location array to Point
         if (sourceDTO.getLocation() != null && sourceDTO.getLocation().length == 2) {
-            final int SRID=4326;
+            final int SRID = 4326;
             Double lng = sourceDTO.getLocation()[0];
             Double lat = sourceDTO.getLocation()[1];
             GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
