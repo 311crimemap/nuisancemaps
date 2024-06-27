@@ -16,7 +16,7 @@ export default function ControlBar({
   if (activeCategories.length == 0) return null;
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 px-6 border-b">
       <div className="flex flex-col sm:flex-row w-full">
         <div className="w-full sm:w-auto mb-2 sm:mb-0">
           <Search mapController={mapController} />
