@@ -1,13 +1,15 @@
+
+/*
+ *  typically map contents;
+ *  excludes control and navbar
+ */
 #container {
   display: flex;
+  height: 100%;
 }
+
 #map {
   width: 100%;
-  height: calc(100vh - var(--navbar-height) - 1.75 * var(--controlbar-height));
-
-  @media not all and (max-width: 640px) {
-    height: calc(100vh - var(--navbar-height) - var(--controlbar-height));
-  }
 }
 
 /*
