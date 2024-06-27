@@ -1,16 +1,20 @@
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
   return (
     <nav data-theme="dracula" className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">Nuisance Map</a>
+        <Link to="/" className="btn btn-ghost text-xl">
+          Nuisance Map
+        </Link>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Cities</a>
+            <Link to="/cities">Cities</Link>
           </li>
           <li>
-            <a>About</a>
+            <Link to="/about">About</Link>
           </li>
         </ul>
       </div>
