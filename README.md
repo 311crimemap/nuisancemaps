@@ -27,6 +27,84 @@ UPDATE data_job SET status='QUEUED' where id = 315;
 * `FETCH_START`: dangling job here will just remain. The `createDailiyDataJobs`
   task will create redo this and create another `QUEUED` job the next day.
 
+---
+
+### Data Errors
+
+#### List Errors
+
+`select * from  data_error`: typically show missing text_category mappings.
+
+Best to batch by 311/crime - often many duplicates of missing categories.
+
+To create the missing TextCategory record:
+
+1. Collect the missing `text` content per each crime/311 record
+
+* Query for the incident to get text label: `curl 'https://data.austintexas.gov/resource/xwdj-i9he.json?sr_number=24-00123368`
+
+2. Figure out the `label` number that corresponds to its category
+
+
+* Category Labels: `curl localhost:8080/categories`
+* Decide and assign the label: for each error category see if it matches a
+  similar text category
+
+    * Lookup similar `textcategories` with keyword (e.g.) "SBO": `curl localhost:8080/textcategories | jq '[.data[] | select(.text | contains("SBO")) | {text: .text, label: .category.label}]'`
+    * browse errors all via type [ `sr_type_desc`, `crime_type` ]: `curl localhost:8080/dataerrors |jq '{content: .[].content, errorMsg: .[].errorMsg }'  | grep sr_type_desc _`
+
+* Decide  category and label from above queries or manually
+
+3. Build and Submit the record:
+
+```
+curl -H 'content-type:application/json' -X POST -d '[{"dataType": "crime", "text":"Animal bite rawr", "label": 0}]' localhost:8080/textcategories
+```
+
+4. Re-send / Re-process the data_job
+
+* Collect unique urls for errors: `curl localhost:8080/dataerrors?limit=500 | jq '[.[].dataJob.url] | unique'`
+
+* Use urls to query in data_job, e.g.:
+
+```
+select id from data_job where url in (
+  'https://data.austintexas.gov/resource/fdj4-gpfu.json?$limit=10000&$offset=2460000&$order=incident_report_number&$select=',
+  'https://data.austintexas.gov/resource/xwdj-i9he.json?$limit=10000&$offset=1800000&$order=sr_number&$select=',
+  'https://data.austintexas.gov/resource/xwdj-i9he.json?$limit=10000&$offset=1830000&$order=sr_number&$select=',
+  'https://data.austintexas.gov/resource/xwdj-i9he.json?$limit=10000&$offset=1840000&$order=sr_number&$select=',
+  'https://data.austintexas.gov/resource/xwdj-i9he.json?$limit=10000&$offset=1860000&$order=sr_number&$select='
+);
+
+```
+
+```
+  id
+------
+ 1469
+ 1479
+ 1481
+ 1466
+ 1474
+...
+```
+
+* Use ids to update jobs:
+
+`curl -H "content-type: application/json" -X PATCH -d '{"status":"QUEUED"}' localhost:8080/datajobs/1469`
+
+`curl -H "content-type: application/json" -X PATCH -d '{"status":"QUEUED"}' localhost:8080/datajobs/1479`
+
+... etc
+
+
+* Delete errors: `delete from data_error;`
+
+* Restart Worker: `docker-compose restart worker``
+
+
+
+---
 
 ### Spatial Queries
 

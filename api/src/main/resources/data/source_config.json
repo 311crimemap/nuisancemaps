@@ -15,6 +15,7 @@
         "mapping": {
             "report_num": "incident_report_number",
             "report_category": "crime_type",
+            "order_key": ":id",
             "description": "",
             "location": "location_type",
             "latitude": "latitude",
@@ -39,6 +40,7 @@
         "mapping": {
             "report_num": "sr_number",
             "report_category": "sr_type_desc",
+            "order_key": ":id",
             "description": "",
             "location": "sr_location",
             "latitude": "sr_location_lat",
