@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +27,10 @@ public class DataError {
     @JoinColumn(name = "data_job_id", nullable = false)
     private DataJob dataJob;
 
+    @Column(length = 4096)
     private String content;
 
+    @Column(length = 4096)
     private String errorMsg;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
