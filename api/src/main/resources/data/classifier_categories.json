@@ -3,119 +3,119 @@
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
       "subcategories": [
         {
           "text": "Violent",
           "label": 0,
-          "icon_name": "hand-fist",
-          "icon_unicode": "\uf6de"
+          "iconName": "hand-fist",
+          "iconUnicode": "\uf6de"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "Property",
           "label": 1,
-          "icon_name": "mask",
-          "icon_unicode": "\uf6fa"
+          "iconName": "mask",
+          "iconUnicode": "\uf6fa"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "Theft",
           "label": 2,
-          "icon_name": "sack-dollar",
-          "icon_unicode": "\uf81d"
+          "iconName": "sack-dollar",
+          "iconUnicode": "\uf81d"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "Fraud / Forgery",
           "label": 3,
-          "icon_name": "credit-card",
-          "icon_unicode": "\uf09d"
+          "iconName": "credit-card",
+          "iconUnicode": "\uf09d"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "Vice Drugs Weapon",
           "label": 4,
-          "icon_name": "joint",
-          "icon_unicode": "\uf595"
+          "iconName": "joint",
+          "iconUnicode": "\uf595"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "Public Order",
           "label": 5,
-          "icon_name": "gavel",
-          "icon_unicode": "\uf0e3"
+          "iconName": "gavel",
+          "iconUnicode": "\uf0e3"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "Other",
           "label": 6,
-          "icon_name": "question",
-          "icon_unicode": "\u003f"
+          "iconName": "question",
+          "iconUnicode": "\u003f"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "SKIP",
           "label": 7,
-          "icon_name": null,
-          "icon_unicode": null
+          "iconName": null,
+          "iconUnicode": null
         }
       ]
     }
@@ -124,157 +124,157 @@
     {
       "text": "Quality of Life",
       "label": null,
-      "icon_name": "person-burst",
-      "icon_unicode": "\ue53b",
+      "iconName": "person-burst",
+      "iconUnicode": "\ue53b",
 
       "subcategories": [
         {
           "text": "Animal",
           "label": 0,
-          "icon_name": "dog",
-          "icon_unicode": "\uf6d3"
+          "iconName": "dog",
+          "iconUnicode": "\uf6d3"
         },
         {
           "text": "Noise Complaint",
           "label": 1,
-          "icon_name": "bullhorn",
-          "icon_unicode": "\uf0a1"
+          "iconName": "bullhorn",
+          "iconUnicode": "\uf0a1"
         },
         {
           "text": "Vagrancy and Vandalism",
           "label": 2,
-          "icon_name": "spray-can-sparkles",
-          "icon_unicode": "\uf5d0"
+          "iconName": "spray-can-sparkles",
+          "iconUnicode": "\uf5d0"
         }
       ]
     },
     {
       "text": "Regulatory",
       "label": null,
-      "icon_name": "scale-balanced",
-      "icon_unicode": "\uf24e",
+      "iconName": "scale-balanced",
+      "iconUnicode": "\uf24e",
 
       "subcategories": [
         {
           "text": "Code Compliance",
           "label": 3,
-          "icon_name": "house",
-          "icon_unicode": "\uf015"
+          "iconName": "house",
+          "iconUnicode": "\uf015"
         },
         {
           "text": "Consumer Complaints",
           "label": 4,
-          "icon_name": "face-angry",
-          "icon_unicode": "\uf556"
+          "iconName": "face-angry",
+          "iconUnicode": "\uf556"
         }
       ]
     },
     {
       "text": "Infrastructure and Maintenance",
       "label": null,
-      "icon_name": "wrench",
-      "icon_unicode": "\uf0ad",
+      "iconName": "wrench",
+      "iconUnicode": "\uf0ad",
 
       "subcategories": [
         {
           "text": "Streets, Roads, Bridge, Sidewalk Maintenance / Repair",
           "label": 5,
-          "icon_name": "road",
-          "icon_unicode": "\uf0ad"
+          "iconName": "road",
+          "iconUnicode": "\uf0ad"
         },
         {
           "text": "Traffic Signs, Signals, Engineering",
           "label": 6,
-          "icon_name": "traffic-light",
-          "icon_unicode": "\uf637"
+          "iconName": "traffic-light",
+          "iconUnicode": "\uf637"
         },
         {
           "text": "Storm Drainage / Flooding",
           "label": 7,
-          "icon_name": "house-flood-water",
-          "icon_unicode": "\ue50e"
+          "iconName": "house-flood-water",
+          "iconUnicode": "\ue50e"
         },
         {
           "text": "Street Hazards",
           "label": 8,
-          "icon_name": "road-barrier",
-          "icon_unicode": "\ue562"
+          "iconName": "road-barrier",
+          "iconUnicode": "\ue562"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
       "subcategories": [
         {
           "text": "Mobility and Parking",
           "label": 9,
-          "icon_name": "car-side",
-          "icon_unicode": "\uf5e4"
+          "iconName": "car-side",
+          "iconUnicode": "\uf5e4"
         }
       ]
     },
     {
       "text": "Municipal",
       "label": null,
-      "icon_name": "landmark",
-      "icon_unicode": "\uf66f",
+      "iconName": "landmark",
+      "iconUnicode": "\uf66f",
 
       "subcategories": [
         {
           "text": "Parks, Environmental / Trees, Schools",
           "label": 10,
-          "icon_name": "tree",
-          "icon_unicode": "\uf1bb"
+          "iconName": "tree",
+          "iconUnicode": "\uf1bb"
         },
         {
           "text": "Telecom, Water, Utilities",
           "label": 11,
-          "icon_name": "bolt",
-          "icon_unicode": "\uf0e7"
+          "iconName": "bolt",
+          "iconUnicode": "\uf0e7"
         },
         {
           "text": "Waste & Recycling",
           "label": 12,
-          "icon_name": "recycle",
-          "icon_unicode": "\uf1b8"
+          "iconName": "recycle",
+          "iconUnicode": "\uf1b8"
         },
         {
           "text": "Public Health",
           "label": 13,
-          "icon_name": "kit-medical",
-          "icon_unicode": "\uf479"
+          "iconName": "kit-medical",
+          "iconUnicode": "\uf479"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
       "subcategories": [
         {
           "text": "Other",
           "label": 14,
-          "icon_name": "question",
-          "icon_unicode": "\u003f"
+          "iconName": "question",
+          "iconUnicode": "\u003f"
         }
       ]
     },
     {
       "text": null,
       "label": null,
-      "icon_name": null,
-      "icon_unicode": null,
+      "iconName": null,
+      "iconUnicode": null,
 
       "subcategories": [
         {
           "text": "SKIP",
           "label": 15,
-          "icon_name": null,
-          "icon_unicode": null
+          "iconName": null,
+          "iconUnicode": null
         }
       ]
     }

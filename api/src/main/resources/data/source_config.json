@@ -13,15 +13,15 @@
         "description": "Austin Police",
         "numRecords": 2440821,
         "mapping": {
-            "report_num": "incident_report_number",
-            "report_category": "crime_type",
-            "order_key": ":id",
+            "reportNum": "incident_report_number",
+            "reportCategory": "crime_type",
+            "orderKey": ":id",
             "description": "",
             "location": "location_type",
             "latitude": "latitude",
             "longitude": "longitude",
-            "reported_at": "occ_date_time",
-            "reported_at2": "rep_date_time"
+            "reportedAt": "occ_date_time",
+            "reportedAt2": "rep_date_time"
         }
     },
     {
@@ -38,15 +38,15 @@
         "description": "Austin 311",
         "numRecords": 1778332,
         "mapping": {
-            "report_num": "sr_number",
-            "report_category": "sr_type_desc",
-            "order_key": ":id",
+            "reportNum": "sr_number",
+            "reportCategory": "sr_type_desc",
+            "orderKey": ":id",
             "description": "",
             "location": "sr_location",
             "latitude": "sr_location_lat",
             "longitude": "sr_location_long",
-            "reported_at": "sr_created_date",
-            "reported_at2": ""
+            "reportedAt": "sr_created_date",
+            "reportedAt2": ""
         }
     }
 ]

@@ -35,29 +35,23 @@ public class Source {
     private Integer id;
 
     @Column(unique = true)
-    @JsonProperty("source_config_id")
     private Integer sourceConfigId; // per json entry
 
-    @JsonProperty("source_config_entity")
     private String sourceConfigEntity; // City, State: maybe same location but old/new config endpoints
 
-    @JsonProperty("source_config_notes")
     private String sourceConfigNotes;
 
-    @JsonProperty("location")
+    @JsonIgnore  //deserialization handled by SourceDTO
     private Point location;
 
-    @JsonProperty("icon_name")
     private String iconName;
 
-    @JsonProperty("icon_unicode")
     private String iconUnicode;
 
     private String category;
     private String description;
     private String url;
 
-    @JsonProperty("num_records")
     private Integer numRecords;
 
     @OneToOne //NB: creates unique constraint mapping_id
