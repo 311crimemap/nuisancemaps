@@ -75,14 +75,13 @@ public class CategoryServiceTest {
                 continue;
             }
 
+            //text w/ no label - must be parent
             if (category.getLabel() == null && category.getText() != null) {
                 // is a parent
                 assertThat(category.getParent()).isNull();
-            } else {
-                // is a child (hasParent)
-                assertThat(category.getParent()).isNotNull();
             }
 
+            // text w/ label - can be own parent (like crime), or child of a parent
         }
 
     }
