@@ -22,6 +22,7 @@ import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
+import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
@@ -233,7 +234,7 @@ public class DataService {
     public IDataEntity buildDataEntity(Source source, Map<String, Object> responseObject,
             GeometryFactory geometryFactory)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
-            MissingCategoryException {
+            MissingCategoryException, MissingCoordinateException {
 
         Mapping mapping = source.getMapping();
         String report_num = responseObject.get(mapping.getReportNum()).toString();
@@ -254,6 +255,13 @@ public class DataService {
             // GeoJSON/WKT is long, lat (order is "reversed").
             coordinate = new Coordinate(longitude, latitude);
             point = geometryFactory.createPoint(coordinate);
+        } else {
+            String errString = String.format(
+                    "Missing coordinates: (lat: %s, lng: %s) | dataType: %s, source: %s - %s | sourceURL: %s", lat, lng,
+                    source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
+                    source.getUrl());
+            throw new MissingCoordinateException(errString);
+
         }
 
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
