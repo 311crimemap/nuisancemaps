@@ -10,8 +10,10 @@ import java.util.Map;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,7 +40,7 @@ public class DataJob {
     @SequenceGenerator(name = "data_job_seq", allocationSize = 1)
     private Integer id;
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
@@ -129,6 +131,12 @@ public class DataJob {
 
     public Source getSource() {
         return source;
+    }
+
+    // replaces json Source association output to avoid recursive serialization
+    @JsonProperty("sourceId")
+    public Integer getJsonSourceId() {
+        return source != null ? source.getId() : null;
     }
 
     public DataJobStatus getStatus() {
