@@ -167,10 +167,13 @@ public class DataService {
             } catch (Exception e) {
                 log.info("[DataService] createDataEntities error");
                 errors++;
+                // e.printStackTrace appends to sw
+                // so only want most recent error
+                sw.getBuffer().setLength(0);
                 e.printStackTrace(pw);
 
-                String error_msg = StringUtils.substring(sw.toString(), 0, 255);
-                String content = StringUtils.substring(responseObject.toString(), 0, 255);
+                String error_msg = StringUtils.substring(sw.toString(), 0, 4096);
+                String content = StringUtils.substring(responseObject.toString(), 0, 4096);
 
                 DataError dataError = new DataError(dataJob, content, error_msg);
                 dataErrorRepository.save(dataError);
@@ -190,7 +193,9 @@ public class DataService {
             int id = dataEntityDB.getId();
             String report_num = dataEntityDB.getReportNum();
             IDataEntity dNew = parseNewDataMap.getOrDefault(report_num, null);
-            dNew.setId(id); // set id to overwrite
+            if (dNew != null) {
+                dNew.setId(id); // set id to overwrite
+            }
         }
 
         // saveAll
