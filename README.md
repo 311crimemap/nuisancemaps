@@ -1,6 +1,19 @@
 # nuisancemaps
 
-### DataJob Queue
+### DataJob
+
+#### Restart / Update Jobs
+
+1. `curl localhost:8080/sources/<id>/updateNumRecords`: will fetch and update source to most recent counts (takes a while)
+
+2. `docker-compose restart worker`: restarts worker will check record count and fetch if necessary.
+
+#### Broken Jobs
+
+`curl localhost:8080/datajobs/restart`: finds last non-complete (not QUEUED, not
+COMPLETED) and resets them to queued to be re-fetched.
+
+####  Queue
 
 See `DataJobStatus.java` for states of fetch and processing jobs:
 
