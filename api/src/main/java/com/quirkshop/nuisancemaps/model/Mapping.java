@@ -20,9 +20,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
 
 @Entity
 @Table(name = "mapping")
@@ -45,6 +43,10 @@ public class Mapping {
     @JsonProperty("report_category")
     @Mapped
     private String reportCategory;
+
+    @JsonProperty("order_key")
+    @Mapped
+    private String orderKey;
 
     @Mapped
     private String description;
@@ -78,10 +80,11 @@ public class Mapping {
         this.updatedAt = now;
     }
 
-    public Mapping(String reportNum, String reportCategory, String description, String location, String latitude,
+    public Mapping(String reportNum, String reportCategory, String orderKey, String description, String location, String latitude,
             String longitude, String reportedAt, String reportedAt2) {
         this.reportNum = reportNum;
         this.reportCategory = reportCategory;
+        this.orderKey = orderKey;
         this.description = description;
         this.location = location;
         this.latitude = latitude;
@@ -146,6 +149,14 @@ public class Mapping {
 
     public void setReportCategory(String reportCategory) {
         this.reportCategory = reportCategory;
+    }
+
+    public String getOrderKey() {
+        return orderKey;
+    }
+
+    public void setOrderKey(String orderKey) {
+        this.orderKey = orderKey;
     }
 
     public String getDescription() {
