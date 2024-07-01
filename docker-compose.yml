@@ -3,7 +3,7 @@ services:
   # these are currently setup as "dev" first.
   # Will need to build standalone executable containers.
   web:
-    image: 'vergeman/nuisancemaps/web'
+    image: '058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/web'
     build: "./web"
     volumes:
       - ./web:/web
@@ -15,7 +15,7 @@ services:
       - .env.dev
 
   classifier:
-    image: "vergeman/nuisancemaps/classifier"
+    image: "058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/classifier"
     build: "./classifier"
     volumes:
       - ./classifier:/classifier
@@ -24,6 +24,7 @@ services:
       - .env.dev
 
   api:
+    #NB: deploy image is configured in pom.xml, built via spring boot.
     image: eclipse-temurin:17-jdk-alpine
     volumes:
       - ./api:/api
