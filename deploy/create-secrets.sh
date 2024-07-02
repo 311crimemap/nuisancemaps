@@ -9,9 +9,9 @@ kubectl create secret generic hcloud --namespace=kube-system --from-literal=toke
 # ECR
 kubectl delete secret regcred --ignore-not-found=true
 kubectl create secret docker-registry regcred \
-        --docker-server=976034468541.dkr.ecr.us-east-2.amazonaws.com \
+        --docker-server=058264272856.dkr.ecr.us-east-2.amazonaws.com \
         --docker-username=AWS \
-        --docker-password=`aws ecr get-login-password --profile abrepo --region us-east-2` \
+        --docker-password=`aws ecr get-login-password --profile 311crimemap --region us-east-2` \
         --docker-email=abc@abc.com
 
 # postgresql

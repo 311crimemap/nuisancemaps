@@ -77,9 +77,9 @@ Add docker ECR secret (named `regcred` in this example):
 
 ```
 kubectl create secret docker-registry regcred \
-    --docker-server=976034468541.dkr.ecr.us-east-2.amazonaws.com \
+    --docker-server=058264272856.dkr.ecr.us-east-2.amazonaws.com \
     --docker-username=AWS \
-    --docker-password=`aws ecr get-login-password --profile abrepo --region us-east-2` \
+    --docker-password=`aws ecr get-login-password --profile 311crimemap --region us-east-2` \
     --docker-email=abc@abc.com
 ```
 
@@ -87,12 +87,12 @@ docker image push
 ```
 # 1. Reauth if necessary
 
-aws ecr get-login-password --region us-east-2 --profile abrepo | \
-docker login --username AWS --password-stdin 976034468541.dkr.ecr.us-east-2.amazonaws.com
+aws ecr get-login-password --region us-east-2 --profile 311crimemap | \
+docker login --username AWS --password-stdin 058264272856.dkr.ecr.us-east-2.amazonaws.com
 
 # 2. Push
 
-docker push 976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/nuisancemaps:0.0.1-SNAPSHOT
+docker push 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
 
 ```
 
@@ -118,8 +118,8 @@ To import local image into a local cluster:
 2. import
 
 ```
-docker save nuisancemaps:0.0.1-SNAPSHOT > nuisancemaps-0.0.1-SNAPSHOT.tar
-sudo k3s ctr images import nuisancemaps-0.0.1-SNAPSHOT.tar
+docker save 311crimemap/api:0.0.1-SNAPSHOT > api-0.0.1-SNAPSHOT.tar
+sudo k3s ctr images import api-0.0.1-SNAPSHOT.tar
 ```
 
 #### Migration

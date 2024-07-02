@@ -20,7 +20,7 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - image: 976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/nuisancemaps:0.0.1-SNAPSHOT
+        - image: 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
           name: spring-worker
           envFrom:
           - configMapRef:
