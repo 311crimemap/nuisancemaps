@@ -10,10 +10,10 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.quirkshop</groupId>
-  <artifactId>nuisancemaps</artifactId>
+  <artifactId>api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>nuisancemaps</name>
-  <description>Nuisance Maps</description>
+  <name>311crimemap</name>
+  <description>311 and Crime Maps</description>
   <properties>
     <java.version>17</java.version>
     <jts.version>1.16.1</jts.version>
@@ -92,7 +92,7 @@
           <mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
           -->
           <image>
-              <name>976034468541.dkr.ecr.us-east-2.amazonaws.com/vergeman/${project.artifactId}:${project.version}</name>
+              <name>058264272856.dkr.ecr.us-east-2.amazonaws.com/${project.name}/${project.artifactId}:${project.version}</name>
           </image>
 
         </configuration>
