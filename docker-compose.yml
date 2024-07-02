@@ -60,6 +60,8 @@ services:
       - ./db/pgbackrest:/mnt/pgbackrest
       - ./db/pgbackrest.conf:/etc/pgbackrest.conf
       - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
+      # pgbackrest recovery override
+      # - ./db/run.sh:/opt/bitnami/scripts/postgresql/run.sh
 
     #network_mode: "host"
     shm_size: 1gb

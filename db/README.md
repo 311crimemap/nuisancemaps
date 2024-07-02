@@ -59,3 +59,30 @@ Types: Full (`full`), Diff (`diff)`), Incremental (`incr`)
 ```
 
 ## Restore
+
+1. Restore file state from latest backup: `docker-compose run db bash`
+ * `pgbackrest --stanza=311crimemap --type=immediate --delta --target-action=promote restore`
+2. mount `run.sh` and `docker-compose run db` - allow postgres recovery process to proceed
+3. unmount `run.sh` and run as normal: `docker-compose up db`
+
+#### Setup: run.sh
+
+`run.sh`: postgres restore mode needs to touch a
+`/bitnami/postgresql/data/recovery.signal` file. In bitnami container, this
+would get overwritten with the init scripts, so fix is to mount a modified
+`run.sh` to the container when recovering the db.
+
+
+#### General Process
+
+0. capture current env variables from container (if needed)
+1. Shut down db service / containers
+2. Run db container executing pgbackrest restore
+   * mounting same directories, configs, but not running postgres, instead running pgbackrest to modify files
+3. Run postgres container with `./run.sh` to start postgres in recovery mode
+4. recreate stanza
+
+
+Docs Example: https://pgbackrest.org/user-guide.html#quickstart/perform-restore
+
+### Restore k3s
