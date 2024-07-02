@@ -54,6 +54,13 @@ services:
       - nuisancemaps_db:/bitnami/postgresql
       # installed at "per database" level
       - ./db/01_enable_postgis.sql:/docker-entrypoint-initdb.d/01_enable_postgis.sql
+
+      # pgbackrest
+      # separate backup directory mounted external to named volume (nuisancemaps_db)
+      - ./db/pgbackrest:/mnt/pgbackrest
+      - ./db/pgbackrest.conf:/etc/pgbackrest.conf
+      - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
+
     #network_mode: "host"
     shm_size: 1gb
     ports:
