@@ -4,6 +4,8 @@ Set an `ADMIN_API_KEY` env variable to use on non public API routes.
 
 Cheap "global" auth.
 
+Whitelist additional routes in `SecurityConfig`.
+
 ## Helpful References
 
 https://www.baeldung.com/spring-boot-api-key-secret
@@ -17,6 +19,16 @@ use Annotation as a means to access env variables.
 
 This looks deceptively simple but it's a minefield. Avoid D.I. these classes,
 keep them POJO.
+
+### Flow
+
+* `SecurityConfig.SecurityFilterChain`: setup
+  * `SecurityMatcher`: checks routes, whether to bypass or use `AuthenticationFilter`.
+* `AuthenticationFilter`:
+  * runs `AuthenticationService` code - checks for token match
+  * on match, return `ApiKeyAuthentication` (`AbstractAuthenticationToken`) with `setAuthenticated(true)`
+  * else throw error, set http status.
+  * continue with `doFilter` stack.
 
 #### SecurityConfig - AuthenticationFilter
 
