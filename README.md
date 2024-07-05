@@ -1,5 +1,59 @@
 # nuisancemaps
 
+## Setup Fresh
+
+* Create database, install postgis extension:
+
+```
+docker-compose run db bash
+psql -U postgres
+
+create database nuisancemaps;
+\c nuisancemaps
+create extension postgis;
+create database nuisancemaps_test;
+\c nuisancemaps_test
+create extension postgis;
+```
+
+* Run database migrations
+
+```
+docker-compose run api ash  # yes 'ash'
+./mvnw liquibase:update
+./mvnw liquibase:update -P test -Dspring.profiles.active=test
+```
+
+* Disable archive mode
+
+```
+# db/archive.conf
+archive_mode=off   # change
+```
+
+* (optional) OR db restore (if db archive available)
+
+````
+# 1. create stanza
+docker-compose exec db
+pgbackrest --stanza=311crimemap stanza-create
+
+# 2. fetch archive
+# shutdown any running pg instance
+docker-compose run db bash
+pgbackrest --stanza=311crimemap --type=immediate --delta \
+    --target-action=promote --log-level-console=detail restore
+
+# 3. restart pg instance in recovery mode
+# uncomment docker-compose.yml ./run.sh mount
+docker-compose up db
+pgbackrest --stanza=311crimemap stanza-upgrade
+
+# 4 restart pg instance
+# comment  docker-compose.yml ./run.sh mount to disable recovery mode
+docker-compose up db
+````
+
 ### DataJob
 
 #### Restart / Update Jobs
