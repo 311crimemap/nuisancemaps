@@ -5,6 +5,10 @@
 * [Ansible](./ansible) to setup k3s nodes, join as cluster
 * K3s on local machine (with config file) to deploy pods.
 
+On Hetzner, Access Token is generated per project, and determines which project
+infra resides.
+
+
 ### Quirks:
 
 * The HashiCorp APT server has packages only for the amd64 architecture, so
@@ -35,7 +39,7 @@ aws ecr get-login-password --profile 311crimemap --region us-east-2 | \
 ### Quickstart Runtime
 
 1. Run `./docker_ops.sh <env> <env id> bash`
-2. `cd /ops/<packer|terraform|ansible>`
+2. `cd /infra/<packer|terraform|ansible>`
 
 #### Packer
 
@@ -47,14 +51,14 @@ Validate and build image
 
 `packer build ubuntu.pkr.hcl`
 
-See [Packer](./ops/packer) for details, information re: using vagrant.
+See [Packer](./infra/packer) for details, information re: using vagrant.
 
 #### Terraform
 
 Create environment and deploy:
 
 ```
-cd /ops/terraform/environments
+cd /infra/terraform/environments
 mkdir -p <env>/<id>
 
 terraform init
@@ -69,7 +73,7 @@ terraform apply
 Labels are set in terraform; `type=server`, `type=app`
 ```
 
-cd /ops/ansible
+cd /infra/ansible
 
 # spin up
 ansible-playbook -i hcloud.yml playbooks/site.yml
@@ -119,11 +123,16 @@ Add docker ECR secret (named `regcred` in this example):
 
 ```
 kubectl create secret docker-registry regcred \
-    --docker-server=976034468541.dkr.ecr.us-east-2.amazonaws.com \
+    --docker-server=058264272856.dkr.ecr.us-east-2.amazonaws.com \
     --docker-username=AWS \
-    --docker-password=`aws ecr get-login-password --profile abrepo --region us-east-2` \
+    --docker-password=`aws ecr get-login-password --profile 311crimemap --region us-east-2` \
     --docker-email=abc@abc.com
 ```
+
+#### ssh
+
+Hetzner ubuntu uses default `root` login.
+
 
 ##### k3s cluster run
 

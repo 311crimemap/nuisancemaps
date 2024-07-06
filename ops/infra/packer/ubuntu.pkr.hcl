@@ -12,7 +12,7 @@ packer {
     }
 }
 
-source "hcloud" "basic_example" {
+source "hcloud" "basic_ubuntu" {
     image       = "ubuntu-22.04"
     location    = "hil"
     server_type = "cpx11"
@@ -20,9 +20,9 @@ source "hcloud" "basic_example" {
     # resulting image description (not name)
     # name is reserved for base OS images - so have to use labels
     # duplicate names do not overwrite, will raise error
-    snapshot_name = "packer_snapshot_2"
+    snapshot_name = "packer_snapshot_3"
     snapshot_labels = {
-      "name": "packer_snapshot_2"
+      "name": "packer_snapshot_3"
     }
 
     ssh_username = "root"
@@ -31,18 +31,18 @@ source "hcloud" "basic_example" {
 
 build {
     sources = [
-        "source.hcloud.basic_example"
+        "source.hcloud.basic_ubuntu"
     ]
 
     provisioner "shell" {
         script = "./scripts/setup.sh"
     }
 
-    provisioner "ansible" {
-        playbook_file = "/ops/ansible/ansible-playbook-packer.yml"
-        ansible_env_vars = [
-            "ANSIBLE_HOST_KEY_CHECKING=False",
-            "SSH_AUTH_SOCK=/ssh-agent"
-        ]
-    }
+    # provisioner "ansible" {
+    #     playbook_file = "/ops/ansible/ansible-playbook-packer.yml"
+    #     ansible_env_vars = [
+    #         "ANSIBLE_HOST_KEY_CHECKING=False",
+    #         "SSH_AUTH_SOCK=/ssh-agent"
+    #     ]
+    # }
 }

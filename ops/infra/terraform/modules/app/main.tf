@@ -55,7 +55,7 @@ data "hcloud_image" "packer" {
   # NB: cannot use name - reserved
   # id = 143348468
 
-  with_selector = "name=packer_snapshot_2"
+  with_selector = "name=packer_snapshot_3"
   most_recent = true
 }
 

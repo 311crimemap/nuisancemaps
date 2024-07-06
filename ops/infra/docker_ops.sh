@@ -39,12 +39,12 @@ DEFAULT_CMD=$3
 if [ "$DEFAULT_CMD" == "bash" ]; then
 
     docker run -it \
-           -v "$(pwd)/":"/$OPS_DIR/" \
+           -v "$(pwd)/":"/$INFRA_DIR/" \
            -v /var/run/docker.sock:/var/run/docker.sock \
            -v $SSH_AUTH_SOCK:/ssh-agent \
            -e "SSH_AUTH_SOCK=/ssh-agent" \
            --net host \
-           -w "/$TERRAFORM_DIR" \
+           -w "/$INFRA_DIR/$TERRAFORM_DIR" \
            --env-file .env \
            -e "TF_VAR_deploy_env=${ENV}" \
            -e "TF_VAR_env_id=${ENV_ID}" \
@@ -55,12 +55,12 @@ if [ "$DEFAULT_CMD" == "bash" ]; then
 fi
 
 docker run -it \
-       -v "$(pwd)/":"/$OPS_DIR/" \
+       -v "$(pwd)/":"/$INFRA_DIR/" \
        -v /var/run/docker.sock:/var/run/docker.sock \
        -v $SSH_AUTH_SOCK:/ssh-agent \
        -e "SSH_AUTH_SOCK=/ssh-agent" \
        --net host \
-       -w "/$TERRAFORM_DIR" \
+       -w "/$INFRA_DIR/$TERRAFORM_DIR" \
        --env-file .env \
        -e "TF_VAR_deploy_env=${ENV}" \
        -e "TF_VAR_env_id=${ENV_ID}" \
