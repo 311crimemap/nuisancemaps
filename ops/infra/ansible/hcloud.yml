@@ -1,0 +1,49 @@
+# hcloud
+# dynamic inventory filter
+# https://docs.ansible.com/ansible/latest/collections/hetzner/hcloud/hcloud_inventory.html
+plugin: hcloud
+locations:
+  - hil
+types:
+  - cpx11
+status:
+  - running
+
+keyed_groups:
+  - key: labels
+    prefix: "label"
+
+# "label_server_app": [
+#       "node-1",
+#       "node-0"
+#   ],
+#   "label_test_key_test_value": [
+#       "node-1",
+#       "node-0"
+#   ],
+
+# keyed_groups:
+#   - key: location
+#     prefix: hcloud_location
+#   - key: image_os_flavor
+#     separator: ""
+#   - key: status
+#     prefix: server_status
+#
+# "hcloud_location_hil": [
+#           "node-1",
+#           "node-0"
+#       ],
+#       "server_status_running": [
+#           "node-1",
+#           "node-0"
+#       ],
+#       "ubuntu": [
+#           "node-1",
+#           "node-0"
+#
+#       ],
+
+# group all, not "keyed"
+#label_selector: server=app
+#label_selector: test-key=test-value
