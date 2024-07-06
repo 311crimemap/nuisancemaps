@@ -18,7 +18,7 @@ RUN apt-get update && \
     # ansible requirements
     openssh-server rsync \
     # utilities
-    jq
+    jq git
 
 
 #
