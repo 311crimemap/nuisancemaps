@@ -1,0 +1,31 @@
+#
+# ansible-playbook -i hcloud.yml playbooks/uninstall.yml
+#
+- name: uninstall
+  hosts: all
+  vars_files:
+    - ../vars.yml
+  gather_facts: true
+  tasks:
+    #
+    # drain & delete nodes prior
+    #
+    - name: uninstall agents
+      register: out
+      command: "/usr/local/bin/k3s-agent-uninstall.sh"
+      when: "inventory_hostname in groups.label_type_agent"
+
+    - name: debug k3s uninstall agent
+      debug:
+        msg: "{{ out.stderr_lines }}"
+      when: "inventory_hostname in groups.label_type_agent"
+
+    - name: uninstall server
+      register: out
+      command: "/usr/local/bin/k3s-uninstall.sh"
+      when: "inventory_hostname in groups.label_type_server"
+
+    - name: debug k3s uninstall server
+      debug:
+        msg: "{{ out.stderr_lines }}"
+      when: "inventory_hostname in groups.label_type_server"

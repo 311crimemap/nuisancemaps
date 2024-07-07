@@ -22,10 +22,13 @@ Deploy Notes.
 
 ##### Deployments / Service
 
-* `kubectl apply -f /postgresql`
-* `kubectl apply -f /api`
-* `kubectl apply -f /worker`
+* `kubectl apply -f postgresql/`
+* `kubectl apply -f api/`
+* `kubectl apply -f worker/`
 
+#### Jobs
+
+* `kubectl apply -f jobs/spring-db-migration-job.yml`
 
 ---
 

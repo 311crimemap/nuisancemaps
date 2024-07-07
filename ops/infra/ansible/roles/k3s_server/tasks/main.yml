@@ -1,0 +1,74 @@
+# main.yml
+# start server
+# get token, set fact, output and save
+# copy kubeconfg to local
+
+- name: Debug role
+  debug:
+    msg: "Hello from k3s server role"
+
+- name: Download K3s install script
+  ansible.builtin.get_url:
+    url: https://get.k3s.io/
+    timeout: 120
+    dest: /usr/local/bin/k3s-install.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Download K3s binary
+  ansible.builtin.command:
+    cmd: /usr/local/bin/k3s-install.sh
+  environment:
+    INSTALL_K3S_SKIP_START: "true"
+    INSTALL_K3S_VERSION: "{{ k3s_version }}"
+  changed_when: true
+
+- name: Init first server node
+  #when: inventory_hostname == groups.label_type_server[0]
+  block:
+
+    - name: Enable and check K3s service
+      ansible.builtin.systemd:
+        name: k3s
+        daemon_reload: true
+        state: started
+        enabled: true
+
+    - name: Get K3s server token from the server (node-0)
+      command: cat /var/lib/rancher/k3s/server/token
+      register: k3s_server_token
+
+    - name: Output Server Control Node IP
+      debug:
+        msg: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+- name: Setup kubectl for user
+  block:
+    - name: Create directory .kube
+      ansible.builtin.file:
+        path: ~{{ ansible_user }}/.kube
+        state: directory
+        owner: "{{ ansible_user }}"
+        mode: "u=rwx,g=rx,o="
+
+    - name: Copy config file to server home directory
+      ansible.builtin.copy:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: ~{{ ansible_user }}/.kube/config
+        remote_src: true
+        owner: "{{ ansible_user }}"
+        mode: "u=rw,g=,o="
+
+    - name: Configure default KUBECONFIG for server
+      ansible.builtin.lineinfile:
+        path: ~{{ ansible_user }}/.bashrc
+        regexp: 'export KUBECONFIG=~/.kube/config'
+        line: 'export KUBECONFIG=~/.kube/config # Added by k3s-ansible'
+        state: present
+
+    # - name: Copy kubectl config to local machine (NB: in container, not immediately useful)
+    #   ansible.builtin.fetch:
+    #     src: ~{{ ansible_user }}/.kube/config
+    #     dest: "{{ kubeconfig_dir }}"
+    #     flat: true

@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-source ../.env
+source ../../.env
 
 # Hetzner
 kubectl delete secret hcloud --ignore-not-found=true --namespace=kube-system
