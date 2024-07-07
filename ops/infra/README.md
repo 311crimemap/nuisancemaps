@@ -117,18 +117,6 @@ export KUBECONFIG=~/.kube/config
 
 ```
 
-
-
-Add docker ECR secret (named `regcred` in this example):
-
-```
-kubectl create secret docker-registry regcred \
-    --docker-server=058264272856.dkr.ecr.us-east-2.amazonaws.com \
-    --docker-username=AWS \
-    --docker-password=`aws ecr get-login-password --profile 311crimemap --region us-east-2` \
-    --docker-email=abc@abc.com
-```
-
 #### ssh
 
 Hetzner ubuntu uses default `root` login.
