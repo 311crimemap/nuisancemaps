@@ -1,0 +1,18 @@
+#
+# to run: ansible-playbook -i hcloud.yml playbooks/site.yml 
+#
+- name: Setup K3S server
+  hosts: "{{ groups.label_type_server | first }}"
+  vars_files:
+    - ../vars.yml
+  gather_facts: true
+  roles:
+    - role: k3s_server
+
+- name: Setup K3S agent
+  hosts: "{{ groups.label_type_agent }}"
+  vars_files:
+    - ../vars.yml
+  gather_facts: true
+  roles:
+    - role: k3s_agent
