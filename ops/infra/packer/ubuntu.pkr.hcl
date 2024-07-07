@@ -20,13 +20,13 @@ source "hcloud" "basic_ubuntu" {
     # resulting image description (not name)
     # name is reserved for base OS images - so have to use labels
     # duplicate names do not overwrite, will raise error
-    snapshot_name = "packer_snapshot_3"
+    snapshot_name = "packer_base_311crimemap_1.0"
     snapshot_labels = {
-      "name": "packer_snapshot_3"
+      "name": "packer_base_311crimemap_1.0"
     }
 
     ssh_username = "root"
-    ssh_keys     = ["alan.verga+hermes@gmail.com"]
+    ssh_keys     = ["admin@311crimemap.com"]
 }
 
 build {
