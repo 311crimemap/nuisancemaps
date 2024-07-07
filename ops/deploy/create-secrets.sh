@@ -16,5 +16,12 @@ kubectl create secret docker-registry regcred \
 
 # postgresql
 kubectl delete secret postgresql-secrets --ignore-not-found=true
-kubectl create secret generic postgresql-secrets --from-literal=POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD \
+kubectl create secret generic postgresql-secrets \
+        --from-literal=POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD \
         --from-literal=POSTGRESQL_POSTGRES_PASSWORD=$POSTGRESQL_POSTGRES_PASSWORD
+
+# api
+kubectl delete secret api-secrets --ignore-not-found=true
+kubectl create secret generic api-secrets \
+        --from-literal=ADMIN_API_KEY=$ADMIN_API_KEY
+
