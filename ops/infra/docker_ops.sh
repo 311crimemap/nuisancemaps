@@ -7,19 +7,52 @@ export TF_LOG=1
 
 DOCKER_IMAGE="058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/ops"
 INFRA_DIR="infra"
-TERRAFORM_DIR="dev-1"  # ENV + ENV_ID (environment directory)
 
-ENV=$1
-if [ "$ENV" != "production" ] && [ "$ENV" != "staging" ] &&  [ "$ENV" != "dev" ] ; then
-    echo "missing environment: production, staging"
-    echo "example live './docker_ops.sh' production live apply"
+# Default values
+ENV="dev"
+ENV_ID=1
+SSH_KEY=""
+CMD="bash"
+
+# Parse arguments
+for arg in "$@"
+do
+    case $arg in
+        SSH_KEY=*)
+            SSH_KEY="${arg#*=}"
+            ;;
+        ENV=*)
+            ENV="${arg#*=}"
+            ;;
+        ENV_ID=*)
+            ENV_ID="${arg#*=}"
+            ;;
+        CMD=*)
+            CMD="${arg#*=}"
+            ;;
+
+        *)
+            echo "Unknown argument: $arg"
+            exit 1
+            ;;
+    esac
+done
+
+if [ -z "$SSH_KEY" ]; then
+    echo "populate SSH_KEY bash variable with path"
+    echo "example: SSH_KEY=/root/.ssh/id_rsa"
     exit 1
 fi
 
-ENV_ID=$2
+if [ "$ENV" != "production" ] && [ "$ENV" != "staging" ] &&  [ "$ENV" != "dev" ] ; then
+    echo "missing environment: production, staging"
+    echo "example live './docker_ops.sh' SSH_KEY=/path/to/key ENV=production ENV_ID=live CMD=bash"
+    exit 1
+fi
+
 if [ -z "$ENV_ID" ]; then
-    echo "missing env_id: live, a, b"
-    echo "example live './docker_ops.sh' production live apply"
+    echo "missing env_id: 1, live, a, b"
+    echo "example live './docker_ops.sh' SSH_KEY=/path/to/key ENV=production ENV_ID=live CMD=bash"
     exit 1
 fi
 
@@ -34,36 +67,13 @@ fi
 
 set -x
 
-DEFAULT_CMD=$3
-
-if [ "$DEFAULT_CMD" == "bash" ]; then
-
-    docker run -it \
-           -v "$(pwd)/":"/$INFRA_DIR/" \
-           -v /var/run/docker.sock:/var/run/docker.sock \
-           -v $SSH_AUTH_SOCK:/ssh-agent \
-           -e "SSH_AUTH_SOCK=/ssh-agent" \
-           --net host \
-           -w "/$INFRA_DIR/$TERRAFORM_DIR" \
-           --env-file .env \
-           -e "TF_VAR_deploy_env=${ENV}" \
-           -e "TF_VAR_env_id=${ENV_ID}" \
-           "$DOCKER_IMAGE:latest" \
-           $DEFAULT_CMD
-
-    exit 1;
-fi
-
 docker run -it \
+       -v $SSH_KEY:"/root/.ssh/id_rsa" \
        -v "$(pwd)/":"/$INFRA_DIR/" \
-       -v /var/run/docker.sock:/var/run/docker.sock \
-       -v $SSH_AUTH_SOCK:/ssh-agent \
-       -e "SSH_AUTH_SOCK=/ssh-agent" \
        --net host \
        -w "/$INFRA_DIR/$TERRAFORM_DIR" \
        --env-file .env \
        -e "TF_VAR_deploy_env=${ENV}" \
        -e "TF_VAR_env_id=${ENV_ID}" \
        "$DOCKER_IMAGE:latest" \
-       terraform $DEFAULT_CMD \
-       -var-file="terraform.tfvars"
+       $CMD

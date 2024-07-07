@@ -29,16 +29,11 @@ aws ecr get-login-password --profile 311crimemap --region us-east-2 | \
 
 * Don't think K8s repulls unless version tag changes; even if different hash.
 
-* Before entering container, enabled SSH Agent to allow ssh agent forwarding
-  (pass on keys.)
-
-  * `eval "$(ssh-agent -s)"`
-  * `ssh-add <hetzner-key>`
-  * Then, run `docker_ops.sh` container (ssh socket should be mounted)
 
 ### Quickstart Runtime
 
-1. Run `./docker_ops.sh <env> <env id> bash`
+1. Run `./docker_ops.sh SSH_KEY=<path/to/ssh_key> ENV=<env> ENV_ID=<env id> CMD=bash`
+   * `./docker_ops.sh SSH_KEY=/root/.ssh/id_rsa ENV=dev ENV_ID=1 CMD=bash`
 2. `cd /infra/<packer|terraform|ansible>`
 
 #### Packer
