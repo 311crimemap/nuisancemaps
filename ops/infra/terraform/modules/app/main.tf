@@ -14,7 +14,7 @@ resource "hcloud_network_subnet" "network-subnet" {
 resource "hcloud_server" "app" {
   count       = var.server_count
   name        = "node-${count.index}"
-  server_type = "cpx11"
+  server_type = var.server_type
 
   # image uses id when referring to snapshot
   # or "ubuntu22.04" name for base OS image
@@ -40,11 +40,12 @@ resource "hcloud_server" "app" {
     # ]
   }
 
-  labels = {
-    "server": "app",
-    "test-key" : "test-value",
-    "type" :  count.index == 0 ? "server" : "agent"
-  }
+  labels = merge(
+    var.labels,
+    {
+      "type" :  count.index == 0 ? "server" : "agent"
+    })
+
 
   depends_on = [
     hcloud_network_subnet.network-subnet
@@ -55,7 +56,7 @@ data "hcloud_image" "packer" {
   # NB: cannot use name - reserved
   # id = 143348468
 
-  with_selector = "name=packer_snapshot_3"
+  with_selector = var.image_name
   most_recent = true
 }
 
