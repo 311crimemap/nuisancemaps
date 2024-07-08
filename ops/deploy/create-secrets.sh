@@ -20,6 +20,14 @@ kubectl create secret generic postgresql-secrets \
         --from-literal=POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD \
         --from-literal=POSTGRESQL_POSTGRES_PASSWORD=$POSTGRESQL_POSTGRES_PASSWORD
 
+# pgbackrest / postgresql
+kubectl delete secret pgbackrest-secrets --ignore-not-found=true
+kubectl create secret generic pgbackrest-secrets \
+        --from-literal=PGPASSWORD=$POSTGRESQL_PASSWORD \
+        --from-literal=PGBACKREST_REPO2_S3_KEY_SECRET=$PGBACKREST_REPO2_S3_KEY_SECRET \
+        --from-literal=PGBACKREST_REPO2_S3_KEY=$PGBACKREST_REPO2_S3_KEY
+
+
 # api
 kubectl delete secret api-secrets --ignore-not-found=true
 kubectl create secret generic api-secrets \
