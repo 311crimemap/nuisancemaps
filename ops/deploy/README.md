@@ -32,6 +32,46 @@ Deploy Notes.
 
 ---
 
+### DB Recovery
+
+* location on host-0 and in container: `/backup_db/pgbackrest`
+
+1. Create Stanza
+
+Initially, need to create stanza (should be done already, if a backup has been
+made from prod.) But if restoring from prod to staging, etc. will need to create
+stanza.
+
+```
+kubectl exec -it postgres-0 -- bash
+
+pgbackrest --stanza=311crimemap stanza-create
+pgbackrest check
+```
+
+
+2. Run restore job
+
+Need to shutdown pg statefulset, and run `pgbackrest-db-restore` job which
+mounts the volume and executes restore.
+
+`kubectl apply -f jobs/pgbackrest-db-restore-job.yml`
+
+For initial restore to different environment, may need to specify the latest
+backup set, and modify the job command:
+
+```
+pgbackrest --stanza=311crimemap --repo=2 --delta \
+    --set=20240702-211456F_20240702-212513D \
+    --log-level-console=detail restore
+
+```
+
+3. Run postgres in recovery mode
+
+
+
+
 #### Bitnami Postgresql StatefulSet
 
 NB: make sure to delete pvc for fresh start

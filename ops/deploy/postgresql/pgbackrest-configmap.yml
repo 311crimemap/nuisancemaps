@@ -13,11 +13,10 @@ data:
     pg1-user=postgres
     pg1-path=/bitnami/postgresql/data
     pg1-database=nuisancemaps
-    log-path=/mnt/pgbackrest
+    log-path=/backup_db/pgbackrest
 
-    # local backup volume mount (see docker-compose.yml)
-    # docker config: './db' host directory mounted container at '/mnt'
-    repo1-path=/mnt/pgbackrest
+    # "local" backup
+    repo1-path=/backup_db/pgbackrest
     repo1-retention-full=2
 
     # s3 bucket backup

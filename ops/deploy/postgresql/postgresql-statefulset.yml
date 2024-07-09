@@ -19,12 +19,26 @@ spec:
       securityContext:
         runAsUser: 1001
         fsGroup: 1001
+      # perms so pgbackrest can write
+      initContainers:
+      - name: init-container
+        image: busybox
+        securityContext:
+          runAsUser: 0  # Run as root
+          privileged: true  # Required to perform privileged actions
+        command: ['sh', '-c', 'mkdir -p /backup_db/pgbackrest && chown 1001:1001 /backup-db/pgbackrest']
+        volumeMounts:
+        - name: backup-db
+          mountPath: /backup-db/pgbackrest
       containers:
       - name: postgresql
         image: bitnami/postgresql:16.1.0
         envFrom:
         - configMapRef:
             name: postgresql-config    # defines POSTGRESQL_USER & POSTGRESL_INITSCRIPTS_USERNAME
+        - configMapRef:
+            name: pgbackrest-config
+
         env:
         - name: POSTGRESQL_PASSWORD
           valueFrom:
@@ -41,6 +55,24 @@ spec:
             secretKeyRef:
               name: postgresql-secrets
               key: POSTGRESQL_POSTGRES_PASSWORD
+
+        # pgbackrest needed for stanza creation
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pgbackrest-secrets
+              key: PGPASSWORD
+        - name: PGBACKREST_REPO2_S3_KEY_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: pgbackrest-secrets
+              key: PGBACKREST_REPO2_S3_KEY_SECRET
+        - name: PGBACKREST_REPO2_S3_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pgbackrest-secrets
+              key: PGBACKREST_REPO2_S3_KEY
+
         ports:
           # can't use configMap on ports
         - name: postgresql
@@ -48,17 +80,38 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /bitnami/postgresql
+        - name: backup-db
+          mountPath: /backup_db/pgbackrest
+
         - name: initdb
           mountPath: /docker-entrypoint-initdb.d/01_enable_postgis.sql
           subPath: 01_enable_postgis.sql
+        - name: pgbackrest-pgbackrest-conf
+          mountPath: /etc/pgbackrest.conf
+          subPath: pgbackrest.conf   # specifies file in configMap
+        - name: pgbackrest-archive-conf
+          mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
+          subPath: archive.conf
 
       volumes:
+
+      - name: backup-db         #local host db backup
+        hostPath:
+          path: /backup_db/pgbackrest
+          type: DirectoryOrCreate
+
       - name: initdb
         configMap:
           name: postgresql-initdb-configmap
           items:
             - key: sql
               path: 01_enable_postgis.sql
+      - name: pgbackrest-pgbackrest-conf
+        configMap:
+          name: pgbackrest-config
+      - name: pgbackrest-archive-conf
+        configMap:
+          name: pgbackrest-config
 
   volumeClaimTemplates:
   - metadata:

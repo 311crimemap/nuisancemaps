@@ -1,0 +1,78 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pgbackrest-db-restore
+spec:
+  template:
+    spec:
+      # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
+      securityContext:
+        runAsUser: 1001
+        fsGroup: 1001
+
+      containers:
+      - name: postgresql
+        image: bitnami/postgresql:16.1.0
+        command: ["bin/bash", "-c"]
+        args:
+          - |
+            # pgbackrest --stanza=311crimemap stanza-create
+            pgbackrest --stanza=311crimemap --repo=2 --delta \
+            --set=20240702-211456F_20240702-212513D \
+             --log-level-console=detail restore
+
+
+        envFrom:
+          - configMapRef:
+              name: postgresql-config
+          - configMapRef:
+              name: pgbackrest-config
+
+        env:
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgbackrest-secrets
+                key: PGPASSWORD
+
+          - name: PGBACKREST_REPO2_S3_KEY_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: pgbackrest-secrets
+                key: PGBACKREST_REPO2_S3_KEY_SECRET
+
+          - name: PGBACKREST_REPO2_S3_KEY
+            valueFrom:
+              secretKeyRef:
+                name: pgbackrest-secrets
+                key: PGBACKREST_REPO2_S3_KEY
+
+        volumeMounts:
+          - name: postgresql-data
+            mountPath: /bitnami/postgresql
+
+          - name: pgbackrest-pgbackrest-conf
+            mountPath: /etc/pgbackrest.conf
+            subPath: pgbackrest.conf   # specifies file in configMap
+
+          - name: pgbackrest-archive-conf
+            mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
+            subPath: archive.conf
+
+      volumes:
+        - name: postgresql-data
+          # NB: k8s auto-generates the claimName:
+          # volumeClaimTemplate.name + statefulset.name + ordinal
+          persistentVolumeClaim:
+            claimName: data-postgresql-0
+
+        - name: pgbackrest-pgbackrest-conf
+          configMap:
+            name: pgbackrest-config
+
+        - name: pgbackrest-archive-conf
+          configMap:
+            name: pgbackrest-config
+
+      restartPolicy: Never
+  backoffLimit: 4
