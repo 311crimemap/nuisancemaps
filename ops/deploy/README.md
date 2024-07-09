@@ -70,6 +70,34 @@ pgbackrest --stanza=311crimemap --repo=2 --delta \
 3. Run postgres in recovery mode
 
 
+`kubectl apply jobs/postgres-db-recovery-job.yml`
+
+Might have to stanza-upgrade if recovery is on different machines.
+
+```
+kubectl get pods
+kubectl kubectl exec -it postgres-db-recovery-xxxx bash
+
+# in container
+pgbackrest --stanza=311crimemap stanza-upgrade
+
+```
+
+Terminate postgres recovery container
+
+`kubectl delete -f jobs/postgres-db-recovery-job.yml`
+
+4. Restart postgres as normal service
+
+`kubectl apply -f /postgresql`
+
+
+5. Run pgbackrest backup to build local machine copy alongside s3
+
+```
+kubectl exec -it postgresql-0 -- bash
+PGPASSWORD=xxxx pgbackrest --stanza=311crimemap --repo=1 --log-level-console=detail --type=full backup
+```
 
 
 #### Bitnami Postgresql StatefulSet
