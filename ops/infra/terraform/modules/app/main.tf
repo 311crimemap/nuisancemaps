@@ -13,7 +13,19 @@ resource "hcloud_network_subnet" "network-subnet" {
 
 resource "hcloud_server" "app" {
   count       = var.server_count
-  name        = "node-${count.index}"
+  name        = format(
+    "%s-%s-%s-%s-%s-%s-%s-%s-%s",
+    var.product,
+    var.env,
+    var.env_id,
+    var.org_id,
+    var.location_zone.location,
+    var.location_zone.network_zone,
+    var.server_type,
+    var.class_id,
+    "${var.class_id}-${count.index}"
+    )
+
   server_type = var.server_type
 
   # image uses id when referring to snapshot
@@ -41,9 +53,20 @@ resource "hcloud_server" "app" {
   }
 
   labels = merge(
-    var.labels,
+    var.additional_labels,
     {
-      "type" :  count.index == 0 ? "server" : "agent"
+      "product" : var.product,
+      "env" : var.env,
+      "env_id" : var.env_id,
+      "org_id" : var.org_id,
+      "location": var.location_zone.location,
+      "network_zone": var.location_zone.network_zone,
+      "server_type": var.server_type,
+      "class_id": var.class_id,
+      "class_instance": "${var.class_id}-${count.index}"
+
+      # deploy k3s
+      "node" :  count.index == 0 ? "server" : "agent"
     })
 
 

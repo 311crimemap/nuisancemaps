@@ -11,3 +11,19 @@ variable ssh_key_name {
   type = string
   description = "name of ssh key on hetzner"
 }
+
+variable product {
+  type = string
+  description = "umbrella product name"
+}
+
+variable env {
+  type = string
+  description = "environment group e.g. 'dev'"
+}
+
+variable env_id {
+  type = string
+  description = "environment id 'live', '1', etc."
+}
+

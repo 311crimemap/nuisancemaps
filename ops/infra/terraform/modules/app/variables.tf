@@ -1,5 +1,30 @@
 # main.tf variables
 
+variable product {
+  type = string
+  description = "umbrella product name"
+}
+
+variable env {
+  type = string
+  description = "environment group e.g. 'dev'"
+}
+
+variable env_id {
+  type = string
+  description = "environment id 'live', '1', etc."
+}
+
+variable org_id {
+  type = string
+  description = "org name e.g 'web'"
+}
+
+variable class_id {
+  type = string
+  description = "server class / use: e.g. app, db, etc"
+}
+
 variable server_type {
   type = string
   description = "server class / instance type on hetzner"
@@ -27,7 +52,7 @@ variable location_zone {
   description = "location for instance and accompanying network_zone for network resource."
 }
 
-variable labels {
+variable additional_labels {
   type = map(string)
   description = "key-value pairs of labels to assign to each node, with default type to denote k3s server or agent"
 }
