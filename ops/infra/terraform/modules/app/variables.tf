@@ -10,9 +10,9 @@ variable env {
   description = "environment group e.g. 'dev'"
 }
 
-variable env_id {
+variable env_group {
   type = string
-  description = "environment id 'live', '1', etc."
+  description = "environment group 'live', '1', etc. Combines with env + env_group to generate env_id"
 }
 
 variable org_id {

@@ -9,6 +9,17 @@ module "globals" {
 
 module "firewall" {
   source = "../../modules/firewall"
+
+  product = var.product
+  env = var.env
+  env_group = var.env_group
+  org_id = "web"
+
+  location_zone = {
+    location: "hil",
+    network_zone: "us-west"
+  }
+
 }
 
 module "app-servers" {
@@ -17,7 +28,7 @@ module "app-servers" {
   # define variables to pass into this module
   product = var.product
   env = var.env
-  env_id = var.env_id
+  env_group = var.env_group
   org_id = "web"
   class_id = "app"
 

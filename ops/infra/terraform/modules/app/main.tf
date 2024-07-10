@@ -14,10 +14,9 @@ resource "hcloud_network_subnet" "network-subnet" {
 resource "hcloud_server" "app" {
   count       = var.server_count
   name        = format(
-    "%s-%s-%s-%s-%s-%s-%s-%s-%s",
+    "%s-%s-%s-%s-%s-%s-%s-%s",
     var.product,
-    var.env,
-    var.env_id,
+    "${var.env}-${var.env_group}",  # env_id
     var.org_id,
     var.location_zone.location,
     var.location_zone.network_zone,
@@ -57,7 +56,7 @@ resource "hcloud_server" "app" {
     {
       "product" : var.product,
       "env" : var.env,
-      "env_id" : var.env_id,
+      "env_id": "${var.env}-${var.env_group}",
       "org_id" : var.org_id,
       "location": var.location_zone.location,
       "network_zone": var.location_zone.network_zone,
