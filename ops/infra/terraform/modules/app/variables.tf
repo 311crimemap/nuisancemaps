@@ -67,6 +67,11 @@ variable image_name {
   description = "image snapshot selector expression: e.g. name=packer_image..."
 }
 
+variable network_name {
+  type = string
+  description = "hcloud network name"
+}
+
 variable firewall_id {
   type = number
   description = "firewall id"
