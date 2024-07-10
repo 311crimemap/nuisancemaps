@@ -26,9 +26,9 @@ eval "$(ssh-agent -s)"
 # in docker_ops container
 cd /ops/ansible
 
-ansible-playbook -i hcloud.yml playbooks/site.yml
+ansible-playbook -e env_id=dev-1 -i hcloud.yml playbooks/site.yml
 
-ansible-playbook -i hcloud.yml playbooks/uninstall.yml
+ansible-playbook -e env_id=dev-1 -i hcloud.yml playbooks/uninstall.yml
 ```
 
 On local machine, just scp and export KUBECONFIG to `~/.kube/config` to run
