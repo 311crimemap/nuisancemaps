@@ -89,7 +89,7 @@
         <configuration>
           <!--
             Don't explicitly set a mainClass;
-            they're set in command line - see README.md
+            they're set/assigned at command line when building image - see README.md
           -->
           <!--
           <mainClass>org.springframework.boot.loader.launch.PropertiesLauncher</mainClass>

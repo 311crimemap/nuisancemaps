@@ -30,9 +30,12 @@ services:
       - ./api:/api
       - $HOME/.m2:/root/.m2
     working_dir: '/api'
-    command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication"
+    #command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication"
+    # enable debugger via dap-mode / dap-breakpoint-toggle
+    command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'"
     ports:
       - 8080:8080
+      - 5005:5005 # enable remote debug port
     env_file:
       - .env.dev
 
