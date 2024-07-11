@@ -85,6 +85,23 @@ resource "hcloud_firewall" "firewall-311crimemap" {
     ]
   }
 
+  rule {
+    description = "http"
+    direction = "in"
+    protocol  = "tcp"
+    port      = "80"
+    source_ips = var.http_source_ips
+  }
+
+  rule {
+    description = "https"
+    direction = "in"
+    protocol  = "tcp"
+    port      = "443"
+    source_ips = var.https_source_ips
+  }
+
+
 
 }
 
