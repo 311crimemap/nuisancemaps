@@ -13,10 +13,10 @@
 kubectl apply -f hcloud-csi.yml
 
 # postgres
-kubectl apply -f postgresql/postgresql-configmap.yml
+kubectl apply -f production/postgresql/postgresql-configmap.yml
 
 # pgbackrest
-kubectl apply -f postgresql/pgbackrest-configmap.yml
+kubectl apply -f production/postgresql/pgbackrest-configmap.yml
 
 # liquibase (migrations)
 kubectl delete configmap liquibase-properties-configmap --ignore-not-found=true
