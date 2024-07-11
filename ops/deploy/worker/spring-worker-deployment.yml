@@ -40,6 +40,13 @@ spec:
                 key: POSTGRESQL_URL
           - name: JAVA_OPTS
             value: "-Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication"
+          - name: ASYNC_EXECUTOR_CORE_POOL_SIZE
+            value: "4"
+          - name: ASYNC_EXECUTOR_MAX_POOL_SIZE
+            value: "4"
+          - name: ASYNC_EXECUTOR_QUEUE_CAPACITY
+            value: "8"
+
           # # probes
           # livenessProbe:
           #   httpGet:
