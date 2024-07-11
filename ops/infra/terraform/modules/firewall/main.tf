@@ -1,5 +1,5 @@
 resource "hcloud_firewall" "firewall-311crimemap" {
-  name = "firewall-311crimemap"
+  name = "firewall-${var.product}-${var.env}-${var.env_group}-${var.org_id}-${var.location_zone.location}-${var.location_zone.network_zone}"
 
   rule {
     description = "K3s supervisor and Kubernetes API Server"

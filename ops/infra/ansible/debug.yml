@@ -1,0 +1,9 @@
+- name: Debug
+  hosts: all
+  gather_facts: true
+  remote_user: root
+
+  tasks:
+    - name : debug
+      debug:
+        msg: "{{ groups }}"

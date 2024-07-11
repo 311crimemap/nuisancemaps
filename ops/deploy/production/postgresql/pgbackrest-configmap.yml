@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgbackrest-config
+data:
+  pgbackrest.conf: |
+    [global]
+    log-level-console=info
+    start-fast=y
+    log-level-file=warn
+
+    [311crimemap]
+    pg1-user=postgres
+    pg1-path=/bitnami/postgresql/data
+    pg1-database=nuisancemaps
+    log-path=/backup_db/pgbackrest
+
+    # "local" backup
+    repo1-path=/backup_db/pgbackrest
+    repo1-retention-full=2
+
+    # s3 bucket backup
+    repo2-type=s3
+    repo2-s3-region=us-east-2
+    repo2-s3-endpoint=s3.us-east-2.amazonaws.com
+    repo2-s3-bucket=311crimemap-production-db
+    repo2-retention-full=2
+
+    # creds are set in respective .env.*
+    # note prefix and underscore: PGBACKREST_REPO2_S3_KEY
+    #repo2-s3-key=accessKey1
+    #repo2-s3-key-secret=verySecretKey1
+
+  archive.conf: |
+    archive_mode = on
+    archive_command = 'pgbackrest --stanza=311crimemap archive-push %p'
+
+  run.sh: |
+    #!/bin/bash
+    # override docker container run.sh
+    #
+    # pgrestore: need to add recovery.signal for restore, container
+    # automatically removes it
+    # only needed to override for restore operation
+
+    # shellcheck disable=SC1091
+
+    set -o errexit
+    set -o nounset
+    set -o pipefail
+    # set -o xtrace # Uncomment this line for debugging purpose
+
+    # Load libraries
+    . /opt/bitnami/scripts/libpostgresql.sh
+    . /opt/bitnami/scripts/libos.sh
+
+    # Load PostgreSQL environment variables
+    . /opt/bitnami/scripts/postgresql-env.sh
+
+    #
+    # RECOVERY.SIGNAL ADDITION
+    #
+    touch /bitnami/postgresql/data/recovery.signal
+
+    flags=("-D" "$POSTGRESQL_DATA_DIR" "--config-file=$POSTGRESQL_CONF_FILE" "--external_pid_file=$POSTGRESQL_PID_FILE" "--hba_file=$POSTGRESQL_PGHBA_FILE")
+    cmd=$(command -v postgres)
+
+    info "** Starting PostgreSQL **"
+    if am_i_root; then
+         exec gosu "$POSTGRESQL_DAEMON_USER" "$cmd" "${flags[@]}"
+    else
+         exec "$cmd" "${flags[@]}"
+    fi
+
