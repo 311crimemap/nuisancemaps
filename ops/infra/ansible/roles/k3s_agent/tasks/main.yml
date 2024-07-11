@@ -4,7 +4,7 @@
 
 - name: Debug role
   vars:
-    init_server: "{{ groups.label_node_server[0] }}"
+    init_server: "{{ (groups['label_env_id_' ~ env_id] | intersect(groups.label_node_server)) | first}}"
   debug:
     msg:
       - "Hello from k3s agent role"
@@ -12,12 +12,12 @@
 - name: Join K3s agent(s) to the server
   register: out
   vars:
-    init_server: "{{ groups.label_node_server[0] }}"
+    init_server: "{{ (groups['label_env_id_' ~ env_id] | intersect(groups.label_node_server)) | first}}"
     k3s_url: "https://{{ hostvars[init_server]['private_networks'][0]['ip'] }}:6443"
     k3s_token: "{{ hostvars[init_server]['k3s_server_token'].stdout }}"
     # join using curl because script exits gracefully after agent connect
   shell: curl -sfL https://get.k3s.io | K3S_URL="{{k3s_url}}" K3S_TOKEN="{{k3s_token}}" sh -
-  when: "inventory_hostname in groups.label_node_agent"
+  when: "inventory_hostname in (groups['label_env_id_' ~ env_id] | intersect(groups.label_node_agent))"
 
 
 - name: Output Agent Node IP(s)
