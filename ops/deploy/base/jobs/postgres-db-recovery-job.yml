@@ -1,0 +1,135 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-db-recovery
+spec:
+  template:
+    spec:
+      # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
+      securityContext:
+        runAsUser: 1001
+        fsGroup: 1001
+
+      initContainers:
+      - name: init-container
+        image: busybox
+        securityContext:
+          runAsUser: 0
+          privileged: true
+
+        # NB: configMap files are mounted as read-only, so error prone when changing permissions
+        # requires initContainer to chmod run.sh executible (needed to hook psql container into recovery mode)
+        #
+        # 1. create workdir a temporary emptyDir volume
+        # 2. mount workdir path that allows chmod to operate
+        # 3. mount run.sh read-only to /config, and  copy read-only run.sh to /mnt
+        # 4. chmod now enabled in /mnt
+        # 5. "remount" now-executible /mnt/run.sh in main postgresql container
+        #
+        command: ["sh", "-c", "cp /config/run.sh /mnt/run.sh && chmod +x /mnt/run.sh"]
+        volumeMounts:
+        - name: pgbackrest-run-sh
+          mountPath: /config/run.sh
+          subPath: run.sh
+        - name: workdir
+          mountPath: /mnt
+
+      containers:
+      - name: postgresql
+        image: bitnami/postgresql:16.1.0
+        #
+        # need to run this in an active container at some point during recovery phase
+        # ideally done at time of backup, but if restoring from a backup on fresh instance
+        # stanza might not be created. Possibly need PGPASSWORD.
+        #
+        # kubectl exec -it postgresql-0 -- bash -c 'pgbackrest --stanza=311crimemap stanza-create'
+        #
+        envFrom:
+          - configMapRef:
+              name: postgresql-config
+          - configMapRef:
+              name: pgbackrest-config
+
+        env:
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: POSTGRESQL_PASSWORD
+        - name: POSTGRESQL_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: POSTGRESQL_POSTGRES_PASSWORD
+        - name: POSTGRESQL_INITSCRIPTS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secrets
+              key: POSTGRESQL_POSTGRES_PASSWORD
+
+        # pgbackrest
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pgbackrest-secrets
+              key: PGPASSWORD
+
+        - name: PGBACKREST_REPO2_S3_KEY_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: pgbackrest-secrets
+              key: PGBACKREST_REPO2_S3_KEY_SECRET
+
+        - name: PGBACKREST_REPO2_S3_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pgbackrest-secrets
+              key: PGBACKREST_REPO2_S3_KEY
+
+        volumeMounts:
+          - name: postgresql-data
+            mountPath: /bitnami/postgresql
+
+          - name: backup-db
+            mountPath: /backup_db/pgbackrest
+
+          - name: pgbackrest-pgbackrest-conf
+            mountPath: /etc/pgbackrest.conf
+            subPath: pgbackrest.conf   # specifies file in configMap
+
+          - name: pgbackrest-archive-conf
+            mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
+            subPath: archive.conf
+
+          # sets the recovery.signal
+          - name: workdir
+            mountPath: /opt/bitnami/scripts/postgresql/run.sh
+            subPath: run.sh
+
+      volumes:
+        - name: postgresql-data
+          # NB: k8s auto-generates the claimName:
+          # volumeClaimTemplate.name + statefulset.name + ordinal
+          persistentVolumeClaim:
+            claimName: data-postgresql-0
+
+        - name: pgbackrest-pgbackrest-conf
+          configMap:
+            name: pgbackrest-config
+        - name: pgbackrest-archive-conf
+          configMap:
+            name: pgbackrest-config
+        - name: pgbackrest-run-sh
+          configMap:
+            name: pgbackrest-config
+
+        - name: workdir
+          emptyDir: {}
+
+        - name: backup-db         #local host db backup
+          hostPath:
+            path: /backup_db/pgbackrest
+            type: DirectoryOrCreate
+
+      restartPolicy: Never
+  backoffLimit: 4

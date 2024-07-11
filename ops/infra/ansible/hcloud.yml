@@ -1,17 +1,21 @@
 # hcloud
 # dynamic inventory filter
 # https://docs.ansible.com/ansible/latest/collections/hetzner/hcloud/hcloud_inventory.html
+
 plugin: hcloud
 locations:
   - hil
-types:
-  - cpx11
+#types:
+  #- cpx11
 status:
   - running
 
+#
+# Examples of filters w/ output:
+#
 keyed_groups:
-  - key: labels
-    prefix: "label"
+ - key: labels
+   prefix: "label"
 
 # "label_server_app": [
 #       "node-1",
@@ -47,3 +51,4 @@ keyed_groups:
 # group all, not "keyed"
 #label_selector: server=app
 #label_selector: test-key=test-value
+#label_selector: "product=311crimemap"

@@ -22,6 +22,7 @@ spec:
       containers:
         - image: 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
           name: spring-api
+          imagePullPolicy: Always
           envFrom:
           - configMapRef:
               name: postgresql-config
@@ -38,7 +39,14 @@ spec:
                 key: POSTGRESQL_URL
           - name: JAVA_OPTS
             value: "-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication"
-
+          - name: ASYNC_EXECUTOR_CORE_POOL_SIZE
+            value: "4"
+          - name: ASYNC_EXECUTOR_MAX_POOL_SIZE
+            value: "4"
+          - name: ASYNC_EXECUTOR_QUEUE_CAPACITY
+            value: "8"
+          - name: CORS_ORIGINS
+            value: "*,http://localhost:5173,http://localhost:4173"
           ## probes
           # livenessProbe:
           #   httpGet:

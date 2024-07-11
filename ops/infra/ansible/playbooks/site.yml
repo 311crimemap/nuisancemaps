@@ -1,8 +1,12 @@
 #
-# to run: ansible-playbook -i hcloud.yml playbooks/site.yml 
+# to run: ansible-playbook -e env_id=dev_1 -i hcloud.yml playbooks/site.yml
+#
+# NB: labels in ansible: hyphens get converted to underscore, so input env_id as
+# underscore
+#
 #
 - name: Setup K3S server
-  hosts: "{{ groups.label_type_server | first }}"
+  hosts: "{{ (groups['label_env_id_' ~ env_id] | intersect(groups.label_node_server)) | first}}"
   vars_files:
     - ../vars.yml
   gather_facts: true
@@ -10,9 +14,10 @@
     - role: k3s_server
 
 - name: Setup K3S agent
-  hosts: "{{ groups.label_type_agent }}"
+  hosts: "{{ groups['label_env_id_' ~ env_id] | intersect(groups.label_node_agent) }}"
   vars_files:
     - ../vars.yml
   gather_facts: true
   roles:
     - role: k3s_agent
+

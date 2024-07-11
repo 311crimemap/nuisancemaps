@@ -4,33 +4,110 @@ Deploy Notes.
 
 ## Order
 
+Try to keep production and staging environments similar; except for deviation with some
+configmap files (pgbackrest)
+
 ##### Secrets
 
 `./create-secrets.sh`:
 
 * `hcloud-secret`: hcloud-secret.yml (add TOKEN)
 * `regcred`: see description below
-* `postgresql`: ./create-secret.sh
+* `postgresql / pgbackrest`: env contents
+* `api`: env contents
 
 ##### ConfigMap
 
-`./create-configmaps.sh`:
+`./create-configmaps-<environment>.sh`:
 
 * `hcloud-csi.yml`: hetzner classes
-* `postgresql-configmap`: /postgres
-* `create-liquibase-configmap.sh`: for migration loads configuration files
+* `-postgresql-configmap`: postgres
+* `pgbackrest-configmap`: pgbackrest
+  * Make sure s3 bucket is created prior to backup (pgbackrest does not do this)
+* `liquibase`: for migration; db schema
 
 ##### Deployments / Service
 
-* `kubectl apply -f postgresql/`
-* `kubectl apply -f api/`
-* `kubectl apply -f worker/`
+* `kubectl apply -f base/postgresql/`
+* `kubectl apply -f base/api/`
+* `kubectl apply -f base/worker/`
 
 #### Jobs
 
-* `kubectl apply -f jobs/spring-db-migration-job.yml`
+* `kubectl apply -f base/jobs/spring-db-migration-job.yml`
 
 ---
+
+### DB Recovery
+
+* location on host-0 and in container: `/backup_db/pgbackrest`
+
+1. Create Stanza
+
+Initially, need to create stanza (should be done already, if a backup has been
+made from prod.) But if restoring from prod to staging, etc. will need to create
+stanza.
+
+Note this needs to be exec'd in a postgres container actively running pg. (e.g.
+not just bash in container)
+
+```
+kubectl exec -it postgres-0 -- bash
+
+pgbackrest --stanza=311crimemap stanza-create
+pgbackrest check
+```
+
+
+2. Run restore job
+
+Need to shutdown pg statefulset, and run `pgbackrest-db-restore` job which
+mounts the volume and executes restore.
+
+`kubectl apply -f jobs/pgbackrest-db-restore-job.yml`
+
+For initial restore to different environment, may need to specify the latest
+backup set, and modify the job command:
+
+```
+pgbackrest --stanza=311crimemap --repo=2 --delta \
+    --set=20240702-211456F_20240702-212513D \
+    --log-level-console=detail restore
+
+```
+
+3. Run postgres in recovery mode
+
+
+`kubectl apply jobs/postgres-db-recovery-job.yml`
+
+Might have to stanza-upgrade if recovery is on different machines.
+
+```
+kubectl get pods
+kubectl kubectl exec -it postgres-db-recovery-xxxx bash
+
+# in container
+pgbackrest --stanza=311crimemap stanza-upgrade
+
+```
+
+Terminate postgres recovery container
+
+`kubectl delete -f jobs/postgres-db-recovery-job.yml`
+
+4. Restart postgres as normal service
+
+`kubectl apply -f /postgresql`
+
+
+5. Run pgbackrest backup to build local machine copy alongside s3
+
+```
+kubectl exec -it postgresql-0 -- bash
+PGPASSWORD=xxxx pgbackrest --stanza=311crimemap --repo=1 --log-level-console=detail --type=full backup
+```
+
 
 #### Bitnami Postgresql StatefulSet
 

@@ -11,6 +11,7 @@ psql -U postgres
 create database nuisancemaps;
 \c nuisancemaps
 create extension postgis;
+
 create database nuisancemaps_test;
 \c nuisancemaps_test
 create extension postgis;
@@ -34,12 +35,13 @@ archive_mode=off   # change
 * (optional) OR db restore (if db archive available)
 
 ````
-# 1. create stanza
+# 1. create stanza (database is running)
 docker-compose exec db
 pgbackrest --stanza=311crimemap stanza-create
 
 # 2. fetch archive
 # shutdown any running pg instance
+docker-compose stop db
 docker-compose run db bash
 pgbackrest --stanza=311crimemap --type=immediate --delta \
     --target-action=promote --log-level-console=detail restore
