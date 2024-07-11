@@ -32,7 +32,7 @@ data:
     #repo2-s3-key-secret=verySecretKey1
 
   archive.conf: |
-    archive_mode = on
+    archive_mode = off
     archive_command = 'pgbackrest --stanza=311crimemap archive-push %p'
 
   run.sh: |

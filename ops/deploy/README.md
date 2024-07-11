@@ -4,31 +4,37 @@ Deploy Notes.
 
 ## Order
 
+Try to keep production and staging environments similar; except for deviation with some
+configmap files (pgbackrest)
+
 ##### Secrets
 
 `./create-secrets.sh`:
 
 * `hcloud-secret`: hcloud-secret.yml (add TOKEN)
 * `regcred`: see description below
-* `postgresql`: ./create-secret.sh
+* `postgresql / pgbackrest`: env contents
+* `api`: env contents
 
 ##### ConfigMap
 
-`./create-configmaps.sh`:
+`./create-configmaps-<environment>.sh`:
 
 * `hcloud-csi.yml`: hetzner classes
-* `postgresql-configmap`: /postgres
-* `create-liquibase-configmap.sh`: for migration loads configuration files
+* `-postgresql-configmap`: postgres
+* `pgbackrest-configmap`: pgbackrest
+  * Make sure s3 bucket is created prior to backup (pgbackrest does not do this)
+* `liquibase`: for migration; db schema
 
 ##### Deployments / Service
 
-* `kubectl apply -f postgresql/`
-* `kubectl apply -f api/`
-* `kubectl apply -f worker/`
+* `kubectl apply -f base/postgresql/`
+* `kubectl apply -f base/api/`
+* `kubectl apply -f base/worker/`
 
 #### Jobs
 
-* `kubectl apply -f jobs/spring-db-migration-job.yml`
+* `kubectl apply -f base/jobs/spring-db-migration-job.yml`
 
 ---
 
@@ -41,6 +47,9 @@ Deploy Notes.
 Initially, need to create stanza (should be done already, if a backup has been
 made from prod.) But if restoring from prod to staging, etc. will need to create
 stanza.
+
+Note this needs to be exec'd in a postgres container actively running pg. (e.g.
+not just bash in container)
 
 ```
 kubectl exec -it postgres-0 -- bash

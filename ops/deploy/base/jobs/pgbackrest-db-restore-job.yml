@@ -17,9 +17,7 @@ spec:
         args:
           - |
             pgbackrest --stanza=311crimemap --repo=2 --delta \
-            --set=20240702-211456F_20240702-212513D \
              --log-level-console=detail restore
-
 
         envFrom:
           - configMapRef:
