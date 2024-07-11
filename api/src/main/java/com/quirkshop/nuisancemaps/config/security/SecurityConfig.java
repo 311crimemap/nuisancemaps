@@ -25,20 +25,29 @@ public class SecurityConfig {
         // whitelist routes that will skip AuthenticationFilter entirely
         // default is to check authentication - expect an api key
         OrRequestMatcher whiteList = new OrRequestMatcher(
+                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/init"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/init"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/categories"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/categories"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/sources"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/sources"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/data*"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/data*"));
 
         NegatedRequestMatcher nRequestMatcher = new NegatedRequestMatcher(whiteList);
 
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+
         http
                 .securityMatcher(nRequestMatcher)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(
+                        (authorize) -> authorize
+                                .requestMatchers(whiteList).permitAll()
+                                .anyRequest().authenticated())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
