@@ -244,6 +244,12 @@ Since liquibase, and Spring tests require maven profile, and spring active profi
 `./mvnw tests -P test -Dspring.profiles.active=test`
 
 
+### Database
+
+Connection pooling is handled by
+[HikariCP](https://github.com/brettwooldridge/HikariCP) - this is already
+bundled in `spring-boot-starter-data-jpa` dependency. (No need for pgbouncer, etc.)
+
 #### Hibernate
 
 ORM implementation for JPA.
