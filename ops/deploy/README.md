@@ -26,6 +26,14 @@ configmap files (pgbackrest)
   * Make sure s3 bucket is created prior to backup (pgbackrest does not do this)
 * `liquibase`: for migration; db schema
 
+##### Certs
+
+* `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
+* wait until webhook error resolves
+* `kubectl apply -f staging/cert-manager-issuer.yml`
+* `kubectl apply -f base/api/spring-api-ingress.yml`
+* Verify: `kubectl get cert`
+
 ##### Deployments / Service
 
 * `kubectl apply -f base/postgresql/`
@@ -35,6 +43,125 @@ configmap files (pgbackrest)
 #### Jobs
 
 * `kubectl apply -f base/jobs/spring-db-migration-job.yml`
+
+---
+
+
+### Certs
+
+#### 1. Get Cert Manager:
+
+[Reference](https://cert-manager.io/docs/installation/kubectl/)
+
+`kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
+
+Installs to `cert-manager` namespace.
+
+```
+cert-manager   cert-manager-cainjector-7666685ff5-84dgd   1/1     Running     0          21s
+cert-manager   cert-manager-5798486f6b-5qdmf              1/1     Running     0          20s
+cert-manager   cert-manager-webhook-5f594df789-tcqfl      1/1     Running     0          20s
+```
+
+
+Make sure `cert-manager-webhook` is ready, or subsequent ClusterIssuer manifest will fail (Internal error occurred: failed calling webhook "webhook.cert-manager.io": failed to call webhook...). Just wait.
+
+
+Uninstall: `kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
+* error possibilities:
+  * terminating namespace: `kubectl delete apiservice v1beta1.webhook.cert-manager.io`
+  * pending challenge
+
+
+
+
+#### 2. Configure ClusterIssuer
+
+Let's Encrypt has production rate limit, so use staging issuer when figuring out configuration
+
+```
+# <env> / cert-manager-issuer.yml
+
+kind: ClusterIssuer
+...
+    solvers:
+        - http01:
+            ingress:
+              class: traefik
+```
+
+Apply:
+
+```
+kubectl apply -f staging/cert-manager-issuer.yml
+
+kubectl get clusterissuers
+
+NAME                  READY   AGE
+letsencrypt-staging   True    10s
+
+
+kubectl describe clusterissuer letsencrypt-staging
+
+```
+
+#### 3. Attach to ingress
+
+Attaching sets endpoints for Let's Encrypt to access, verify ownership and
+eventually issue cert.
+
+##### Configuration
+
+* add `metadata.annotations` block:
+
+```
+metadata
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+```
+
+* `spec` block:
+
+```
+spec
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - 311crimemap.com
+    # name of secret that contains the TLS certificate and private key for the hostname
+    secretName: 311crimemap-com-tls
+
+```
+
+##### Application
+
+```
+kubectl apply -f base/api/spring-api-ingress.yml
+
+# this can take some time
+
+kubectl get certificate
+
+# to figure out errors
+
+kubectl describe challenge
+kubectl describe order
+
+```
+
+The Staging cert will have a security warning, but you will see the organization
+as `(STAGING) Let's Encrypt.`
+
+Lifetime of cert is tied to secret, so don't need the management containers
+always running.
+
+##### Reissuing Cert
+
+* Valid cert eventually updates secret, (specified in `cert-manager-issuer.yml`)
+* To reissue delete the secret: `kubectl delete secret 311crimemap-com-tls`
+* restart cert process (spin up cert manager and cert issuer containers)
+
 
 ---
 
