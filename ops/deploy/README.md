@@ -29,10 +29,17 @@ configmap files (pgbackrest)
 ##### Certs
 
 * `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
-* wait until webhook error resolves
-* `kubectl apply -f staging/cert-manager-issuer.yml`
+  * wait until webhook error resolves (~ 1min)
+  * Verify: `kubectl get pods`
+* `kubectl apply -f production/cert-manager-issuer.yml`  # PRODUCTION
+  * `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
+    * Verify: `kubectl describe clusterissuer`
 * `kubectl apply -f base/api/spring-api-ingress.yml`
-* Verify: `kubectl get cert`
+  * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
+    * Intermediate steps:
+      * `kubectl describe orders`
+      * `kubectl describe challenges`
+
 
 ##### Deployments / Service
 
@@ -46,12 +53,30 @@ configmap files (pgbackrest)
 
 ---
 
+## Uninstall
+
+Typically do reverse of spinning up: `kubectl delete -f <thing>`
+
+#### Ingress / Deployments / Services
+  * api
+  * postgresql
+
+#### Certs
+  * cert-issuer
+  * cert-manager
+
+#### ConfigMap
+#### Secrets
+
+---
+
 
 ### Certs
 
 #### 1. Get Cert Manager:
 
-[Reference](https://cert-manager.io/docs/installation/kubectl/)
+[Reference:
+https://cert-manager.io/docs/installation/kubectl/](https://cert-manager.io/docs/installation/kubectl/)
 
 `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
 
@@ -77,7 +102,11 @@ Uninstall: `kubectl delete -f https://github.com/cert-manager/cert-manager/relea
 
 #### 2. Configure ClusterIssuer
 
-Let's Encrypt has production rate limit, so use staging issuer when figuring out configuration
+[Reference:
+https://cert-manager.io/docs/tutorials/acme/nginx-ingress/#step-5---deploy-cert-manager](https://cert-manager.io/docs/tutorials/acme/nginx-ingress/#step-5---deploy-cert-manager)
+
+Let's Encrypt has production rate limit, so use staging issuer when figuring out
+configuration
 
 ```
 # <env> / cert-manager-issuer.yml
