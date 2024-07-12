@@ -10,6 +10,7 @@ spec:
   tls:
   - hosts:
     - 311crimemap.com
+    - staging.311crimemap.com
     # NB: tls secret standalone persists without cert manager, issuer containers.
     # once validated secret will be updated and is good.
     #
