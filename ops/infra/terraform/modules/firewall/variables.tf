@@ -28,3 +28,23 @@ variable location_zone {
   }
   description = "location for instance and accompanying network_zone for network resource."
 }
+
+variable http_source_ips {
+  type = list(string)
+  description = "list of allowable ip ranges"
+  default =  [
+    "0.0.0.0/0",
+    "::/0",
+    "10.0.0.0/8"
+  ]
+}
+
+variable https_source_ips {
+  type = list(string)
+  description = "list of allowable ip ranges"
+  default =  [
+    "0.0.0.0/0",
+    "::/0",
+    "10.0.0.0/8"
+  ]
+}
