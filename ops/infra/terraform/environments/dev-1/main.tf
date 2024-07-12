@@ -20,6 +20,17 @@ module "firewall" {
     network_zone: "us-west"
   }
 
+  http_source_ips = [
+#    "0.0.0.0/0",
+#    "::/0",
+    "10.0.0.0/8"
+  ]
+
+  https_source_ips = [
+#    "0.0.0.0/0",
+#    "::/0",
+    "10.0.0.0/8"
+  ]
 }
 
 module "app-servers" {
@@ -45,6 +56,7 @@ module "app-servers" {
 
   additional_labels = {}
 
+  network_name = "network-${var.env}-${var.env_group}"
   firewall_id = module.firewall.hcloud_firewall_id
 }
 
