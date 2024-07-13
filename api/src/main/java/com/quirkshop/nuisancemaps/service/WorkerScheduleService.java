@@ -76,7 +76,7 @@ public class WorkerScheduleService {
         }
     }
 
-    @Scheduled(cron = "@daily")
+    //@Scheduled(cron = "@daily")
     public void createDailyDataJobs() throws UnsupportedEncodingException {
         log.info("[createDailyDataJob]");
         // HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
