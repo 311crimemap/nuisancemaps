@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +126,7 @@ public class DataServiceTest {
 
         // DataJob to crawl: replace job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(s, 1000, 100, "incident_report_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "incident_report_number");
         dataJobRepository.save(d);
 
         String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
@@ -146,7 +147,7 @@ public class DataServiceTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
         String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
@@ -167,7 +168,7 @@ public class DataServiceTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
         String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
@@ -197,7 +198,7 @@ public class DataServiceTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
         // dataService to create instances
@@ -224,7 +225,7 @@ public class DataServiceTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
         String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),

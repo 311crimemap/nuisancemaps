@@ -70,7 +70,8 @@ public class DataJob {
         this.updatedAt = now;
     }
 
-    public DataJob(Source source, int paramLimit, int paramOffset, String orderKey) {
+    public DataJob(LocalDateTime sessionId, Source source, int paramLimit, int paramOffset, String orderKey) {
+        this.sessionId = sessionId;
         this.source = source;
         this.paramLimit = paramLimit;
         this.paramOffset = paramOffset;
