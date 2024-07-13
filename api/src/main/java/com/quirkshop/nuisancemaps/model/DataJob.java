@@ -2,17 +2,13 @@ package com.quirkshop.nuisancemaps.model;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -44,6 +40,8 @@ public class DataJob {
     @ManyToOne
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
+
+    private LocalDateTime sessionId;
 
     @JsonIgnore
     @OneToMany(mappedBy = "dataJob", fetch = FetchType.LAZY)
@@ -213,6 +211,22 @@ public class DataJob {
 
     public void setNumFetched(Integer numFetched) {
         this.numFetched = numFetched;
+    }
+
+    public LocalDateTime getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(LocalDateTime sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public List<DataError> getDataErrors() {
+        return dataErrors;
+    }
+
+    public void setDataErrors(List<DataError> dataErrors) {
+        this.dataErrors = dataErrors;
     }
 
 }
