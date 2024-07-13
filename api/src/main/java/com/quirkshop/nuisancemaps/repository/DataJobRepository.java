@@ -29,12 +29,17 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     List<DataJob> findAllByOrderByUpdatedAtDesc(PageRequest n);
 
+    /* return highest offset job from most recent session per source */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    DataJob findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(Integer sourceId);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findTopBySourceIdOrderByParamOffsetDesc(Integer source_id);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findTopByStatusOrderByIdAsc(DataJobStatus status);
 
+    // "earliest" QUEUED job (regardless of source or session)
     @Transactional
     default DataJob getNextDataJob(DataJobStatus status) {
         DataJob dataJob = findTopByStatusOrderByIdAsc(status);
@@ -52,9 +57,12 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         DataJob dataJob;
 
         if (prevDataJob == null) {
-            dataJob = new DataJob(source, paramLimit, paramOffset, key);
+            // start new 'crawl' session
+            dataJob = new DataJob(LocalDateTime.now(), source, paramLimit, paramOffset, key);
         } else {
-            dataJob = new DataJob(source,
+            //next offset in same session
+            dataJob = new DataJob(prevDataJob.getSessionId(),
+                    source,
                     paramLimit,
                     paramOffset,
                     prevDataJob.getOrderKey());
@@ -67,8 +75,9 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     @Transactional
     default DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
+
         // NB: Locked
-        DataJob maxOffsetDataJob = findTopBySourceIdOrderByParamOffsetDesc(source.getId());
+        DataJob maxOffsetDataJob = findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
 
         // New Source job offset: 0
         if (maxOffsetDataJob == null) {
@@ -131,7 +140,8 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
         // If found last "COMPLETED" job; we create a copy of that job.
         // Our goal is to effectively "redo" the completed job. If there are
-        // updated or new records in that range, they will ingested.
+        // updated or new records in that range, they will be ingested.
+        // use case restarted worker
         DataJob nextJob = createNewDataJob(source,
                 paramLimit,
                 lastDataJob.getParamLimit(),

@@ -55,8 +55,8 @@ public class DataJobRepositoryTest {
     @Transactional
     public void findLastDataJobBySourceTest() {
 
-        DataJob datajob = new DataJob(source, 0, 0, "id");
-        DataJob datajob2 = new DataJob(source2, 0, 0, "id");
+        DataJob datajob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob datajob2 = new DataJob(LocalDateTime.now(), source2, 0, 0, "id");
         dataJobRepository.save(datajob);
         dataJobRepository.save(datajob2);
 
@@ -66,10 +66,10 @@ public class DataJobRepositoryTest {
 
     @Test
     @Transactional
-    public void findTopBySourceIdOrderByOffsetDescTest() {
+    public void findTopBySourceIdOrderByParamOffsetDescTest() {
 
-        DataJob datajob = new DataJob(source, 0, 0, "id");
-        DataJob datajob2 = new DataJob(source2, 0, 1000, "id");
+        DataJob datajob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob datajob2 = new DataJob(LocalDateTime.now(), source2, 0, 1000, "id");
         dataJobRepository.save(datajob);
         dataJobRepository.save(datajob2);
 
@@ -79,13 +79,41 @@ public class DataJobRepositoryTest {
 
     @Test
     @Transactional
+    public void findTopBySourceIdOrderBySessionIdDescParamOffsetDescTest() {
+
+        LocalDateTime sessionId = LocalDateTime.now();
+        DataJob datajob = new DataJob(sessionId, source, 0, 0, "id");
+        DataJob datajob2 = new DataJob(sessionId, source, 0, 100, "id");
+        DataJob datajob3 = new DataJob(sessionId.plusDays(1), source, 0, 200, "id");
+
+        DataJob datajob4 = new DataJob(sessionId.minusDays(1), source2, 0, 1000, "id");
+        DataJob datajob5 = new DataJob(sessionId.minusDays(1), source2, 0, 2000, "id");
+        DataJob datajob6 = new DataJob(sessionId, source2, 0, 1000, "id");
+
+        dataJobRepository.save(datajob);
+        dataJobRepository.save(datajob2);
+        dataJobRepository.save(datajob3);
+        dataJobRepository.save(datajob4);
+        dataJobRepository.save(datajob5);
+        dataJobRepository.save(datajob6);
+
+        DataJob res = dataJobRepository.findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
+        assertThat(res.getId()).isEqualTo(datajob3.getId());
+
+        DataJob res2 = dataJobRepository.findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source2.getId());
+        assertThat(res2.getId()).isEqualTo(datajob6.getId());
+
+    }
+
+    @Test
+    @Transactional
     public void updateAllIncompleteBeforeTest() {
 
-        DataJob datajob1 = new DataJob(source, 0, 0, "id");
-        DataJob datajob2 = new DataJob(source, 0, 1000, "id");
-        DataJob datajob3 = new DataJob(source, 0, 2000, "id");
-        DataJob datajob4 = new DataJob(source, 0, 3000, "id");
-        DataJob datajob5 = new DataJob(source, 0, 4000, "id");
+        DataJob datajob1 = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob datajob2 = new DataJob(LocalDateTime.now(), source, 0, 1000, "id");
+        DataJob datajob3 = new DataJob(LocalDateTime.now(), source, 0, 2000, "id");
+        DataJob datajob4 = new DataJob(LocalDateTime.now(), source, 0, 3000, "id");
+        DataJob datajob5 = new DataJob(LocalDateTime.now(), source, 0, 4000, "id");
 
         LocalDateTime aDayAgo = LocalDateTime.now().minusDays(1);
         LocalDateTime TwoDaysAgo = LocalDateTime.now().minusDays(2);
