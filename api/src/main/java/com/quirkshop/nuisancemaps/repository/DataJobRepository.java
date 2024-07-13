@@ -30,13 +30,10 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     List<DataJob> findAllByOrderByUpdatedAtDesc(PageRequest n);
 
     /* return highest offset job from most recent session per source */
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(Integer sourceId);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findTopBySourceIdOrderByParamOffsetDesc(Integer source_id);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findTopByStatusOrderByIdAsc(DataJobStatus status);
 
     // "earliest" QUEUED job (regardless of source or session)
@@ -60,7 +57,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
             // start new 'crawl' session
             dataJob = new DataJob(LocalDateTime.now(), source, paramLimit, paramOffset, key);
         } else {
-            //next offset in same session
+            // next offset in same session
             dataJob = new DataJob(prevDataJob.getSessionId(),
                     source,
                     paramLimit,
@@ -77,20 +74,26 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     default DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
 
         // NB: Locked
-        DataJob maxOffsetDataJob = findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
+        DataJob maxSessionIdOffsetDataJob = findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
 
-        // New Source job offset: 0
-        if (maxOffsetDataJob == null) {
+        // no job for source has ever existed, start fresh 0
+        if (maxSessionIdOffsetDataJob == null) {
             DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
             return newJob;
         }
 
-        // Create next job
-        if (maxOffsetDataJob.getParamOffset() + paramLimit < source.getNumRecords()) {
+        // numFetched null: have a Source DataJob but yet to fetch, or in mid-fetch
+        // we can wait until next round
+        if (maxSessionIdOffsetDataJob.getNumFetched() == null)
+            return null;
+
+        // != 0 - has fetched so continue fetching next set until we get 0 - know for
+        // sure we've reached the end.
+        if (maxSessionIdOffsetDataJob.getNumFetched() != 0) {
             DataJob nextJob = createNewDataJob(source,
                     paramLimit,
-                    maxOffsetDataJob.getParamOffset() + paramLimit,
-                    maxOffsetDataJob);
+                    maxSessionIdOffsetDataJob.getParamOffset() + paramLimit,
+                    maxSessionIdOffsetDataJob);
             return nextJob;
         }
 

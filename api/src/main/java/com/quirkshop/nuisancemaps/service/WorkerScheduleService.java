@@ -108,7 +108,7 @@ public class WorkerScheduleService {
         String currentThreadName = Thread.currentThread().getName();
         log.info("[checkDataJobQueue] " + currentThreadName);
 
-        // NB: lock
+        //GET / CREATE NEXT JOB
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
 
@@ -125,6 +125,7 @@ public class WorkerScheduleService {
 
         log.info(String.format("[Fetching] %s", logDetails));
 
+        //FETCH
         String json = dataJobRequestService.fetchJSON(datajob);
         if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
             log.info(String.format("[FetchError] %s", logDetails));
@@ -132,6 +133,7 @@ public class WorkerScheduleService {
             return;
         }
 
+        //CREATE RECORDS
         log.info(String.format("[FetchComplete] %s", logDetails));
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
