@@ -31,8 +31,10 @@ public class SecurityConfig {
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/categories"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/sources"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/sources"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/data*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/data*"));
+                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/data311s*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/data311s*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/datacrimes*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/datacrimes*"));
 
         NegatedRequestMatcher nRequestMatcher = new NegatedRequestMatcher(whiteList);
 
