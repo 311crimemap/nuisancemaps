@@ -18,6 +18,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -25,7 +26,10 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "data_job")
+@Table(name = "data_job", indexes = {
+        @Index(name = "idx_source_id_data_job", columnList = "source_id"),
+        @Index(name = "idx_session_id_data_job", columnList = "sessionId")
+})
 public class DataJob {
 
     // Each job sends request
