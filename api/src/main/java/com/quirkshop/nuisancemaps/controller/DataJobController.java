@@ -38,7 +38,7 @@ public class DataJobController {
     @Autowired
     SourceRepository sourceRepository;
 
-    private final int PARAM_LIMIT = 10000;
+    private final int PARAM_LIMIT = Integer.valueOf(System.getenv("WORKER_QUERY_LIMIT"));
 
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datajobs")
