@@ -47,6 +47,9 @@ spec:
             value: "8"
           - name: CORS_ORIGINS
             value: "*,http://localhost:5173,http://localhost:4173"
+          - name: WORKER_QUERY_LIMIT
+            value: "100000"
+
           ## probes
           # livenessProbe:
           #   httpGet:

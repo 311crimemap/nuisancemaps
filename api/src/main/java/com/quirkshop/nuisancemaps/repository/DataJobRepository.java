@@ -29,12 +29,14 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     List<DataJob> findAllByOrderByUpdatedAtDesc(PageRequest n);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    /* return highest offset job from most recent session per source */
+    DataJob findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(Integer sourceId);
+
     DataJob findTopBySourceIdOrderByParamOffsetDesc(Integer source_id);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findTopByStatusOrderByIdAsc(DataJobStatus status);
 
+    // "earliest" QUEUED job (regardless of source or session)
     @Transactional
     default DataJob getNextDataJob(DataJobStatus status) {
         DataJob dataJob = findTopByStatusOrderByIdAsc(status);
@@ -52,9 +54,12 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         DataJob dataJob;
 
         if (prevDataJob == null) {
-            dataJob = new DataJob(source, paramLimit, paramOffset, key);
+            // start new 'crawl' session
+            dataJob = new DataJob(LocalDateTime.now(), source, paramLimit, paramOffset, key);
         } else {
-            dataJob = new DataJob(source,
+            // next offset in same session
+            dataJob = new DataJob(prevDataJob.getSessionId(),
+                    source,
                     paramLimit,
                     paramOffset,
                     prevDataJob.getOrderKey());
@@ -67,21 +72,28 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     @Transactional
     default DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
-        // NB: Locked
-        DataJob maxOffsetDataJob = findTopBySourceIdOrderByParamOffsetDesc(source.getId());
 
-        // New Source job offset: 0
-        if (maxOffsetDataJob == null) {
+        // NB: Locked
+        DataJob maxSessionIdOffsetDataJob = findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
+
+        // no job for source has ever existed, start fresh 0
+        if (maxSessionIdOffsetDataJob == null) {
             DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
             return newJob;
         }
 
-        // Create next job
-        if (maxOffsetDataJob.getParamOffset() + paramLimit < source.getNumRecords()) {
+        // numFetched null: have a Source DataJob but yet to fetch, or in mid-fetch
+        // we can wait until next round
+        if (maxSessionIdOffsetDataJob.getNumFetched() == null)
+            return null;
+
+        // != 0 - has fetched so continue fetching next set until we get 0 - know for
+        // sure we've reached the end.
+        if (maxSessionIdOffsetDataJob.getNumFetched() != 0) {
             DataJob nextJob = createNewDataJob(source,
                     paramLimit,
-                    maxOffsetDataJob.getParamOffset() + paramLimit,
-                    maxOffsetDataJob);
+                    maxSessionIdOffsetDataJob.getParamOffset() + paramLimit,
+                    maxSessionIdOffsetDataJob);
             return nextJob;
         }
 
@@ -101,41 +113,4 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findLastDataJobBySource(Integer source_id);
 
-    @Transactional
-    default DataJob createLastDataJobBySource(Source source, Integer paramLimit, LocalDateTime cutOffTime)
-            throws UnsupportedEncodingException {
-
-        // NB: we don't want only the last COMPLETED job, otherwise we might
-        // repeatedly create duplicates of an existing next QUEUED job
-
-        // lock
-        DataJob lastDataJob = findLastDataJobBySource(source.getId());
-
-        // start from scratch initial crawl
-        if (lastDataJob == null) {
-            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
-            return newJob;
-        }
-
-        // last job is status "QUEUED" so don't create new tasks, leave everything
-        // as-is, to be picked up by scheduled task
-        if (lastDataJob.getStatus().equals(DataJobStatus.QUEUED)) {
-            return null;
-        }
-
-        // prevent duplicate jobs; if last job was created too recently, exit
-        // (e.g. multiple workers)
-        if (cutOffTime.isBefore(lastDataJob.getCreatedAt())) {
-            return null;
-        }
-
-        // If found last "COMPLETED" job; we create a copy of that job.
-        // Our goal is to effectively "redo" the completed job. If there are
-        // updated or new records in that range, they will ingested.
-        DataJob nextJob = createNewDataJob(source,
-                paramLimit,
-                lastDataJob.getParamLimit(),
-                lastDataJob);
-        return nextJob;
-    }
 }

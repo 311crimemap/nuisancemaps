@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 
@@ -31,7 +32,7 @@ public class DataJobTest {
         final int offset = 20000;
         final String order_key = "id";
 
-        DataJob d = new DataJob(s, limit, offset, order_key);
+        DataJob d = new DataJob(LocalDateTime.now(), s, limit, offset, order_key);
         String url = d.buildURL();
         final String select = d.buildURLFields(s.getMapping());
 
