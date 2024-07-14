@@ -22,6 +22,8 @@ public class DataCrimeController {
     @Autowired
     DataCrimeRepository dataCrimeRepository;
 
+    private static final int MAX_LIMIT = Integer.parseInt(System.getenv("MAX_DATA_RECORDS"));
+
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datacrimes")
     public List<DataCrime> getIndex(
@@ -53,8 +55,6 @@ public class DataCrimeController {
             @RequestParam(name = "ne_lat", required = false) Optional<String> ne_lat,
             @RequestParam(name = "ne_lng", required = false) Optional<String> ne_lng,
             @RequestParam(name = "limit", required = false) Optional<Integer> limit) {
-
-        final int MAX_LIMIT = 1000;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm");
 
