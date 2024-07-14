@@ -47,60 +47,13 @@ public class WorkerScheduleService {
 
     @PostConstruct // method called once after beans all loaded
     public void initialize() throws UnsupportedEncodingException {
-
         // init seed
-        if (dataJobRepository.count() == 0) {
-            log.info("Initial Seed Jobs");
-            createDailyDataJobs();
-        }
+        log.info("Init");
     }
 
     /*
      * SCHEDULED TASKS
      */
-
-    @Scheduled(cron = "@daily")
-    public void fetchAndUpdateNumSourceRecords() {
-
-        Iterable<Source> sources = sourceRepository.findAll();
-
-        for (Source source : sources) {
-
-            // NB: Single Lock
-            LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
-            boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source, nowMinusHours);
-            if (!needsUpdate)
-                continue;
-
-            updateSourceNumRecords(source);
-        }
-    }
-
-    //@Scheduled(cron = "@daily")
-    public void createDailyDataJobs() throws UnsupportedEncodingException {
-        log.info("[createDailyDataJob]");
-        // HashMap<Integer, Source> sourceMap = sourceLoaderService.getSourceMap();
-        Iterable<Source> sources = sourceRepository.findAll();
-
-        for (Source source : sources) {
-
-            // find the last dataJob: a previous empty result (DataJobStatus.COMPLETED), or
-            // latest queued job (DataJobStatus.QUEUED)
-            //
-            // This is slightly different from createNewJobs(): we want to redo the last job
-            // parameter offset because new records could be added the next day that are
-            // still within the
-            // same fetch range
-            LocalDateTime cutOffTime = LocalDateTime.now().minusHours(3);
-            DataJob datajob = dataJobRepository.createLastDataJobBySource(source, PARAM_LIMIT, cutOffTime);
-            if (datajob == null)
-                return;
-
-            String dailyJob = String.format("[createDailyDataJob] id: %s | category: %s | offset %s",
-                    source.getSourceConfigId(), source.getCategory(), datajob.getParamOffset());
-            log.info(dailyJob);
-        }
-    }
 
     @Async("asyncExecutor")
     @Scheduled(fixedDelay = 2000, initialDelay = 3000)
@@ -155,6 +108,11 @@ public class WorkerScheduleService {
         String logDone = String.format("[checkDataJobQueue] %s | Done: %s | fetched: %s | processed: %s",
                 currentThreadName, datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
         log.info(logDone);
+
+        // Fetch Num records on initial session
+        if (datajob.getParamOffset() == 0) {
+            updateSourceNumRecords(source);
+        }
     }
 
     public void createNewJobs() throws UnsupportedEncodingException {
@@ -163,7 +121,6 @@ public class WorkerScheduleService {
 
         for (Source source : sources) {
 
-            // NB: lock
             DataJob nextJob = dataJobRepository.createNextDataJob(source, PARAM_LIMIT);
             if (nextJob == null)
                 continue;
@@ -171,6 +128,19 @@ public class WorkerScheduleService {
             log.info("[createNewJobs] next job: " + nextJob.getUrl());
         }
 
+    }
+
+
+    /*
+     * Source numRecords
+     */
+
+    public void fetchAndUpdateNumSourceRecords(Source source) {
+        LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
+        boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source, nowMinusHours);
+        if (!needsUpdate) return;
+
+        updateSourceNumRecords(source);
     }
 
     public void updateSourceNumRecords(Source source) {

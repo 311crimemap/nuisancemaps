@@ -113,42 +113,4 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findLastDataJobBySource(Integer source_id);
 
-    @Transactional
-    default DataJob createLastDataJobBySource(Source source, Integer paramLimit, LocalDateTime cutOffTime)
-            throws UnsupportedEncodingException {
-
-        // NB: we don't want only the last COMPLETED job, otherwise we might
-        // repeatedly create duplicates of an existing next QUEUED job
-
-        // lock
-        DataJob lastDataJob = findLastDataJobBySource(source.getId());
-
-        // start from scratch initial crawl
-        if (lastDataJob == null) {
-            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
-            return newJob;
-        }
-
-        // last job is status "QUEUED" so don't create new tasks, leave everything
-        // as-is, to be picked up by scheduled task
-        if (lastDataJob.getStatus().equals(DataJobStatus.QUEUED)) {
-            return null;
-        }
-
-        // prevent duplicate jobs; if last job was created too recently, exit
-        // (e.g. multiple workers)
-        if (cutOffTime.isBefore(lastDataJob.getCreatedAt())) {
-            return null;
-        }
-
-        // If found last "COMPLETED" job; we create a copy of that job.
-        // Our goal is to effectively "redo" the completed job. If there are
-        // updated or new records in that range, they will be ingested.
-        // use case restarted worker
-        DataJob nextJob = createNewDataJob(source,
-                paramLimit,
-                lastDataJob.getParamLimit(),
-                lastDataJob);
-        return nextJob;
-    }
 }
