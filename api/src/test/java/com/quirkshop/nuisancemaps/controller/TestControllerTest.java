@@ -26,10 +26,47 @@ public class TestControllerTest {
 	@Autowired
 	private MockMvc mvc; //send HTTP requests into the DispatcherServlet and make assertions about the result.
 
-	@Test
-	public void getHello() throws Exception {
-	    mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(content().json("{ 'id': 1, 'name': 'hello'}"));
-	}
+    @Test
+    public void getForbidden() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string("Invalid API Key"));
+    }
+
+    @Test
+    public void getOpenRouteInit() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/init").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void getOpenRouteCategories() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void getOpenRouteSources() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/sources").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void getOpenRouteDataCrimes() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/datacrimes.geojson?limit=10").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+
+    @Test
+    public void getOpenRouteData311s() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/data311s.geojson?limit=10").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
 }

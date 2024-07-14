@@ -2,17 +2,13 @@ package com.quirkshop.nuisancemaps.model;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -22,6 +18,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -29,7 +26,10 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "data_job")
+@Table(name = "data_job", indexes = {
+        @Index(name = "idx_source_id_data_job", columnList = "source_id"),
+        @Index(name = "idx_session_id_data_job", columnList = "sessionId")
+})
 public class DataJob {
 
     // Each job sends request
@@ -44,6 +44,8 @@ public class DataJob {
     @ManyToOne
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
+
+    private LocalDateTime sessionId;
 
     @JsonIgnore
     @OneToMany(mappedBy = "dataJob", fetch = FetchType.LAZY)
@@ -72,7 +74,8 @@ public class DataJob {
         this.updatedAt = now;
     }
 
-    public DataJob(Source source, int paramLimit, int paramOffset, String orderKey) {
+    public DataJob(LocalDateTime sessionId, Source source, int paramLimit, int paramOffset, String orderKey) {
+        this.sessionId = sessionId;
         this.source = source;
         this.paramLimit = paramLimit;
         this.paramOffset = paramOffset;
@@ -213,6 +216,22 @@ public class DataJob {
 
     public void setNumFetched(Integer numFetched) {
         this.numFetched = numFetched;
+    }
+
+    public LocalDateTime getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(LocalDateTime sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public List<DataError> getDataErrors() {
+        return dataErrors;
+    }
+
+    public void setDataErrors(List<DataError> dataErrors) {
+        this.dataErrors = dataErrors;
     }
 
 }

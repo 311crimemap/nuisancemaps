@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.util.FileCopyUtils;
@@ -76,7 +77,7 @@ public class DataJobRequestServiceTest {
         when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
 
         // DataJob
-        DataJob datajob = new DataJob(s, 100, 50, "id");
+        DataJob datajob = new DataJob(LocalDateTime.now(), s, 100, 50, "id");
         datajob.buildURL();
         assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
