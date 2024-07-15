@@ -5,7 +5,7 @@ import ErrorPage from "./error-page";
 import Navbar from "./Navbar.tsx";
 import App from "./App.tsx";
 import Cities from "./Cities.tsx";
-import About from "./About.tsx";
+import About from "./pages/about/index.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
