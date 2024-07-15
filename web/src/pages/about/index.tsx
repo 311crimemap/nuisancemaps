@@ -21,11 +21,11 @@ export default function About() {
         </div>
 
         <div id="content" className="sm:ml-60 sm:mt-6 w-full p-4">
+
           <Description />
           <hr />
 
           <Terms />
-
           <hr />
 
           <Privacy />

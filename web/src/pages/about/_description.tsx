@@ -1,16 +1,22 @@
 export default function Description() {
-    return(
-        <div>
-            {/* TODO: responsive anchor offset, wait contenet */}
-            <a id="311CrimeMap" className="block relative invisible -top-64"></a>
-            <h2>311 Crime Map</h2>
+  return (
+    <div>
+      <a id="311CrimeMap" className="block relative invisible -top-64"></a>
+      <h2>About</h2>
 
-            <p>This is a project</p>
+      <p>
+        311 Crime Map displays historical 311 requests and police incident
+        reports across select cities.
+      </p>
 
-            <p>Contact</p>
+      <p>
+        311 and crime data are directly aggregated from municipal data feeds
+        sourced from various law enforcement agencies. These disparate report
+        details are classified and grouped into categories to allow filtered
+        browsing.
+      </p>
 
-
-        </div>
-    )
-
+      <p>This is a side project with demo code available.</p>
+    </div>
+  );
 }
