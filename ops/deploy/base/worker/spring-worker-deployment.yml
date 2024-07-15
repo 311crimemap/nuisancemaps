@@ -46,6 +46,8 @@ spec:
             value: "8"
           - name: WORKER_QUERY_LIMIT
             value: "100000"
+          - name: MAX_DATA_RECORDS
+            value: "10000"
 
           # # probes
           # livenessProbe:

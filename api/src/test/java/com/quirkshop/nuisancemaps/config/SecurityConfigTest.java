@@ -1,4 +1,4 @@
-package com.quirkshop.nuisancemaps.controller;
+package com.quirkshop.nuisancemaps.config;
 
 //Annotations
 import org.junit.jupiter.api.Test; //@Test
@@ -8,23 +8,23 @@ import org.springframework.boot.test.context.SpringBootTest; //@SpringBootTest
 
 //Mock classes
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc; 
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 
 //mock value methods
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;  //status()
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status; //status()
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content; //content()
 //import static org.hamcrest.Matchers.equalTo; //equalTo(operand:....)
 
-
 @SpringBootTest(classes = NuisancemapsApplication.class)
-@AutoConfigureMockMvc  //these anotations inject MockMvc instance into test
-public class TestControllerTest {
+@AutoConfigureMockMvc // these anotations inject MockMvc instance into test
+public class SecurityConfigTest {
 
-	@Autowired
-	private MockMvc mvc; //send HTTP requests into the DispatcherServlet and make assertions about the result.
+    @Autowired
+    private MockMvc mvc; // send HTTP requests into the DispatcherServlet and make assertions about the
+                         // result.
 
     @Test
     public void getForbidden() throws Exception {
@@ -60,7 +60,6 @@ public class TestControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
-
 
     @Test
     public void getOpenRouteData311s() throws Exception {
