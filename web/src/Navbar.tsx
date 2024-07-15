@@ -5,7 +5,7 @@ export default function Navbar() {
     <nav data-theme="dracula" className="navbar bg-base-100">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
-          Nuisance Map
+          311 Crime Map
         </Link>
       </div>
       <div className="flex-none">
