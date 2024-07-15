@@ -202,16 +202,18 @@ function App() {
 
   return (
     <>
-      <ControlBar
-        map={map}
-        mapController={mapController}
-        DATASOURCES={DATASOURCES}
-        setActiveFeatureList={setActiveFeatureList}
-        activeCategories={activeCategories}
-        activeCategoriesDispatcher={activeCategoriesDispatcher}
-        filterDate={filterDate}
-        filterDateDispatcher={filterDateDispatcher}
-      />
+      <div className="mt-16">
+        <ControlBar
+          map={map}
+          mapController={mapController}
+          DATASOURCES={DATASOURCES}
+          setActiveFeatureList={setActiveFeatureList}
+          activeCategories={activeCategories}
+          activeCategoriesDispatcher={activeCategoriesDispatcher}
+          filterDate={filterDate}
+          filterDateDispatcher={filterDateDispatcher}
+        />
+      </div>
 
       <div id="container">
         <MapComponent
