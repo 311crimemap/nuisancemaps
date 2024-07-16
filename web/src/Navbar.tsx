@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav data-theme="dracula" className="navbar bg-base-100">
+    <nav data-theme="dracula" className="navbar bg-base-100 fixed">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
           311 Crime Map
