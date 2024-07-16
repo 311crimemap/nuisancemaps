@@ -119,6 +119,9 @@ public class DataJobController {
     // restart all non completes
     @GetMapping("/datajobs/restart")
     public ResponseEntity<?> restartNonCompleted() {
+
+        // Restart all jobs not QUEUED / COMPLETED that were updated within the day
+        // goal is to restart recent jobs that might have not finished due to worker crash/ shutdown
         List<DataJobStatus> excludedStatuses = Arrays.asList(DataJobStatus.QUEUED, DataJobStatus.COMPLETED);
         LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
 
