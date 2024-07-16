@@ -9,7 +9,7 @@ export default function About() {
         <div id="menu" className="sm:mt-8 pr-4">
           <ul className="fixed menu menu-xs menu-horizontal sm:menu-sm sm:menu-vertical bg-base-200 w-full sm:w-56">
             <li>
-              <a href="#311CrimeMap">311 Crime Map</a>
+              <a href="#311CrimeMap">About</a>
             </li>
             <li>
               <a href="#terms">Terms of Service</a>
