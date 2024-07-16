@@ -56,13 +56,13 @@ public class WorkerScheduleService {
     @Scheduled(fixedDelay = 2000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         String currentThreadName = Thread.currentThread().getName();
-        log.info("[checkDataJobQueue] " + currentThreadName);
+        //log.info("[checkDataJobQueue] " + currentThreadName);
 
         // GET / CREATE NEXT JOB
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
 
-            log.info("No Jobs Queued");
+            //log.info("No Jobs Queued");
             createNewJobs();
             return;
         }
