@@ -47,6 +47,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         return dataJob;
     }
 
+    @Transactional
     default DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
             throws UnsupportedEncodingException {
 
