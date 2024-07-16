@@ -165,8 +165,40 @@ public class DataService {
                 report_nums.add(report_num);
                 numBuilt++;
 
+            } catch(MissingCoordinateException e) {
+                String logStr = String.format("[DataService] MissingCoordinate error: %s | id: %s",
+                        source.getDescription(), source.getId());
+
+                log.info(logStr);
+                sw.getBuffer().setLength(0);
+                e.printStackTrace(pw);
+
+                String content = StringUtils.substring(responseObject.toString(), 0, 4096);
+
+                log.info(content);
+
+            } catch (MissingCategoryException e) {
+                String logStr = String.format("[DataService] MissingCategory error: %s | id: %s",
+                        source.getDescription(), source.getId());
+
+                log.info(logStr);
+                errors++;
+                sw.getBuffer().setLength(0);
+                e.printStackTrace(pw);
+
+                String error_msg = StringUtils.substring(sw.toString(), 0, 4096);
+                String content = StringUtils.substring(responseObject.toString(), 0, 4096);
+
+                DataError dataError = new DataError(dataJob, content, error_msg);
+                dataErrorRepository.save(dataError);
+
+                log.info(content);
+
             } catch (Exception e) {
-                log.info("[DataService] createDataEntities error");
+                String logStr = String.format("[DataService] createDataEntities error: %s | id: %s",
+                        source.getDescription(), source.getId());
+
+                log.info(logStr);
                 errors++;
                 // e.printStackTrace appends to sw
                 // so only want most recent error
@@ -187,7 +219,8 @@ public class DataService {
         }
 
         // query any existing
-        List<IDataEntity> existing = dataEntityRepository.findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
+        List<IDataEntity> existing = dataEntityRepository
+            .findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
 
         // replace existing with new
         for (IDataEntity dataEntityDB : existing) {
