@@ -103,13 +103,6 @@ public class DataService {
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
 
-        // if 0 but not last of dataset, something awry
-        if (numFetched == 0 &&
-                (dataJob.getParamOffset() + dataJob.getParamLimit() >= source.getNumRecords())) {
-            dataJob.setStatus(DataJobStatus.ERROR);
-            return;
-        }
-
         setTypes(source);
 
         createDataEntities(dataJob, source, responseList, geometryFactory, sw, pw);

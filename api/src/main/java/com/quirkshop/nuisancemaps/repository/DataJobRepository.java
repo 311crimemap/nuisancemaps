@@ -98,7 +98,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
             return nextJob;
         }
 
-        // all caught up - no new jobs
+        // all caught up, last job had num_fetched == 0 -> no new jobs
         return null;
     }
 
