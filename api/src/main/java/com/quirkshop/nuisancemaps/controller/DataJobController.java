@@ -107,7 +107,7 @@ public class DataJobController {
         }
 
         try {
-            dataJob = dataJobRepository.createNewDataJob(source, 0, PARAM_LIMIT, null);
+            dataJob = dataJobRepository.createNewDataJob(source, PARAM_LIMIT, 0, null);
         } catch (UnsupportedEncodingException e) {
             response.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -119,6 +119,9 @@ public class DataJobController {
     // restart all non completes
     @GetMapping("/datajobs/restart")
     public ResponseEntity<?> restartNonCompleted() {
+
+        // Restart all jobs not QUEUED / COMPLETED that were updated within the day
+        // goal is to restart recent jobs that might have not finished due to worker crash/ shutdown
         List<DataJobStatus> excludedStatuses = Arrays.asList(DataJobStatus.QUEUED, DataJobStatus.COMPLETED);
         LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
 
