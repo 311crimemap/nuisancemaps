@@ -5,14 +5,14 @@ import Privacy from "./_privacy";
 export default function About() {
   return (
     <div className="container mx-auto mt-16">
-      <div className="flex flex-col sm:flex-row py-1">
-        <div id="menu" className="sm:fixed sm:mt-8 w-full">
-          <ul className="menu menu-xs menu-horizontal sm:menu-sm sm:menu-vertical bg-base-200 w-full sm:w-56">
+      <div className="flex flex-col sm:flex-row py-1 justify-center">
+        <div id="menu" className="sm:mt-8 pr-4">
+          <ul className="fixed menu menu-xs menu-horizontal sm:menu-sm sm:menu-vertical bg-base-200 w-full sm:w-56">
             <li>
               <a href="#311CrimeMap">311 Crime Map</a>
             </li>
             <li>
-              <a href="#terms">Terms and Conditions</a>
+              <a href="#terms">Terms of Service</a>
             </li>
             <li>
               <a href="#privacy">Privacy Policy</a>
@@ -20,13 +20,12 @@ export default function About() {
           </ul>
         </div>
 
-        <div id="content" className="sm:ml-60 sm:mt-6 w-full p-4">
-
+        <div id="content" className="sm:ml-60 px-4 mt-6 sm:-mt-2">
           <Description />
-          <hr />
+          <div className="divider"></div>
 
           <Terms />
-          <hr />
+          <div className="divider"></div>
 
           <Privacy />
         </div>

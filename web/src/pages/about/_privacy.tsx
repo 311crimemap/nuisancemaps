@@ -1,7 +1,8 @@
 /* Generated via Termly.io */
 export default function Privacy() {
   return (
-    <div id="privacy">
+    <article  className="prose">
+      <a id="privacy"  className="block relative invisible -top-28"></a>
       <h2> Privacy Policy </h2>
 
       <p>
@@ -232,6 +233,6 @@ export default function Privacy() {
         review, update, or delete your personal information, please fill out and
         submit a data subject access request.
       </p>
-    </div>
+    </article>
   );
 }
