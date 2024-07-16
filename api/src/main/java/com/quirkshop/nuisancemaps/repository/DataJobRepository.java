@@ -47,6 +47,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         return dataJob;
     }
 
+    @Transactional
     default DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
             throws UnsupportedEncodingException {
 
@@ -97,7 +98,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
             return nextJob;
         }
 
-        // all caught up - no new jobs
+        // all caught up, last job had num_fetched == 0 -> no new jobs
         return null;
     }
 
@@ -105,7 +106,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     // but is allowed in queries (e.g. where)
     @Transactional
     @Modifying
-    @Query("UPDATE DataJob SET status = :status, updatedAt = :updatedAt WHERE status NOT IN :statuses AND updatedAt <= :cutOffTime")
+    @Query("UPDATE DataJob SET status = :status, updatedAt = :updatedAt WHERE status NOT IN :statuses AND updatedAt >= :cutOffTime")
     int updateAllIncompleteToQueuedBefore(DataJobStatus status, LocalDateTime updatedAt,
             List<DataJobStatus> statuses, LocalDateTime cutOffTime);
 

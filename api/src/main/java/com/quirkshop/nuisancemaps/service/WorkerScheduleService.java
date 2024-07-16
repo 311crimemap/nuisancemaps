@@ -3,9 +3,6 @@ package com.quirkshop.nuisancemaps.service;
 import java.lang.Thread;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,13 +56,13 @@ public class WorkerScheduleService {
     @Scheduled(fixedDelay = 2000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         String currentThreadName = Thread.currentThread().getName();
-        log.info("[checkDataJobQueue] " + currentThreadName);
+        //log.info("[checkDataJobQueue] " + currentThreadName);
 
-        //GET / CREATE NEXT JOB
+        // GET / CREATE NEXT JOB
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
 
-            log.info("No Jobs Queued");
+            //log.info("No Jobs Queued");
             createNewJobs();
             return;
         }
@@ -78,7 +75,7 @@ public class WorkerScheduleService {
 
         log.info(String.format("[Fetching] %s", logDetails));
 
-        //FETCH
+        // FETCH
         String json = dataJobRequestService.fetchJSON(datajob);
         if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
             log.info(String.format("[FetchError] %s", logDetails));
@@ -86,7 +83,7 @@ public class WorkerScheduleService {
             return;
         }
 
-        //CREATE RECORDS
+        // CREATE RECORDS
         log.info(String.format("[FetchComplete] %s", logDetails));
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
@@ -125,11 +122,14 @@ public class WorkerScheduleService {
             if (nextJob == null)
                 continue;
 
-            log.info("[createNewJobs] next job: " + nextJob.getUrl());
+            String logStr = String.format("[createNewJobs] param limit: %s | next job: %s",
+                    PARAM_LIMIT,
+                    nextJob.getUrl());
+
+            log.info(logStr);
         }
 
     }
-
 
     /*
      * Source numRecords
@@ -138,7 +138,8 @@ public class WorkerScheduleService {
     public void fetchAndUpdateNumSourceRecords(Source source) {
         LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
         boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source, nowMinusHours);
-        if (!needsUpdate) return;
+        if (!needsUpdate)
+            return;
 
         updateSourceNumRecords(source);
     }
