@@ -97,7 +97,7 @@ public class SourceRepositoryTest {
         //ensure mapping is intact
         assertThat(s).isInstanceOf(Source.class);
         Mapping m = s.getMapping();
-        assertThat(m.getReportNum()).isEqualTo("incident_report_number");
+        assertThat(m.getReportNum()).isEqualTo("/incident_report_number");
     }
 
 }

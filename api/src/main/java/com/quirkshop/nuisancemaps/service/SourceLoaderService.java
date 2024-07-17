@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -63,24 +64,17 @@ public class SourceLoaderService {
         if (id == null)
             return null;
 
+        //replace for field name vs json path
+        id = id.replaceFirst("/", "");
         String jsonResponse;
-        List<Map<String, Object>> responseList = new ArrayList<Map<String, Object>>();
+        JsonNode rootNode = null;
 
         try {
             String url = buildCountURL(sourceURL, id);
             jsonResponse = restTemplate.getForObject(url, String.class);
-            responseList = objectMapper.readValue(jsonResponse, new TypeReference<List<Map<String, Object>>>() {
-            });
-        } catch (RestClientException e) {
-            e.printStackTrace();
-            return null;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-            return null;
-        } catch (JsonProcessingException e) {
+            rootNode = objectMapper.readTree(jsonResponse);
+
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -89,8 +83,8 @@ public class SourceLoaderService {
         Integer numRecords = null;
 
         try {
-            Map<String, Object> responseObject = responseList.get(0);
-            numRecords = Integer.parseInt(responseObject.get(RESPONSE_PREFIX + id).toString());
+            JsonNode node = rootNode.get(0);
+            numRecords = node.at("/" + RESPONSE_PREFIX + id).asInt();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,7 +94,7 @@ public class SourceLoaderService {
 
     public String buildCountURL(String sourceURL, String id) throws UnsupportedEncodingException {
         // 'https://data.austintexas.gov/resource/xwdj-i9he.json?$select=count(sr_number)'
-        String countIdString = String.format("count('%s')", id);
+        String countIdString = String.format("count('%s')", id.replaceFirst("/", ""));
         String url = UriComponentsBuilder.fromUriString(sourceURL)
                 .queryParam("$select", countIdString)
                 .build()
