@@ -40,49 +40,7 @@ public class DataServiceParseTest {
 
     @Test
     @Transactional
-    public void parseDataNested() throws IOException {
-
-        Resource jsonResource = resourceLoader.getResource("classpath:data/crime-dallas.json");
-        Source source = new Source();
-        DataJob dataJob = new DataJob();
-
-        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-                StandardCharsets.UTF_8);
-
-        List<Map<String, Object>> responseList = dataService.parseData(source, dataJob, jsonResponse);
-
-        // NB: asText returns "" empty string, or what is set as defaultValue (null)
-        for (Map<String, Object> responseObject : responseList) {
-
-            // get nested object
-            // Map<String, Object> responseObject = responseList.get(0);
-            Map<String, Object> geoCodedColumnObject = (Map<String, Object>) responseObject.get("geocoded_column");
-
-            if (geoCodedColumnObject == null) {
-
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonString = mapper.writeValueAsString(responseObject);
-                JsonNode rootNode = mapper.readTree(jsonString);
-                JsonNode latitudeNode = rootNode.at("/geocoded_column/latitude");
-                assertThat(latitudeNode.asText(null)).isNull();
-
-                continue;
-            }
-
-            // Test nested parsing
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonString = mapper.writeValueAsString(responseObject);
-            JsonNode rootNode = mapper.readTree(jsonString);
-            JsonNode latitudeNode = rootNode.at("/geocoded_column/latitude");
-
-            assertThat(geoCodedColumnObject.get("latitude")).isEqualTo(latitudeNode.asText(null));
-        }
-
-    }
-
-    @Test
-    @Transactional
-    public void parseDataList() throws IOException {
+    public void parseDataNestedList() throws IOException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/crime-dallas.json");
 
