@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
@@ -68,28 +69,22 @@ public class DataService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public List<Map<String, Object>> parseData(Source source, DataJob dataJob, String jsonResponse) {
+    public JsonNode parseData(Source source, DataJob dataJob, String jsonResponse) {
 
-        List<Map<String, Object>> responseList = null;
+        JsonNode rootNode = null;
 
         try {
-            responseList = objectMapper.readValue(jsonResponse,
-                    new TypeReference<List<Map<String, Object>>>() {
-                    });
-        } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            ObjectMapper mapper = new ObjectMapper();
+            rootNode = mapper.readTree(jsonResponse);
         } catch (Exception e) {
             log.info("[CreateData] Parsing Error");
             e.printStackTrace();
             dataJob.setStatus(DataJobStatus.PARSE_ERROR);
         }
 
-        return responseList;
+        return rootNode;
     }
+
 
     public void createData(Source source, DataJob dataJob, String jsonResponse) {
 
@@ -97,15 +92,16 @@ public class DataService {
         PrintWriter pw = new PrintWriter(sw);
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
 
-        List<Map<String, Object>> responseList = parseData(source, dataJob, jsonResponse);
-        int numFetched = responseList == null ? 0 : responseList.size();
+        //List<Map<String, Object>> responseList = parseData(source, dataJob, jsonResponse);
+        JsonNode rootNode = parseData(source, dataJob, jsonResponse);
+        int numFetched = rootNode == null ? 0 : rootNode.size();
         dataJob.setNumFetched(numFetched);
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
 
         setTypes(source);
 
-        createDataEntities(dataJob, source, responseList, geometryFactory, sw, pw);
+        createDataEntities(dataJob, source, rootNode, geometryFactory, sw, pw);
     }
 
     public void setTypes(Source source) {
@@ -123,7 +119,7 @@ public class DataService {
         }
     }
 
-    public void createDataEntities(DataJob dataJob, Source source, List<Map<String, Object>> responseList,
+    public void createDataEntities(DataJob dataJob, Source source, JsonNode rootNode,
             GeometryFactory geometryFactory, StringWriter sw, PrintWriter pw) {
         int numFetched = 0;
         int numSkipped = 0;
@@ -134,17 +130,17 @@ public class DataService {
         // build parseMap
         Mapping mapping = source.getMapping();
         HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
-        List<String> report_nums = new ArrayList<String>(responseList.size());
+        List<String> report_nums = new ArrayList<String>(rootNode.size());
 
         // refresh lookups TextCategoryIdMap
         textCategoryService.refreshTextCategoryIdMap();
 
-        for (Map<String, Object> responseObject : responseList) {
+        for (JsonNode item : rootNode) {
 
             try {
-                String report_num = responseObject.get(mapping.getReportNum()).toString();
+                String report_num = item.at(mapping.getReportNum()).toString();
 
-                IDataEntity dataEntity = buildDataEntity(source, responseObject, geometryFactory);
+                IDataEntity dataEntity = buildDataEntity(source, item, geometryFactory);
                 // skip case
                 Category orgCategory = dataEntity.getOrgCategory();
                 if (orgCategory != null &&
@@ -166,7 +162,7 @@ public class DataService {
                 sw.getBuffer().setLength(0);
                 e.printStackTrace(pw);
 
-                String content = StringUtils.substring(responseObject.toString(), 0, 4096);
+                String content = StringUtils.substring(item.toString(), 0, 4096);
 
                 log.info(content);
 
@@ -180,7 +176,7 @@ public class DataService {
                 e.printStackTrace(pw);
 
                 String error_msg = StringUtils.substring(sw.toString(), 0, 4096);
-                String content = StringUtils.substring(responseObject.toString(), 0, 4096);
+                String content = StringUtils.substring(item.toString(), 0, 4096);
 
                 DataError dataError = new DataError(dataJob, content, error_msg);
                 dataErrorRepository.save(dataError);
@@ -199,7 +195,7 @@ public class DataService {
                 e.printStackTrace(pw);
 
                 String error_msg = StringUtils.substring(sw.toString(), 0, 4096);
-                String content = StringUtils.substring(responseObject.toString(), 0, 4096);
+                String content = StringUtils.substring(item.toString(), 0, 4096);
 
                 DataError dataError = new DataError(dataJob, content, error_msg);
                 dataErrorRepository.save(dataError);
@@ -257,20 +253,19 @@ public class DataService {
         log.info(logStats);
     }
 
-    public IDataEntity buildDataEntity(Source source, Map<String, Object> responseObject,
-            GeometryFactory geometryFactory)
+    public IDataEntity buildDataEntity(Source source, JsonNode item, GeometryFactory geometryFactory)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
             MissingCategoryException, MissingCoordinateException {
 
         Mapping mapping = source.getMapping();
-        String report_num = responseObject.get(mapping.getReportNum()).toString();
-        String reportCategory = responseObject.get(mapping.getReportCategory()).toString();
-        String description = responseObject.getOrDefault(mapping.getDescription(), "").toString();
-        String location = responseObject.getOrDefault(mapping.getLocation(), "").toString();
-        String lat = responseObject.getOrDefault(mapping.getLatitude(), "").toString();
-        String lng = responseObject.getOrDefault(mapping.getLongitude(), "").toString();
-        String reported_at1 = responseObject.getOrDefault(mapping.getReportedAt(), "").toString();
-        String reported_at2 = responseObject.getOrDefault(mapping.getReportedAt2(), "").toString();
+        String report_num = item.at(mapping.getReportNum()).asText();
+        String reportCategory = item.at(mapping.getReportCategory()).asText();
+        String description = item.at(mapping.getDescription()).asText();
+        String location = item.at(mapping.getLocation()).asText();
+        String lat = item.at(mapping.getLatitude()).asText();
+        String lng = item.at(mapping.getLongitude()).asText();
+        String reported_at1 = item.at(mapping.getReportedAt()).asText();
+        String reported_at2 = item.at(mapping.getReportedAt2()).asText();
 
         Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
         Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);
@@ -287,13 +282,7 @@ public class DataService {
                     source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
                     source.getUrl());
             throw new MissingCoordinateException(errString);
-
         }
-
-        LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
-                : LocalDateTime.parse(reported_at1);
-
-        IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
         // categories clarification
         // source.category: crime / 311 / etc
@@ -306,6 +295,11 @@ public class DataService {
                     source.getUrl());
             throw new MissingCategoryException(errString);
         }
+
+        LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
+                : LocalDateTime.parse(reported_at1);
+
+        IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
         dataEntity.setReportNum(report_num);
         dataEntity.setReportCategory(reportCategory);
