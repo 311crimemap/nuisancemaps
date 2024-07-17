@@ -18,6 +18,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.FileCopyUtils;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
@@ -193,8 +195,8 @@ public class DataServiceTest {
         Source s = sourceRepository.findOneBySourceConfigId(1);
 
         // trigger error with missing fields
-        String jsonResponse = "[{ \"sr_missing_all_fields\": true}, { \"sr_missing_all_fields\": true}]";
-        String objectMapperResponse = "{sr_missing_all_fields=true}";
+        String jsonResponse = "[{ \"sr_missing_all_fields\": true, \"latitude\": 123, \"longitude\": 456}, { \"sr_missing_all_fields\": true, \"latitude\": 123, \"longitude\": 456}]";
+        String objectMapperResponse = "{\"sr_missing_all_fields\":true,\"latitude\":123,\"longitude\":456}";
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
@@ -207,6 +209,7 @@ public class DataServiceTest {
         assertThat(d.getNumProcessed()).isEqualTo(0);
 
         // creates a dataError
+        // on MissingCategoryError (now excluding MissingCoordinateError because its too commonplace)
         // job also exceeds error rate (100% here)
         List<DataError> dataErrors = dataErrorRepository.findAll();
         assertThat(dataErrors.size()).isEqualTo(2);
@@ -237,11 +240,11 @@ public class DataServiceTest {
         textCategoryService.refreshTextCategoryIdMap();
 
         // trigger error with missing textCategory lookup in buildDataEntity
-        List<Map<String, Object>> responseList = dataService.parseData(s, d, jsonResponse);
-        Map<String, Object> responseObject = responseList.get(0);
+        JsonNode rootNode = dataService.parseData(s, d, jsonResponse);
+        JsonNode node = rootNode.get(0);
         GeometryFactory geometryFactory = new GeometryFactory();
         assertThrows(MissingCategoryException.class, () -> {
-                dataService.buildDataEntity(s, responseObject, geometryFactory);
+                dataService.buildDataEntity(s, node, geometryFactory);
             });
     }
 }
