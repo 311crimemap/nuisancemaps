@@ -13,15 +13,43 @@
         "description": "Austin Police",
         "numRecords": 2440821,
         "mapping": {
-            "reportNum": "/incident_report_number",
-            "reportCategory": "/crime_type",
             "orderKey": ":id",
             "description": "",
-            "location": "/location_type",
-            "latitude": "/latitude",
-            "longitude": "/longitude",
-            "reportedAt": "/occ_date_time",
-            "reportedAt2": "/rep_date_time"
+            "reportNum": {
+                "field": "incident_report_number",
+                "pointer": "/incident_report_number",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "reportCategory": {
+                "field": "",
+                "pointer": "/crime_type",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "location": {
+                "field": "location",
+                "pointer": "/location_type",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "reportedAt": {
+                "field": "reportedAt",
+                "pointer": "/occ_date_time",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "reportedAt2": {
+                "field": "reportedAt2",
+                "pointer": "/rep_date_time",
+                "parsingStrategy": "defaultStrategy"
+            }
         }
     },
     {
@@ -38,15 +66,43 @@
         "description": "Austin 311",
         "numRecords": 1778332,
         "mapping": {
-            "reportNum": "/sr_number",
-            "reportCategory": "/sr_type_desc",
             "orderKey": ":id",
             "description": "",
-            "location": "/sr_location",
-            "latitude": "/sr_location_lat",
-            "longitude": "/sr_location_long",
-            "reportedAt": "/sr_created_date",
-            "reportedAt2": ""
+            "reportNum": {
+                "field": "reportNum",
+                "pointer": "/sr_number",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "reportCategory": {
+                "field": "reportCategory",
+                "pointer": "/sr_type_desc",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "location": {
+                "field": "location",
+                "pointer": "/sr_location",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/sr_location_lat",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/sr_location_long",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "reportedAt": {
+                "field": "reportedAt",
+                "pointer": "/sr_created_date",
+                "parsingStrategy": "defaultStrategy"
+            },
+            "reportedAt2": {
+                "field": "reportedAt2",
+                "pointer": "",
+                "parsingStrategy": "defaultStrategy"
+            }
         }
     }
 ]
