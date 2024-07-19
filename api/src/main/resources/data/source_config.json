@@ -17,42 +17,42 @@
             "description": {
                 "field": null,
                 "pointer": null,
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportNum": {
                 "field": "incident_report_number",
                 "pointer": "/incident_report_number",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportCategory": {
                 "field": "crime_type",
                 "pointer": "/crime_type",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "location": {
                 "field": "location_type",
                 "pointer": "/location_type",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "latitude": {
                 "field": "latitude",
                 "pointer": "/latitude",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "longitude": {
                 "field": "longitude",
                 "pointer": "/longitude",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportedAt": {
                 "field": "occ_date_time",
                 "pointer": "/occ_date_time",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportedAt2": {
                 "field": "rep_date_time",
                 "pointer": "/rep_date_time",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             }
         }
     },
@@ -74,42 +74,42 @@
             "description": {
                 "field": null,
                 "pointer": null,
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportNum": {
                 "field": "sr_number",
                 "pointer": "/sr_number",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportCategory": {
                 "field": "sr_type_desc",
                 "pointer": "/sr_type_desc",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "location": {
                 "field": "sr_location",
                 "pointer": "/sr_location",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "latitude": {
                 "field": "sr_location_lat",
                 "pointer": "/sr_location_lat",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "longitude": {
                 "field": "sr_location_long",
                 "pointer": "/sr_location_long",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportedAt": {
                 "field": "sr_created_date",
                 "pointer": "/sr_created_date",
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             },
             "reportedAt2": {
                 "field": null,
                 "pointer": null,
-                "parsingStrategy": "defaultStrategy"
+                "parsingStrategy": null
             }
         }
     }
