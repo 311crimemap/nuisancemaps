@@ -91,13 +91,6 @@ public class DataJob {
 
         List<String> fields = mapping.getFields();
 
-        fields.forEach(value -> {
-            String field = (String) value;
-
-            if (field != null && !field.isEmpty()) {
-                fields.add((String) value);
-            }
-        });
         return String.join(",", fields);
     }
 
