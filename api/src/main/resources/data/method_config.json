@@ -1,17 +1,17 @@
 [
     {
-        "sourceConfigId": 1,
-        "sourceConfigEntity": "Austin, TX",
-        "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
+        "sourceConfigId": 3,
+        "sourceConfigEntity": "Dallas, TX",
+        "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
         "location": [
-            -97.73996,
-            30.27415
+            96.808891,
+            32.779167
         ],
         "iconName": "building",
         "iconUnicode": "\uf1ad",
         "category": "crime",
-        "description": "Austin Police",
-        "numRecords": 2440821,
+        "description": "Dallas Police",
+        "numRecords": 1247668,
         "mapping": {
             "orderKey": ":id",
             "description": {
@@ -20,55 +20,55 @@
                 "parsingStrategy": null
             },
             "reportNum": {
-                "field": "incident_report_number",
-                "pointer": "/incident_report_number",
+                "field": "incidentnum",
+                "pointer": "/incidentnum",
                 "parsingStrategy": null
             },
             "reportCategory": {
-                "field": "crime_type",
-                "pointer": "/crime_type",
+                "field": "offincident",
+                "pointer": "/offincident",
                 "parsingStrategy": null
             },
             "location": {
-                "field": "location_type",
-                "pointer": "/location_type",
+                "field": "premise",
+                "pointer": "/premise",
                 "parsingStrategy": null
             },
             "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
+                "field": "geocoded_column",
+                "pointer": "/geocoded_column/latitude",
                 "parsingStrategy": null
             },
             "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
+                "field": "geocoded_column",
+                "pointer": "/geocoded_column/longitude",
                 "parsingStrategy": null
             },
             "reportedAt": {
-                "field": "occ_date_time",
-                "pointer": "/occ_date_time",
+                "field": "reporteddate",
+                "pointer": "/reporteddate",
                 "parsingStrategy": null
             },
             "reportedAt2": {
-                "field": "rep_date_time",
-                "pointer": "/rep_date_time",
+                "field": "date1",
+                "pointer": "/date1",
                 "parsingStrategy": null
             }
         }
     },
     {
-        "sourceConfigId": 2,
-        "sourceConfigEntity": "Austin, TX",
-        "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
+        "sourceConfigId": 4,
+        "sourceConfigEntity": "Dallas, TX",
+        "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
         "location": [
-            -97.73996,
-            30.27415
+            96.808891,
+            32.779167
         ],
         "iconName": "building",
         "iconUnicode": "\uf1ad",
         "category": "311",
-        "description": "Austin 311",
-        "numRecords": 1778332,
+        "description": "Dallas 311",
+        "numRecords": 1655145,
         "mapping": {
             "orderKey": ":id",
             "description": {
@@ -77,33 +77,33 @@
                 "parsingStrategy": null
             },
             "reportNum": {
-                "field": "sr_number",
-                "pointer": "/sr_number",
+                "field": "service_request_number",
+                "pointer": "/service_request_number",
                 "parsingStrategy": null
             },
             "reportCategory": {
-                "field": "sr_type_desc",
-                "pointer": "/sr_type_desc",
+                "field": "service_request_type",
+                "pointer": "/service_request_type",
                 "parsingStrategy": null
             },
             "location": {
-                "field": "sr_location",
-                "pointer": "/sr_location",
+                "field": "department",
+                "pointer": "/department",
                 "parsingStrategy": null
             },
             "latitude": {
-                "field": "sr_location_lat",
-                "pointer": "/sr_location_lat",
-                "parsingStrategy": null
+                "field": "lat_location",
+                "pointer": "/lat_location",
+                "parsingStrategy": "LATITUDE_311_DALLAS"
             },
             "longitude": {
-                "field": "sr_location_long",
-                "pointer": "/sr_location_long",
-                "parsingStrategy": null
+                "field": "lat_location",
+                "pointer": "/lat_location",
+                "parsingStrategy": "LONGITUDE_311_DALLAS"
             },
             "reportedAt": {
-                "field": "sr_created_date",
-                "pointer": "/sr_created_date",
+                "field": "created_date",
+                "pointer": "/created_date",
                 "parsingStrategy": null
             },
             "reportedAt2": {

@@ -61,6 +61,9 @@ public class DataService {
     @Autowired
     private TextCategoryService textCategoryService;
 
+    @Autowired
+    private DataEntityMappingService dataEntityMappingService;
+
     // Types
     private Class<? extends IDataEntity> dataEntityClass;
     private IDataEntityRepository dataEntityRepository;
@@ -92,13 +95,14 @@ public class DataService {
         PrintWriter pw = new PrintWriter(sw);
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
 
-        //List<Map<String, Object>> responseList = parseData(source, dataJob, jsonResponse);
         JsonNode rootNode = parseData(source, dataJob, jsonResponse);
+
         int numFetched = rootNode == null ? 0 : rootNode.size();
         dataJob.setNumFetched(numFetched);
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
 
+        //TODO: synchronize this block or createData method
         setTypes(source);
 
         createDataEntities(dataJob, source, rootNode, geometryFactory, sw, pw);
@@ -138,9 +142,11 @@ public class DataService {
         for (JsonNode item : rootNode) {
 
             try {
-                String report_num = item.at(mapping.getReportNum()).toString();
 
-                IDataEntity dataEntity = buildDataEntity(source, item, geometryFactory);
+                IDataEntity dataEntity = dataEntityMappingService.buildDataEntity(dataEntityClass, source, item, geometryFactory);
+
+                String report_num = dataEntity.getReportNum();
+
                 // skip case
                 Category orgCategory = dataEntity.getOrgCategory();
                 if (orgCategory != null &&
@@ -251,68 +257,6 @@ public class DataService {
                 numProcessed, numErrors,
                 numDuplicate);
         log.info(logStats);
-    }
-
-    public IDataEntity buildDataEntity(Source source, JsonNode item, GeometryFactory geometryFactory)
-            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
-            MissingCategoryException, MissingCoordinateException {
-
-        Mapping mapping = source.getMapping();
-        String report_num = item.at(mapping.getReportNum()).asText();
-        String reportCategory = item.at(mapping.getReportCategory()).asText();
-        String description = item.at(mapping.getDescription()).asText();
-        String location = item.at(mapping.getLocation()).asText();
-        String lat = item.at(mapping.getLatitude()).asText();
-        String lng = item.at(mapping.getLongitude()).asText();
-        String reported_at1 = item.at(mapping.getReportedAt()).asText();
-        String reported_at2 = item.at(mapping.getReportedAt2()).asText();
-
-        Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
-        Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);
-        Coordinate coordinate = null;
-        Point point = null;
-
-        if (!lat.isEmpty() && !lng.isEmpty()) {
-            // GeoJSON/WKT is long, lat (order is "reversed").
-            coordinate = new Coordinate(longitude, latitude);
-            point = geometryFactory.createPoint(coordinate);
-        } else {
-            String errString = String.format(
-                    "Missing coordinates: (lat: %s, lng: %s) | dataType: %s, source: %s - %s | sourceURL: %s", lat, lng,
-                    source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
-                    source.getUrl());
-            throw new MissingCoordinateException(errString);
-        }
-
-        // categories clarification
-        // source.category: crime / 311 / etc
-        // dataEntity.report_category: data report instance from raw data
-        // Category: our created, labeled categories
-        Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
-        if (orgCategory == null) {
-            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s",
-                    reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
-                    source.getUrl());
-            throw new MissingCategoryException(errString);
-        }
-
-        LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
-                : LocalDateTime.parse(reported_at1);
-
-        IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
-
-        dataEntity.setReportNum(report_num);
-        dataEntity.setReportCategory(reportCategory);
-        dataEntity.setDescription(description.isEmpty() ? null : description);
-        dataEntity.setLocation(location.isEmpty() ? null : location);
-        dataEntity.setOrgCategory(orgCategory);
-        dataEntity.setLatitude(latitude);
-        dataEntity.setLongitude(longitude);
-        dataEntity.setPoint(point);
-        dataEntity.setReportedAt(reported_at);
-        dataEntity.setUpdatedAt(LocalDateTime.now());
-
-        return dataEntity;
     }
 
 }

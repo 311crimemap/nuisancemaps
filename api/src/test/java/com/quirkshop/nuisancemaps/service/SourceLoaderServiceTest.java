@@ -74,7 +74,7 @@ public class SourceLoaderServiceTest {
         String jsonFixtureContent = String.format("[ { \"count_incident_report_number\" : \"%s\"} ]", val);
 
         Source s = sourceRepository.findOneBySourceConfigId(1);
-        String report_num = s.getMapping().getReportNum();
+        String report_num = s.getMapping().getReportNum().getField();
         String url = sourceLoaderService.buildCountURL(s.getUrl(), report_num);
 
         when(restTemplate.getForObject(url, String.class))

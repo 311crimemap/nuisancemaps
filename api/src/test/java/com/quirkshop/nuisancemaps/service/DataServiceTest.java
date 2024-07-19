@@ -75,9 +75,6 @@ public class DataServiceTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
-    private TextCategoryService textCategoryService;
-
     private List<Source> sources;
 
     @BeforeAll
@@ -217,34 +214,5 @@ public class DataServiceTest {
         assertThat(dataErrors.get(1).getContent()).isEqualTo(objectMapperResponse);
         assertThat(dataErrors.get(1).getErrorMsg()).contains("DataService.createDataEntities");
         assertThat(d.getStatus()).isEqualTo(DataJobStatus.ERROR);
-    }
-
-    @Test
-    @Transactional
-    public void createDataEntityMissingCategoryException() throws IOException {
-
-        Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
-        Source s = sourceRepository.findOneBySourceConfigId(2);
-
-        // DataJob to crawl: stub job and fetch with json fixture response
-        // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
-        dataJobRepository.save(d);
-
-        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-                StandardCharsets.UTF_8);
-
-        // remove mapping
-        textCategoryRepository.deleteAll();
-        categoryRepository.deleteAll();
-        textCategoryService.refreshTextCategoryIdMap();
-
-        // trigger error with missing textCategory lookup in buildDataEntity
-        JsonNode rootNode = dataService.parseData(s, d, jsonResponse);
-        JsonNode node = rootNode.get(0);
-        GeometryFactory geometryFactory = new GeometryFactory();
-        assertThrows(MissingCategoryException.class, () -> {
-                dataService.buildDataEntity(s, node, geometryFactory);
-            });
     }
 }
