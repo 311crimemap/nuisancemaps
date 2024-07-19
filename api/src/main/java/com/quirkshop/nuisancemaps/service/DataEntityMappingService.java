@@ -3,6 +3,7 @@ package com.quirkshop.nuisancemaps.service;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Mapping;
+import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.ParserStrategy;
@@ -56,24 +58,66 @@ public class DataEntityMappingService {
     @Autowired
     private TextCategoryService textCategoryService;
 
+    public String parseNode(JsonNode item, ParserStrategy strategy) {
+        Function<JsonNode, String> parser = parsingFunctions.get(strategy);
+        if (parser != null) {
+            return parser.apply(item);
+        }
+        return null;
+    }
+
+    /*
+     * hierarchy of parse methods
+     */
+    public String parseEntity(Function<Mapping, ?> mapper, Source source, JsonNode item)
+            throws NoSuchMethodException, SecurityException {
+
+        Method method = mapper.getClass().getMethod("apply", Object.class);
+        Class<?> returnType = method.getReturnType();
+
+        System.out.println(mapper);
+        Object mappedValue = mapper.apply(source.getMapping());
+
+        // Vanilla String
+        if (returnType == String.class) {
+            return (String) mappedValue;
+        }
+
+        // Parsing Strategy method if exists, otherwise Pointer
+        String value = null;
+        MappingField result = (MappingField) mappedValue;
+        if (result.getParsingStrategy() != null) {
+            ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
+            value = parseNode(item, strategy);
+        } else {
+            value = item.at(result.getPointer()).asText();
+        }
+
+        return value;
+    }
+
+    // WORKING HERE - apply the parseEntity method on each value
     public IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source, JsonNode item,
             GeometryFactory geometryFactory)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
             MissingCategoryException, MissingCoordinateException {
 
         Mapping mapping = source.getMapping();
-        String report_num = item.at(mapping.getReportNum()).asText();
-        String reportCategory = item.at(mapping.getReportCategory()).asText();
-        String description = item.at(mapping.getDescription()).asText();
-        String location = item.at(mapping.getLocation()).asText();
 
-        String lat = item.at(mapping.getLatitude()).asText();
-        String lng = item.at(mapping.getLongitude()).asText();
+        String report_num = item.at(mapping.getReportNum().getPointer()).asText();
+        String reportCategory = item.at(mapping.getReportCategory().getPointer()).asText();
+        String description = mapping.getDescription() != null ? item.at(mapping.getDescription().getPointer()).asText()
+                : "";
+        String location = item.at(mapping.getLocation().getPointer()).asText();
+
+        String lat = item.at(mapping.getLatitude().getPointer()).asText();
+        String lng = item.at(mapping.getLongitude().getPointer()).asText();
         // isValueNode
         // isContainerNode
 
-        String reported_at1 = item.at(mapping.getReportedAt()).asText();
-        String reported_at2 = item.at(mapping.getReportedAt2()).asText();
+        String reported_at1 = item.at(mapping.getReportedAt().getPointer()).asText();
+        String reported_at2 = mapping.getReportedAt2() != null ? item.at(mapping.getReportedAt2().getPointer()).asText()
+                : "";
 
         Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
         Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);

@@ -36,12 +36,14 @@ import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.model.Data311;
+import com.quirkshop.nuisancemaps.model.Mapping;
 
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
+
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -81,10 +83,12 @@ public class DataEntityMappingServiceTest {
         // Source
         ObjectMapper objectMapper = new ObjectMapper();
         File sourceJSON1 = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        File sourceJSON2 = resourceLoader.getResource("classpath:data/method_config.json").getFile();
 
         sources.addAll(objectMapper.readValue(sourceJSON1, new TypeReference<List<Source>>() {
         }));
-
+        sources.addAll(objectMapper.readValue(sourceJSON2, new TypeReference<List<Source>>() {
+        }));
         for (Source s : sources) {
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
@@ -116,6 +120,43 @@ public class DataEntityMappingServiceTest {
         mappingRepository.deleteAll();
         categoryRepository.deleteAll();
         textCategoryRepository.deleteAll();
+    }
+
+    @Test
+    @Transactional
+    public void DataEntityMappingMethod() throws IOException {
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/311-dallas.json");
+        Source s = sourceRepository.findOneBySourceConfigId(4);
+
+        // DataJob to crawl: stub job and fetch with json fixture response
+        // Read the content of the JSON file vs actual fetch
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "service_request_number");
+        dataJobRepository.save(d);
+
+        textCategoryService.refreshTextCategoryIdMap();
+
+        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
+                StandardCharsets.UTF_8);
+        JsonNode rootNode = dataService.parseData(s, d, jsonResponse);
+
+        JsonNode node = rootNode.get(0);
+        GeometryFactory geometryFactory = new GeometryFactory();
+        System.out.println("--NODE----");
+        System.out.println(node);
+        try {
+            //IDataEntity dataEntity = dataEntityMappingService.buildDataEntity(Data311.class, s, node, geometryFactory);
+            String reportNum = dataEntityMappingService.parseEntity(Mapping::getReportNum, s, node);
+            System.out.println("REPORTNUM: " + reportNum);
+
+            String result = dataEntityMappingService.parseNode(node, ParserStrategy.LATITUDE_311_DALLAS);
+            System.out.println(result);
+
+
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Test
