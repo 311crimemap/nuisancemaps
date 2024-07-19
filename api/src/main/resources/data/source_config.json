@@ -14,19 +14,23 @@
         "numRecords": 2440821,
         "mapping": {
             "orderKey": ":id",
-            "description": "",
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": "defaultStrategy"
+            },
             "reportNum": {
                 "field": "incident_report_number",
                 "pointer": "/incident_report_number",
                 "parsingStrategy": "defaultStrategy"
             },
             "reportCategory": {
-                "field": "",
+                "field": "crime_type",
                 "pointer": "/crime_type",
                 "parsingStrategy": "defaultStrategy"
             },
             "location": {
-                "field": "location",
+                "field": "location_type",
                 "pointer": "/location_type",
                 "parsingStrategy": "defaultStrategy"
             },
@@ -41,12 +45,12 @@
                 "parsingStrategy": "defaultStrategy"
             },
             "reportedAt": {
-                "field": "reportedAt",
+                "field": "occ_date_time",
                 "pointer": "/occ_date_time",
                 "parsingStrategy": "defaultStrategy"
             },
             "reportedAt2": {
-                "field": "reportedAt2",
+                "field": "rep_date_time",
                 "pointer": "/rep_date_time",
                 "parsingStrategy": "defaultStrategy"
             }
@@ -67,40 +71,44 @@
         "numRecords": 1778332,
         "mapping": {
             "orderKey": ":id",
-            "description": "",
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": "defaultStrategy"
+            },
             "reportNum": {
-                "field": "reportNum",
+                "field": "sr_number",
                 "pointer": "/sr_number",
                 "parsingStrategy": "defaultStrategy"
             },
             "reportCategory": {
-                "field": "reportCategory",
+                "field": "sr_type_desc",
                 "pointer": "/sr_type_desc",
                 "parsingStrategy": "defaultStrategy"
             },
             "location": {
-                "field": "location",
+                "field": "sr_location",
                 "pointer": "/sr_location",
                 "parsingStrategy": "defaultStrategy"
             },
             "latitude": {
-                "field": "latitude",
+                "field": "sr_location_lat",
                 "pointer": "/sr_location_lat",
                 "parsingStrategy": "defaultStrategy"
             },
             "longitude": {
-                "field": "longitude",
+                "field": "sr_location_long",
                 "pointer": "/sr_location_long",
                 "parsingStrategy": "defaultStrategy"
             },
             "reportedAt": {
-                "field": "reportedAt",
+                "field": "sr_created_date",
                 "pointer": "/sr_created_date",
                 "parsingStrategy": "defaultStrategy"
             },
             "reportedAt2": {
-                "field": "reportedAt2",
-                "pointer": "",
+                "field": null,
+                "pointer": null,
                 "parsingStrategy": "defaultStrategy"
             }
         }
