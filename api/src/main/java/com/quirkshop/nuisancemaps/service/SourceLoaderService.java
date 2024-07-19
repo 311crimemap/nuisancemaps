@@ -60,7 +60,7 @@ public class SourceLoaderService {
         if (mapping == null)
             return null;
 
-        String id = mapping.getReportNum();
+        String id = mapping.getReportNum().getPointer();
         if (id == null)
             return null;
 

@@ -40,5 +40,7 @@ public class DataJobTest {
         assertThat(url).isEqualTo(
                 s.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" + order_key + "&$select=" + select);
         assertThat(d.getUrl()).isEqualTo(url);
+        assertThat(select).isNotBlank();
+
     }
 }

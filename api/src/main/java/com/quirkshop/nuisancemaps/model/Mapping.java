@@ -3,11 +3,14 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.function.Function;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +29,7 @@ import java.lang.reflect.Method;
 @Table(name = "mapping")
 public class Mapping {
     @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.FIELD)
+    @Target(ElementType.METHOD)
     public @interface Mapped {
     }
 
@@ -35,33 +38,71 @@ public class Mapping {
     @SequenceGenerator(name = "mapping_seq", allocationSize = 1)
     private Integer id;
 
-    // mapped parse Fields
-    @Mapped
-    private String reportNum;
-
-    @Mapped
-    private String reportCategory;
-
-    @Mapped
     private String orderKey;
 
-    @Mapped
-    private String description;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "description_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "description_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "description_parsing_strategy"))
+    })
+    private MappingField description;
 
-    @Mapped
-    private String location;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "report_num_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "report_num_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "report_num_parsing_strategy"))
+    })
+    private MappingField reportNum;
 
-    @Mapped
-    private String latitude;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "report_category_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "report_category_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "report_category_parsing_strategy"))
+    })
+    private MappingField reportCategory;
 
-    @Mapped
-    private String longitude;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "location_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "location_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "location_parsing_strategy"))
+    })
+    private MappingField location;
 
-    @Mapped
-    private String reportedAt;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "latitude_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "latitude_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "latitude_parsing_strategy"))
+    })
+    private MappingField latitude;
 
-    @Mapped
-    private String reportedAt2;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "longitude_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "longitude_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "longitude_parsing_strategy"))
+    })
+    private MappingField longitude;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "reported_at_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "reported_at_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "reported_at_parsing_strategy"))
+    })
+    private MappingField reportedAt;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "reported_at2_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "reported_at2_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "reported_at2_parsing_strategy"))
+    })
+    private MappingField reportedAt2;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
@@ -75,8 +116,9 @@ public class Mapping {
         this.updatedAt = now;
     }
 
-    public Mapping(String reportNum, String reportCategory, String orderKey, String description, String location, String latitude,
-            String longitude, String reportedAt, String reportedAt2) {
+    public Mapping(MappingField reportNum, MappingField reportCategory, String orderKey, MappingField description,
+            MappingField location, MappingField latitude,
+            MappingField longitude, MappingField reportedAt, MappingField reportedAt2) {
         this.reportNum = reportNum;
         this.reportCategory = reportCategory;
         this.orderKey = orderKey;
@@ -95,31 +137,46 @@ public class Mapping {
     /*
      * collects value returned by getters of @Mapped annotated fields
      */
-    public List<String> getFields() {
-        List<String> fieldValues = new ArrayList<>();
-        Class<?> clazz = this.getClass();
-        Method[] methods = clazz.getMethods();
-        try {
-            for (Method method : methods) {
-                if (isGetter(method)) {
-                    Annotation annotation = method.getAnnotation(Mapped.class);
-                    if (annotation != null) {
-                        Object value = method.invoke(this);
-                        String stringVal = value != null ? value.toString() : null;
-                        fieldValues.add(stringVal);
-                    }
+    public List<String> getAnnotationValues(Function<MappingField, String> mapper) {
+        List<String> values = new ArrayList<String>();
+        List<Method> methods = this.getAnnotatedMappings();
+
+        for (Method method : methods) {
+            try {
+
+                String value = null;
+                if (method.getReturnType() == String.class) {
+                    value = (String) method.invoke(this);
+                } else {
+                    MappingField result = (MappingField) method.invoke(this);
+                    value = mapper.apply(result);
                 }
+
+                if (value != null && !value.isEmpty()) {
+                    values.add(value);
+                }
+
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
-            e.printStackTrace(); // Handle exception appropriately
         }
-        return fieldValues;
+
+        return values;
     }
 
-    private boolean isGetter(Method method) {
-        return method.getName().startsWith("get") &&
-                method.getParameterCount() == 0 &&
-            !void.class.equals(method.getReturnType()); //return type not void
+    public List<Method> getAnnotatedMappings() {
+        List<Method> annotatedMethods = new ArrayList<Method>();
+        Class<?> clazz = this.getClass();
+        Method[] methods = clazz.getMethods();
+
+        for (Method method : methods) {
+            Annotation annotation = method.getAnnotation(Mapped.class);
+            if (annotation == null)
+                continue;
+
+            annotatedMethods.add(method);
+        }
+
+        return annotatedMethods;
     }
 
     public Integer getId() {
@@ -128,78 +185,6 @@ public class Mapping {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getReportNum() {
-        return reportNum;
-    }
-
-    public void setReportNum(String reportNum) {
-        this.reportNum = reportNum;
-    }
-
-    public String getReportCategory() {
-        return reportCategory;
-    }
-
-    public void setReportCategory(String reportCategory) {
-        this.reportCategory = reportCategory;
-    }
-
-    public String getOrderKey() {
-        return orderKey;
-    }
-
-    public void setOrderKey(String orderKey) {
-        this.orderKey = orderKey;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getReportedAt() {
-        return reportedAt;
-    }
-
-    public void setReportedAt(String reportedAt) {
-        this.reportedAt = reportedAt;
-    }
-
-    public String getReportedAt2() {
-        return reportedAt2;
-    }
-
-    public void setReportedAt2(String reportedAt2) {
-        this.reportedAt2 = reportedAt2;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -216,6 +201,86 @@ public class Mapping {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getOrderKey() {
+        return orderKey;
+    }
+
+    public void setOrderKey(String orderKey) {
+        this.orderKey = orderKey;
+    }
+
+    @Mapped
+    public MappingField getDescription() {
+        return description;
+    }
+
+    public void setDescription(MappingField description) {
+        this.description = description;
+    }
+
+    @Mapped
+    public MappingField getReportNum() {
+        return reportNum;
+    }
+
+    public void setReportNum(MappingField reportNum) {
+        this.reportNum = reportNum;
+    }
+
+    @Mapped
+    public MappingField getReportCategory() {
+        return reportCategory;
+    }
+
+    public void setReportCategory(MappingField reportCategory) {
+        this.reportCategory = reportCategory;
+    }
+
+    @Mapped
+    public MappingField getLocation() {
+        return location;
+    }
+
+    public void setLocation(MappingField location) {
+        this.location = location;
+    }
+
+    @Mapped
+    public MappingField getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(MappingField latitude) {
+        this.latitude = latitude;
+    }
+
+    @Mapped
+    public MappingField getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(MappingField longitude) {
+        this.longitude = longitude;
+    }
+
+    @Mapped
+    public MappingField getReportedAt() {
+        return reportedAt;
+    }
+
+    public void setReportedAt(MappingField reportedAt) {
+        this.reportedAt = reportedAt;
+    }
+
+    @Mapped
+    public MappingField getReportedAt2() {
+        return reportedAt2;
+    }
+
+    public void setReportedAt2(MappingField reportedAt2) {
+        this.reportedAt2 = reportedAt2;
     }
 
 }
