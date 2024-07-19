@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.quirkshop.nuisancemaps.config.PointDeserializer;
 
 import org.locationtech.jts.geom.Point;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,10 +25,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name = "source",
-       indexes = @Index(name = "source_config_entity_idx", columnList = "sourceConfigEntity"))
+@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "sourceConfigEntity"))
 public class Source {
 
     @Id
@@ -41,7 +41,7 @@ public class Source {
 
     private String sourceConfigNotes;
 
-    @JsonIgnore  //deserialization handled by SourceDTO
+    @JsonDeserialize(using = PointDeserializer.class)
     private Point location;
 
     private String iconName;
@@ -54,7 +54,7 @@ public class Source {
 
     private Integer numRecords;
 
-    @OneToOne //NB: creates unique constraint mapping_id
+    @OneToOne // NB: creates unique constraint mapping_id
     @JoinColumn(name = "mapping_id", nullable = false)
     private Mapping mapping;
 

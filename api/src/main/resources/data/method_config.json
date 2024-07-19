@@ -4,7 +4,7 @@
         "sourceConfigEntity": "Dallas, TX",
         "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
         "location": [
-            96.808891,
+            -96.808891,
             32.779167
         ],
         "iconName": "building",
@@ -61,7 +61,7 @@
         "sourceConfigEntity": "Dallas, TX",
         "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
         "location": [
-            96.808891,
+            -96.808891,
             32.779167
         ],
         "iconName": "building",
