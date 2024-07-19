@@ -3,8 +3,7 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.function.Function;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -138,38 +137,46 @@ public class Mapping {
     /*
      * collects value returned by getters of @Mapped annotated fields
      */
-    public List<String> getFields() {
-        List<String> fieldValues = new ArrayList<>();
-        Class<?> clazz = this.getClass();
-        Method[] methods = clazz.getMethods();
+    public List<String> getAnnotationValues(Function<MappingField, String> mapper) {
+        List<String> values = new ArrayList<String>();
+        List<Method> methods = this.getAnnotatedMappings();
 
-        try {
-
-            for (Method method : methods) {
-                Annotation annotation = method.getAnnotation(Mapped.class);
-
-                if (annotation == null)
-                    continue;
+        for (Method method : methods) {
+            try {
 
                 String value = null;
                 if (method.getReturnType() == String.class) {
                     value = (String) method.invoke(this);
                 } else {
                     MappingField result = (MappingField) method.invoke(this);
-                    value = result.getField();
+                    value = mapper.apply(result);
                 }
 
                 if (value != null && !value.isEmpty()) {
-                    fieldValues.add(value);
+                    values.add(value);
                 }
 
+            } catch (Exception e) {
             }
-
-        } catch (Exception e) {
-            e.printStackTrace(); // Handle exception appropriately
         }
 
-        return fieldValues;
+        return values;
+    }
+
+    public List<Method> getAnnotatedMappings() {
+        List<Method> annotatedMethods = new ArrayList<Method>();
+        Class<?> clazz = this.getClass();
+        Method[] methods = clazz.getMethods();
+
+        for (Method method : methods) {
+            Annotation annotation = method.getAnnotation(Mapped.class);
+            if (annotation == null)
+                continue;
+
+            annotatedMethods.add(method);
+        }
+
+        return annotatedMethods;
     }
 
     public Integer getId() {

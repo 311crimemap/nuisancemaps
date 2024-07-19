@@ -89,7 +89,7 @@ public class DataJob {
     // Map<String, Object> mapping
     public String buildURLFields(Mapping mapping) {
 
-        List<String> fields = mapping.getFields();
+        List<String> fields = mapping.getAnnotationValues(MappingField::getField);
 
         return String.join(",", fields);
     }
