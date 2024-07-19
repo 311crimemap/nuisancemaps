@@ -68,6 +68,9 @@ public class DataEntityMappingService {
 
     /*
      * hierarchy of parse methods
+     * 1. vanilla string (simple getter method returns String; not MappingField)
+     * 2. ParserStrategy method: if this is defined, prioritize it's use
+     * 3. default MappingField pointer (json parse 'path expression')
      */
     public String parseEntity(Function<Mapping, ?> mapper, Source source, JsonNode item)
             throws NoSuchMethodException, SecurityException {
@@ -75,17 +78,20 @@ public class DataEntityMappingService {
         Method method = mapper.getClass().getMethod("apply", Object.class);
         Class<?> returnType = method.getReturnType();
 
-        System.out.println(mapper);
         Object mappedValue = mapper.apply(source.getMapping());
+        String value = null;
 
         // Vanilla String
         if (returnType == String.class) {
             return (String) mappedValue;
         }
 
-        // Parsing Strategy method if exists, otherwise Pointer
-        String value = null;
+        // Parsing Strategy method if exists, otherwise use Pointer expression
         MappingField result = (MappingField) mappedValue;
+
+        if (result == null)
+            return null;
+
         if (result.getParsingStrategy() != null) {
             ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
             value = parseNode(item, strategy);
@@ -96,7 +102,6 @@ public class DataEntityMappingService {
         return value;
     }
 
-    // WORKING HERE - apply the parseEntity method on each value
     public IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source, JsonNode item,
             GeometryFactory geometryFactory)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
@@ -104,27 +109,23 @@ public class DataEntityMappingService {
 
         Mapping mapping = source.getMapping();
 
-        String report_num = item.at(mapping.getReportNum().getPointer()).asText();
-        String reportCategory = item.at(mapping.getReportCategory().getPointer()).asText();
-        String description = mapping.getDescription() != null ? item.at(mapping.getDescription().getPointer()).asText()
-                : "";
-        String location = item.at(mapping.getLocation().getPointer()).asText();
+        String report_num = parseEntity(Mapping::getReportNum, source, item);
+        String reportCategory = parseEntity(Mapping::getReportCategory, source, item);
+        String description = parseEntity(Mapping::getDescription, source, item);
+        String location = parseEntity(Mapping::getLocation, source, item);
 
-        String lat = item.at(mapping.getLatitude().getPointer()).asText();
-        String lng = item.at(mapping.getLongitude().getPointer()).asText();
-        // isValueNode
-        // isContainerNode
+        String lat = parseEntity(Mapping::getLatitude, source, item);
+        String lng = parseEntity(Mapping::getLongitude, source, item);
 
-        String reported_at1 = item.at(mapping.getReportedAt().getPointer()).asText();
-        String reported_at2 = mapping.getReportedAt2() != null ? item.at(mapping.getReportedAt2().getPointer()).asText()
-                : "";
+        String reported_at1 = parseEntity(Mapping::getReportedAt, source, item);
+        String reported_at2 = parseEntity(Mapping::getReportedAt2, source, item);
 
-        Double latitude = lat.isEmpty() ? null : Double.parseDouble(lat);
-        Double longitude = lng.isEmpty() ? null : Double.parseDouble(lng);
+        Double latitude = lat == null ? null : Double.parseDouble(lat);
+        Double longitude = lng == null ? null : Double.parseDouble(lng);
         Coordinate coordinate = null;
         Point point = null;
 
-        if (!lat.isEmpty() && !lng.isEmpty()) {
+        if (latitude != null && longitude != null) {
             // GeoJSON/WKT is long, lat (order is "reversed").
             coordinate = new Coordinate(longitude, latitude);
             point = geometryFactory.createPoint(coordinate);
@@ -155,8 +156,8 @@ public class DataEntityMappingService {
 
         dataEntity.setReportNum(report_num);
         dataEntity.setReportCategory(reportCategory);
-        dataEntity.setDescription(description.isEmpty() ? null : description);
-        dataEntity.setLocation(location.isEmpty() ? null : location);
+        dataEntity.setDescription(description);
+        dataEntity.setLocation(location);
         dataEntity.setOrgCategory(orgCategory);
         dataEntity.setLatitude(latitude);
         dataEntity.setLongitude(longitude);
