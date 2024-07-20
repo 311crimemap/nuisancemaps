@@ -14,14 +14,14 @@ services:
     env_file:
       - .env.dev
 
-  # classifier:
-  #   image: "058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/classifier"
-  #   build: "./classifier"
-  #   volumes:
-  #     - ./classifier:/classifier
-  #     # - ./api/src/main/resources/data/classifier_categories.json:/classifier/classifier_categories.json
-  #   env_file:
-  #     - .env.dev
+  classifier:
+    image: "058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/classifier"
+    build: "./classifier"
+    volumes:
+      - ./classifier:/classifier
+      # - ./api/src/main/resources/data/classifier_categories.json:/classifier/classifier_categories.json
+    env_file:
+      - .env.dev
 
   api:
     #NB: deploy image is configured in pom.xml, built via spring boot.
