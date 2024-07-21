@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#
+# python classifier 311 dallas
+# python classifier crime dallas
+#
+
 import argparse
 
 parser = argparse.ArgumentParser(description="zero-shot classifier via openAI API")
