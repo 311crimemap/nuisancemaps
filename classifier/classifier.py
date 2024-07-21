@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
+import argparse
 
-INPUT_FILE="data_311.txt"
-PROMPT_FILE="prompt_311.txt"
-CATEGORY_FILE="categories_311.txt"
-OUTPUT_FILE="out_311.json"
+parser = argparse.ArgumentParser(description="zero-shot classifier via openAI API")
+parser.add_argument('type', type=str, help="data type: '311' or 'crime'")
+parser.add_argument('city', type=str, help='data/<city>: subdirectory for data')
+args = parser.parse_args()
+
+DIR  = f"data/{args.city}"
+INPUT_FILE=f"{DIR}/data_{type}.txt"
+PROMPT_FILE="config/prompt_{type}.txt"
+CATEGORY_FILE="config/categories_{type}.txt"
+OUTPUT_FILE=f"{DIR}/out_{type}.json"
 BATCH_SIZE=100
 OFFSET=0
 
