@@ -8,7 +8,29 @@ entire GPU instance for a helper utility.
 
 ## ChatGPT Classifier
 
-Make sure `OPENAI_API_KEY` is set in env.
+1. Make sure `OPENAI_API_KEY` is set in env.
+2. Download "select distinct <reportCategory> list of fields (`data_311.json`,
+   `data_crime.json`)
+3. Populate `data_311.txt`, `data_crime.txt` with `TextCategory` to be
+   classified (use `jq`)
+4. Ensure `prompt_311.txt`, `prompt_crime.txt`, and `categories_311.txt`,
+   `categories_crime.txt` are valid inputs
+5. Run `classifier_311.py`, `classifier_crime.py` in docker container
+6. Check `out_311.json` and `out_crime.json` for label
+
+## Labeling
+
+Go through list of `textCateogry` and assign the labels, making sure to SKIP if
+necessary. This isn't automatic process, there will be some mis-classification.
+
+Consider this a starting point to help sift through everything quickly.
+
+
+
+---
+
+_Below is deprecated_
+
 
 Bash scripts are basically copies with variables to 311 and crime related txt
 files.
@@ -32,20 +54,6 @@ To extract text / labels from result:
 Submission to API:
 
 * Build a json array in excel with `{text, label}` data
-* Place in `/submit-data`
-* Upload: `curl -X POST -d @file.json api_host/raw_text_categories`  - TODO: finalize this endpoint
-
-## Results Output
-
-TODO:
-
-* figuring out process. So far...
-* Data with missing category -> skip? vs send to error bin
-  * There shouldn't be that many categories; we can still label them even if we
-    aren't saving that data.
-
-Put these into Excel and then use as guide for labeling the categories.
-
 
 ---
 
