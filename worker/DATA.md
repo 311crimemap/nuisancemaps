@@ -179,14 +179,23 @@ https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9
 
 Count: `$query=SELECT count(*)`
 
-Sort `?$query=SELECT%20*%20ORDER%20BY%20%60rep_date_time%60%20DESC%20NULL%20LAST`
+Sort `$query=SELECT * ORDER BY rep_date_time DESC NULL LAST`
 
 Distinct limit: `$query=SELECT distinct offincident limit 10000`
+
+Similar to 'distinct': `$query=SELECT sr_type_desc group by sr_type_desc`
+
+Exclude records with no coordinates - they won't be processed, there are too
+many so they pollute logs; default is to skip anyway
+
+* `$query=SELECT complaint_type WHERE latitude > 0 GROUP BY complaint_type LIMIT 5000`
+* `$query=SELECT service_name WHERE lat > 0 GROUP BY service_name LIMIT 5000`
+
 
 311
 https://data.austintexas.gov/resource/xwdj-i9he.json
 
-https://dev.socrata.com/docs/datatypes/#,
+https://dev.socrata.com/docs/datatypes/
 
 ##### Address ?
 
