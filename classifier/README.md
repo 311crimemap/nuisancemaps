@@ -6,16 +6,28 @@ poor on 311 data - because the data is very 'vague' and requires context).
 Hugging Face Slow enough that it's not worth spinning up and provisioning an
 entire GPU instance for a helper utility.
 
+
+All data is in `/data/<city>`.
+
+## Steps
+
+1. Download data
+* `curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`
+* `curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`
+
+2. cat /data/<city>/data_311.json | jq '.[].text'
+
+
 ## ChatGPT Classifier
 
 1. Make sure `OPENAI_API_KEY` is set in env.
-2. Download "select distinct <reportCategory> list of fields (`data_311.json`,
+2. Download "select distinct <reportCategory> list of fields > (`data_311.json`,
    `data_crime.json`)
 3. Populate `data_311.txt`, `data_crime.txt` with `TextCategory` to be
    classified (use `jq`)
 4. Ensure `prompt_311.txt`, `prompt_crime.txt`, and `categories_311.txt`,
-   `categories_crime.txt` are valid inputs
-5. Run `classifier_311.py`, `classifier_crime.py` in docker container
+   `categories_crime.txt` are valid inputs (should not change after a while0)
+5. Run `classifier.py` in docker container
 6. Check `out_311.json` and `out_crime.json` for label
 
 ## Labeling
@@ -24,7 +36,6 @@ Go through list of `textCateogry` and assign the labels, making sure to SKIP if
 necessary. This isn't automatic process, there will be some mis-classification.
 
 Consider this a starting point to help sift through everything quickly.
-
 
 
 ---

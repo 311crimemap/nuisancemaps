@@ -80,9 +80,11 @@ NB: Data Submission Format:
 
 #### Submitting new Source TextCategory(ies): convert_csv_to_json.py
 
-`convert_csv_to_json.py`: to take csv and convert to list of json for  `/textcategory` submission.
-* `labeled_crime.csv` -> `labeled_crime.json`
-* `labeled_311.csv` -> `labeled_311.json`
+`convert_csv_to_json.py <city>`: to take csv and convert to list of json for  `/textcategory` submission.
+
+* `data/<city>/labeled_crime.csv` -> `data/<city>/labeled_crime.json`
+* `data/<city>/labeled_311.csv` -> `data/<city>/labeled_311.json`
+
 
 Submission:
 
@@ -110,7 +112,7 @@ Manual Example
 
 OpenAI Crime Example
 * add to `data_crime.txt`
-* `classifier_crime.py`
+* `classifier.py`
 * review `out_crime.json` (jq to excel) -> `labeled_crime.csv`
 * `convert_csv_to_json.py` -> `labeled_crime.json`
 
