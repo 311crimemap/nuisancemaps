@@ -78,13 +78,14 @@ NB: Data Submission Format:
 ```
 
 
-## Submitting new Source TextCategory(ies)
+#### Submitting new Source TextCategory(ies): convert_csv_to_json.py
 
 `convert_csv_to_json.py`: to take csv and convert to list of json for  `/textcategory` submission.
 * `labeled_crime.csv` -> `labeled_crime.json`
 * `labeled_311.csv` -> `labeled_311.json`
 
 Submission:
+
 * `curl -X POST -d @labeled_311.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
 * `curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
 
@@ -93,6 +94,29 @@ Submission:
 
 ## Adding Error TextCategories
 
+Reminder many error messages will end up being duplicates, so it's less intimidating than it looks.
+
+NB: if getting parse errors, proper json has no dangling ','.
+
+
+* Collect errors: `curl -H 'X-API-KEY:1234' localhost:8080/dataerrors | jq '.[].errorMsg`
+  * these should be "missing category"
+* Take each type, category and start label process for submission
+* Either manually label category, or submit to openAI
+
+Manual Example
+* `labeled_crime.json` -> copy to `missing_crime.json`, for example: add
+  category and label (and dataType) and submit.
+
+OpenAI Crime Example
+* add to `data_crime.txt`
+* `classifier_crime.py`
+* review `out_crime.json` (jq to excel) -> `labeled_crime.csv`
+* `convert_csv_to_json.py` -> `labeled_crime.json`
+
+Submit
+
+`curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
 
 
 ---
