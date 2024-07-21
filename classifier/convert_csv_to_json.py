@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
+import argparse
 
-CSV_FILE_CRIME = "labeled_crime.csv"
-CSV_FILE_311 = "labeled_311.csv"
+parser = argparse.ArgumentParser(description="convert csv output to json object for api submission")
+parser.add_argument('city', type=str, help='data/<city>: subdirectory for data')
+args = parser.parse_args()
 
-JSON_FILE_CRIME = "labeled_crime.json"
-JSON_FILE_311 = "labeled_311.json"
+DIR  = f"data/{args.city}"
+
+CSV_FILE_CRIME = f"{DIR}/labeled_crime.csv"
+CSV_FILE_311 = f"{DIR}/labeled_311.csv"
+
+JSON_FILE_CRIME = f"{DIR}/labeled_crime.json"
+JSON_FILE_311 = f"{DIR}/labeled_311.json"
 
 import os
 import csv
