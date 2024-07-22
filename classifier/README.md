@@ -11,6 +11,8 @@ All data is in `/data/<city>`.
 
 ## Steps
 
+#### `0-data.py`
+
 1. Download data
 
 * `curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`
@@ -21,23 +23,25 @@ All data is in `/data/<city>`.
 * `cat /data/<city>/data_311.json | jq -r '.[].<field>' > data/<city>/data_311.txt`
 * `cat /data/<city>/data_crime.json | jq -r'.[].<field>' > data/<city>/data_crime.txt`
 
-3. `classifier.py <type> <city>` which sends to openAI to label
+#### `1-classifier.py <type> <city>`
 
-4. Take resulting `out_311.json` / `out_crime.json`, put into Excel and manually
-   verify, correcting any labels, aka SKIP, and save as `labeled_311.csv`,
-   `labeled_crime.csv`
-   * Excel sheet make `dataType` (311/crime), `text`, `label` headers
-     * dataType: "311"
-     * text: `cat out_311.json | jq -r '.[].text'` -> copy to excel
-     * label: `cat out_311.json | jq -r '.[].index` -> copy excel
-   * Verify and save.
+sends text list to openAI for labeling
 
-5. `convert_csv_to_json.py <city>` converts above generated `csv` to `json` for submission to API
+#### `2-convert-out_to_csv.py`
 
-6. Submission example:
-   * `curl -X POST -H 'content-type: application/json' H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
+* Avoid copy paste, convert api json to csv, open file directly in excel.
+  * need to preserve text formatting, as there's all sorts of hidden / garbage
+    text that needs to be properly mapped.
 
-NB: Data can have hidden spaces, etc. Make sure to copy/paste specifically.
+* Correct any labels, add SKIP, etc and save as `labeled_311.csv`, `labeled_crime.csv`.
+
+#### `3-convert_csv_to_json.py <city>`
+
+* converts previously saved `csv` to `json` for submission to API
+
+#### Submit to API /textcategories endpoing
+
+* `curl -X POST -H 'content-type: application/json' H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
 
 ---
 
@@ -112,6 +116,8 @@ Extract via jq (Note the raw output (-r) to strip quotes.)
 * Classifier is a starting point, still have to manually assign labels. Easiest
 to do side-by-side in Excel.
 
+* There are some convenience scripts above, but generally the process is below
+
 * Review labels, make sure to overwrite with any _SKIP_..
 
 `cat out_crime.json | jq -r '.[].text'`
@@ -178,4 +184,3 @@ OpenAI Crime Example
 Submit
 
 `curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
-
