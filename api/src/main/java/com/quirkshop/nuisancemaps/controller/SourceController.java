@@ -11,9 +11,13 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -200,57 +204,31 @@ public class SourceController {
 
     @PatchMapping("/sources/{id}")
     public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
-            @RequestBody SourceDTO sourceDTO) {
-
-        Optional<Source> optionalSource = sourceRepository.findById(id);
-        if (!optionalSource.isPresent())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
-
-        final Source finalSource = optionalSource.get();
-
-        ReflectionUtils.doWithFields(SourceDTO.class, field -> {
-            field.setAccessible(true);
-            Object value = field.get(sourceDTO);
-
-            Field sourceField;
-            if (value != null && !field.getName().equals("location")) {
-                try {
-                    sourceField = Source.class.getDeclaredField(field.getName());
-                    sourceField.setAccessible(true);
-                    sourceField.set(finalSource, value);
-                } catch (NoSuchFieldException e) {
-
-                }
-            }
-        });
-
-        // Convert location array to Point
-        if (sourceDTO.getLocation() != null && sourceDTO.getLocation().length == 2) {
-            final int SRID = 4326;
-            Double lng = sourceDTO.getLocation()[0];
-            Double lat = sourceDTO.getLocation()[1];
-            GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
-
-            Coordinate coordinate = new Coordinate(lng, lat);
-            Point point = geometryFactory.createPoint(coordinate);
-            finalSource.setLocation(point);
+            @RequestBody Map<String, Object> updates) {
+        JSendDTO jSendDTO;
+        Source updatedSource = null;
+        try {
+            updatedSource = sourceLoaderService.updateSource(id, updates);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+            jSendDTO = new JSendDTO("error", e.getMessage());
+            return ResponseEntity.badRequest().body(jSendDTO);
         }
 
-        Source source = sourceRepository.save(finalSource);
+        Double[] location = { updatedSource.getLocation().getX(), updatedSource.getLocation().getY() };
 
-        Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
-
-        SourceDTO res = new SourceDTO(source.getSourceConfigId(),
-                source.getSourceConfigEntity(),
-                source.getSourceConfigNotes(),
+        SourceDTO res = new SourceDTO(updatedSource.getSourceConfigId(),
+                updatedSource.getSourceConfigEntity(),
+                updatedSource.getSourceConfigNotes(),
                 location,
-                source.getIconName(),
-                source.getIconUnicode(),
-                source.getCategory(),
-                source.getDescription(),
-                source.getNumRecords());
+                updatedSource.getIconName(),
+                updatedSource.getIconUnicode(),
+                updatedSource.getCategory(),
+                updatedSource.getDescription(),
+                updatedSource.getNumRecords());
 
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        jSendDTO = new JSendDTO("success", res);
+        return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
 
     }
 

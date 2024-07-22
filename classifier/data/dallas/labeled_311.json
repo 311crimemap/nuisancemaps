@@ -1,0 +1,1327 @@
+[
+    {
+        "dataType": "311",
+        "text": "24 Hour Parking Violation - DPD",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "24 hr parking",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "311 Event Request - 311",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "ADA Accessibility Concerns - OEI",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Air Pollution Complaint - OEQS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Alley Repair - Routine - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Alley Rumble Strips New - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Alley/Sidewalk/Street Repair - Hazardous - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Aggressive Behavior - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Bite - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Community Cat Program - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Confined - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Lack of Care - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Loose Cat - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Loose - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Nuisance - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Owner Surrender - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Wildlife - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Barricades - Pickup/Reset/Replace - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Bike Lane Marking Maintenance \u2013 TRN",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Bike Paths/Routes - TRN",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Bike Share - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Boarding Home Complaint - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Boarding Home Facilities  - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Boarding Home Facilities - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Bond Program Projects - BCM",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Bond Program Projects - OBP",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Bond Program Projects - PBW",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Permits Violation - DEV",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Permits Violation - SDC",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Permit Violation-DEV",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "CCS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Chemical Spill Urgent - OEQS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Chronic Noise Complaint - DPD",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "City Hall on the Go Request - 311",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "City Property Management/ Real Estate - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "City Property Management/ Real Estate - SDC",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "code concern",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Code concern",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Code Concern",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Code Concern - CCS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Code Concern-CCS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Code Concern - CCS - CP",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "code conern",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Commercial Pool Complaint - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Community Care Services - OCC",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "community prosecution",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Community Prosecution",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Community Prosecution - CAO",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Community Prosecution- CAO",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Complaint/Compliment - 311",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Conservation District Violation - PNV",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Right of Way/Status - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Site Complaint - DEV",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Site Complaint - SDC",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Consumer Health",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Consumer Protection Complaint - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Creek Bank Erosion - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Creek/Culvert Blockage - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Creek/Culvert Maintenance -DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Criminal Activities - DPD",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "CSR Test",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Dead Animal Pick Up - DAS",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Drainage Ditch Cleaning/Repairs - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Educational Request - DFR",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Emergency Regulations Violation - CCS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Extra Police Patrol - DPD",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Fair Housing Complaint - EIO",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Fair Housing Complaint - FHO",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Fair Housing Complaint - OEI",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Fair Park Parking Violation - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire Inspection - DFR",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Fireworks",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Fireworks - DPD",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Flooded Roadway Warning System - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Flooding - Emergency - PBW",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Floodplain Project Inquiry - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Floodplain/Stormwater Project Inquiry - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Food Borne Illness - CCS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti City Streets & Bridges - PBW",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti Traffic Signal - TRN",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti Traffic Sign - TRN",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Guardrail - New - TRN",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Guardrail Repair - Hazardous - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Guardrail Repair - Routine - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Handicap Parking Violation - DPD",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "HEAVY CLEAN",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "High Water Flooded Roadway Alarm Warning System - PBW",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Historic/Conservation District Violation - DEV",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Historic/Conservation District Violation - SDC",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Historic District Violation - OHP",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Historic District Violation - PNV",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Homeless Encampment",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Homeless Encampment - OHS",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Homeless Meal Event - CCS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Housing & Neighborhood Revitalization \u2013 HOU",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "ICR Consumer Protection Complaint - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "illegal dump abatement",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "illegal dumping abatement",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Dumping Sign - CCS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Dumping Sign - CDS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Dumping Sign - MSH",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Dumping Urgent - OEQS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Removal of Protected Tree - DEV",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Removal of Protected Tree - SDC",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Spray Painting - DFR",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Inclement Weather Shelter Transportation - OHS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Inlet/Storm Drain Cleaning - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Inlet/Storm Drain Stopped Up - Hazardous - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Interagency - PBW",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Landlord Retaliation After Reported Code Violation - CAO",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Library Concerns - LIB",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Lid Cover Broken/Missing - Hazardous - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Lid Cover Broken - Routine - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Locked/Blocked Exit - DFR",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Lock/Unlock Knox Lock or Box - DFR",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Median/Right of Way Maintenance - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Miscellaneous Service Request - 311",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Mobile Food Complaint - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Mobility Planning - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Mosquito - Beekeeper Notification - CCS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Mosquito - Do Not Spray - CCS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "mosquitoes investigation - CCS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Motor Vehicle Idling - CDS",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Motor Vehicle Idling - MSH",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "MOWmentum Program - PBW",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Multi-Tenant Pool Inspection - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Narcotics/Vice Complaint - DPD",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "New Street/Sidewalk/Alley - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "*****no score ****",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "***no score***",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "***No score***",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "***No score*****",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "***No Score***",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "***No Score*******",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "***No violation ****",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Objects Dropped in Inlet - Hazardous - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Occupancy Load Violation - DFR",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Panhandling - DPD",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Park Emergency Regulations Violation - PKR",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking in Fire Lane/ Fire Hydrants - DFR",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking - Report a Violation - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking - Valet Complaint - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Park Maintenance/Misc - PKR",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Paving Reconstruction Project - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Paving Street Resurface Program - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Pay Lot Booting - AVI",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Pool Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Pot Hole - Hazardous - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Pot Hole - Routine - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Private Development Coordination - DEV",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Private Development Coordination - SDC",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Railroad Crossing Repair - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Resident Only Parking Permit - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Restaurant/Food Complaint - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Risk Management Claim Form Request - RSK",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Road Hump/Speed Bump Request - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Sand Removal Request - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Annual 20 Cubic Yard Exemption - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Commercial Roll Cart Services - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Commercial Services - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Cost-Plus - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation District Billing Dispute - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Helping Hands - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Litter Cans - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Missed Brush/Bulk - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Missed Garbage - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Missed Recycle - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Pack Out/Helping Hands - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Pack-Out - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Property Damage - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Roll Cart Maintenance/Delivery - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Same Day Missed Collection - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "School Crossing Guard - CDS",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "School Crossing Guard - MSH",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Scooter/Bike Shared Dockless Vehicle - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Scooter Share - TRN",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewage Discharge - OEQS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewage Discharge Urgent- OEQS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewer Problems - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Shopping Cart Routine Pickup - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Shopping Carts - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Short Term/Vacation Rental Survey - CCS",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Replacement Program - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Utility Obstruction - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Single Family need registration",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Single Family Need Registration-CCS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "single family needs registration",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Single Family Needs Registration",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Single Family Rental Inspection - CCS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "single family rental needs registration",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Single Family Rental Needs Registration - CCS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Smoke Detector Request - DFR",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Smoke Detector Request- DFR",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Smoking Violation - CCS",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Snow/Ice Sanding - Hazardous - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Social Services Request - IPS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Social Services Rquest - IPS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Special Events Permit Request - CES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Speed Limit Change Request - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Steel Plates in Street - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Storm Drainage/Flooding Complaint - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Storm Sewer Line Locate - DWU",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Storm Water Construction Site Urgent - OEQS",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Storm Water Industrial Site Urgent - OEQS",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Lighting - Maintenance- TRN",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Lighting- New/Relocation - TRN",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Repair - Routine - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street/Road Blockage - TRN",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Spillage/Debris in Right of Way - Hazardous - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Streets Referral Pickup - SAN",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Sweeping - Thoroughfares - PBW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Survey Questions - PBW",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Swimming Pool Discharge Urgent - OEQS",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Test",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "test crm",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Test CRM",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "TEST CRM",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "test sr",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Test Sr",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Test SR",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Towing Complaint - AVI",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic - Construction Signs - PBW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Markings - Broken Traffic Button - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Markings - Large Cast Iron Button Removal - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Markings - Maintenance - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Markings - New - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - All Out - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Bulb Out/NonConflict Hd Trn VO - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Flashing - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Head Turn (Conflicting) - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Knockdown - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - New - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Other Dispatch - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - School Flasher Maintenance - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Stuck - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Timing - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Visibility Obstruction - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Knockdown - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Maintenance (Other) - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - New - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Other Dispatch - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Visibility Obstruction - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic - Speed Control - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic - Street Closure - TRN",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Violations (Chronic) - DPD",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Transportation Complaint - AVI",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Tree Down/Low Limbs - PBW",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Trinity River Levee Maintenance/Mowing - DWU",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Complaint/Information - BMS",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Complaint/Information - OBS",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Cut/Hazardous - PBW",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Cut/Routine - PBW",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Visibility Obstruction - Hazardous - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Visibility Obstruction - PBW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Waste/Fraud/Abuse - AUD",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Payments & Billing Inquiry - 311",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Pollution Urgent - DWU",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Questions - 311",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water/Sanitary Sewer Construction Project - DWU",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Utilities Payment Plan Request",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Utilities Payment Plan Request - DWU",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water/Wastewater Line Locate - 311",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Wheel Chair Ramp/Curb Cuts - PBW",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Yard Waste - OEQS",
+        "label": "12"
+    }
+]

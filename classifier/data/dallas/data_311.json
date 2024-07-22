@@ -1,0 +1,265 @@
+[{"service_request_type":"24 Hour Parking Violation - DPD"}
+,{"service_request_type":"24 hr parking"}
+,{"service_request_type":"311 Event Request - 311"}
+,{"service_request_type":"ADA Accessibility Concerns - OEI"}
+,{"service_request_type":"Air Pollution Complaint - OEQS"}
+,{"service_request_type":"Alley Repair - Routine - PBW"}
+,{"service_request_type":"Alley Rumble Strips New - TRN"}
+,{"service_request_type":"Alley/Sidewalk/Street Repair - Hazardous - PBW"}
+,{"service_request_type":"Animal Aggressive Behavior - DAS"}
+,{"service_request_type":"Animal Bite - DAS"}
+,{"service_request_type":"Animal Community Cat Program - DAS"}
+,{"service_request_type":"Animal Confined - DAS"}
+,{"service_request_type":"Animal Lack of Care - DAS"}
+,{"service_request_type":"Animal Loose Cat - DAS"}
+,{"service_request_type":"Animal Loose - DAS"}
+,{"service_request_type":"Animal Nuisance - DAS"}
+,{"service_request_type":"Animal Owner Surrender - DAS"}
+,{"service_request_type":"Animal Wildlife - DAS"}
+,{"service_request_type":"Barricades - Pickup/Reset/Replace - PBW"}
+,{"service_request_type":"Bike Lane Marking Maintenance – TRN"}
+,{"service_request_type":"Bike Paths/Routes - TRN"}
+,{"service_request_type":"Bike Share - TRN"}
+,{"service_request_type":"Boarding Home Complaint - CCS"}
+,{"service_request_type":"Boarding Home Facilities  - CCS"}
+,{"service_request_type":"Boarding Home Facilities - CCS"}
+,{"service_request_type":"Bond Program Projects - BCM"}
+,{"service_request_type":"Bond Program Projects - OBP"}
+,{"service_request_type":"Bond Program Projects - PBW"}
+,{"service_request_type":"Building Permits Violation - DEV"}
+,{"service_request_type":"Building Permits Violation - SDC"}
+,{"service_request_type":"Building Permit Violation-DEV"}
+,{"service_request_type":"CCS"}
+,{"service_request_type":"Chemical Spill Urgent - OEQS"}
+,{"service_request_type":"Chronic Noise Complaint - DPD"}
+,{"service_request_type":"City Hall on the Go Request - 311"}
+,{"service_request_type":"City Property Management/ Real Estate - PBW"}
+,{"service_request_type":"City Property Management/ Real Estate - SDC"}
+,{"service_request_type":"code concern"}
+,{"service_request_type":"Code concern"}
+,{"service_request_type":"Code Concern"}
+,{"service_request_type":"Code Concern - CCS"}
+,{"service_request_type":"Code Concern-CCS"}
+,{"service_request_type":"Code Concern - CCS - CP"}
+,{"service_request_type":"code conern"}
+,{"service_request_type":"Commercial Pool Complaint - CCS"}
+,{"service_request_type":"Community Care Services - OCC"}
+,{"service_request_type":"community prosecution"}
+,{"service_request_type":"Community Prosecution"}
+,{"service_request_type":"Community Prosecution - CAO"}
+,{"service_request_type":"Community Prosecution- CAO"}
+,{"service_request_type":"Complaint/Compliment - 311"}
+,{"service_request_type":"Conservation District Violation - PNV"}
+,{"service_request_type":"Construction Right of Way/Status - PBW"}
+,{"service_request_type":"Construction Site Complaint - DEV"}
+,{"service_request_type":"Construction Site Complaint - SDC"}
+,{"service_request_type":"Consumer Health"}
+,{"service_request_type":"Consumer Protection Complaint - CCS"}
+,{"service_request_type":"Creek Bank Erosion - DWU"}
+,{"service_request_type":"Creek/Culvert Blockage - DWU"}
+,{"service_request_type":"Creek/Culvert Maintenance -DWU"}
+,{"service_request_type":"Criminal Activities - DPD"}
+,{"service_request_type":"CSR Test"}
+,{"service_request_type":"Dead Animal Pick Up - DAS"}
+,{"service_request_type":"Drainage Ditch Cleaning/Repairs - PBW"}
+,{"service_request_type":"Educational Request - DFR"}
+,{"service_request_type":"Emergency Regulations Violation - CCS"}
+,{"service_request_type":"Extra Police Patrol - DPD"}
+,{"service_request_type":"Fair Housing Complaint - EIO"}
+,{"service_request_type":"Fair Housing Complaint - FHO"}
+,{"service_request_type":"Fair Housing Complaint - OEI"}
+,{"service_request_type":"Fair Park Parking Violation - TRN"}
+,{"service_request_type":"Fire Inspection - DFR"}
+,{"service_request_type":"Fireworks"}
+,{"service_request_type":"Fireworks - DPD"}
+,{"service_request_type":"Flooded Roadway Warning System - DWU"}
+,{"service_request_type":"Flooding - Emergency - PBW"}
+,{"service_request_type":"Floodplain Project Inquiry - DWU"}
+,{"service_request_type":"Floodplain/Stormwater Project Inquiry - DWU"}
+,{"service_request_type":"Food Borne Illness - CCS"}
+,{"service_request_type":"Graffiti City Streets & Bridges - PBW"}
+,{"service_request_type":"Graffiti Traffic Signal - TRN"}
+,{"service_request_type":"Graffiti Traffic Sign - TRN"}
+,{"service_request_type":"Guardrail - New - TRN"}
+,{"service_request_type":"Guardrail Repair - Hazardous - PBW"}
+,{"service_request_type":"Guardrail Repair - Routine - PBW"}
+,{"service_request_type":"Handicap Parking Violation - DPD"}
+,{"service_request_type":"HEAVY CLEAN"}
+,{"service_request_type":"High Water Flooded Roadway Alarm Warning System - PBW"}
+,{"service_request_type":"Historic/Conservation District Violation - DEV"}
+,{"service_request_type":"Historic/Conservation District Violation - SDC"}
+,{"service_request_type":"Historic District Violation - OHP"}
+,{"service_request_type":"Historic District Violation - PNV"}
+,{"service_request_type":"Homeless Encampment"}
+,{"service_request_type":"Homeless Encampment - OHS"}
+,{"service_request_type":"Homeless Meal Event - CCS"}
+,{"service_request_type":"Housing & Neighborhood Revitalization – HOU"}
+,{"service_request_type":"ICR Consumer Protection Complaint - CCS"}
+,{"service_request_type":"illegal dump abatement"}
+,{"service_request_type":"illegal dumping abatement"}
+,{"service_request_type":"Illegal Dumping Sign - CCS"}
+,{"service_request_type":"Illegal Dumping Sign - CDS"}
+,{"service_request_type":"Illegal Dumping Sign - MSH"}
+,{"service_request_type":"Illegal Dumping Urgent - OEQS"}
+,{"service_request_type":"Illegal Removal of Protected Tree - DEV"}
+,{"service_request_type":"Illegal Removal of Protected Tree - SDC"}
+,{"service_request_type":"Illegal Spray Painting - DFR"}
+,{"service_request_type":"Inclement Weather Shelter Transportation - OHS"}
+,{"service_request_type":"Inlet/Storm Drain Cleaning - DWU"}
+,{"service_request_type":"Inlet/Storm Drain Stopped Up - Hazardous - DWU"}
+,{"service_request_type":"Interagency - PBW"}
+,{"service_request_type":"Landlord Retaliation After Reported Code Violation - CAO"}
+,{"service_request_type":"Library Concerns - LIB"}
+,{"service_request_type":"Lid Cover Broken/Missing - Hazardous - PBW"}
+,{"service_request_type":"Lid Cover Broken - Routine - PBW"}
+,{"service_request_type":"Locked/Blocked Exit - DFR"}
+,{"service_request_type":"Lock/Unlock Knox Lock or Box - DFR"}
+,{"service_request_type":"Median/Right of Way Maintenance - PBW"}
+,{"service_request_type":"Miscellaneous Service Request - 311"}
+,{"service_request_type":"Mobile Food Complaint - CCS"}
+,{"service_request_type":"Mobility Planning - TRN"}
+,{"service_request_type":"Mosquito - Beekeeper Notification - CCS"}
+,{"service_request_type":"Mosquito - Do Not Spray - CCS"}
+,{"service_request_type":"mosquitoes investigation - CCS"}
+,{"service_request_type":"Motor Vehicle Idling - CDS"}
+,{"service_request_type":"Motor Vehicle Idling - MSH"}
+,{"service_request_type":"MOWmentum Program - PBW"}
+,{"service_request_type":"Multi-Tenant Pool Inspection - CCS"}
+,{"service_request_type":"Narcotics/Vice Complaint - DPD"}
+,{"service_request_type":"New Street/Sidewalk/Alley - PBW"}
+,{"service_request_type":"*****no score ****"}
+,{"service_request_type":"***no score***"}
+,{"service_request_type":"***No score***"}
+,{"service_request_type":"***No score*****"}
+,{"service_request_type":"***No Score***"}
+,{"service_request_type":"***No Score*******"}
+,{"service_request_type":"***No violation ****"}
+,{"service_request_type":"Objects Dropped in Inlet - Hazardous - PBW"}
+,{"service_request_type":"Occupancy Load Violation - DFR"}
+,{"service_request_type":"Panhandling - DPD"}
+,{"service_request_type":"Park Emergency Regulations Violation - PKR"}
+,{"service_request_type":"Parking in Fire Lane/ Fire Hydrants - DFR"}
+,{"service_request_type":"Parking - Report a Violation - TRN"}
+,{"service_request_type":"Parking - Valet Complaint - TRN"}
+,{"service_request_type":"Park Maintenance/Misc - PKR"}
+,{"service_request_type":"Paving Reconstruction Project - PBW"}
+,{"service_request_type":"Paving Street Resurface Program - PBW"}
+,{"service_request_type":"Pay Lot Booting - AVI"}
+,{"service_request_type":"Pool Complaint"}
+,{"service_request_type":"Pot Hole - Hazardous - PBW"}
+,{"service_request_type":"Pot Hole - Routine - PBW"}
+,{"service_request_type":"Private Development Coordination - DEV"}
+,{"service_request_type":"Private Development Coordination - SDC"}
+,{"service_request_type":"Railroad Crossing Repair - PBW"}
+,{"service_request_type":"Resident Only Parking Permit - TRN"}
+,{"service_request_type":"Restaurant/Food Complaint - CCS"}
+,{"service_request_type":"Risk Management Claim Form Request - RSK"}
+,{"service_request_type":"Road Hump/Speed Bump Request - TRN"}
+,{"service_request_type":"Sand Removal Request - PBW"}
+,{"service_request_type":"Sanitation Annual 20 Cubic Yard Exemption - SAN"}
+,{"service_request_type":"Sanitation Commercial Roll Cart Services - SAN"}
+,{"service_request_type":"Sanitation Commercial Services - SAN"}
+,{"service_request_type":"Sanitation Cost-Plus - SAN"}
+,{"service_request_type":"Sanitation District Billing Dispute - SAN"}
+,{"service_request_type":"Sanitation Helping Hands - SAN"}
+,{"service_request_type":"Sanitation Litter Cans - SAN"}
+,{"service_request_type":"Sanitation Missed Brush/Bulk - SAN"}
+,{"service_request_type":"Sanitation Missed Garbage - SAN"}
+,{"service_request_type":"Sanitation Missed Recycle - SAN"}
+,{"service_request_type":"Sanitation Pack Out/Helping Hands - SAN"}
+,{"service_request_type":"Sanitation Pack-Out - SAN"}
+,{"service_request_type":"Sanitation Property Damage - SAN"}
+,{"service_request_type":"Sanitation Roll Cart Maintenance/Delivery - SAN"}
+,{"service_request_type":"Sanitation Same Day Missed Collection - SAN"}
+,{"service_request_type":"School Crossing Guard - CDS"}
+,{"service_request_type":"School Crossing Guard - MSH"}
+,{"service_request_type":"Scooter/Bike Shared Dockless Vehicle - TRN"}
+,{"service_request_type":"Scooter Share - TRN"}
+,{"service_request_type":"Sewage Discharge - OEQS"}
+,{"service_request_type":"Sewage Discharge Urgent- OEQS"}
+,{"service_request_type":"Sewer Problems - DWU"}
+,{"service_request_type":"Shopping Cart Routine Pickup - PBW"}
+,{"service_request_type":"Shopping Carts - PBW"}
+,{"service_request_type":"Short Term/Vacation Rental Survey - CCS"}
+,{"service_request_type":"Sidewalk Replacement Program - PBW"}
+,{"service_request_type":"Sidewalk Utility Obstruction - PBW"}
+,{"service_request_type":"Single Family need registration"}
+,{"service_request_type":"Single Family Need Registration-CCS"}
+,{"service_request_type":"single family needs registration"}
+,{"service_request_type":"Single Family Needs Registration"}
+,{"service_request_type":"Single Family Rental Inspection - CCS"}
+,{"service_request_type":"single family rental needs registration"}
+,{"service_request_type":"Single Family Rental Needs Registration - CCS"}
+,{"service_request_type":"Smoke Detector Request - DFR"}
+,{"service_request_type":"Smoke Detector Request- DFR"}
+,{"service_request_type":"Smoking Violation - CCS"}
+,{"service_request_type":"Snow/Ice Sanding - Hazardous - PBW"}
+,{"service_request_type":"Social Services Request - IPS"}
+,{"service_request_type":"Social Services Rquest - IPS"}
+,{"service_request_type":"Special Events Permit Request - CES"}
+,{"service_request_type":"Speed Limit Change Request - TRN"}
+,{"service_request_type":"Steel Plates in Street - PBW"}
+,{"service_request_type":"Storm Drainage/Flooding Complaint - DWU"}
+,{"service_request_type":"Storm Sewer Line Locate - DWU"}
+,{"service_request_type":"Storm Water Construction Site Urgent - OEQS"}
+,{"service_request_type":"Storm Water Industrial Site Urgent - OEQS"}
+,{"service_request_type":"Street Lighting - Maintenance- TRN"}
+,{"service_request_type":"Street Lighting- New/Relocation - TRN"}
+,{"service_request_type":"Street Repair - Routine - PBW"}
+,{"service_request_type":"Street/Road Blockage - TRN"}
+,{"service_request_type":"Street Spillage/Debris in Right of Way - Hazardous - PBW"}
+,{"service_request_type":"Streets Referral Pickup - SAN"}
+,{"service_request_type":"Street Sweeping - Thoroughfares - PBW"}
+,{"service_request_type":"Survey Questions - PBW"}
+,{"service_request_type":"Swimming Pool Discharge Urgent - OEQS"}
+,{"service_request_type":"Test"}
+,{"service_request_type":"test crm"}
+,{"service_request_type":"Test CRM"}
+,{"service_request_type":"TEST CRM"}
+,{"service_request_type":"test sr"}
+,{"service_request_type":"Test Sr"}
+,{"service_request_type":"Test SR"}
+,{"service_request_type":"Towing Complaint - AVI"}
+,{"service_request_type":"Traffic - Construction Signs - PBW"}
+,{"service_request_type":"Traffic Markings - Broken Traffic Button - TRN"}
+,{"service_request_type":"Traffic Markings - Large Cast Iron Button Removal - TRN"}
+,{"service_request_type":"Traffic Markings - Maintenance - TRN"}
+,{"service_request_type":"Traffic Markings - New - TRN"}
+,{"service_request_type":"Traffic Signal - All Out - TRN"}
+,{"service_request_type":"Traffic Signal - Bulb Out/NonConflict Hd Trn VO - TRN"}
+,{"service_request_type":"Traffic Signal - Flashing - TRN"}
+,{"service_request_type":"Traffic Signal - Head Turn (Conflicting) - TRN"}
+,{"service_request_type":"Traffic Signal - Knockdown - TRN"}
+,{"service_request_type":"Traffic Signal - New - TRN"}
+,{"service_request_type":"Traffic Signal - Other Dispatch - TRN"}
+,{"service_request_type":"Traffic Signal - School Flasher Maintenance - TRN"}
+,{"service_request_type":"Traffic Signal - Stuck - TRN"}
+,{"service_request_type":"Traffic Signal - Timing - TRN"}
+,{"service_request_type":"Traffic Signal - Visibility Obstruction - TRN"}
+,{"service_request_type":"Traffic Sign - Knockdown - TRN"}
+,{"service_request_type":"Traffic Sign - Maintenance (Other) - TRN"}
+,{"service_request_type":"Traffic Sign - New - TRN"}
+,{"service_request_type":"Traffic Sign - Other Dispatch - TRN"}
+,{"service_request_type":"Traffic Sign - Visibility Obstruction - TRN"}
+,{"service_request_type":"Traffic - Speed Control - TRN"}
+,{"service_request_type":"Traffic - Street Closure - TRN"}
+,{"service_request_type":"Traffic Violations (Chronic) - DPD"}
+,{"service_request_type":"Transportation Complaint - AVI"}
+,{"service_request_type":"Tree Down/Low Limbs - PBW"}
+,{"service_request_type":"Trinity River Levee Maintenance/Mowing - DWU"}
+,{"service_request_type":"Utility Complaint/Information - BMS"}
+,{"service_request_type":"Utility Complaint/Information - OBS"}
+,{"service_request_type":"Utility Cut/Hazardous - PBW"}
+,{"service_request_type":"Utility Cut/Routine - PBW"}
+,{"service_request_type":"Visibility Obstruction - Hazardous - PBW"}
+,{"service_request_type":"Visibility Obstruction - PBW"}
+,{"service_request_type":"Waste/Fraud/Abuse - AUD"}
+,{"service_request_type":"Water Payments & Billing Inquiry - 311"}
+,{"service_request_type":"Water Pollution Urgent - DWU"}
+,{"service_request_type":"Water Questions - 311"}
+,{"service_request_type":"Water/Sanitary Sewer Construction Project - DWU"}
+,{"service_request_type":"Water Utilities Payment Plan Request"}
+,{"service_request_type":"Water Utilities Payment Plan Request - DWU"}
+,{"service_request_type":"Water/Wastewater Line Locate - 311"}
+,{"service_request_type":"Wheel Chair Ramp/Curb Cuts - PBW"}
+,{"service_request_type":"Yard Waste - OEQS"}]
