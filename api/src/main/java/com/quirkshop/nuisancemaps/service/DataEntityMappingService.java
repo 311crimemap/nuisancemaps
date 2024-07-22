@@ -120,8 +120,8 @@ public class DataEntityMappingService {
         String reported_at1 = parseEntity(Mapping::getReportedAt, source, item);
         String reported_at2 = parseEntity(Mapping::getReportedAt2, source, item);
 
-        Double latitude = lat == null ? null : Double.parseDouble(lat);
-        Double longitude = lng == null ? null : Double.parseDouble(lng);
+        Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
+        Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
         Coordinate coordinate = null;
         Point point = null;
 
