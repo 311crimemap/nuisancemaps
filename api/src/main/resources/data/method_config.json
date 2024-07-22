@@ -47,12 +47,12 @@
             "reportedAt": {
                 "field": "reporteddate",
                 "pointer": "/reporteddate",
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_CRIME_DALLAS"
             },
             "reportedAt2": {
                 "field": "date1",
                 "pointer": "/date1",
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT2_CRIME_DALLAS"
             }
         }
     },
