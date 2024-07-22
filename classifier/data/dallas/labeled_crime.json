@@ -5658,5 +5658,16 @@
         "dataType": "crime",
         "text": "null",
         "label": "7"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF PROP <$100 ENH (SHOPLIFT-NOT EMP) PC31.03(f)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ABANDONED PROPERTY (NO OFFENSE)",
+        "label": "1"
     }
+
 ]

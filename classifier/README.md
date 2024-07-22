@@ -37,7 +37,7 @@ All data is in `/data/<city>`.
 6. Submission example:
    * `curl -X POST -H 'content-type: application/json' H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
 
-
+NB: Data can have hidden spaces, etc. Make sure to copy/paste specifically.
 
 ---
 
