@@ -89,7 +89,7 @@ public class DataService {
     }
 
 
-    public void createData(Source source, DataJob dataJob, String jsonResponse) {
+    public synchronized void createData(Source source, DataJob dataJob, String jsonResponse) {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
