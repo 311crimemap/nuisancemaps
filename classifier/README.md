@@ -6,188 +6,176 @@ poor on 311 data - because the data is very 'vague' and requires context).
 Hugging Face Slow enough that it's not worth spinning up and provisioning an
 entire GPU instance for a helper utility.
 
-## ChatGPT Classifier
 
-Make sure `OPENAI_API_KEY` is set in env.
+All data is in `/data/<city>`.
 
-Bash scripts are basically copies with variables to 311 and crime related txt
-files.
+## Steps
 
-Adjust the `LIMIT` and `OFFSET` variables in the script to run multiple times.
-Make sure preserve `out_X.json`.
+1. Download data
 
-* `./openai_311.sh`
-  * uses `prompt_311.txt`, `categories_311.txt`
-  * modify `data_311.txt`
-* `./openai_crime.sh`
-  * uses `prompt_crime.txt`, `categories_crime.txt`
-  * modify `data_crime.txt`
+* `curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`
+* `curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`
 
+2. Output text categories to text file
 
-To extract text / labels from result:
+* `cat /data/<city>/data_311.json | jq -r '.[].<field>' > data/<city>/data_311.txt`
+* `cat /data/<city>/data_crime.json | jq -r'.[].<field>' > data/<city>/data_crime.txt`
 
-* `cat $OUTPUT_FILE | jq -r '.choices[0].message.content' | jq '.examples[].text'`
-* `cat $OUTPUT_FILE | jq -r '.choices[0].message.content' | jq '.examples[].index'`
+3. `classifier.py <type> <city>` which sends to openAI to label
 
-Submission to API:
+4. Take resulting `out_311.json` / `out_crime.json`, put into Excel and manually
+   verify, correcting any labels, aka SKIP, and save as `labeled_311.csv`,
+   `labeled_crime.csv`
+   * Excel sheet make `dataType` (311/crime), `text`, `label` headers
+     * dataType: "311"
+     * text: `cat out_311.json | jq -r '.[].text'` -> copy to excel
+     * label: `cat out_311.json | jq -r '.[].index` -> copy excel
+   * Verify and save.
 
-* Build a json array in excel with `{text, label}` data
-* Place in `/submit-data`
-* Upload: `curl -X POST -d @file.json api_host/raw_text_categories`  - TODO: finalize this endpoint
+5. `convert_csv_to_json.py <city>` converts above generated `csv` to `json` for submission to API
 
-## Results Output
+6. Submission example:
+   * `curl -X POST -H 'content-type: application/json' H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
 
-TODO:
-
-* figuring out process. So far...
-* Data with missing category -> skip? vs send to error bin
-  * There shouldn't be that many categories; we can still label them even if we
-    aren't saving that data.
-
-Put these into Excel and then use as guide for labeling the categories.
 
 
 ---
 
-_Deprecated Training Setup Below__
+## ChatGPT Classifier
 
-## Training:
+Used for labeling `TextCategory` records: these are the data's <reportCategory>
+that are labeled and mapped to one of several `Category` records.
 
-* Approach: few shot learning, fine-tuning via hugging face SetFit framework.
-* Training data: ATX, NYC, CHI, SFO labels
-* Model: [SetFit: setfit-bge-small-v1.5-sst2-8-shot](https://github.com/huggingface/setfit)
+1. Make sure `OPENAI_API_KEY` is set in env.
+2. Download "select distinct <reportCategory> list of fields > (`data_311.json`,
+   `data_crime.json`)
+3. Populate `data_311.txt`, `data_crime.txt` with `TextCategory` to be
+   classified (use `jq`)
+4. Ensure `prompt_311.txt`, `prompt_crime.txt`, and `categories_311.txt`,
+   `categories_crime.txt` are valid inputs (should not change after a while0)
+5. Run `classifier.py` in docker container
+6. Check `out_311.json` and `out_crime.json` for label
+
+---
+
+## Adding a Source
+
+1. Populate new entity modeled on `api/src/main/resources/data/source_config.json` (but don't save)
+
+* URL
+* lat/lng center point for city
+* Mappings: make sure to use JSON path notation (`/` for object depth)
+* numRecords: <URL>?$query=SELECT%20count(*)
+
+2. Submit json object at endpoints `/sources` or `/sources/batch`:
+
+`curl -X POST -H 'X-API-KEY: <key>' -H 'content-type: application/json' -d @source.json localhost:8080/sources/batch`
 
 
-Training Notes:
+## Adding Source's TextCategory
 
-* Need to use GPU
-  * AWS: G4dn ~ 1hr @ 582 examples; batch 32, 7 epochs -> 15/sec
-  * error dwindles fast, likely do fewer iterations
-* Make sure use compatible image: OSS Nvidia image (spot ~ .20/hr)
+General process:
 
-```
-# on aws instance:
+1. compile and download distinct `TextCategory` elements via `reportCategory` field
+2. Classify, using openAI or whatever classifier
 
-pip install torch==2.2.1 transformers==4.38.2 huggingface_hub==0.21.4 \
-    scikit-learn evaluate accelerate datasets setfit
+#### Getting `reportCategory` Data
 
-python3.9 set_fit_crime.py
+Download
 
-# for inference machine
+* `curl <url>$query=SELECT distinct <reportCategory> limit 10000 > data_crime.json`
+* `curl <url>$query=SELECT distinct <reportCategory> limit 10000 > data_311.json`
 
-docker exec -it <nuisancemap container> bash
+Extract via jq (Note the raw output (-r) to strip quotes.)
 
-python -i set_fit_load.python
-```
+* `cat data_crime.json | jq -r '.[].<reportCategory>' > data_crime.txt`
+* `cat data_311.json | jq -r '.[].<reportCategory>' > data_311.txt`
 
-Test set
 
-* Boston: crime - .89
-* Dallas: crime - .85
-* Aggregate: crime - .887
 
-## Files
+#### /Classifier
 
-* `Dockerfile`: environment for python classifier
-* `data.ods`: excel sheet to compare test/train data
-* `classifier-demo`: transformer and hugging face pipeline
-* `zero_shot_311.py`: zero shot model w/ hugging face pipeline
-* `set_fit_crime.py`: few shot model using hugging face setfit framework
-* `set_fit_311.py`: few shot model using hugging face setfit framework
-* `set_fit_load_311.py`: few shot model using hugging face setfit framework
-* `set_fit_load_crime.py`: few shot model using hugging face setfit framework
-* `data/`: crime or 311 data; filtered by field(s)
-  * `train-crime.json`: merged training set of atx, nyc, chi, sfo labeled classes
-  * `test-crime.json`: bos, dfw labeled classes
-* `models/setfit-bge-small . . ./`: dir for any saved models used for inference reloading
-* `examples/`: scratchpad
+* Current category labels are in `categories_311.txt`, and
+  `categories_crime.txt`
+  * (these are setup for huggingface models and scripts adapts to openAI as
+    well)
+* Ensure "select distinct `reportCategory`" data from query is extracted to
+  `/classifier/data/<city>/data_311.txt` and `/classifier/data/<city>/data_crime.txt`. (copy paste
+  lists)
+* Verify prompts in `/classifier/prompt_311.txt`, `/classifier/prompt_crime.txt`
+* `classifer_311.py`, `classifer_crime.py`: are setup to submit prompt, category and data to OpenAI
+* output: `out_311.json`, `out_crime.json`
 
-## Process To Label New Source
 
-1. Find new data url, identify fields for import
+#### Labeling
 
-* update `source_config.json`, eventually submit to `/source_config` endpoint
-  (treat as data instead of config)
+* Classifier is a starting point, still have to manually assign labels. Easiest
+to do side-by-side in Excel.
 
-2. query for distinct categories:
-   * `https://data.austintexas.gov/resource/fdj4-gpfu.json?$query=select
-     distinct `field` > output.json`
+* Review labels, make sure to overwrite with any _SKIP_..
 
-3. `cat output.json | jq '.[].field'`
+`cat out_crime.json | jq -r '.[].text'`
+`cat out_crime.json | jq -r '.[].index`
 
-4. place output.json array in excel for labeling and paste into
-   `set_fit_load.py` for prediction.
+* Paste into spreadsheet and modify/verify.
 
-```
-[
-  { 'text': "ABANDONED REFRIGERATOR", 'label': 6 },
-  { 'text': "ABUSE OF 911", 'label': 5 },
-  ...
-]
-```
+* Extract as csv: Title columns, save as .csv -> `labeled_crime.csv`, `labeled_311.csv`.
+  * column titles: ["dataType", "text", "label"]
 
-5. run `set_fit_load.py` to predict labels.
-
-6. Paste into excel and manually verify category labels
-
-7. Submit finalized text and category label to `/rawcategorylabels` endpoint
-   (treat as data)
-
-8. RawCategoryLabels:
-
-* resource of text, label to be loaded as in memory hashmap - used for quick
-  lookup in buildEntity
-
-9. Classifier Categories
-
-* handful of classes describing crimes/311 used to filter / group
-* `classifier_categories.json`
-* Keep in `api/resources` for single source of truth
-  * `api `will upsert on every worker pass to ensure consistency with table
-* Used by classifier
-* Used by `api` to seed in `Category` table
-* for `web` an endpoint retrieves from table.
-
+NB: Data Submission Format:
 
 ```
-# classifier_categories.json
-# subcategories empty for now
-
-# have to share with web - api - classifier
-# once set in db - has to be sticky
-
+    [
+...,
 {
-    "crime" : [
-        {
-            name: violent,
-            label_id: 0,
-        },
-        {
-            name: fraud,
-            label_id: 1,
-            subcategories: [
-              {
-                  label_id: 3,
-                  name: fraud-1,
-              },
-              {
-                  label_id: 4,
-                  name: fraud-2,
-              }
-          },
-          {
-              label_id: 2,
-              name: burglary
-          }
-          ],
-        }
-    ],
+    "dataType": "crime",
+    "text": <textCategory>,
+    "label": 1
+},
+...]
+```
 
-    "311": [
-        noise,
-        ...
-    ]
-}
 
+#### Submitting new Source TextCategory(ies): convert_csv_to_json.py
+
+`convert_csv_to_json.py <city>`: to take csv and convert to list of json for  `/textcategory` submission.
+
+* `data/<city>/labeled_crime.csv` -> `data/<city>/labeled_crime.json`
+* `data/<city>/labeled_311.csv` -> `data/<city>/labeled_311.json`
+
+
+Submission:
 
 ```
+* `curl -X POST -d @labeled_311.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
+* `curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
+
+```
+
+
+## Adding Error TextCategories
+
+Reminder many error messages will end up being duplicates, so it's less intimidating than it looks.
+
+NB: if getting parse errors, proper json has no dangling ','.
+
+
+* Collect errors: `curl -H 'X-API-KEY:1234' localhost:8080/dataerrors | jq '.[].errorMsg`
+  * these should be "missing category"
+* Take each type, category and start label process for submission
+* Either manually label category, or submit to openAI
+
+Manual Example
+* `labeled_crime.json` -> copy to `missing_crime.json`, for example: add
+  category and label (and dataType) and submit.
+
+OpenAI Crime Example
+* add to `data_crime.txt`
+* `classifier.py`
+* review `out_crime.json` (jq to excel) -> `labeled_crime.csv`
+* `convert_csv_to_json.py` -> `labeled_crime.json`
+
+Submit
+
+`curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
+

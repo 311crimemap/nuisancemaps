@@ -1,0 +1,266 @@
+dataType,text,label
+311,24 Hour Parking Violation - DPD,9
+311,24 hr parking,9
+311,311 Event Request - 311,14
+311,ADA Accessibility Concerns - OEI,3
+311,Air Pollution Complaint - OEQS,13
+311,Alley Repair - Routine - PBW,5
+311,Alley Rumble Strips New - TRN,6
+311,Alley/Sidewalk/Street Repair - Hazardous - PBW,8
+311,Animal Aggressive Behavior - DAS,0
+311,Animal Bite - DAS,0
+311,Animal Community Cat Program - DAS,0
+311,Animal Confined - DAS,0
+311,Animal Lack of Care - DAS,0
+311,Animal Loose Cat - DAS,0
+311,Animal Loose - DAS,0
+311,Animal Nuisance - DAS,0
+311,Animal Owner Surrender - DAS,0
+311,Animal Wildlife - DAS,0
+311,Barricades - Pickup/Reset/Replace - PBW,5
+311,Bike Lane Marking Maintenance – TRN,5
+311,Bike Paths/Routes - TRN,5
+311,Bike Share - TRN,9
+311,Boarding Home Complaint - CCS,4
+311,Boarding Home Facilities  - CCS,4
+311,Boarding Home Facilities - CCS,4
+311,Bond Program Projects - BCM,14
+311,Bond Program Projects - OBP,14
+311,Bond Program Projects - PBW,14
+311,Building Permits Violation - DEV,3
+311,Building Permits Violation - SDC,3
+311,Building Permit Violation-DEV,3
+311,CCS,14
+311,Chemical Spill Urgent - OEQS,13
+311,Chronic Noise Complaint - DPD,1
+311,City Hall on the Go Request - 311,14
+311,City Property Management/ Real Estate - PBW,5
+311,City Property Management/ Real Estate - SDC,5
+311,code concern,3
+311,Code concern,3
+311,Code Concern,3
+311,Code Concern - CCS,3
+311,Code Concern-CCS,3
+311,Code Concern - CCS - CP,3
+311,code conern,3
+311,Commercial Pool Complaint - CCS,4
+311,Community Care Services - OCC,14
+311,community prosecution,14
+311,Community Prosecution,14
+311,Community Prosecution - CAO,14
+311,Community Prosecution- CAO,14
+311,Complaint/Compliment - 311,14
+311,Conservation District Violation - PNV,3
+311,Construction Right of Way/Status - PBW,5
+311,Construction Site Complaint - DEV,3
+311,Construction Site Complaint - SDC,3
+311,Consumer Health,13
+311,Consumer Protection Complaint - CCS,4
+311,Creek Bank Erosion - DWU,7
+311,Creek/Culvert Blockage - DWU,7
+311,Creek/Culvert Maintenance -DWU,7
+311,Criminal Activities - DPD,2
+311,CSR Test,14
+311,Dead Animal Pick Up - DAS,0
+311,Drainage Ditch Cleaning/Repairs - PBW,5
+311,Educational Request - DFR,10
+311,Emergency Regulations Violation - CCS,3
+311,Extra Police Patrol - DPD,2
+311,Fair Housing Complaint - EIO,4
+311,Fair Housing Complaint - FHO,4
+311,Fair Housing Complaint - OEI,4
+311,Fair Park Parking Violation - TRN,9
+311,Fire Inspection - DFR,3
+311,Fireworks,1
+311,Fireworks - DPD,1
+311,Flooded Roadway Warning System - DWU,7
+311,Flooding - Emergency - PBW,7
+311,Floodplain Project Inquiry - DWU,7
+311,Floodplain/Stormwater Project Inquiry - DWU,7
+311,Food Borne Illness - CCS,13
+311,Graffiti City Streets & Bridges - PBW,2
+311,Graffiti Traffic Signal - TRN,2
+311,Graffiti Traffic Sign - TRN,2
+311,Guardrail - New - TRN,5
+311,Guardrail Repair - Hazardous - PBW,5
+311,Guardrail Repair - Routine - PBW,5
+311,Handicap Parking Violation - DPD,9
+311,HEAVY CLEAN,14
+311,High Water Flooded Roadway Alarm Warning System - PBW,7
+311,Historic/Conservation District Violation - DEV,3
+311,Historic/Conservation District Violation - SDC,3
+311,Historic District Violation - OHP,3
+311,Historic District Violation - PNV,3
+311,Homeless Encampment,2
+311,Homeless Encampment - OHS,2
+311,Homeless Meal Event - CCS,14
+311,Housing & Neighborhood Revitalization – HOU,14
+311,ICR Consumer Protection Complaint - CCS,4
+311,illegal dump abatement,3
+311,illegal dumping abatement,3
+311,Illegal Dumping Sign - CCS,3
+311,Illegal Dumping Sign - CDS,3
+311,Illegal Dumping Sign - MSH,3
+311,Illegal Dumping Urgent - OEQS,3
+311,Illegal Removal of Protected Tree - DEV,10
+311,Illegal Removal of Protected Tree - SDC,10
+311,Illegal Spray Painting - DFR,2
+311,Inclement Weather Shelter Transportation - OHS,14
+311,Inlet/Storm Drain Cleaning - DWU,7
+311,Inlet/Storm Drain Stopped Up - Hazardous - DWU,7
+311,Interagency - PBW,14
+311,Landlord Retaliation After Reported Code Violation - CAO,4
+311,Library Concerns - LIB,14
+311,Lid Cover Broken/Missing - Hazardous - PBW,8
+311,Lid Cover Broken - Routine - PBW,8
+311,Locked/Blocked Exit - DFR,3
+311,Lock/Unlock Knox Lock or Box - DFR,14
+311,Median/Right of Way Maintenance - PBW,5
+311,Miscellaneous Service Request - 311,14
+311,Mobile Food Complaint - CCS,4
+311,Mobility Planning - TRN,9
+311,Mosquito - Beekeeper Notification - CCS,13
+311,Mosquito - Do Not Spray - CCS,13
+311,mosquitoes investigation - CCS,13
+311,Motor Vehicle Idling - CDS,1
+311,Motor Vehicle Idling - MSH,1
+311,MOWmentum Program - PBW,10
+311,Multi-Tenant Pool Inspection - CCS,4
+311,Narcotics/Vice Complaint - DPD,2
+311,New Street/Sidewalk/Alley - PBW,5
+311,*****no score ****,15
+311,***no score***,15
+311,***No score***,15
+311,***No score*****,15
+311,***No Score***,15
+311,***No Score*******,15
+311,***No violation ****,15
+311,Objects Dropped in Inlet - Hazardous - PBW,8
+311,Occupancy Load Violation - DFR,3
+311,Panhandling - DPD,2
+311,Park Emergency Regulations Violation - PKR,10
+311,Parking in Fire Lane/ Fire Hydrants - DFR,9
+311,Parking - Report a Violation - TRN,9
+311,Parking - Valet Complaint - TRN,9
+311,Park Maintenance/Misc - PKR,10
+311,Paving Reconstruction Project - PBW,5
+311,Paving Street Resurface Program - PBW,5
+311,Pay Lot Booting - AVI,9
+311,Pool Complaint,4
+311,Pot Hole - Hazardous - PBW,8
+311,Pot Hole - Routine - PBW,8
+311,Private Development Coordination - DEV,14
+311,Private Development Coordination - SDC,14
+311,Railroad Crossing Repair - PBW,5
+311,Resident Only Parking Permit - TRN,9
+311,Restaurant/Food Complaint - CCS,4
+311,Risk Management Claim Form Request - RSK,14
+311,Road Hump/Speed Bump Request - TRN,9
+311,Sand Removal Request - PBW,5
+311,Sanitation Annual 20 Cubic Yard Exemption - SAN,12
+311,Sanitation Commercial Roll Cart Services - SAN,12
+311,Sanitation Commercial Services - SAN,12
+311,Sanitation Cost-Plus - SAN,12
+311,Sanitation District Billing Dispute - SAN,12
+311,Sanitation Helping Hands - SAN,12
+311,Sanitation Litter Cans - SAN,12
+311,Sanitation Missed Brush/Bulk - SAN,12
+311,Sanitation Missed Garbage - SAN,12
+311,Sanitation Missed Recycle - SAN,12
+311,Sanitation Pack Out/Helping Hands - SAN,12
+311,Sanitation Pack-Out - SAN,12
+311,Sanitation Property Damage - SAN,12
+311,Sanitation Roll Cart Maintenance/Delivery - SAN,12
+311,Sanitation Same Day Missed Collection - SAN,12
+311,School Crossing Guard - CDS,10
+311,School Crossing Guard - MSH,10
+311,Scooter/Bike Shared Dockless Vehicle - TRN,9
+311,Scooter Share - TRN,9
+311,Sewage Discharge - OEQS,13
+311,Sewage Discharge Urgent- OEQS,13
+311,Sewer Problems - DWU,7
+311,Shopping Cart Routine Pickup - PBW,8
+311,Shopping Carts - PBW,8
+311,Short Term/Vacation Rental Survey - CCS,4
+311,Sidewalk Replacement Program - PBW,5
+311,Sidewalk Utility Obstruction - PBW,5
+311,Single Family need registration,3
+311,Single Family Need Registration-CCS,3
+311,single family needs registration,3
+311,Single Family Needs Registration,3
+311,Single Family Rental Inspection - CCS,3
+311,single family rental needs registration,3
+311,Single Family Rental Needs Registration - CCS,3
+311,Smoke Detector Request - DFR,3
+311,Smoke Detector Request- DFR,3
+311,Smoking Violation - CCS,2
+311,Snow/Ice Sanding - Hazardous - PBW,8
+311,Social Services Request - IPS,14
+311,Social Services Rquest - IPS,14
+311,Special Events Permit Request - CES,14
+311,Speed Limit Change Request - TRN,6
+311,Steel Plates in Street - PBW,5
+311,Storm Drainage/Flooding Complaint - DWU,7
+311,Storm Sewer Line Locate - DWU,7
+311,Storm Water Construction Site Urgent - OEQS,7
+311,Storm Water Industrial Site Urgent - OEQS,7
+311,Street Lighting - Maintenance- TRN,5
+311,Street Lighting- New/Relocation - TRN,5
+311,Street Repair - Routine - PBW,5
+311,Street/Road Blockage - TRN,8
+311,Street Spillage/Debris in Right of Way - Hazardous - PBW,8
+311,Streets Referral Pickup - SAN,12
+311,Street Sweeping - Thoroughfares - PBW,5
+311,Survey Questions - PBW,14
+311,Swimming Pool Discharge Urgent - OEQS,13
+311,Test,15
+311,test crm,15
+311,Test CRM,15
+311,TEST CRM,15
+311,test sr,15
+311,Test Sr,15
+311,Test SR,15
+311,Towing Complaint - AVI,4
+311,Traffic - Construction Signs - PBW,6
+311,Traffic Markings - Broken Traffic Button - TRN,6
+311,Traffic Markings - Large Cast Iron Button Removal - TRN,6
+311,Traffic Markings - Maintenance - TRN,6
+311,Traffic Markings - New - TRN,6
+311,Traffic Signal - All Out - TRN,6
+311,Traffic Signal - Bulb Out/NonConflict Hd Trn VO - TRN,6
+311,Traffic Signal - Flashing - TRN,6
+311,Traffic Signal - Head Turn (Conflicting) - TRN,6
+311,Traffic Signal - Knockdown - TRN,6
+311,Traffic Signal - New - TRN,6
+311,Traffic Signal - Other Dispatch - TRN,6
+311,Traffic Signal - School Flasher Maintenance - TRN,6
+311,Traffic Signal - Stuck - TRN,6
+311,Traffic Signal - Timing - TRN,6
+311,Traffic Signal - Visibility Obstruction - TRN,6
+311,Traffic Sign - Knockdown - TRN,6
+311,Traffic Sign - Maintenance (Other) - TRN,6
+311,Traffic Sign - New - TRN,6
+311,Traffic Sign - Other Dispatch - TRN,6
+311,Traffic Sign - Visibility Obstruction - TRN,6
+311,Traffic - Speed Control - TRN,6
+311,Traffic - Street Closure - TRN,6
+311,Traffic Violations (Chronic) - DPD,4
+311,Transportation Complaint - AVI,4
+311,Tree Down/Low Limbs - PBW,10
+311,Trinity River Levee Maintenance/Mowing - DWU,11
+311,Utility Complaint/Information - BMS,11
+311,Utility Complaint/Information - OBS,11
+311,Utility Cut/Hazardous - PBW,11
+311,Utility Cut/Routine - PBW,11
+311,Visibility Obstruction - Hazardous - PBW,8
+311,Visibility Obstruction - PBW,8
+311,Waste/Fraud/Abuse - AUD,4
+311,Water Payments & Billing Inquiry - 311,11
+311,Water Pollution Urgent - DWU,11
+311,Water Questions - 311,11
+311,Water/Sanitary Sewer Construction Project - DWU,11
+311,Water Utilities Payment Plan Request,11
+311,Water Utilities Payment Plan Request - DWU,11
+311,Water/Wastewater Line Locate - 311,11
+311,Wheel Chair Ramp/Curb Cuts - PBW,9
+311,Yard Waste - OEQS,12

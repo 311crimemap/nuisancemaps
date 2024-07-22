@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,15 +36,23 @@ public class SourceLoaderService {
     @Autowired
     SourceRepository sourceRepository;
 
+    @Autowired
     private ObjectMapper objectMapper;
 
-    SourceLoaderService() {
-        this.objectMapper = new ObjectMapper();
+    public Source updateSource(int id, Map<String, Object> updates) throws JsonMappingException {
+        Source source = sourceRepository.findById(id).orElse(null);
+        Mapping mapping = source.getMapping();
+
+        // NB: need to updates.remove otherwise results in unsaved transient instance
+        Map<String, Object> mappingUpdates = (Map<String, Object>) updates.remove("mapping");
+        objectMapper.updateValue(mapping, mappingUpdates);
+        objectMapper.updateValue(source, updates);
+        return sourceRepository.save(source);
     }
 
-    //wrap this so @Transactional throws error inside
-    //the API controller scope (versus @Transactional on the controller action)
-    //which would need handling outside
+    // wrap this so @Transactional throws error inside
+    // the API controller scope (versus @Transactional on the controller action)
+    // which would need handling outside
     @Transactional
     public Source saveTransaction(Source source) {
         mappingRepository.save(source.getMapping());
@@ -64,7 +73,7 @@ public class SourceLoaderService {
         if (id == null)
             return null;
 
-        //replace for field name vs json path
+        // replace for field name vs json path
         id = id.replaceFirst("/", "");
         String jsonResponse;
         JsonNode rootNode = null;
