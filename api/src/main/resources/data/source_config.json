@@ -233,7 +233,7 @@
         "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
         "location": [
             -87.623177,
-            41.881832,
+            41.881832
         ],
         "iconName": "building",
         "iconUnicode": "\uf1ad",
@@ -290,7 +290,7 @@
         "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
         "location": [
             -87.623177,
-            41.881832,
+            41.881832
         ],
         "iconName": "building",
         "iconUnicode": "\uf1ad",
