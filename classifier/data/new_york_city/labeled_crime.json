@@ -1,0 +1,367 @@
+[
+    {
+        "dataType": "crime",
+        "text": "(null)",
+        "label": "7"
+    },
+    {
+        "dataType": "crime",
+        "text": "ABORTION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ADMINISTRATIVE CODE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ADMINISTRATIVE CODES",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGRICULTURE & MRKTS LAW-UNCLASSIFIED",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ALCOHOLIC BEVERAGE CONTROL LAW",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANTICIPATORY OFFENSES",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT 3 & RELATED OFFENSES",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLAR'S TOOLS",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CANNABIS RELATED OFFENSES",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD ABANDONMENT/NON SUPPORT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL MISCHIEF & RELATED OF",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "DANGEROUS DRUGS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DANGEROUS WEAPONS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISORDERLY CONDUCT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISRUPTION OF A RELIGIOUS SERV",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ENDAN WELFARE INCOMP",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ESCAPE 3",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FELONY ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FELONY SEX CRIMES",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORTUNE TELLING",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUDS",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUDULENT ACCOSTING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "GAMBLING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "GRAND LARCENY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "GRAND LARCENY OF MOTOR VEHICLE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARRASSMENT 2",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HOMICIDE-NEGLIGENT,UNCLASSIFIE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HOMICIDE-NEGLIGENT-VEHICLE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTOXICATED & IMPAIRED DRIVING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTOXICATED/IMPAIRED DRIVING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "JOSTLING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING & RELATED OFFENSES",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING AND RELATED OFFENSES",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOITERING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOITERING FOR DRUG PURPOSES",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOITERING/DEVIATE SEX",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOITERING/GAMBLING (CARDS, DIC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISCELLANEOUS PENAL LAW",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "MURDER & NON-NEGL. MANSLAUGHTER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "NEW YORK CITY HEALTH CODE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "NYS LAWS-UNCLASSIFIED FELONY",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "NYS LAWS-UNCLASSIFIED VIOLATION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFF. AGNST PUB ORD SENSBLTY &",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFENSES AGAINST MARRIAGE UNCL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFENSES AGAINST PUBLIC ADMINI",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFENSES AGAINST PUBLIC SAFETY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFENSES AGAINST THE PERSON",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFENSES INVOLVING FRAUD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFENSES RELATED TO CHILDREN",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER OFFENSES RELATED TO THEF",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER STATE LAWS",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER STATE LAWS (NON PENAL LA",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER STATE LAWS (NON PENAL LAW)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER TRAFFIC INFRACTION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PETIT LARCENY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "PETIT LARCENY OF MOTOR VEHICLE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSSESSION OF STOLEN PROPERTY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTION & RELATED OFFENSES",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "RAPE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEX CRIMES",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF SERVICES",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT-FRAUD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNAUTHORIZED USE OF A VEHICLE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNDER THE INFLUENCE OF DRUGS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAWFUL POSS. WEAP. ON SCHOOL",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "VEHICLE AND TRAFFIC LAWS",
+        "label": "5"
+    }
+]

