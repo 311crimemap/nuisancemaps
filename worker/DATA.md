@@ -43,7 +43,8 @@ To find the url, find the data page, then click API
 | Location | Crime Type | Crime                                                  | 311                                                    |
 | -------- | ---------- | ------------------------------------------------------ | ------------------------------------------------------ |
 | ATX      | complaint  | https://data.austintexas.gov/resource/fdj4-gpfu.json   | https://data.austintexas.gov/resource/xwdj-i9he.json   |
-| NYC      | complaint  | https://data.cityofnewyork.us/resource/5uac-w243.json  | https://data.cityofnewyork.us/resource/erm2-nwe9.json  |
+| NYC | complaint historic | https://data.cityofnewyork.us/resource/qgea-i56i.json | 
+| NYC      | complaint YTD  | https://data.cityofnewyork.us/resource/5uac-w243.json  | https://data.cityofnewyork.us/resource/erm2-nwe9.json  |
 | NYC      | arrests    | https://data.cityofnewyork.us/resource/uip8-fykc.json  | -                                                      |
 | CHI      | complaint  | https://data.cityofchicago.org/resource/ijzp-q8t2.json | https://data.cityofchicago.org/resource/v6vf-nfxy.json |
 | SF       | complaint  | https://data.sfgov.org/resource/wg3w-h783.json         | https://data.sfgov.org/resource/vw6y-z8j6.json         |
