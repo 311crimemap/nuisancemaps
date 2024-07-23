@@ -35,6 +35,8 @@ sends text list to openAI for labeling
 
 * Correct any labels, add SKIP, etc and save as `labeled_311.csv`, `labeled_crime.csv`.
 
+* Make sure `dataType`, `text`, `label` are the columns
+
 #### `3-convert_csv_to_json.py <city>`
 
 * converts previously saved `csv` to `json` for submission to API
@@ -69,7 +71,7 @@ that are labeled and mapped to one of several `Category` records.
 * URL
 * lat/lng center point for city
 * Mappings: make sure to use JSON path notation (`/` for object depth)
-* numRecords: <URL>?$query=SELECT%20count(*)
+* numRecords: `<URL>?$query=SELECT%20count(*)`
 
 2. Submit json object at endpoints `/sources` or `/sources/batch`:
 

@@ -1,0 +1,182 @@
+[
+    {
+        "dataType": "crime",
+        "text": "ARSON",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "BATTERY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONCEALED CARRY LICENSE VIOLATION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL DAMAGE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL SEXUAL ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIM SEXUAL ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DECEPTIVE PRACTICE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOMESTIC VIOLENCE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "GAMBLING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "HOMICIDE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HUMAN TRAFFICKING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTERFERENCE WITH PUBLIC OFFICER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTIMIDATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "LIQUOR LAW VIOLATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "MOTOR VEHICLE THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "NARCOTICS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "NON - CRIMINAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "NON-CRIMINAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "NON-CRIMINAL (SUBJECT SPECIFIED)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBSCENITY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFENSE INVOLVING CHILDREN",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER NARCOTIC VIOLATION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER OFFENSE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PUBLIC INDECENCY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PUBLIC PEACE VIOLATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "RITUALISM",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEX OFFENSE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "STALKING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPONS VIOLATION",
+        "label": "4"
+    }
+]
