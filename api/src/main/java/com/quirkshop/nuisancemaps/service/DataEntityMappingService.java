@@ -25,6 +25,7 @@ import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.config.ParserStrategy;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
@@ -124,6 +125,14 @@ public class DataEntityMappingService {
         Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
         Coordinate coordinate = null;
         Point point = null;
+
+        if (reportCategory == null || reportCategory.isEmpty()) {
+            String errString = String.format(
+                    "Missing reportCategory | dataType: %s, source: %s - %s | sourceURL: %s",
+                    source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
+                    source.getUrl());
+            throw new MissingReportCategoryException();
+        }
 
         if (latitude != null && longitude != null) {
             // GeoJSON/WKT is long, lat (order is "reversed").
