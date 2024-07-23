@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -134,7 +135,8 @@ public class DataEntityMappingServiceTest {
     @Transactional
     public void BuildDataEntityParseEntityTest()
             throws IOException, NoSuchMethodException, IllegalAccessException, InstantiationException,
-            InvocationTargetException, MissingCategoryException, MissingCoordinateException {
+            InvocationTargetException, MissingReportCategoryException, MissingCategoryException,
+            MissingCoordinateException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-dallas.json");
         Source s = sourceRepository.findOneBySourceConfigId(4);

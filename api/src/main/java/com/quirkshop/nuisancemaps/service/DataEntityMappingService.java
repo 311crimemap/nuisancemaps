@@ -106,7 +106,7 @@ public class DataEntityMappingService {
     public IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source, JsonNode item,
             GeometryFactory geometryFactory)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
-            MissingCategoryException, MissingCoordinateException {
+            MissingCategoryException, MissingReportCategoryException, MissingCoordinateException {
 
         Mapping mapping = source.getMapping();
 
@@ -131,7 +131,7 @@ public class DataEntityMappingService {
                     "Missing reportCategory | dataType: %s, source: %s - %s | sourceURL: %s",
                     source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
                     source.getUrl());
-            throw new MissingReportCategoryException();
+            throw new MissingReportCategoryException(errString);
         }
 
         if (latitude != null && longitude != null) {
