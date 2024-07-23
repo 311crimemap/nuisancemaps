@@ -24,6 +24,7 @@ import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
@@ -88,7 +89,6 @@ public class DataService {
         return rootNode;
     }
 
-
     public synchronized void createData(Source source, DataJob dataJob, String jsonResponse) {
 
         StringWriter sw = new StringWriter();
@@ -102,7 +102,7 @@ public class DataService {
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
 
-        //TODO: synchronize this block or createData method
+        // TODO: synchronize this block or createData method
         setTypes(source);
 
         createDataEntities(dataJob, source, rootNode, geometryFactory, sw, pw);
@@ -143,7 +143,8 @@ public class DataService {
 
             try {
 
-                IDataEntity dataEntity = dataEntityMappingService.buildDataEntity(dataEntityClass, source, item, geometryFactory);
+                IDataEntity dataEntity = dataEntityMappingService.buildDataEntity(dataEntityClass, source, item,
+                        geometryFactory);
 
                 String report_num = dataEntity.getReportNum();
 
@@ -160,8 +161,19 @@ public class DataService {
                 report_nums.add(report_num);
                 numBuilt++;
 
-            } catch(MissingCoordinateException e) {
+            } catch (MissingCoordinateException e) {
                 String logStr = String.format("[DataService] MissingCoordinate error: %s | id: %s",
+                        source.getDescription(), source.getId());
+
+                log.info(logStr);
+                sw.getBuffer().setLength(0);
+                e.printStackTrace(pw);
+
+                String content = StringUtils.substring(item.toString(), 0, 4096);
+
+                log.info(content);
+            } catch (MissingReportCategoryException e) {
+                String logStr = String.format("[DataService] MissingReportCategory error: %s | id: %s",
                         source.getDescription(), source.getId());
 
                 log.info(logStr);
@@ -215,7 +227,7 @@ public class DataService {
 
         // query any existing
         List<IDataEntity> existing = dataEntityRepository
-            .findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
+                .findAllBySourceIdAndReportNumIn(source.getId(), report_nums);
 
         // replace existing with new
         for (IDataEntity dataEntityDB : existing) {
@@ -230,7 +242,8 @@ public class DataService {
         // saveAll
         List<String> result = new ArrayList<String>();
 
-        Iterable<IDataEntity> i = dataEntityRepository.saveAllEntities(parseNewDataMap.values());
+        Iterable<IDataEntity> i = dataEntityRepository
+                .saveAllEntities(parseNewDataMap.values());
         numProcessed = Iterables.size(i);
 
         setJobStatus(source, dataJob, errors, numFetched, numSkipped, numBuilt, numProcessed, existing.size());
