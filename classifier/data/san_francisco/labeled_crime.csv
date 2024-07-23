@@ -1,0 +1,51 @@
+dataType,text,label
+crime,Arson,1
+crime,Assault,0
+crime,Burglary,1
+crime,Case Closure,6
+crime,Civil Sidewalks,5
+crime,Courtesy Report,6
+crime,Disorderly Conduct,5
+crime,Drug Offense,4
+crime,Drug Violation,4
+crime,Embezzlement,3
+crime,Fire Report,6
+crime,Forgery And Counterfeiting,3
+crime,Fraud,3
+crime,Gambling,4
+crime,Homicide,0
+crime,"Human Trafficking (A), Commercial Sex Acts",0
+crime,"Human Trafficking (B), Involuntary Servitude",0
+crime,"Human Trafficking, Commercial Sex Acts",0
+crime,Larceny Theft,2
+crime,Liquor Laws,5
+crime,Lost Property,1
+crime,Malicious Mischief,1
+crime,Miscellaneous Investigation,6
+crime,Missing Person,6
+crime,Motor Vehicle Theft,2
+crime,Motor Vehicle Theft?,2
+crime,Non-Criminal,6
+crime,Offences Against The Family And Children,0
+crime,Other,6
+crime,Other Miscellaneous,6
+crime,Other Offenses,6
+crime,Prostitution,4
+crime,Rape,0
+crime,Recovered Vehicle,1
+crime,Robbery,2
+crime,Sex Offense,0
+crime,Stolen Property,1
+crime,Suicide,6
+crime,Suspicious,6
+crime,Suspicious Occ,6
+crime,Traffic Collision,6
+crime,Traffic Violation Arrest,5
+crime,Vandalism,1
+crime,Vehicle Impounded,6
+crime,Vehicle Misplaced,6
+crime,Warrant,6
+crime,Weapons Carrying Etc,4
+crime,Weapons Offence,4
+crime,Weapons Offense,4
+crime,null,7

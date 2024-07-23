@@ -152,6 +152,10 @@ NB: Data Submission Format:
 * `data/<city>/labeled_311.csv` -> `data/<city>/labeled_311.json`
 
 
+Build and submit `TextCategory` *before* submitting any `Source` /
+`source_config.json`. A new `Source` triggers workers, but if no `TextCategory`
+are built, each record will throw a `MissingCategoryException` error.
+
 Submission:
 
 ```
