@@ -56,23 +56,23 @@ public class WorkerScheduleService {
     @Scheduled(fixedDelay = 2000, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         String currentThreadName = Thread.currentThread().getName();
-        //log.info("[checkDataJobQueue] " + currentThreadName);
+        // log.info("[checkDataJobQueue] " + currentThreadName);
 
         // GET / CREATE NEXT JOB
         DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
 
-            //log.info("No Jobs Queued");
+            // log.info("No Jobs Queued");
             createNewJobs();
             return;
         }
 
         Source source = datajob.getSource();
         String prefixLog = String.format("%s | dataJob: %s | %s - %s",
-                                         currentThreadName,
-                                         datajob.getId(),
-                                         source.getCategory(),
-                                         source.getDescription());
+                currentThreadName,
+                datajob.getId(),
+                source.getCategory(),
+                source.getDescription());
 
         String logDetails = String.format("%s | offset: %s | %s",
                 prefixLog, datajob.getParamOffset(), datajob.getUrl());
@@ -81,6 +81,7 @@ public class WorkerScheduleService {
 
         // FETCH
         String json = dataJobRequestService.fetchJSON(datajob);
+
         if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
             log.info(String.format("[FetchError] %s", logDetails));
             dataJobRepository.save(datajob);
@@ -96,7 +97,9 @@ public class WorkerScheduleService {
         dataservice.createData(source, datajob, json);
 
         // if high error rate, mark job as error and stop future jobs
-        if (datajob.getStatus() == DataJobStatus.ERROR || datajob.getStatus() == DataJobStatus.PARSE_ERROR) {
+        if (datajob.getStatus() == DataJobStatus.ERROR ||
+                datajob.getStatus() == DataJobStatus.PARSE_ERROR) {
+
             dataJobRepository.save(datajob);
             String logError = String.format("[checkDataJobQueue] ERROR | %s | Done: %s | fetched: %s | processed: %s",
                     currentThreadName, datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
@@ -106,8 +109,10 @@ public class WorkerScheduleService {
 
         datajob.setStatus(DataJobStatus.COMPLETED);
         dataJobRepository.save(datajob);
-        String logDone = String.format("[checkDataJobQueue] %s | Done: %s | fetched: %s | processed: %s",
-                currentThreadName, datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
+        String logDone = String.format("[checkDataJobQueue] %s | fetched: %s | processed: %s",
+                logDetails,
+                datajob.getNumFetched(),
+                datajob.getNumProcessed());
         log.info(logDone);
 
         // Fetch Num records on initial session

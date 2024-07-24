@@ -52,19 +52,14 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
         dataJobRepository.save(dataJob);
 
         try {
-            log.info(String.format("[Fetching] RestTemplate %s", logDetails));
             jsonResponse = restTemplate.getForObject(url, String.class);
         } catch (Exception e) {
-            log.info(String.format("[FetchError] RestTemplate %s", logDetails));
             dataJob.setStatus(DataJobStatus.FETCH_ERROR);
             dataJobRepository.save(dataJob);
-
-            log.info(String.format("[FetchError] DataJob Status: %s", dataJob.getStatus()));
             e.printStackTrace();
             return null;
         }
 
-        log.info(String.format("[FetchComplete] RestTemplate %s", logDetails));
         dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
         dataJobRepository.save(dataJob);
         return jsonResponse;
