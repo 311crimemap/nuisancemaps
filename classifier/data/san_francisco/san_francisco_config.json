@@ -82,8 +82,8 @@
                 "parsingStrategy": null
             },
             "description": {
-                "field": "service_subtype",
-                "pointer": "/service_subtype",
+                "field": null,
+                "pointer": null,
                 "parsingStrategy": null
             },
             "location": {
