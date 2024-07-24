@@ -1,0 +1,116 @@
+[
+    {
+        "sourceConfigId": 5,
+        "sourceConfigEntity": "Chicago, IL",
+        "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
+        "location": [
+            -87.623177,
+            41.881832
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "Chicago Crime",
+        "numRecords": 8112554,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "case_number",
+                "pointer": "/case_number",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "primary_type",
+                "pointer": "/primary_type",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "description",
+                "pointer": "/description",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "location_description",
+                "pointer": "/location_description",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "date",
+                "pointer": "/date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 6,
+        "sourceConfigEntity": "Chicago, IL",
+        "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
+        "location": [
+            -87.623177,
+            41.881832
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "311",
+        "description": "Chicago 311",
+        "numRecords": 10361572,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "sr_number",
+                "pointer": "/sr_number",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "sr_type",
+                "pointer": "/sr_type",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "owner_department",
+                "pointer": "/owner_department",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "street_address",
+                "pointer": "/street_address",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "created_date",
+                "pointer": "/created_date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    }
+]

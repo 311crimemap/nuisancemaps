@@ -1,0 +1,3001 @@
+[ {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Items in Right of Way"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Machine Issue"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Lane/Road Closure Notification"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "DSD - Outdoor Commercial Venue Music Complaint"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "SBO - Sidewalk Repair"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ATD - Speed Management"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "ARR - Street Sweeping"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "SBO - Obstruction in Right of Way"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "SBO - Debris in Street"
+}
+, {
+  "sr_type_desc" : "ARR - Street Sweeping"
+}
+, {
+  "sr_type_desc" : "DSD - Tree and Environmental Complaint"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - New"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ACD - Short Term Rental Complaint"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Special Services"
+}
+, {
+  "sr_type_desc" : "ATD - School Zone Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "SBO - Street Resurfacing"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Bite"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Machine Issue"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Road Markings/Striping - New"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - School Zone Beacon - Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Bite"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Callback Request"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Found Animal Assistance"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Outdoor Commercial Venue Music Complaint"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Modification"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ARR - Spillage Trash/Fluids"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign New"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "WPD - Storm Drain Services"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "DSD - Short Term Rental Complaint"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal Maintenance"
+}
+, {
+  "sr_type_desc" : "APH - Health Equity Line"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign New"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ATD - Lane/Road Closure Notification"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "WPD - Flooding Current"
+}
+, {
+  "sr_type_desc" : "WPD - Standing Water"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "SBO - Debris in Street"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Found Pet Report"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Pet Search"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Proper Care"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "DSD - Outdoor Commercial Venue Music Complaint"
+}
+, {
+  "sr_type_desc" : "APH - Environmental Health Services - City"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Electrical Issues"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APH - Environmental Health Services - City"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "DSD - Environmental Complaint"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Lane/Road Closure Notification"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Dig Tess Request"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ATD - Speed Management"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "WPD - Lost Item in Storm Drainage System"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Found Pet Report"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ARR - On Call Bulk"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Proper Care"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "ZZ - AFD - Fireworks Complaint"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APH - Environmental Health Services - City"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Animal Not Dog"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Electrical Issues"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ARR - Brush"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Proper Care"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - On Call Bulk"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Found Animal Assistance"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "WPD - Flooding Current"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal Maintenance"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "PWD - Tree Issue Right of Way"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ZZ AFD - Fireworks Complaint"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "ARR - Property Damage Report"
+}
+, {
+  "sr_type_desc" : "ARR - Bulk"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "WPD - Lady Bird Lake Debris Issues"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "ARR - Street Sweeping"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ARR - Bulk"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Found Animal Assistance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "WPD - Channels/Creek/Drainage Issues"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign New"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "SBO - Utility Cut Repair"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Bulk"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "SBO - Debris in Street"
+}
+, {
+  "sr_type_desc" : "ATD - Dig Tess Request"
+}
+, {
+  "sr_type_desc" : "ATD - View Obstruction and Fencing at Intersection"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "WPD - Channels/Creek/Drainage Issues"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Callback Request"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Street Sweeping"
+}
+, {
+  "sr_type_desc" : "SBO - Street and Bridge Miscellaneous"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "PWD - Tree Issue Right of Way"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "ARR - Street Sweeping"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - No Address"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Spillage Trash/Fluids"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "SBO - Sidewalk Repair"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Bite"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "WPD - Standing Water"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "WPD - Drainage Pond Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "WPD - Channels/Creek/Drainage Issues"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "WPD - Standing Water"
+}
+, {
+  "sr_type_desc" : "SBO - Sidewalk Repair"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "WPD - Channels/Creek/Drainage Issues"
+}
+, {
+  "sr_type_desc" : "SBO - Pavement Failure"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "ATD - Road Markings/Striping - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Lane/Road Closure Notification"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "WPD - Lost Item in Storm Drainage System"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Modification"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "PARD - Aquatic Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "PWD - Tree Issue Right of Way"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Callback Request"
+}
+, {
+  "sr_type_desc" : "DSD - Environmental Complaint"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "SBO - Obstruction in Right of Way"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "DSD - Short Term Rental Complaint"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "DSD - Outdoor Commercial Venue Music Complaint"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ATD - Speed Management"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - School Zone Beacon - Maintenance"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Callback Request"
+}
+, {
+  "sr_type_desc" : "ATD - Speed Management"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ARR - Brush"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "WPD - Lady Bird Lake Debris Issues"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Property Damage Report"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ARR - Bulk"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "ATD - Street Name Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign New"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Brush"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "WPD - Storm Drain Services"
+}
+, {
+  "sr_type_desc" : "ARR - On Call Bulk"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "ACD - Short Term Rental Complaint"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "SBO - Obstruction in Right of Way"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "PWD - Tree Issue Right of Way"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "WPD - Standing Water"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ARR - Bulk"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "WPD - Channels/Creek/Drainage Issues"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "PWD - Tree Issue Right of Way"
+}
+, {
+  "sr_type_desc" : "APH - Health Equity Line"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Proper Care"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ZZ AFD - Fireworks Complaint"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "SBO - Street and Bridge Miscellaneous"
+}
+, {
+  "sr_type_desc" : "ATD - Bicycle &amp; Pedestrian Issues"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ATD - Road Markings/Striping - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "PWD - Tree Issue Right of Way"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APH - Environmental Health Services - City"
+}
+, {
+  "sr_type_desc" : "SBO - Alley & Unpaved Street Maintenance"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "SBO - Debris in Street"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Animal Not Dog"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "DSD - Outdoor Commercial Venue Music Complaint"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "WPD - Flooding Past"
+}
+, {
+  "sr_type_desc" : "DSD - Case Updates/Code Connect Messages"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Proper Care"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Found Pet Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ATD - School Zone Beacon - Maintenance"
+}
+, {
+  "sr_type_desc" : "ACD - Short Term Rental Complaint"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - No Address"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "WPD - Lost Item in Storm Drainage System"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "SBO - Debris in Street"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "WPD - Standing Water"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Found Animal Assistance"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "WPD - Storm Drain Services"
+}
+, {
+  "sr_type_desc" : "ARR - On Call Bulk"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Modification"
+}
+, {
+  "sr_type_desc" : "ATD - Dig Tess Request"
+}
+, {
+  "sr_type_desc" : "ATD - Dig Tess Request"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "SBO - Bridge Repair"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "SBO - Obstruction in Right of Way"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "WPD - Channels/Creek/Drainage Issues"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Items in Right of Way"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "ARR - On Call Bulk"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Items in Right of Way"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Lane/Road Closure Notification"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Bulk"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "SBO - Debris in Street"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - New"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Modification"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Found Animal Assistance"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "SBO - Sidewalk Repair"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "PWD - Mowing Medians"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Spillage Trash/Fluids"
+}
+, {
+  "sr_type_desc" : "SBO - Debris in Street"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "WPD - Channels/Creek/Drainage Issues"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "DSD - Short Term Rental Complaint"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "SBO - Obstruction in Right of Way"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "AFD - Fireworks Complaint"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Found Animal Assistance"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Street Name Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Callback Request"
+}
+, {
+  "sr_type_desc" : "TARA - Telecommunication Complaint"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "SBO - Sidewalk Repair"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign New"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "WPD - Ditch/Driveway Pipe Services"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Proper Care"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ACD - Billboard Complaint"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Bicycle &amp; Pedestrian Issues"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "ARR - Special Services"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "SBO - Obstruction in Right of Way"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "SBO - Sidewalk Repair"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Animal Proper Care"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "SBO - New Sidewalk/Curb Ramp/Route"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ATD - Road Markings/Striping - Maintenance"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "SBO - Pavement Failure"
+}
+, {
+  "sr_type_desc" : "SBO - Alley & Unpaved Street Maintenance"
+}
+, {
+  "sr_type_desc" : "DSD - Outdoor Commercial Venue Music Complaint"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ATD - Shared Micromobility"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Building Plumbing Issues"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - View Obstruction and Fencing at Intersection"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Street Name Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Wildlife Exposure"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ATD - Speed Management"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - General"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Lane/Road Closure Notification"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "SBO - Street and Bridge Miscellaneous"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Animal Not Dog"
+}
+, {
+  "sr_type_desc" : "SBO - New Sidewalk/Curb Ramp/Route"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Report"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Found Animal Assistance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "WPD - Drainage Pond Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Emergency"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Spillage Trash/Fluids"
+}
+, {
+  "sr_type_desc" : "APD - Vehicle Abatement Callback Request"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ACD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "SBO - Pavement Failure"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "SBO - Alley & Unpaved Street Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Lane/Road Closure Notification"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "AE Street Light Issue - Address"
+}
+, {
+  "sr_type_desc" : "SBO - Sidewalk Repair"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "AW - Water Conservation Violation"
+}
+, {
+  "sr_type_desc" : "DSD - Request Code Officer"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ARR - Recycling"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Loose Dog"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Vicious Dog Complaint"
+}
+, {
+  "sr_type_desc" : "APH - Graffiti Abatement - Public Property"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Construction Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "DSD - Follow-Up"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Noise/Alarm"
+}
+, {
+  "sr_type_desc" : "AFD - Fireworks Complaint"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "ATD - Concerns in Right of Way"
+}
+, {
+  "sr_type_desc" : "ARR - Compost"
+}
+, {
+  "sr_type_desc" : "Pet Resource Center - Assistance Request"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Sign Maintenance"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Coyote Complaints"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "Park Maintenance - Grounds"
+}
+, {
+  "sr_type_desc" : "Animal Protection - Injured/Sick Animal"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "APH - Environmental Health Services - City"
+}
+, {
+  "sr_type_desc" : "SBO - Pothole Repair"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "ARR - Dead Animal Collection"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "ARR - Garbage"
+}
+, {
+  "sr_type_desc" : "ATD - Traffic Signal - Maintenance"
+}
+, {
+  "sr_type_desc" : "APD - Non Emergency Collision"
+}
+, {
+  "sr_type_desc" : "ATD - Parking Violation Enforcement"
+}
+, {
+  "sr_type_desc" : "311 CC - Other"
+}
+, {
+  "sr_type_desc" : "Animal Services - Contact Request"
+}
+ ]

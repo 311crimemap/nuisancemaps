@@ -1,0 +1,252 @@
+[
+    {
+        "dataType": "crime",
+        "text": "Arson",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Assault",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Burglary",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Case Closure",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Civil Sidewalks",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "Courtesy Report",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Disorderly Conduct",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "Drug Offense",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Drug Violation",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Embezzlement",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "Fire Report",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Forgery And Counterfeiting",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "Fraud",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "Gambling",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Homicide",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Human Trafficking (A), Commercial Sex Acts",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Human Trafficking (B), Involuntary Servitude",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Human Trafficking, Commercial Sex Acts",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Larceny Theft",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Liquor Laws",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "Lost Property",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Malicious Mischief",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Miscellaneous Investigation",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Missing Person",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Motor Vehicle Theft",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Motor Vehicle Theft?",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Non-Criminal",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Offences Against The Family And Children",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Other",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Other Miscellaneous",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Other Offenses",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Prostitution",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Rape",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Recovered Vehicle",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Robbery",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Sex Offense",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Stolen Property",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Suicide",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Suspicious",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Suspicious Occ",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Traffic Collision",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Traffic Violation Arrest",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "Vandalism",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Vehicle Impounded",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Vehicle Misplaced",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Warrant",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Weapons Carrying Etc",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Weapons Offence",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Weapons Offense",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "null",
+        "label": "7"
+    }
+]

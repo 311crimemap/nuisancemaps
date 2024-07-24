@@ -133,7 +133,7 @@ public class TextCategoryService {
 
             category_id = mapping.getOrDefault(textLabelDTO.getLabel(), null);
             if (category_id == null) {
-                // TODO: record error, continue;
+                log.info("Missing category_id: " + textLabelDTO.getText());
                 continue;
             }
 

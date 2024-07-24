@@ -25,6 +25,7 @@ import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.config.ParserStrategy;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
@@ -105,9 +106,7 @@ public class DataEntityMappingService {
     public IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source, JsonNode item,
             GeometryFactory geometryFactory)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
-            MissingCategoryException, MissingCoordinateException {
-
-        Mapping mapping = source.getMapping();
+            MissingCategoryException, MissingReportCategoryException, MissingCoordinateException {
 
         String report_num = parseEntity(Mapping::getReportNum, source, item);
         String reportCategory = parseEntity(Mapping::getReportCategory, source, item);
@@ -120,10 +119,18 @@ public class DataEntityMappingService {
         String reported_at1 = parseEntity(Mapping::getReportedAt, source, item);
         String reported_at2 = parseEntity(Mapping::getReportedAt2, source, item);
 
-        Double latitude = lat == null ? null : Double.parseDouble(lat);
-        Double longitude = lng == null ? null : Double.parseDouble(lng);
+        Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
+        Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
         Coordinate coordinate = null;
         Point point = null;
+
+        if (reportCategory == null || reportCategory.isEmpty()) {
+            String errString = String.format(
+                    "Missing reportCategory | dataType: %s, source: %s - %s | sourceURL: %s",
+                    source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
+                    source.getUrl());
+            throw new MissingReportCategoryException(errString);
+        }
 
         if (latitude != null && longitude != null) {
             // GeoJSON/WKT is long, lat (order is "reversed").
