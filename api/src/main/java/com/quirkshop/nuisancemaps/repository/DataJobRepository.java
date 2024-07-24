@@ -110,6 +110,12 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     int updateAllIncompleteToQueuedBefore(DataJobStatus status, LocalDateTime updatedAt,
             List<DataJobStatus> statuses, LocalDateTime cutOffTime);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE DataJob SET status = :status, updatedAt = :updatedAt WHERE status IN :statuses AND updatedAt >= :cutOffTime")
+    int updateAllErrorsToQueuedBefore(DataJobStatus status, LocalDateTime updatedAt,
+                                      List<DataJobStatus> statuses, LocalDateTime cutOffTime);
+
     @Query("SELECT d from DataJob d WHERE d.status IN :statuses ORDER BY id DESC")
     List<DataJob> findAllInStatuses(List<DataJobStatus> statuses);
 
