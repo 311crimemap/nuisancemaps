@@ -5,6 +5,17 @@
 * Hibernate Spatia is the library to enable GIS hibernate
 * JTS (`org.locationtech.jts`) is the library for data types; e.g. `org.locationtech.jts.geom.Point`
 
+## Watching Worker
+
+`watch 'curl -H 'X-API-KEY:<key>' localhost:8080/datajobs?limit=3  | jq ".[] | {status: .status, url: .url }"'`
+
+Note extract the common `.[]` prefix when building an objec
+
+
+---
+
+# Java Notes
+
 ## Entity / JPA
 
 * `@Table(name = <>)`: sets database name (generated in liquibase)

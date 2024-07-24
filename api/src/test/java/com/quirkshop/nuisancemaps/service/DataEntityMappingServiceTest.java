@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -82,12 +83,10 @@ public class DataEntityMappingServiceTest {
         // Source
         ObjectMapper objectMapper = new ObjectMapper();
         File sourceJSON1 = resourceLoader.getResource("classpath:data/source_config.json").getFile();
-        File sourceJSON2 = resourceLoader.getResource("classpath:data/method_config.json").getFile();
 
         sources.addAll(objectMapper.readValue(sourceJSON1, new TypeReference<List<Source>>() {
         }));
-        sources.addAll(objectMapper.readValue(sourceJSON2, new TypeReference<List<Source>>() {
-        }));
+
         for (Source s : sources) {
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
@@ -136,7 +135,8 @@ public class DataEntityMappingServiceTest {
     @Transactional
     public void BuildDataEntityParseEntityTest()
             throws IOException, NoSuchMethodException, IllegalAccessException, InstantiationException,
-            InvocationTargetException, MissingCategoryException, MissingCoordinateException {
+            InvocationTargetException, MissingReportCategoryException, MissingCategoryException,
+            MissingCoordinateException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-dallas.json");
         Source s = sourceRepository.findOneBySourceConfigId(4);

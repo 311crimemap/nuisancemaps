@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.function.Function;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class ParserStrategyConfigTest {
     @Test
     @Transactional
     public void LATITUDE_311_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.LATITUDE_311_DALLAS).isNotNull();
         Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = parserStrategyConfig.parsingFunctions();
         String jsonStr = "{\"lat_location\": \"(32.77937339624264000,-96.85251201839743000)\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
@@ -41,12 +43,48 @@ public class ParserStrategyConfigTest {
     @Test
     @Transactional
     public void LONGITUDE_311_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.LONGITUDE_311_DALLAS).isNotNull();
+
         Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = parserStrategyConfig.parsingFunctions();
         String jsonStr = "{\"lat_location\": \"(32.77937339624264000,-96.85251201839743000)\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
 
         String value = parserStrategyConfig.LONGITUDE_311_DALLAS(item);
         assertThat(value).isEqualTo("-96.85251201839743000");
+    }
+
+    @Test
+    @Transactional
+    public void REPORTEDAT_CRIME_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTEDAT_CRIME_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = parserStrategyConfig.parsingFunctions();
+        String jsonStr = "{\"reporteddate\":\"2016-07-19 17:22:00.0000000\",\"date1\":\"2016-07-19 00:00:00.0000000\"}";
+        JsonNode item = objectMapper.readTree(jsonStr);
+
+        String value = parserStrategyConfig.REPORTEDAT_CRIME_DALLAS(item);
+        assertThat(value).isEqualTo("2016-07-19T17:22:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
+    @Test
+    @Transactional
+    public void REPORTEDAT2_CRIME_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTEDAT2_CRIME_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = parserStrategyConfig.parsingFunctions();
+        String jsonStr = "{\"reporteddate\":\"2016-07-19 17:22:00.0000000\",\"date1\":\"2016-07-19 00:00:00.0000000\"}";
+        JsonNode item = objectMapper.readTree(jsonStr);
+
+        String value = parserStrategyConfig.REPORTEDAT2_CRIME_DALLAS(item);
+        assertThat(value).isEqualTo("2016-07-19T00:00:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
     }
 
 }

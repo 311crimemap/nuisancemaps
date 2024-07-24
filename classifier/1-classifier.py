@@ -12,10 +12,10 @@ parser.add_argument('city', type=str, help='data/<city>: subdirectory for data')
 args = parser.parse_args()
 
 DIR  = f"data/{args.city}"
-INPUT_FILE=f"{DIR}/data_{type}.txt"
-PROMPT_FILE="config/prompt_{type}.txt"
-CATEGORY_FILE="config/categories_{type}.txt"
-OUTPUT_FILE=f"{DIR}/out_{type}.json"
+INPUT_FILE=f"{DIR}/data_{args.type}.txt"
+PROMPT_FILE=f"config/prompt_{args.type}.txt"
+CATEGORY_FILE=f"config/categories_{args.type}.txt"
+OUTPUT_FILE=f"{DIR}/out_{args.type}.json"
 BATCH_SIZE=100
 OFFSET=0
 

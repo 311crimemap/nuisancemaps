@@ -68,7 +68,7 @@ public class CategoryController {
     // @src/main/resources/data/classifier_categories.json localhost:8080/categories
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @PostMapping("/categories")
-    public ResponseEntity<?> create(@RequestBody CategoryGroupDTO categoryGroupDTO) {
+    public ResponseEntity<?> createBatch(@RequestBody CategoryGroupDTO categoryGroupDTO) {
         int numCreated = categoryService.createCategoriesDTO(categoryGroupDTO);
         HashMap<String, Integer> response = new HashMap<String, Integer>();
         response.put("numCreated", numCreated);

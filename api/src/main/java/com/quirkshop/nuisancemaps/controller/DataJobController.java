@@ -116,17 +116,58 @@ public class DataJobController {
         return ResponseEntity.ok().body(dataJob);
     }
 
-    // restart all non completes
-    @GetMapping("/datajobs/restart")
-    public ResponseEntity<?> restartNonCompleted() {
+    // list all non completes
+    @GetMapping("/datajobs/errors")
+    public ResponseEntity<?> findAllErrorJobs() {
 
-        // Restart all jobs not QUEUED / COMPLETED that were updated within the day
-        // goal is to restart recent jobs that might have not finished due to worker crash/ shutdown
-        List<DataJobStatus> excludedStatuses = Arrays.asList(DataJobStatus.QUEUED, DataJobStatus.COMPLETED);
+        List<DataJobStatus> statuses = Arrays.asList(DataJobStatus.FETCH_ERROR,
+                                                     DataJobStatus.PARSE_ERROR,
+                                                     DataJobStatus.ERROR);
+
+        List<DataJob> dataJobs = dataJobRepository.findAllInStatuses(statuses);
+
+        Map<String, List<DataJob>> response = new HashMap<String, List<DataJob>>();
+        response.put("data", dataJobs);
+        return ResponseEntity.ok().body(response);
+    }
+
+    // restart all dangling jobs
+    // dayAgo guard - typically only want to restart recently broken jobs
+    @GetMapping("/datajobs/restartAll")
+    public ResponseEntity<?> restartAllDangling() {
+
+        List<DataJobStatus> excludedStatuses = Arrays.asList(DataJobStatus.COMPLETED,
+                                                             DataJobStatus.QUEUED);
+
         LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
 
         int numUpdated = dataJobRepository
-                .updateAllIncompleteToQueuedBefore(DataJobStatus.QUEUED, LocalDateTime.now(), excludedStatuses, dayAgo);
+                .updateAllIncompleteToQueuedBefore(DataJobStatus.QUEUED,
+                        LocalDateTime.now(),
+                        excludedStatuses,
+                        dayAgo);
+
+        Map<String, String> response = new HashMap<String, String>();
+        response.put("numUpdated", Integer.toString(numUpdated));
+        return ResponseEntity.ok().body(response);
+    }
+
+    // restart all error jobs
+    // dayAgo guard - typically only want to restart recently broken jobs
+    @GetMapping("/datajobs/restart")
+    public ResponseEntity<?> restartErrors() {
+
+        List<DataJobStatus> statuses = Arrays.asList(DataJobStatus.FETCH_ERROR,
+                                                     DataJobStatus.PARSE_ERROR,
+                                                     DataJobStatus.ERROR);
+
+        LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
+
+        int numUpdated = dataJobRepository
+                .updateAllErrorsToQueuedBefore(DataJobStatus.QUEUED,
+                                               LocalDateTime.now(),
+                                               statuses,
+                                               dayAgo);
 
         Map<String, String> response = new HashMap<String, String>();
         response.put("numUpdated", Integer.toString(numUpdated));

@@ -1,0 +1,173 @@
+[
+    {
+        "sourceConfigId": 7,
+        "sourceConfigEntity": "New York City, NY",
+        "url": "https://data.cityofnewyork.us/resource/5uac-w243.json",
+        "location": [
+            -73.985428,
+            40.748817
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "New York City Crime YTD",
+        "numRecords": 282069,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "cmplnt_num",
+                "pointer": "/cmplnt_num",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "ofns_desc",
+                "pointer": "/ofns_desc",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "pd_desc",
+                "pointer": "/pd_desc",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "prem_typ_desc",
+                "pointer": "/prem_typ_desc",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "rpt_dt",
+                "pointer": "/rpt_dt",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+        {
+        "sourceConfigId": 8,
+        "sourceConfigEntity": "New York City, NY",
+        "url": "https://data.cityofnewyork.us/resource/qgea-i56i.json",
+        "location": [
+            -73.985428,
+            40.748817
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "New York City Crime Historic to YTD (updated quarterly)",
+        "numRecords": 8914838,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "cmplnt_num",
+                "pointer": "/cmplnt_num",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "ofns_desc",
+                "pointer": "/ofns_desc",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "pd_desc",
+                "pointer": "/pd_desc",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "prem_typ_desc",
+                "pointer": "/prem_typ_desc",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "rpt_dt",
+                "pointer": "/rpt_dt",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+        {
+        "sourceConfigId": 9,
+        "sourceConfigEntity": "New York City, NY",
+        "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+        "location": [
+            -73.985428,
+            40.748817
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "311",
+        "description": "New York City 311",
+        "numRecords": 37023044,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "unique_key",
+                "pointer": "/unique_key",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "complaint_type",
+                "pointer": "/complaint_type",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "descriptor",
+                "pointer": "/descriptor",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "incident_address",
+                "pointer": "/incident_address",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "created_date",
+                "pointer": "/created_date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    }
+]

@@ -1,0 +1,662 @@
+[
+    {
+        "dataType": "311",
+        "text": "311 Complaints",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "311 External Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Abandoned Vehicle",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Blocked Street and Sidewalk",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Blocked Street or SideWalk",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Catch Basin Maintenance",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Child Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Citations Payment Status",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Citations Protest Status",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Citations Questions Comments",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Color Curb",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Zone Permits",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Damaged Property",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Damage Property",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "DPW Volunteer Programs",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Encampment",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Encampments",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Followup",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request -",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - 311CUSTOMERSERVICECENTER",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ADULT PROBATION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - AGINGADULTSERVICES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - AGING ADULT SERVICES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - AIRPORT SFO",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ANIMAL CARE CONTROL",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ART COMMISSION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ASSESSOR RECORDER",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - BOARD OF APPEALS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - BOARD OF SUPERVISORS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - BUILDING INSPECTION",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CENTRAL SHOPS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CHILDREN YOUTH FAMILIES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CHILDSUPPORTSERVICES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CITYADMINISTRATOR GSA",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CITY ATTORNEY",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CITY COLLEGE",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CITY HALL",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CONTRACT ADMINISTRATION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CONTROLLER",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - CONVENTION FACILITIES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - COUNTY CLERK",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - DEM",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - DISTRICT ATTORNEY",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - DPH",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - DPT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - DTIS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ECONOMICS AND WORKFORCE DEVELOPMENT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ELECTIONS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ENTERTAINMENT COMMISSION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ENVIRONMENT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - ETHICS COMMISSION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - FILM COMMISSION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - FIRE DEPARTMENT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - GRANTS FOR THE ARTS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - HSH",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - HUMAN RESOURCES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - HUMAN RIGHTS COMMISSION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - HUMAN SERVICES AGENCY",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - JUVENILE PROBATION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - LABOR STANDARDS ENFORCEMENT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - LANGUAGE SERVICES",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - LIBRARY PUBLIC",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MEDICAL EXAMINER",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MOCD",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MOCJ",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MOD",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MOH",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MONS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MTA",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MUNI",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - MUSEUMS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - OCC",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - PLANNING",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - PORT AUTHORITY",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - PUBLIC DEFENDER",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - PUBLIC WORKS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - PUC",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - REAL ESTATE DEPARTMENT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - REDEVELOPMENT AGENCY",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - RENT BOARD",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - RISK MANAGEMENT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - RPD",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - SFPD",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - SHERIFF",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - SHORT TERM RENTALS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - SMALL BUSINESS",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - STATUS OF WOMEN",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - TAXI COMMISSION",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - TIDA",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - TT COLLECTOR",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Request - WAR MEMORIAL",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti Private",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti Public",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Homeless Concerns",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Postings",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Information Provided",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Litter Receptacle Maintenance",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Litter Receptacles",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "MTA Parking Traffic Signs High Priority",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "MTA Parking Traffic Signs Normal Priority",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Muni Employee Feedback",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "MUNI Feedback",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Muni Service Feedback",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise Report",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "OOC Feedback",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking Enforcement",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Rec and Park Requests",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Residential Building",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Residential Building Request",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "RPD General",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "RPP Application Status",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "RPP Questions Comments",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewer",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewer Issues",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "SFHA Requests",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Shared Spaces Request",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Shared Spaces Violation",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk and Curb",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk or Curb",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sign Repair",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Street and Sidewalk Cleaning",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Defect",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Defects",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Streetlights",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Temporary Sign Applications",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Temporary Sign Request",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Tree Maintenance",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Volunteer Programs",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Waste of Water",
+        "label": "12"
+    }
+]

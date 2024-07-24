@@ -1,0 +1,2472 @@
+[
+    {
+        "dataType": "311",
+        "text": ".../....///.../....///.../....",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": ".../...//.../...//.../...//...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "..././..././..././..././......",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": ".../.\\.../.\\.../.\\.../.\\......",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": ".../Misc. Comments",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "...\\./...\\./...\\./...\\./......",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "...\\.\\...\\.\\...\\.\\...\\.\\......",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../../../../../../../../../...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../../../../WEB-INF/web.xml",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../../../WEB-INF/web.xml",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../../../WEB-INF/web.xml;x=",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../../WEB-INF/web.xml",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../../WEB-INF/web.xml;x=",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../WEB-INF/web.xml",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "../WEB-INF/web.xml;x=",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "..\\..\\..\\..\\..\\..\\..\\..\\..\\...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "./validate_form.php",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "() { _; } &gt;_",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "() { :;}; /bin/sleep 0",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "() { :;}; /bin/sleep 11",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "(select extractvalue(xmltyp...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "(select load_file('\\\\\\\\615h...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "{!xmlparser v='&lt;!DOCTYPE...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "@(9313*3464)",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "*)(!(objectClass=*)",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "*)(objectClass=*",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "/./validate_form.php",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "/etc/passwd",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "\\windows\\win.ini",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "&lt;odb xmlns:xi=&quot;http...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "&lt;vlv xmlns=&quot;http://...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "&quot;--&gt;'--&gt;`--&gt;&...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%{(#dm=@ognl.OgnlContext@DE...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%{4761*8506}",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%2e%2e%2f%2e%2e%2f%2e%2e%2f...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%2e%2e%5c%2e%2e%5c%2e%2e%5c...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%2fetc%2fpasswd",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%c0%ae/%c0%ae/%c0%ae/%c0%ae...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%c0%ae/%c0%ae/%c0%ae/WEB-IN...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%c0%ae/%c0%ae/WEB-INF/web.xml",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%c0%ae/WEB-INF/web.xml",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "%E5%98%8A%E5%98%8DX-Injecti...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "`sleep 11`",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "$(sleep 11)",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "${3804*3137}",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "1430*4963",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "266dyrgvhg1egsyp2oq57axbm2s...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "a'a\\'b&quot;c&gt;?&gt;%}}%%...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Abandoned Bike",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Abandoned Vehicle",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Adopt-A-Basket",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate - Levy",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate - Lien",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate - Other",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate - RPIE",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Business Tax",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Co-opCondo Abatement",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Commercial Exemptions",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Foreclosure",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Personal Exemptions",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Prop Class Incorrect",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Prop Refunds/Credits",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-Property Value",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-SCRIE/DRIE",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Advocate-UBT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "AGENCY",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "AHV Inspection Unit",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Air Quality",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Alzheimer's Care",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Abuse",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Facility - No Permit",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal in a Park",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal-Abuse",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Appliance",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "APPLIANCE",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Asbestos",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Asbestos/Garbage Nuisance",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "ATF",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "bcd9&lt;!--esi--&gt;1ggp&lt...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Beach/Pool/Sauna Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Benefit Card Replacement",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Bereavement Support Group",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "BEST/Site Safety",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Bike Rack Condition",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Bike/Roller/Skate Chronic",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Blocked Driveway",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Boiler",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Boilers",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Borough Office",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Bottled Water",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Bridge Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Broken Muni Meter",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Broken Parking Meter",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Condition",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Drinking Water Tank",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Marshal's Office",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Marshals office",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Building/Use",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Bus Stop Shelter Complaint",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Bus Stop Shelter Placement",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "c:\\windows\\win.ini",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "c:\\windows\\win.ini Misc. Co...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Calorie Labeling",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Case Management Agency Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Change Collection Schedule",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "City Vehicle Placard Complaint",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Collection Truck Noise",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Comments",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Commercial Disposal Complaint",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "CONSTRUCTION",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Lead Dust",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Safety Enforcement",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Consumer Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Cooling Tower",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "COVID-19 Non-essential Construction",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Cranes and Derricks",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Curb Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Damaged Tree",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Day Care",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "DCA / DOH New License Application Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Dead Animal",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Dead Tree",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Dead/Dying Tree",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "DEP Bridge Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "DEP Highway Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "DEP Sidewalk Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "DEP Street Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Dept of Investigations",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Derelict Bicycle",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Derelict Vehicle",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Derelict Vehicles",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "DHS Advantage - Tenant",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "DHS Advantage - Third Party",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "DHS Advantage -Landlord/Broker",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "DHS Income Savings Requirement",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Dirty Condition",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Dirty Conditions",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Discipline and Suspension",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Disorderly Youth",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Dispatched Taxi Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Dispatched Taxi Compliment",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "DOB Posted Notice or Order",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Literature Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Parking - Address Update",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Parking - DMV Clearance",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Parking - Payment Issue",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Parking - Request Copy",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Parking - Request Status",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Parking - Tax Exemption",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - City Rebate",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - Owner Issue",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - Payment Issue",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - Property Value",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - Reduction Issue",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - Request Copy",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - RPIE Issue",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - State Rebate",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOF Property - Update Account",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "DOOR/WINDOW",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Door/Window",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "DOR Literature Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "DPR Internal",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "DRIE",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Drinking",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Drinking Water",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Drug Activity",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "DSNY Internal",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "DSNY Spillage",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Dumpster Complaint",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "E-Scooter",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Elder Abuse",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Electric",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "ELECTRIC",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Electrical",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Electronics Waste",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Electronics Waste Appointment",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "ELEVATOR",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Elevator",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Emergency Response Team (ERT)",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Employee Behavior",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Encampment",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "eval(compile('for x in rang...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Eviction",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Executive Inspections",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Facade Insp Safety Pgm",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Facades",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Face Covering Violation",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "FATF",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "FCST",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Ferry Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Ferry Inquiry",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Ferry Permit",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "FHV Licensee Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "file:///c:/windows/win.ini",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "file:///etc/passwd",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire Alarm - Modification",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire Alarm - New System",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire Alarm - Reinspection",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire Alarm - Replacement",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "FLOORING/STAIRS",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Flooring/Stairs",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Foam Ban Enforcement",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Food Establishment",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Food Poisoning",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "For Hire Vehicle Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "For Hire Vehicle Report",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Forensic Engineering",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Forms",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Found Property",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "g0oii1s4s5)(objectClass=*",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Gas Station Discharge Lines",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "GENERAL",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "GENERAL CONSTRUCTION",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "General Construction/Plumbing",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "General Question",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Green Taxi Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Green Taxi Report",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Harboring Bees/Wasps",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Hazardous Material",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Hazardous Materials",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Hazmat Storage/Use",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "hcvn1{{687*375}}gji51",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Health",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "HEAP Assistance",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "HEAT/HOT WATER",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Heat/Hot Water",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "HEATING",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Highway Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Highway Sign - Damaged",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Highway Sign - Dangling",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Highway Sign - Missing",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Home Care Provider Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Home Delivered Meal - Missed Delivery",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Home Delivered Meal Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Home Repair",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Homebound Evacuation 4",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Homeless Encampment",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Homeless Person Assistance",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Homeless Street Condition",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Housing - Low Income Senior",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Housing Options",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "HPD Literature Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "http://g7orz5h9iu2sh6z332rj...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "idexf3mrb7)(!(objectClass=*)",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Animal - Sold/Kept",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Animal Kept as Pet",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Animal Sold",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Dumping",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Fireworks",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Parking",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Posting",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Tree Damage",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Incorrect Data",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Indoor Air Quality",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Indoor Sewage",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Industrial Waste",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Injured Wildlife",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Institution Disposal Complaint",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Interior Demo",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Internal Code",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Investigations and Discipline (IAD)",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "kawn''lcgv",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "LEAD",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Lead",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Legal Services Provider Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Lifeguard",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "LinkNYC",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Literature Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Litter Basket / Request",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Litter Basket Complaint",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Litter Basket Request",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Lost Property",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Lot Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Maintenance or Facility",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Mass Gathering Complaint",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Meals Home Delivery Required",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments  BCC:a5glxzf...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments,(select*from...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments;declare @q v...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments../../../../....",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments..\\..\\..\\..\\....",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments' and '1618'=...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments' and '7835'=...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments' and (select...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments' and 6049=60...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments' and 7702=77...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments' waitfor del...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments',0)waitfor d...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments';declare @q ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'.sleep(20).'",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'(select*from...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments');declare @q...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments')waitfor del...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'&quot;`0&amp...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'+(function()...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'+(select loa...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'+(select*fro...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'+eval(compil...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'+sleep(20.to...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'||(select ex...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'|echo y9v6fc...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments'|ping -c 21 ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments);declare @q ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments]]&gt;&gt;&lt;",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments{${sleep(20)}}",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments}}t2v95'/&quo...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments&amp;echo xjd...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments&amp;nslookup...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments&amp;ping -n ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments&gt;  BCC:bl0...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments&quot;",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments&quot;|echo 2...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments&quot;|ping -...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments%}dt2pq'/&quo...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments|echo 3p7wexz...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments|nslookup -q=...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments|ping -c 21 1...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments|ping -n 21 1...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments47876391' or ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments52038737' or ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments69075347' or ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Comments88909845' or ...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Commentseowljujfh8",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Commentso0w3r%&gt;xb6...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Miscellaneous Categories",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Missed Collection",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Missed Collection (All Materials)",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Mobile Food Vendor",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Mold",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "MOLD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Mosquitoes",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "MSOTHER",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Municipal Parking Facility",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "New Tree Request",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "No Child Left Behind",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise - Commercial",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise - Helicopter",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise - House of Worship",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise - Park",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise - Residential",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise - Street/Sidewalk",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise - Vehicle",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Noise Survey",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Non-Emergency Police Matter",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Non-Residential Heat",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "NonCompliance with Phased Reopening",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "NONCONST",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "NORC Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "nslookup -q=cname nneyfcxgy...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Obstruction",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "OEM Disabled Vehicle",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "OEM Literature Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Oil or Gas Spill",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Open Flame Permit",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Other Enforcement",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Outdoor Dining",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Outside Building",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "OUTSIDE BUILDING",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Overflowing Litter Baskets",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Overflowing Recycling Baskets",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Overgrown Tree/Branches",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "PAINT - PLASTER",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Paint/Plaster",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "PAINT/PLASTER",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Panhandling",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Parent Leadership",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking Card",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Peeling Paint",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Pet Shop",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Plant",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "PLUMBING",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Plumbing",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Poison Ivy",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Portable Toilet",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Posting Advertisement",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Private or Charter School Reopening",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Private School Vaccine Mandate Non-Compliance",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Public Assembly",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Public Assembly - Temporary",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Public Payphone Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Public Toilet",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "qfix4${695*589}lixaf",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Quality of Life",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Question",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Radioactive Material",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Rangehood",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Real Time Enforcement",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Recycling Basket Complaint",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Recycling Enforcement",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Registration and Transfers",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Request Changes - A.S.P.",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Request Large Bulky Item Collection",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Request Xmas Tree Collection",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Research Questions",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Residential Disposal Complaint",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Retailer Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Rodent",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Root/Sewer/Sidewalk Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "SAFETY",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Safety",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Condition",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sanitation Worker or Vehicle Complaint",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Scaffold Safety",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "School Maintenance",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "SCRIE",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Seasonal Collection",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Select Message Type...",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Senior Center Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewer",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewer Maintenance",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "SG-99",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Single Occupancy Bathroom",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Smoking",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Snow",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Snow or Ice",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Snow Removal",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "SNW",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Special Enforcement",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Special Natural Area District (SNAD)",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Special Operations",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Special Projects Inspection Team (SPIT)",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Sprinkler - Mechanical",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Squeegee",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "SRDE",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "SRGOVG",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Stalled Sites",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Standing Water",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Standpipe - Mechanical",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Storm",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Light Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Sign - Damaged",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Sign - Dangling",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Sign - Missing",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Sweeping Complaint",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "STRUCTURAL",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Summer Camp",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Sustainability Enforcement",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Sweeping/Inadequate",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sweeping/Missed",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sweeping/Missed-Inadequate",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Tanning",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Tattooing",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Taxi Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Taxi Compliment",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Taxi Licensee Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Taxi Report",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Taxpayer Advocate Inquiry",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Teaching/Learning/Instruction",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal Condition",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic/Illegal Parking",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Trans Fat",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Transfer Station Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Transportation Provider Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Trapping Pigeon",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Tunnel Condition",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Unleashed Dog",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Unlicensed Dog",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsanitary Animal Facility",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsanitary Animal Pvt Property",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsanitary Condition",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "UNSANITARY CONDITION",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsanitary Pigeon Condition",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Unstable Building",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Uprooted Stump",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Urinating in Public",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Program",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "VACANT APARTMENT",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Vacant Lot",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Vaccine Mandate Non-Compliance",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Vending",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Vendor Enforcement",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Violation of Park Rules",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Conservation",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Drainage",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Leak",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "WATER LEAK",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Maintenance",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Quality",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Water System",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Weatherization",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Window Guard",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Wood Pile Remaining",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "X-Ray Machine/Equipment",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "yw97y0gi2s",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "ZSYSTEST",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "ZTESTINT",
+        "label": "15"
+    }
+]

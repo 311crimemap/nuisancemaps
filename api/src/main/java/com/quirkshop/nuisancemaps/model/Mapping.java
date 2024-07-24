@@ -2,7 +2,9 @@ package com.quirkshop.nuisancemaps.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -136,9 +138,10 @@ public class Mapping {
 
     /*
      * collects value returned by getters of @Mapped annotated fields
+     * NB: using Set to avoid duplicate params
      */
     public List<String> getAnnotationValues(Function<MappingField, String> mapper) {
-        List<String> values = new ArrayList<String>();
+        HashSet<String> values = new HashSet<String>();
         List<Method> methods = this.getAnnotatedMappings();
 
         for (Method method : methods) {
@@ -160,7 +163,7 @@ public class Mapping {
             }
         }
 
-        return values;
+        return new ArrayList<String>(values);
     }
 
     public List<Method> getAnnotatedMappings() {

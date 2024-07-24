@@ -1,5 +1,7 @@
 package com.quirkshop.nuisancemaps.config;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+
 @Configuration
 public class ParserStrategyConfig {
 
@@ -24,6 +27,8 @@ public class ParserStrategyConfig {
 
         parsingFunctions.put(ParserStrategy.LATITUDE_311_DALLAS, this::LATITUDE_311_DALLAS);
         parsingFunctions.put(ParserStrategy.LONGITUDE_311_DALLAS, this::LONGITUDE_311_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_DALLAS, this::REPORTEDAT_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTEDAT2_CRIME_DALLAS, this::REPORTEDAT2_CRIME_DALLAS);
 
         return parsingFunctions;
     }
@@ -56,5 +61,35 @@ public class ParserStrategyConfig {
         }
 
         return longitude;
+    }
+
+    // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
+    public String REPORTEDAT_CRIME_DALLAS(JsonNode item) {
+        String dateStr = null;
+        try {
+            String text = item.at("/reporteddate").asText();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
+    public String REPORTEDAT2_CRIME_DALLAS(JsonNode item) {
+        String dateStr = null;
+        try {
+            String text = item.at("/date1").asText();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
     }
 }

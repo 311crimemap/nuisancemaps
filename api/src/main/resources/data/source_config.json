@@ -112,5 +112,518 @@
                 "parsingStrategy": null
             }
         }
+    },
+    {
+        "sourceConfigId": 3,
+        "sourceConfigEntity": "Dallas, TX",
+        "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
+        "location": [
+            -96.808891,
+            32.779167
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "Dallas Police",
+        "numRecords": 1247668,
+        "mapping": {
+            "orderKey": ":id",
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "reportNum": {
+                "field": "incidentnum",
+                "pointer": "/incidentnum",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "offincident",
+                "pointer": "/offincident",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "premise",
+                "pointer": "/premise",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "geocoded_column",
+                "pointer": "/geocoded_column/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "geocoded_column",
+                "pointer": "/geocoded_column/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "reporteddate",
+                "pointer": "/reporteddate",
+                "parsingStrategy": "REPORTEDAT_CRIME_DALLAS"
+            },
+            "reportedAt2": {
+                "field": "date1",
+                "pointer": "/date1",
+                "parsingStrategy": "REPORTEDAT2_CRIME_DALLAS"
+            }
+        }
+    },
+    {
+        "sourceConfigId": 4,
+        "sourceConfigEntity": "Dallas, TX",
+        "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
+        "location": [
+            -96.808891,
+            32.779167
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "311",
+        "description": "Dallas 311",
+        "numRecords": 1655145,
+        "mapping": {
+            "orderKey": ":id",
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "reportNum": {
+                "field": "service_request_number",
+                "pointer": "/service_request_number",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "service_request_type",
+                "pointer": "/service_request_type",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "department",
+                "pointer": "/department",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "lat_location",
+                "pointer": "/lat_location",
+                "parsingStrategy": "LATITUDE_311_DALLAS"
+            },
+            "longitude": {
+                "field": "lat_location",
+                "pointer": "/lat_location",
+                "parsingStrategy": "LONGITUDE_311_DALLAS"
+            },
+            "reportedAt": {
+                "field": "created_date",
+                "pointer": "/created_date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 5,
+        "sourceConfigEntity": "Chicago, IL",
+        "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
+        "location": [
+            -87.623177,
+            41.881832
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "Chicago Crime",
+        "numRecords": 8112554,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "case_number",
+                "pointer": "/case_number",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "primary_type",
+                "pointer": "/primary_type",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "description",
+                "pointer": "/description",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "location_description",
+                "pointer": "/location_description",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "date",
+                "pointer": "/date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 6,
+        "sourceConfigEntity": "Chicago, IL",
+        "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
+        "location": [
+            -87.623177,
+            41.881832
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "311",
+        "description": "Chicago 311",
+        "numRecords": 10365172,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "sr_number",
+                "pointer": "/sr_number",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "sr_type",
+                "pointer": "/sr_type",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "owner_department",
+                "pointer": "/owner_department",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "street_address",
+                "pointer": "/street_address",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "created_date",
+                "pointer": "/created_date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 7,
+        "sourceConfigEntity": "New York City, NY",
+        "url": "https://data.cityofnewyork.us/resource/5uac-w243.json",
+        "location": [
+            -73.985428,
+            40.748817
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "New York City Crime YTD",
+        "numRecords": 282069,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "cmplnt_num",
+                "pointer": "/cmplnt_num",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "ofns_desc",
+                "pointer": "/ofns_desc",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "pd_desc",
+                "pointer": "/pd_desc",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "prem_typ_desc",
+                "pointer": "/prem_typ_desc",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "rpt_dt",
+                "pointer": "/rpt_dt",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 8,
+        "sourceConfigEntity": "New York City, NY",
+        "url": "https://data.cityofnewyork.us/resource/qgea-i56i.json",
+        "location": [
+            -73.985428,
+            40.748817
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "New York City Crime Historic to YTD (updated quarterly)",
+        "numRecords": 8914838,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "cmplnt_num",
+                "pointer": "/cmplnt_num",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "ofns_desc",
+                "pointer": "/ofns_desc",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "pd_desc",
+                "pointer": "/pd_desc",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "prem_typ_desc",
+                "pointer": "/prem_typ_desc",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "rpt_dt",
+                "pointer": "/rpt_dt",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 9,
+        "sourceConfigEntity": "New York City, NY",
+        "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+        "location": [
+            -73.985428,
+            40.748817
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "311",
+        "description": "New York City 311",
+        "numRecords": 37023044,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "unique_key",
+                "pointer": "/unique_key",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "complaint_type",
+                "pointer": "/complaint_type",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "descriptor",
+                "pointer": "/descriptor",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "incident_address",
+                "pointer": "/incident_address",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "created_date",
+                "pointer": "/created_date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 10,
+        "sourceConfigEntity": "San Francisco, CA",
+        "url": "https://data.sfgov.org/resource/wg3w-h783.json",
+        "location": [
+            -122.432884,
+            37.776260
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "crime",
+        "description": "San Francisco Crime",
+        "numRecords": 872000,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "incident_id",
+                "pointer": "/incident_id",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "incident_category",
+                "pointer": "/incident_category",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "incident_description",
+                "pointer": "/incident_description",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "analysis_neighborhood",
+                "pointer": "/analysis_neighborhood",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": "/latitude",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": "/longitude",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "incident_date",
+                "pointer": "/incident_date",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 11,
+        "sourceConfigEntity": "San Francisco, CA",
+        "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
+        "location": [
+            -122.432884,
+            37.776260
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad",
+        "category": "311",
+        "description": "San Francisco 311",
+        "numRecords": 7070000,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "service_request_id",
+                "pointer": "/service_request_id",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "service_name",
+                "pointer": "/service_name",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "address",
+                "pointer": "/address",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "lat",
+                "pointer": "/lat",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "long",
+                "pointer": "/long",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "requested_datetime",
+                "pointer": "/requested_datetime",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
     }
 ]
