@@ -99,7 +99,7 @@ public class DataServiceTest {
     @BeforeEach
     public void setUp() throws IOException {
         // require textCategory mapping to exist before successful save
-        //otherwise will throw MissingCategoryException and skip
+        // otherwise will throw MissingCategoryException and skip
         Category cat = new Category("crime", "Public Order", 0, null);
         Category cat2 = new Category("crime", "Theft", 1, null);
         categoryRepository.save(cat);
@@ -177,7 +177,7 @@ public class DataServiceTest {
         dataService.createData(s, d, jsonResponse);
         Iterable<DataCrime> dataCrimesIter = dataCrimeRepository.findAll();
 
-        //ensure srid and proper ordering of long/lat
+        // ensure srid and proper ordering of long/lat
         dataCrimesIter.forEach(dataCrime -> {
             assertThat(dataCrime.getPoint().getSRID()).isEqualTo(4326);
             assertThat(dataCrime.getPoint().getX()).isEqualTo(dataCrime.getLongitude());
@@ -191,9 +191,12 @@ public class DataServiceTest {
 
         Source s = sourceRepository.findOneBySourceConfigId(1);
 
-        // trigger error with missing fields
-        String jsonResponse = "[{ \"sr_missing_all_fields\": true, \"latitude\": 123, \"longitude\": 456}, { \"sr_missing_all_fields\": true, \"latitude\": 123, \"longitude\": 456}]";
-        String objectMapperResponse = "{\"sr_missing_all_fields\":true,\"latitude\":123,\"longitude\":456}";
+        // trigger error with bad fields - latitude as String
+        // we have additional fields reportCateogry, lat/lng that trigger Exceptions,
+        // but
+        // we explicitly don't want to create DataError objects with those
+        String jsonResponse = "[{ \"sr_missing_all_fields\": true, \"reportCategory\": \"test\", \"latitude\": \"abc\", \"longitude\": 456}, { \"sr_missing_all_fields\": true, \"reportCategory\": \"test\", \"latitude\": \"abc\", \"longitude\": 456}]";
+        String objectMapperResponse = "{\"sr_missing_all_fields\":true,\"reportCategory\":\"test\",\"latitude\":\"abc\",\"longitude\":456}";
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
@@ -206,7 +209,8 @@ public class DataServiceTest {
         assertThat(d.getNumProcessed()).isEqualTo(0);
 
         // creates a dataError
-        // on MissingCategoryError (now excluding MissingCoordinateError because its too commonplace)
+        // on MissingCategoryError (now excluding MissingReportCategoryError and
+        // MissingCoordinateError because its too commonplace)
         // job also exceeds error rate (100% here)
         List<DataError> dataErrors = dataErrorRepository.findAll();
         assertThat(dataErrors.size()).isEqualTo(2);

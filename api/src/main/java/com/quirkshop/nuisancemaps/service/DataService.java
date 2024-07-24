@@ -102,7 +102,6 @@ public class DataService {
         if (dataJob.getStatus() == DataJobStatus.PARSE_ERROR)
             return;
 
-        // TODO: synchronize this block or createData method
         setTypes(source);
 
         createDataEntities(dataJob, source, rootNode, geometryFactory, sw, pw);

@@ -108,8 +108,6 @@ public class DataEntityMappingService {
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
             MissingCategoryException, MissingReportCategoryException, MissingCoordinateException {
 
-        Mapping mapping = source.getMapping();
-
         String report_num = parseEntity(Mapping::getReportNum, source, item);
         String reportCategory = parseEntity(Mapping::getReportCategory, source, item);
         String description = parseEntity(Mapping::getDescription, source, item);
