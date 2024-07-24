@@ -68,8 +68,12 @@ public class WorkerScheduleService {
         }
 
         Source source = datajob.getSource();
-        String prefixLog = String.format("%s | %s - %s", currentThreadName, source.getCategory(),
-                source.getDescription());
+        String prefixLog = String.format("%s | dataJob: %s | %s - %s",
+                                         currentThreadName,
+                                         datajob.getId(),
+                                         source.getCategory(),
+                                         source.getDescription());
+
         String logDetails = String.format("%s | offset: %s | %s",
                 prefixLog, datajob.getParamOffset(), datajob.getUrl());
 
@@ -87,8 +91,8 @@ public class WorkerScheduleService {
         log.info(String.format("[FetchComplete] %s", logDetails));
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
-        log.info("createData() " + prefixLog);
 
+        log.info("createData() " + prefixLog);
         dataservice.createData(source, datajob, json);
 
         // if high error rate, mark job as error and stop future jobs

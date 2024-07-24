@@ -83,13 +83,15 @@ public class DataService {
         } catch (Exception e) {
             log.info("[createData:parseData] JSON Parsing Error");
             e.printStackTrace();
+            log.info(String.format("[parseData ERR]: %s",
+                    jsonResponse != null ? jsonResponse.substring(0, 100) : null));
             dataJob.setStatus(DataJobStatus.PARSE_ERROR);
         }
 
         return rootNode;
     }
 
-    public synchronized void createData(Source source, DataJob dataJob, String jsonResponse) {
+    public void createData(Source source, DataJob dataJob, String jsonResponse) {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
