@@ -131,6 +131,27 @@ public class DataJobController {
         return ResponseEntity.ok().body(response);
     }
 
+    // restart all dangling jobs
+    // dayAgo guard - typically only want to restart recently broken jobs
+    @GetMapping("/datajobs/restartAll")
+    public ResponseEntity<?> restartAllDangling() {
+
+        List<DataJobStatus> excludedStatuses = Arrays.asList(DataJobStatus.COMPLETED,
+                                                             DataJobStatus.QUEUED);
+
+        LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
+
+        int numUpdated = dataJobRepository
+                .updateAllIncompleteToQueuedBefore(DataJobStatus.QUEUED,
+                        LocalDateTime.now(),
+                        excludedStatuses,
+                        dayAgo);
+
+        Map<String, String> response = new HashMap<String, String>();
+        response.put("numUpdated", Integer.toString(numUpdated));
+        return ResponseEntity.ok().body(response);
+    }
+
     // restart all error jobs
     // dayAgo guard - typically only want to restart recently broken jobs
     @GetMapping("/datajobs/restart")
