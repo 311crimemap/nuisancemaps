@@ -81,7 +81,7 @@ public class DataService {
             ObjectMapper mapper = new ObjectMapper();
             rootNode = mapper.readTree(jsonResponse);
         } catch (Exception e) {
-            log.info("[CreateData] Parsing Error");
+            log.info("[createData:parseData] JSON Parsing Error");
             e.printStackTrace();
             dataJob.setStatus(DataJobStatus.PARSE_ERROR);
         }
