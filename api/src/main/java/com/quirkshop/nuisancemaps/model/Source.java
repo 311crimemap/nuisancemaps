@@ -45,7 +45,7 @@ public class Source {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "locale_id", nullable = true) // TODO: migrate post nullable=false
+    @JoinColumn(name = "locale_id", nullable = false)
     private Locale locale;
 
     @JsonDeserialize(using = PointDeserializer.class)
