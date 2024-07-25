@@ -20,6 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
@@ -35,18 +36,24 @@ public class Source {
     private Integer id;
 
     @Column(unique = true)
-    private Integer sourceConfigId; // per json entry
+    private Integer sourceConfigId; // per json entry - TODO: deprecated by Locale
 
-    private String sourceConfigEntity; // City, State: maybe same location but old/new config endpoints
+    private String sourceConfigEntity; // City, State: maybe same location but old/new config endpoints - TODO:
+                                       // deprecated by Locale
 
-    private String sourceConfigNotes;
+    private String sourceConfigNotes; // - TODO: deprecated by Locale
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "locale_id", nullable = true) // TODO: migrate post nullable=false
+    private Locale locale;
 
     @JsonDeserialize(using = PointDeserializer.class)
-    private Point location;
+    private Point location; // TODO: migrate Locale
 
-    private String iconName;
+    private String iconName; // TODO: migrate Locale
 
-    private String iconUnicode;
+    private String iconUnicode; // TODO: migrate Locale
 
     private String category;
     private String description;
@@ -225,6 +232,14 @@ public class Source {
 
     public void setIconUnicode(String iconUnicode) {
         this.iconUnicode = iconUnicode;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
 }
