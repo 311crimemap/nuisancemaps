@@ -9,6 +9,7 @@ import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,9 @@ public class Source {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "source_seq")
     @SequenceGenerator(name = "source_seq", allocationSize = 1)
     private Integer id;
+
+    @Column(unique = true)
+    private Integer sourceConfigId; // per json entry
 
     @JsonIgnore
     @ManyToOne
@@ -94,6 +98,14 @@ public class Source {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getSourceConfigId() {
+        return sourceConfigId;
+    }
+
+    public void setSourceConfigId(Integer sourceConfigId) {
+        this.sourceConfigId = sourceConfigId;
     }
 
     public Locale getLocale() {
@@ -177,7 +189,8 @@ public class Source {
     }
 
     public SourceDTO toDTO() {
-        SourceDTO sourceDTO = new SourceDTO(this.getCategory(),
+        SourceDTO sourceDTO = new SourceDTO(this.getSourceConfigId(),
+                                            this.getCategory(),
                                             this.getUrl(),
                                             this.getDescription(),
                                             this.getNumRecords());
