@@ -158,7 +158,10 @@ public class WorkerScheduleService {
 
         Integer numRecords = sourceLoaderService.fetchCount(source);
         if (numRecords == null) {
-            log.info("[SourceLoaderService] FetchCount Error for source: " + source.getSourceConfigId());
+            String logErr = String.format("[SourceLoaderService] FetchCount Error for Source: %s | id :%s ",
+                    source.getDescription(),
+                    source.getId());
+            log.info(logErr);
             return;
         }
 

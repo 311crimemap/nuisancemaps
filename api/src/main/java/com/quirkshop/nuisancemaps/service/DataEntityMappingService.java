@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
@@ -107,6 +108,7 @@ public class DataEntityMappingService {
             GeometryFactory geometryFactory)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
             MissingCategoryException, MissingReportCategoryException, MissingCoordinateException {
+        Locale locale = source.getLocale();
 
         String report_num = parseEntity(Mapping::getReportNum, source, item);
         String reportCategory = parseEntity(Mapping::getReportCategory, source, item);
@@ -126,9 +128,8 @@ public class DataEntityMappingService {
 
         if (reportCategory == null || reportCategory.isEmpty()) {
             String errString = String.format(
-                    "Missing reportCategory | dataType: %s, source: %s - %s | sourceURL: %s",
-                    source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
-                    source.getUrl());
+                    "Missing reportCategory | dataType: %s | id: %s | %s | sourceURL: %s",
+                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
             throw new MissingReportCategoryException(errString);
         }
 
@@ -138,9 +139,8 @@ public class DataEntityMappingService {
             point = geometryFactory.createPoint(coordinate);
         } else {
             String errString = String.format(
-                    "Missing coordinates: (lat: %s, lng: %s) | dataType: %s, source: %s - %s | sourceURL: %s", lat, lng,
-                    source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
-                    source.getUrl());
+                    "Missing coordinates: (lat: %s, lng: %s) | dataType: %s | id: %s | %s | sourceURL: %s", lat, lng,
+                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
             throw new MissingCoordinateException(errString);
         }
 
@@ -150,9 +150,8 @@ public class DataEntityMappingService {
         // Category: our created, labeled categories
         Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
         if (orgCategory == null) {
-            String errString = String.format("Missing category: %s | dataType: %s, source: %s - %s | sourceURL: %s",
-                    reportCategory, source.getCategory(), source.getSourceConfigId(), source.getSourceConfigEntity(),
-                    source.getUrl());
+            String errString = String.format("Missing category: %s | dataType: %s | id: %s | %s | sourceURL: %s", reportCategory,
+                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
             throw new MissingCategoryException(errString);
         }
 

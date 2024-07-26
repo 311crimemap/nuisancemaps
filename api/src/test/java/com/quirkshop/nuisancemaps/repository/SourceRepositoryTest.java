@@ -9,6 +9,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 
@@ -33,6 +34,9 @@ public class SourceRepositoryTest {
     public MappingRepository mappingRepository;
 
     @Autowired
+    public LocaleRepository localeRepository;
+
+    @Autowired
     public SourceRepository sourceRepository;
 
     @Autowired
@@ -42,13 +46,17 @@ public class SourceRepositoryTest {
 
     @BeforeAll
     public void setUpOnce() throws IOException {
+
         // Source
         ObjectMapper objectMapper = new ObjectMapper();
         File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
         sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
         });
         for (Source s : sources) {
+            Locale locale = new Locale();
+            localeRepository.save(locale);
             mappingRepository.save(s.getMapping());
+            s.setLocale(locale);
             sourceRepository.save(s);
         }
     }
@@ -57,17 +65,20 @@ public class SourceRepositoryTest {
     public void tearDown() throws IOException {
         sourceRepository.deleteAll();
         mappingRepository.deleteAll();
+        localeRepository.deleteAll();
     }
 
     @Test
     @Transactional
     public void SourceRepositoryFindOrCreate() throws Exception {
+        Locale locale = new Locale();
+        localeRepository.save(locale);
         Mapping m = new Mapping();
         Mapping m2 = new Mapping();
         mappingRepository.save(m);
         mappingRepository.save(m2);
 
-        Source s = new Source("category", "description", "url");
+        Source s = new Source(locale, "category", "description", "url");
         s.setMapping(m);
 
         assertThat(s.getId()).isNull();
@@ -77,12 +88,12 @@ public class SourceRepositoryTest {
         Source t = sourceRepository.findOrCreate(s);
         assertThat(s.getId()).isEqualTo(t.getId());
 
-        Source x = new Source("category2", "description2", "url2");
+        Source x = new Source(locale, "category2", "description2", "url2");
         x.setMapping(m2);
         Source y = sourceRepository.findOrCreate(x);
         assertThat(y.getId()).isNotEqualTo(s.getId());
 
-        Source z = new Source("category2", "description2", "url");
+        Source z = new Source(locale, "category2", "description2", "url");
         Source a = sourceRepository.findOrCreate(z);
         assertThat(a.getId()).isEqualTo(s.getId());
     }

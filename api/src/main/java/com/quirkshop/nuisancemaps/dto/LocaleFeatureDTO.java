@@ -1,11 +1,11 @@
 package com.quirkshop.nuisancemaps.dto;
 
-public class SourceFeatureDTO {
+public class LocaleFeatureDTO {
     private String type;
-    private SourceDTO properties;
+    private LocaleDTO properties;
     private GeometryDTO geometry;
 
-    public SourceFeatureDTO(String type, GeometryDTO geometry, SourceDTO properties) {
+    public LocaleFeatureDTO(String type, GeometryDTO geometry, LocaleDTO properties) {
         this.type = type;
         this.geometry = geometry;
         this.properties = properties;
@@ -19,11 +19,11 @@ public class SourceFeatureDTO {
         this.type = type;
     }
 
-    public SourceDTO getProperties() {
+    public LocaleDTO getProperties() {
         return properties;
     }
 
-    public void setProperties(SourceDTO properties) {
+    public void setProperties(LocaleDTO properties) {
         this.properties = properties;
     }
 

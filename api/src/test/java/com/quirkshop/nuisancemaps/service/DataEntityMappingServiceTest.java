@@ -33,6 +33,7 @@ import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.model.Data311;
@@ -40,6 +41,7 @@ import com.quirkshop.nuisancemaps.model.Mapping;
 
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
@@ -53,6 +55,9 @@ public class DataEntityMappingServiceTest {
 
     @Autowired
     private DataService dataService;
+
+    @Autowired
+    private LocaleRepository localeRepository;
 
     @Autowired
     private MappingRepository mappingRepository;
@@ -88,6 +93,9 @@ public class DataEntityMappingServiceTest {
         }));
 
         for (Source s : sources) {
+            Locale locale = new Locale();
+            localeRepository.save(locale);
+            s.setLocale(locale);
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
         }
@@ -127,6 +135,7 @@ public class DataEntityMappingServiceTest {
     public void tearDown() throws IOException {
         sourceRepository.deleteAll();
         mappingRepository.deleteAll();
+        localeRepository.deleteAll();
         textCategoryRepository.deleteAll();
         categoryRepository.deleteAll();
     }

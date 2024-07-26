@@ -49,7 +49,7 @@ public class SecurityConfigTest {
 
     @Test
     public void getOpenRouteSources() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/sources").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/locales").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }

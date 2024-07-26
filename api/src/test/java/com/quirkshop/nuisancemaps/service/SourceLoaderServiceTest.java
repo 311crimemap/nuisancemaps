@@ -15,8 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,9 @@ public class SourceLoaderServiceTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private LocaleRepository localeRepository;
+
+    @Autowired
     private MappingRepository mappingRepository;
 
     @Autowired
@@ -65,6 +70,10 @@ public class SourceLoaderServiceTest {
         sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
         });
         for (Source s : sources) {
+            Locale locale = new Locale();
+            localeRepository.save(locale);
+            s.setLocale(locale);
+
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
         }
@@ -74,6 +83,7 @@ public class SourceLoaderServiceTest {
     public void tearDown() throws IOException {
         sourceRepository.deleteAll();
         mappingRepository.deleteAll();
+        localeRepository.deleteAll();
     }
 
     @Test
