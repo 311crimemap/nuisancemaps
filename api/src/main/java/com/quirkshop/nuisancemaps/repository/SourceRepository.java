@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.LockModeType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.quirkshop.nuisancemaps.model.Source;
 
@@ -17,6 +18,7 @@ public interface SourceRepository extends CrudRepository<Source, Integer> {
     // auto implemented
     public Source findOneByUrl(String url);
     public Source findOneBySourceConfigId(Integer id);
+    public List<Source> findAllByLocaleId(Integer id);
 
     // deprecated
     @Transactional
