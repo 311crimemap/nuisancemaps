@@ -24,7 +24,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "sourceConfigEntity"))
+@Table(name = "source")
 public class Source {
 
     @Id
