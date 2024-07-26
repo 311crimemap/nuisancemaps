@@ -21,6 +21,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataCrime;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 
@@ -29,6 +30,9 @@ public class DataCrimeRepositoryTest {
 
     @Autowired
     public DataCrimeRepository datacrime_repo;
+
+    @Autowired
+    public LocaleRepository localeRepository;
 
     @Autowired
     public MappingRepository mappingRepository;
@@ -46,15 +50,18 @@ public class DataCrimeRepositoryTest {
 
     @BeforeEach
     public void setUp() {
+        Locale locale = new Locale();
+        localeRepository.save(locale);
+
         mapping = new Mapping();
         mappingRepository.save(mapping);
-        s = new Source("category", "description", "url");
+        s = new Source(locale, "category", "description", "url");
         s.setMapping(mapping);
         sourceRepository.save(s);
 
         mapping2 = new Mapping();
         mappingRepository.save(mapping2);
-        s2 = new Source("category", "description", "url");
+        s2 = new Source(locale, "category", "description", "url");
         s2.setMapping(mapping2);
         sourceRepository.save(s2);
     }
