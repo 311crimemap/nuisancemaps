@@ -133,17 +133,12 @@ public class Locale {
 
         Double[] location = { this.getLocation().getX(), this.getLocation().getY() };
 
-        List<SourceDTO> sourceDTOs = this.sources.stream()
-                .map(Source::toDTO)
-                .collect(Collectors.toList());
-
         LocaleDTO localeDTO = new LocaleDTO(this.getId(),
                 this.getName(),
                 this.getDescription(),
                 location,
                 this.getIconName(),
-                this.getIconUnicode(),
-                sourceDTOs);
+                this.getIconUnicode());
 
         return localeDTO;
     }

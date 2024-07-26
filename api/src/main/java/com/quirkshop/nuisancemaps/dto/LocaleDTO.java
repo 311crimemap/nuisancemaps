@@ -12,14 +12,13 @@ public class LocaleDTO {
     private String iconUnicode;
     private List<SourceDTO> sourceDTOs;
 
-    public LocaleDTO(Integer id, String name, String description, Double[] location, String iconName, String iconUnicode, List<SourceDTO> sourceDTOs) {
+    public LocaleDTO(Integer id, String name, String description, Double[] location, String iconName, String iconUnicode) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.location = location;
         this.iconName = iconName;
         this.iconUnicode = iconUnicode;
-        this.sourceDTOs = sourceDTOs;
     }
 
     public Integer getId() {
@@ -68,14 +67,6 @@ public class LocaleDTO {
 
     public void setIconUnicode(String iconUnicode) {
         this.iconUnicode = iconUnicode;
-    }
-
-    public List<SourceDTO> getSourceDTOs() {
-        return sourceDTOs;
-    }
-
-    public void setSourceDTOs(List<SourceDTO> sourceDTOs) {
-        this.sourceDTOs = sourceDTOs;
     }
 
 }
