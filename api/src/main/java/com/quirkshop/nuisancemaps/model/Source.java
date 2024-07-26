@@ -189,7 +189,8 @@ public class Source {
     }
 
     public SourceDTO toDTO() {
-        SourceDTO sourceDTO = new SourceDTO(this.getSourceConfigId(),
+        SourceDTO sourceDTO = new SourceDTO(this.getId(),
+                                            this.getSourceConfigId(),
                                             this.getCategory(),
                                             this.getUrl(),
                                             this.getDescription(),
