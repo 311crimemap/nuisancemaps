@@ -11,6 +11,7 @@ import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,12 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.quirkshop.nuisancemaps.dto.GeometryDTO;
 import com.quirkshop.nuisancemaps.dto.InitDTO;
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
-import com.quirkshop.nuisancemaps.dto.SourceDTO;
-import com.quirkshop.nuisancemaps.dto.SourceFeatureCollectionDTO;
-import com.quirkshop.nuisancemaps.dto.SourceFeatureDTO;
+import com.quirkshop.nuisancemaps.dto.LocaleDTO;
+import com.quirkshop.nuisancemaps.dto.LocaleFeatureCollectionDTO;
+import com.quirkshop.nuisancemaps.dto.LocaleFeatureDTO;
 
 @RestController
 public class InitController {
+
+    @Autowired
+    LocaleRepository localeRepository;
 
     @Autowired
     SourceRepository sourceRepository;
@@ -43,24 +47,26 @@ public class InitController {
         JSendDTO jSendDTO;
 
         try {
-            ArrayList<SourceFeatureDTO> sourceFeatureDTOs = new ArrayList<SourceFeatureDTO>();
-            Iterable<Source> sources = sourceRepository.findAll();
+            ArrayList<LocaleFeatureDTO> localeFeatureDTOs = new ArrayList<LocaleFeatureDTO>();
+            Iterable<Locale> locales = localeRepository.findAll();
+
             List<Category> categories = categoryRepository.findAllByTextNotOrderByIdAsc("SKIP");
 
-            for (Source source : sources) {
-                Locale locale = source.getLocale();
+            for (Locale locale : locales) {
+
                 Double[] location = { locale.getLocation().getX(), locale.getLocation().getY() };
                 GeometryDTO g = new GeometryDTO("Point", location);
 
-                SourceDTO sourceDTO = source.toDTO();
+                LocaleDTO localeDTO = locale.toDTO();
 
-                SourceFeatureDTO sourceFeatureDTO = new SourceFeatureDTO("Feature", g, sourceDTO);
-                sourceFeatureDTOs.add(sourceFeatureDTO);
+                LocaleFeatureDTO localeFeatureDTO = new LocaleFeatureDTO("Feature", g, localeDTO);
+                localeFeatureDTOs.add(localeFeatureDTO);
             }
-            SourceFeatureCollectionDTO sf = new SourceFeatureCollectionDTO("FeatureCollection",
-                    sourceFeatureDTOs);
 
-            InitDTO initDTO = new InitDTO(sf, categories);
+            LocaleFeatureCollectionDTO localeFeatureCollectionDTO = new LocaleFeatureCollectionDTO("FeatureCollection",
+                    localeFeatureDTOs);
+
+            InitDTO initDTO = new InitDTO(localeFeatureCollectionDTO, categories);
 
             jSendDTO = new JSendDTO("success", initDTO);
 
