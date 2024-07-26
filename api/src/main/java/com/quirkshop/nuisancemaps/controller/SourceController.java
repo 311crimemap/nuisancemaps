@@ -1,23 +1,14 @@
 package com.quirkshop.nuisancemaps.controller;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.PrecisionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -34,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.util.ReflectionUtils;
 
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
@@ -59,20 +49,7 @@ public class SourceController {
 
         try {
             source = sourceLoaderService.saveTransaction(source);
-
-            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
-
-            SourceDTO res = new SourceDTO(source.getSourceConfigId(),
-                    source.getSourceConfigEntity(),
-                    source.getSourceConfigNotes(),
-                    location,
-                    source.getIconName(),
-                    source.getIconUnicode(),
-                    source.getCategory(),
-                    source.getDescription(),
-                    source.getNumRecords());
-
-            jSendDTO = new JSendDTO("success", res);
+            jSendDTO = new JSendDTO("success", source.toDTO());
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
             jSendDTO = new JSendDTO("error", e.getMessage());
@@ -91,20 +68,7 @@ public class SourceController {
         for (Source source : sources) {
             try {
                 source = sourceLoaderService.saveTransaction(source);
-
-                Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
-
-                SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
-                        source.getSourceConfigEntity(),
-                        source.getSourceConfigNotes(),
-                        location,
-                        source.getIconName(),
-                        source.getIconUnicode(),
-                        source.getCategory(),
-                        source.getDescription(),
-                        source.getNumRecords());
-
-                res.add(sourceDTO);
+                res.add(source.toDTO());
             } catch (DataIntegrityViolationException e) {
                 log.error(e.getMessage());
             }
@@ -126,20 +90,7 @@ public class SourceController {
         ArrayList<SourceDTO> res = new ArrayList<SourceDTO>();
 
         for (Source source : sourceIter) {
-
-            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
-
-            SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
-                    source.getSourceConfigEntity(),
-                    source.getSourceConfigNotes(),
-                    location,
-                    source.getIconName(),
-                    source.getIconUnicode(),
-                    source.getCategory(),
-                    source.getDescription(),
-                    source.getNumRecords());
-
-            res.add(sourceDTO);
+            res.add(source.toDTO());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -149,20 +100,7 @@ public class SourceController {
     public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
         Source source = sourceRepository.findById(id).orElse(null);
         if (source != null) {
-
-            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
-
-            SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
-                    source.getSourceConfigEntity(),
-                    source.getSourceConfigNotes(),
-                    location,
-                    source.getIconName(),
-                    source.getIconUnicode(),
-                    source.getCategory(),
-                    source.getDescription(),
-                    source.getNumRecords());
-
-            return ResponseEntity.status(HttpStatus.OK).body(sourceDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(source.toDTO());
         }
 
         return ResponseEntity.status(404).body(null);
@@ -181,20 +119,7 @@ public class SourceController {
 
             source.setNumRecords(numRecords);
             source = sourceLoaderService.saveTransaction(source);
-
-            Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
-
-            SourceDTO res = new SourceDTO(source.getSourceConfigId(),
-                    source.getSourceConfigEntity(),
-                    source.getSourceConfigNotes(),
-                    location,
-                    source.getIconName(),
-                    source.getIconUnicode(),
-                    source.getCategory(),
-                    source.getDescription(),
-                    source.getNumRecords());
-
-            jSendDTO = new JSendDTO("success", res);
+            jSendDTO = new JSendDTO("success", source.toDTO());
 
             return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
         }
@@ -215,19 +140,7 @@ public class SourceController {
             return ResponseEntity.badRequest().body(jSendDTO);
         }
 
-        Double[] location = { updatedSource.getLocation().getX(), updatedSource.getLocation().getY() };
-
-        SourceDTO res = new SourceDTO(updatedSource.getSourceConfigId(),
-                updatedSource.getSourceConfigEntity(),
-                updatedSource.getSourceConfigNotes(),
-                location,
-                updatedSource.getIconName(),
-                updatedSource.getIconUnicode(),
-                updatedSource.getCategory(),
-                updatedSource.getDescription(),
-                updatedSource.getNumRecords());
-
-        jSendDTO = new JSendDTO("success", res);
+        jSendDTO = new JSendDTO("success", updatedSource.toDTO());
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
 
     }

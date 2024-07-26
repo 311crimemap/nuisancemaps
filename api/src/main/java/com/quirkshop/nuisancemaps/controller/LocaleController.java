@@ -7,41 +7,27 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Locale;
-import com.quirkshop.nuisancemaps.model.Mapping;
-import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.service.SourceLoaderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.util.ReflectionUtils;
 
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
 import com.quirkshop.nuisancemaps.dto.LocaleDTO;
-import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 @RestController
 public class LocaleController {
@@ -63,12 +49,8 @@ public class LocaleController {
     @GetMapping("/locales/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
         Locale locale = localeRepository.findById(id).orElse(null);
-        ;
         if (locale != null) {
-            Double[] location = { locale.getLocation().getX(), locale.getLocation().getY() };
-            LocaleDTO localeDTO = new LocaleDTO(locale.getId(), locale.getName(), locale.getDescription(), location,
-                    locale.getIconUnicode(), locale.getIconName());
-            return ResponseEntity.status(HttpStatus.OK).body(localeDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(locale.toDTO());
         }
         return ResponseEntity.status(404).body(null);
     }
@@ -79,11 +61,7 @@ public class LocaleController {
         List<LocaleDTO> localeDTOs = new ArrayList<LocaleDTO>();
 
         for (Locale locale : localeIter) {
-
-            Double[] location = { locale.getLocation().getX(), locale.getLocation().getY() };
-            LocaleDTO localeDTO = new LocaleDTO(locale.getId(), locale.getName(), locale.getDescription(), location,
-                    locale.getIconUnicode(), locale.getIconName());
-            localeDTOs.add(localeDTO);
+            localeDTOs.add(locale.toDTO());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(localeDTOs);
@@ -94,12 +72,7 @@ public class LocaleController {
         JSendDTO jSendDTO;
         try {
             Locale localeSaved = localeRepository.save(locale);
-
-            Double[] location = { locale.getLocation().getX(), locale.getLocation().getY() };
-            LocaleDTO localeDTO = new LocaleDTO(locale.getId(), locale.getName(), locale.getDescription(), location,
-                    locale.getIconUnicode(), locale.getIconName());
-
-            jSendDTO = new JSendDTO("success", localeDTO);
+            jSendDTO = new JSendDTO("success", localeSaved.toDTO());
 
         } catch (Exception e) {
             jSendDTO = new JSendDTO("error", null);
@@ -118,11 +91,7 @@ public class LocaleController {
             List<LocaleDTO> localeDTOs = new ArrayList<LocaleDTO>();
 
             for (Locale locale : localesSaved) {
-
-                Double[] location = { locale.getLocation().getX(), locale.getLocation().getY() };
-                LocaleDTO localeDTO = new LocaleDTO(locale.getId(), locale.getName(), locale.getDescription(), location,
-                        locale.getIconUnicode(), locale.getIconName());
-                localeDTOs.add(localeDTO);
+                localeDTOs.add(locale.toDTO());
             }
 
             jSendDTO = new JSendDTO("success", localeDTOs);

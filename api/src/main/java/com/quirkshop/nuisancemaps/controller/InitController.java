@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -47,18 +48,11 @@ public class InitController {
             List<Category> categories = categoryRepository.findAllByTextNotOrderByIdAsc("SKIP");
 
             for (Source source : sources) {
-                Double[] location = { source.getLocation().getX(), source.getLocation().getY() };
+                Locale locale = source.getLocale();
+                Double[] location = { locale.getLocation().getX(), locale.getLocation().getY() };
                 GeometryDTO g = new GeometryDTO("Point", location);
 
-                SourceDTO sourceDTO = new SourceDTO(source.getSourceConfigId(),
-                        source.getSourceConfigEntity(),
-                        source.getSourceConfigNotes(),
-                        location,
-                        source.getIconName(),
-                        source.getIconUnicode(),
-                        source.getCategory(),
-                        source.getDescription(),
-                        source.getNumRecords());
+                SourceDTO sourceDTO = source.toDTO();
 
                 SourceFeatureDTO sourceFeatureDTO = new SourceFeatureDTO("Feature", g, sourceDTO);
                 sourceFeatureDTOs.add(sourceFeatureDTO);
