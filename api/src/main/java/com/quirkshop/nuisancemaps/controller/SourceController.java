@@ -6,10 +6,13 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.service.SourceLoaderService;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
@@ -31,6 +35,9 @@ import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 @RestController
 public class SourceController {
+
+    @Autowired
+    LocaleRepository localeRepository;
 
     @Autowired
     MappingRepository mappingRepository;
@@ -43,11 +50,17 @@ public class SourceController {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
-    @PostMapping("/sources")
-    public ResponseEntity<?> create(@RequestBody Source source) {
+    @PostMapping("/locales/{id}/sources")
+    public ResponseEntity<?> create(@PathVariable("id") Integer locale_id, @RequestBody Source source) {
         JSendDTO jSendDTO;
+        Locale locale = localeRepository.findById(locale_id).orElse(null);
+        if (locale == null) {
+            jSendDTO = new JSendDTO("not found", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
+        }
 
         try {
+            source.setLocale(locale);
             source = sourceLoaderService.saveTransaction(source);
             jSendDTO = new JSendDTO("success", source.toDTO());
         } catch (DataIntegrityViolationException e) {
@@ -59,14 +72,21 @@ public class SourceController {
         return ResponseEntity.ok().body(jSendDTO);
     }
 
-    @PostMapping("/sources/batch")
+    @PostMapping("/locales/{id}/sources/batch")
     @Transactional
-    public ResponseEntity<?> createBatch(@RequestBody List<Source> sources) {
+    public ResponseEntity<?> createBatch(@PathVariable("id") Integer locale_id,
+                                         @RequestBody List<Source> sources) {
         JSendDTO jSendDTO;
         List<SourceDTO> res = new ArrayList<SourceDTO>();
+        Locale locale = localeRepository.findById(locale_id).orElse(null);
+        if (locale == null) {
+            jSendDTO = new JSendDTO("not found", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
+        }
 
         for (Source source : sources) {
             try {
+                source.setLocale(locale);
                 source = sourceLoaderService.saveTransaction(source);
                 res.add(source.toDTO());
             } catch (DataIntegrityViolationException e) {
@@ -94,6 +114,22 @@ public class SourceController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @GetMapping("/locales/{id}/sources")
+    public ResponseEntity<?> getLocaleSources(@PathVariable(value = "id") final int id) {
+        JSendDTO jSendDTO;
+        Locale locale = localeRepository.findById(id).orElse(null);
+        if (locale == null) {
+            jSendDTO = new JSendDTO("not found", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
+        }
+
+        List<Source> source = sourceRepository.findAllByLocaleId(id);
+        List<SourceDTO> sourceDTOs = source.stream().map(Source::toDTO).collect(Collectors.toList());
+        jSendDTO = new JSendDTO("success", sourceDTOs);
+
+        return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
 
     @GetMapping("/sources/{id}")
