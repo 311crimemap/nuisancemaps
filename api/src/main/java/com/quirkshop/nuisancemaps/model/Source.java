@@ -5,16 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.quirkshop.nuisancemaps.config.PointDeserializer;
-import com.quirkshop.nuisancemaps.dto.LocaleDTO;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
-import org.locationtech.jts.geom.Point;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
