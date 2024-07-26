@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 
@@ -23,6 +24,9 @@ public class DataJobRepositoryTest {
 
     @Autowired
     DataJobRepository dataJobRepository;
+
+    @Autowired
+    public LocaleRepository localeRepository;
 
     @Autowired
     public MappingRepository mappingRepository;
@@ -38,12 +42,14 @@ public class DataJobRepositoryTest {
 
     @BeforeEach
     public void setUp() {
+        Locale locale = new Locale();
+        localeRepository.save(locale);
         mapping = new Mapping();
         mapping2 = new Mapping();
         mappingRepository.save(mapping);
         mappingRepository.save(mapping2);
-        source = new Source("category", "description", "url");
-        source2 = new Source("category", "description", "url");
+        source = new Source(locale, "category", "description", "url");
+        source2 = new Source(locale, "category", "description", "url");
         source.setMapping(mapping);
         source2.setMapping(mapping2);
         sourceRepository.save(source);

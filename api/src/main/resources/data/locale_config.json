@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Austin, TX",
+        "description": "",
+        "location": [
+            -97.73996,
+            30.27415
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad"
+    },
+    {
+        "name": "Dallas, TX",
+        "description": "",
+        "location": [
+            -96.808891,
+            32.779167
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad"
+    },
+    {
+        "name": "Chicago, IL",
+        "description": "",
+        "location": [
+            -87.623177,
+            41.881832
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad"
+    },
+    {
+        "name": "New York, NY",
+        "description": "",
+        "location": [
+            -73.985428,
+            40.748817
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad"
+    },
+    {
+        "name": "San Francisco, CA",
+        "description": "",
+        "location": [
+            -122.432884,
+            37.776260
+        ],
+        "iconName": "building",
+        "iconUnicode": "\uf1ad"
+    }
+]

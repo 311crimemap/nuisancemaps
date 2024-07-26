@@ -2,11 +2,11 @@ package com.quirkshop.nuisancemaps.dto;
 
 import java.util.List;
 
-public class SourceFeatureCollectionDTO {
+public class LocaleFeatureCollectionDTO {
     private String type;
-    private List<SourceFeatureDTO> features;
+    private List<LocaleFeatureDTO> features;
 
-    public SourceFeatureCollectionDTO(String type, List<SourceFeatureDTO> features) {
+    public LocaleFeatureCollectionDTO(String type, List<LocaleFeatureDTO> features) {
         this.type = type;
         this.features = features;
     }
@@ -19,11 +19,11 @@ public class SourceFeatureCollectionDTO {
         this.type = type;
     }
 
-    public List<SourceFeatureDTO> getFeatures() {
+    public List<LocaleFeatureDTO> getFeatures() {
         return features;
     }
 
-    public void setFeatures(List<SourceFeatureDTO> features) {
+    public void setFeatures(List<LocaleFeatureDTO> features) {
         this.features = features;
     }
 }

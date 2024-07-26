@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.quirkshop.nuisancemaps.config.PointDeserializer;
+import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
-import org.locationtech.jts.geom.Point;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -20,13 +17,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "source", indexes = @Index(name = "source_config_entity_idx", columnList = "sourceConfigEntity"))
+@Table(name = "source")
 public class Source {
 
     @Id
@@ -37,16 +35,10 @@ public class Source {
     @Column(unique = true)
     private Integer sourceConfigId; // per json entry
 
-    private String sourceConfigEntity; // City, State: maybe same location but old/new config endpoints
-
-    private String sourceConfigNotes;
-
-    @JsonDeserialize(using = PointDeserializer.class)
-    private Point location;
-
-    private String iconName;
-
-    private String iconUnicode;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "locale_id", nullable = false)
+    private Locale locale;
 
     private String category;
     private String description;
@@ -82,37 +74,14 @@ public class Source {
         this.updatedAt = now;
     }
 
-    public Source(String category, String description, String url) {
+    public Source(Locale locale, String category, String description, String url) {
+        this.locale = locale;
         this.category = category;
         this.description = description;
         this.url = url;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
-    }
-
-    public Integer getSourceConfigId() {
-        return sourceConfigId;
-    }
-
-    public void setSourceConfigId(Integer sourceConfigId) {
-        this.sourceConfigId = sourceConfigId;
-    }
-
-    public String getSourceConfigEntity() {
-        return sourceConfigEntity;
-    }
-
-    public void setSourceConfigEntity(String sourceConfigEntity) {
-        this.sourceConfigEntity = sourceConfigEntity;
-    }
-
-    public String getSourceConfigNotes() {
-        return sourceConfigNotes;
-    }
-
-    public void setSourceConfigNotes(String sourceConfigNotes) {
-        this.sourceConfigNotes = sourceConfigNotes;
     }
 
     public List<Data311> getData311s() {
@@ -129,6 +98,22 @@ public class Source {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getSourceConfigId() {
+        return sourceConfigId;
+    }
+
+    public void setSourceConfigId(Integer sourceConfigId) {
+        this.sourceConfigId = sourceConfigId;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     public String getCategory() {
@@ -203,28 +188,13 @@ public class Source {
         this.mapping = mapping;
     }
 
-    public Point getLocation() {
-        return location;
+    public SourceDTO toDTO() {
+        SourceDTO sourceDTO = new SourceDTO(this.getId(),
+                                            this.getSourceConfigId(),
+                                            this.getCategory(),
+                                            this.getUrl(),
+                                            this.getDescription(),
+                                            this.getNumRecords());
+        return sourceDTO;
     }
-
-    public void setLocation(Point location) {
-        this.location = location;
-    }
-
-    public String getIconName() {
-        return iconName;
-    }
-
-    public void setIconName(String iconName) {
-        this.iconName = iconName;
-    }
-
-    public String getIconUnicode() {
-        return iconUnicode;
-    }
-
-    public void setIconUnicode(String iconUnicode) {
-        this.iconUnicode = iconUnicode;
-    }
-
 }
