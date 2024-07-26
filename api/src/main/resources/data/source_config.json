@@ -1,14 +1,7 @@
 [
     {
         "sourceConfigId": 1,
-        "sourceConfigEntity": "Austin, TX",
         "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
-        "location": [
-            -97.73996,
-            30.27415
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "Austin Police",
         "numRecords": 2440821,
@@ -58,14 +51,7 @@
     },
     {
         "sourceConfigId": 2,
-        "sourceConfigEntity": "Austin, TX",
         "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
-        "location": [
-            -97.73996,
-            30.27415
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "Austin 311",
         "numRecords": 1778332,
@@ -115,14 +101,7 @@
     },
     {
         "sourceConfigId": 3,
-        "sourceConfigEntity": "Dallas, TX",
         "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
-        "location": [
-            -96.808891,
-            32.779167
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "Dallas Police",
         "numRecords": 1247668,
@@ -172,14 +151,7 @@
     },
     {
         "sourceConfigId": 4,
-        "sourceConfigEntity": "Dallas, TX",
         "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
-        "location": [
-            -96.808891,
-            32.779167
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "Dallas 311",
         "numRecords": 1655145,
@@ -229,14 +201,7 @@
     },
     {
         "sourceConfigId": 5,
-        "sourceConfigEntity": "Chicago, IL",
         "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
-        "location": [
-            -87.623177,
-            41.881832
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "Chicago Crime",
         "numRecords": 8112554,
@@ -286,14 +251,7 @@
     },
     {
         "sourceConfigId": 6,
-        "sourceConfigEntity": "Chicago, IL",
         "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
-        "location": [
-            -87.623177,
-            41.881832
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "Chicago 311",
         "numRecords": 10365172,
@@ -343,14 +301,7 @@
     },
     {
         "sourceConfigId": 7,
-        "sourceConfigEntity": "New York City, NY",
         "url": "https://data.cityofnewyork.us/resource/5uac-w243.json",
-        "location": [
-            -73.985428,
-            40.748817
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "New York City Crime YTD",
         "numRecords": 282069,
@@ -400,14 +351,7 @@
     },
     {
         "sourceConfigId": 8,
-        "sourceConfigEntity": "New York City, NY",
         "url": "https://data.cityofnewyork.us/resource/qgea-i56i.json",
-        "location": [
-            -73.985428,
-            40.748817
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "New York City Crime Historic to YTD (updated quarterly)",
         "numRecords": 8914838,
@@ -457,14 +401,7 @@
     },
     {
         "sourceConfigId": 9,
-        "sourceConfigEntity": "New York City, NY",
         "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
-        "location": [
-            -73.985428,
-            40.748817
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "New York City 311",
         "numRecords": 37023044,
@@ -514,14 +451,7 @@
     },
     {
         "sourceConfigId": 10,
-        "sourceConfigEntity": "San Francisco, CA",
         "url": "https://data.sfgov.org/resource/wg3w-h783.json",
-        "location": [
-            -122.432884,
-            37.776260
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "San Francisco Crime",
         "numRecords": 872000,
@@ -571,14 +501,7 @@
     },
     {
         "sourceConfigId": 11,
-        "sourceConfigEntity": "San Francisco, CA",
         "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
-        "location": [
-            -122.432884,
-            37.776260
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "San Francisco 311",
         "numRecords": 7070000,
