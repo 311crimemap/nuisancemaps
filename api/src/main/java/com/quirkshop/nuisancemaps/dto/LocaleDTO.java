@@ -1,5 +1,7 @@
 package com.quirkshop.nuisancemaps.dto;
 
+import java.util.List;
+
 public class LocaleDTO {
 
     private Integer id;
@@ -8,15 +10,16 @@ public class LocaleDTO {
     private Double[] location;
     private String iconName;
     private String iconUnicode;
+    private List<SourceDTO> sourceDTOs;
 
-    public LocaleDTO(Integer id, String name, String description, Double[] location, String iconUnicode,
-            String iconName) {
+    public LocaleDTO(Integer id, String name, String description, Double[] location, String iconName, String iconUnicode, List<SourceDTO> sourceDTOs) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.location = location;
-        this.iconUnicode = iconUnicode;
         this.iconName = iconName;
+        this.iconUnicode = iconUnicode;
+        this.sourceDTOs = sourceDTOs;
     }
 
     public Integer getId() {
@@ -65,6 +68,14 @@ public class LocaleDTO {
 
     public void setIconUnicode(String iconUnicode) {
         this.iconUnicode = iconUnicode;
+    }
+
+    public List<SourceDTO> getSourceDTOs() {
+        return sourceDTOs;
+    }
+
+    public void setSourceDTOs(List<SourceDTO> sourceDTOs) {
+        this.sourceDTOs = sourceDTOs;
     }
 
 }

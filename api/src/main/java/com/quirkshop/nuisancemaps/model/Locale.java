@@ -3,10 +3,13 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.quirkshop.nuisancemaps.config.PointDeserializer;
+import com.quirkshop.nuisancemaps.dto.LocaleDTO;
+import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 import org.locationtech.jts.geom.Point;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -126,4 +129,22 @@ public class Locale {
         this.updatedAt = updatedAt;
     }
 
+    public LocaleDTO toDTO() {
+
+        Double[] location = { this.getLocation().getX(), this.getLocation().getY() };
+
+        List<SourceDTO> sourceDTOs = this.sources.stream()
+                .map(Source::toDTO)
+                .collect(Collectors.toList());
+
+        LocaleDTO localeDTO = new LocaleDTO(this.getId(),
+                this.getName(),
+                this.getDescription(),
+                location,
+                this.getIconName(),
+                this.getIconUnicode(),
+                sourceDTOs);
+
+        return localeDTO;
+    }
 }
