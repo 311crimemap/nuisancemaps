@@ -11,8 +11,8 @@ public class DataProcessStrategyFactory {
     @Autowired
     MemoryDataProcessStrategy memoryDataProcessStrategy;
 
-    // @Autowired
-    // FileDataProcessStrategy fileDataProcessStrategy;
+    @Autowired
+    FileDataProcessStrategy fileDataProcessStrategy;
 
     public DataProcessStrategy getStrategy(DataProcessType dataProcessType) {
 
@@ -20,8 +20,7 @@ public class DataProcessStrategyFactory {
             case MEMORY:
                 return memoryDataProcessStrategy;
             case FILE:
-                // return new FileDataProcessStrategy();
-                return null;
+                return fileDataProcessStrategy;
             default:
                 throw new IllegalArgumentException("Unsupported processing strategy: " + dataProcessType);
         }
