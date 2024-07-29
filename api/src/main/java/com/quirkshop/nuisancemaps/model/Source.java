@@ -80,7 +80,7 @@ public class Source {
     }
 
     public Source(Locale locale, String category, String description, String url,
-                  DataParserType dataParserType, DataProcessingType dataProcessingType) {
+            DataParserType dataParserType, DataProcessingType dataProcessingType) {
         this.locale = locale;
         this.category = category;
         this.description = description;
@@ -218,6 +218,8 @@ public class Source {
                 this.getCategory(),
                 this.getUrl(),
                 this.getDescription(),
+                this.getDataParserType(),
+                this.getDataProcessingType(),
                 this.getNumRecords());
         return sourceDTO;
     }
