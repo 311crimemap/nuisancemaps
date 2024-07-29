@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.config.DataProcessingType;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Locale;
@@ -48,8 +50,10 @@ public class DataJobRepositoryTest {
         mapping2 = new Mapping();
         mappingRepository.save(mapping);
         mappingRepository.save(mapping2);
-        source = new Source(locale, "category", "description", "url");
-        source2 = new Source(locale, "category", "description", "url");
+        source = new Source(locale, "category", "description", "url",
+                            DataParserType.JSON, DataProcessingType.MEMORY);
+        source2 = new Source(locale, "category", "description", "url",
+                             DataParserType.JSON, DataProcessingType.MEMORY);
         source.setMapping(mapping);
         source2.setMapping(mapping2);
         sourceRepository.save(source);

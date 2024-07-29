@@ -4,6 +4,8 @@
         "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
         "category": "crime",
         "description": "Austin Police",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 2440821,
         "mapping": {
             "orderKey": ":id",
@@ -54,6 +56,8 @@
         "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
         "category": "311",
         "description": "Austin 311",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 1778332,
         "mapping": {
             "orderKey": ":id",
@@ -104,6 +108,8 @@
         "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
         "category": "crime",
         "description": "Dallas Police",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 1247668,
         "mapping": {
             "orderKey": ":id",
@@ -154,6 +160,8 @@
         "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
         "category": "311",
         "description": "Dallas 311",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 1655145,
         "mapping": {
             "orderKey": ":id",
@@ -204,6 +212,8 @@
         "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
         "category": "crime",
         "description": "Chicago Crime",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 8112554,
         "mapping": {
             "orderKey": ":id",
@@ -254,6 +264,8 @@
         "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
         "category": "311",
         "description": "Chicago 311",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 10365172,
         "mapping": {
             "orderKey": ":id",
@@ -304,6 +316,8 @@
         "url": "https://data.cityofnewyork.us/resource/5uac-w243.json",
         "category": "crime",
         "description": "New York City Crime YTD",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 282069,
         "mapping": {
             "orderKey": ":id",
@@ -354,6 +368,8 @@
         "url": "https://data.cityofnewyork.us/resource/qgea-i56i.json",
         "category": "crime",
         "description": "New York City Crime Historic to YTD (updated quarterly)",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 8914838,
         "mapping": {
             "orderKey": ":id",
@@ -404,6 +420,8 @@
         "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
         "category": "311",
         "description": "New York City 311",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 37023044,
         "mapping": {
             "orderKey": ":id",
@@ -454,6 +472,8 @@
         "url": "https://data.sfgov.org/resource/wg3w-h783.json",
         "category": "crime",
         "description": "San Francisco Crime",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 872000,
         "mapping": {
             "orderKey": ":id",
@@ -504,6 +524,8 @@
         "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
         "category": "311",
         "description": "San Francisco 311",
+        "dataParserType": "JSON",
+        "dataProcessingType": "MEMORY",
         "numRecords": 7070000,
         "mapping": {
             "orderKey": ":id",

@@ -1,5 +1,8 @@
 package com.quirkshop.nuisancemaps.dto;
 
+import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.config.DataProcessingType;
+
 public class SourceDTO {
 
     private Integer id;
@@ -7,14 +10,19 @@ public class SourceDTO {
     private String category;
     private String description;
     private String url;
+    private DataParserType dataParserType;
+    private DataProcessingType dataProcessingType;
     private Integer numRecords;
 
-    public SourceDTO(Integer id,Integer sourceConfigId, String category, String url, String description, Integer numRecords) {
+    public SourceDTO(Integer id, Integer sourceConfigId, String category, String url, String description,
+            DataParserType dataParserType, DataProcessingType dataProcessingType, Integer numRecords) {
         this.id = id;
         this.sourceConfigId = sourceConfigId;
         this.category = category;
         this.url = url;
         this.description = description;
+        this.dataParserType = dataParserType;
+        this.dataProcessingType = dataProcessingType;
         this.numRecords = numRecords;
     }
 
@@ -48,6 +56,22 @@ public class SourceDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public DataParserType getDataParserType() {
+        return dataParserType;
+    }
+
+    public void setDataParserType(DataParserType dataParserType) {
+        this.dataParserType = dataParserType;
+    }
+
+    public DataProcessingType getDataProcessingType() {
+        return dataProcessingType;
+    }
+
+    public void setDataProcessingType(DataProcessingType dataProcessingType) {
+        this.dataProcessingType = dataProcessingType;
     }
 
     public Integer getNumRecords() {
