@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.config.DataProcessingType;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,6 +46,9 @@ public class Source {
     private String description;
     private String url;
 
+    private DataParserType dataParserType;
+    private DataProcessingType dataProcessingType;
+
     private Integer numRecords;
 
     @OneToOne // NB: creates unique constraint mapping_id
@@ -74,11 +79,14 @@ public class Source {
         this.updatedAt = now;
     }
 
-    public Source(Locale locale, String category, String description, String url) {
+    public Source(Locale locale, String category, String description, String url,
+                  DataParserType dataParserType, DataProcessingType dataProcessingType) {
         this.locale = locale;
         this.category = category;
         this.description = description;
         this.url = url;
+        this.dataParserType = dataParserType;
+        this.dataProcessingType = dataProcessingType;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
@@ -148,6 +156,22 @@ public class Source {
         this.numRecords = numRecords;
     }
 
+    public DataParserType getDataParserType() {
+        return dataParserType;
+    }
+
+    public void setDataParserType(DataParserType dataParserType) {
+        this.dataParserType = dataParserType;
+    }
+
+    public DataProcessingType getDataProcessingType() {
+        return dataProcessingType;
+    }
+
+    public void setDataProcessingType(DataProcessingType dataProcessingType) {
+        this.dataProcessingType = dataProcessingType;
+    }
+
     public List<DataCrime> getDataCrimes() {
         return dataCrimes;
     }
@@ -190,11 +214,12 @@ public class Source {
 
     public SourceDTO toDTO() {
         SourceDTO sourceDTO = new SourceDTO(this.getId(),
-                                            this.getSourceConfigId(),
-                                            this.getCategory(),
-                                            this.getUrl(),
-                                            this.getDescription(),
-                                            this.getNumRecords());
+                this.getSourceConfigId(),
+                this.getCategory(),
+                this.getUrl(),
+                this.getDescription(),
+                this.getNumRecords());
         return sourceDTO;
     }
+
 }
