@@ -12,11 +12,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
 
 import jakarta.annotation.PostConstruct;
 
@@ -33,7 +36,7 @@ public class WorkerScheduleService {
     SourceRepository sourceRepository;
 
     @Autowired
-    DataJobRequestService dataJobRequestService;
+    DataProcessStrategyFactory dataProcessStrategyFactory;
 
     @Autowired
     DataService dataservice;
@@ -80,7 +83,9 @@ public class WorkerScheduleService {
         log.info(String.format("[Fetching] %s", logDetails));
 
         // FETCH
-        String json = dataJobRequestService.fetchJSON(datajob);
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+            .getStrategy(DataProcessType.MEMORY);
+        String json = dataProcessStrategy.fetch(datajob);
 
         if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
             log.info(String.format("[FetchError] %s", logDetails));

@@ -1,7 +1,6 @@
-package com.quirkshop.nuisancemaps.service;
+package com.quirkshop.nuisancemaps.service.dataprocess;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import java.io.UnsupportedEncodingException;
 
@@ -16,7 +15,7 @@ import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 
 @Service
-public class DataJobRequestServiceImpl implements DataJobRequestService {
+public class MemoryDataProcessStrategy implements DataProcessStrategy {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -27,7 +26,7 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     @Override
-    public String fetchJSON(DataJob dataJob) {
+    public String fetch(DataJob dataJob) {
         String jsonResponse = null;
         String currentThreadName = Thread.currentThread().getName();
         Source source = dataJob.getSource();
@@ -63,6 +62,12 @@ public class DataJobRequestServiceImpl implements DataJobRequestService {
         dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
         dataJobRepository.save(dataJob);
         return jsonResponse;
+    }
+
+    @Override
+    public void process() {
+        // TODO Auto-generated method stub
+
     }
 
 }
