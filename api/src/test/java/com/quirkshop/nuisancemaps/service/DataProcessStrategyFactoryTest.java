@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
-import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -95,7 +94,7 @@ public class DataProcessStrategyFactoryTest {
         // when(datacrime_repo.save(Mockito.any(DataCrime.class))).thenReturn(d);
 
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
-                .getStrategy(DataProcessType.MEMORY);
+                .getDataProcessStrategy(DataProcessType.MEMORY);
         String result = dataProcessStrategy.fetch(datajob);
 
         assertThat(result).isEqualTo(jsonFixtureContent);

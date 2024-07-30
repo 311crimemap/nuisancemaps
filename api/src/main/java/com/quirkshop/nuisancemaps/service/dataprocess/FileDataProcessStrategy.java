@@ -1,6 +1,9 @@
 package com.quirkshop.nuisancemaps.service.dataprocess;
 
+import java.io.InputStream;
+
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 
 import org.springframework.stereotype.Service;
 
@@ -14,8 +17,15 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     }
 
     @Override
-    public void process() {
+    public InputStream fetchData(DataJob dataJob) {
         // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void process(DataJob dataJob, InputStream inputStream, DataParser dataParser) {
+        // TODO Auto-generated method stub
+
     }
 
 }

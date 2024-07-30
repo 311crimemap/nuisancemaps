@@ -163,10 +163,9 @@ public class DataEntityMappingServiceTest {
         dataJobRepository.save(d);
         textCategoryService.refreshTextCategoryIdMap();
 
-        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-                StandardCharsets.UTF_8);
+
         DataParser dataParser = dataParserFactory.getDataParser(DataParserType.JSON);
-        JsonNode rootNode = dataParser.parseData(s, d, jsonResponse);
+        JsonNode rootNode = dataParser.parseData(d, jsonResource.getInputStream());
 
         for (JsonNode node : rootNode) {
 
@@ -209,9 +208,6 @@ public class DataEntityMappingServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
-        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-                StandardCharsets.UTF_8);
-
         // remove mapping - trigger MissingCategory exception
         textCategoryRepository.deleteAll();
         categoryRepository.deleteAll();
@@ -219,7 +215,7 @@ public class DataEntityMappingServiceTest {
 
         // trigger error with missing textCategory lookup in buildDataEntity
         DataParser dataParser = dataParserFactory.getDataParser(DataParserType.JSON);
-        JsonNode rootNode = dataParser.parseData(s, d, jsonResponse);
+        JsonNode rootNode = dataParser.parseData(d, jsonResource.getInputStream());
 
         JsonNode node = rootNode.get(0);
         GeometryFactory geometryFactory = new GeometryFactory();

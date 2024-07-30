@@ -1,5 +1,7 @@
 package com.quirkshop.nuisancemaps.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -74,15 +76,22 @@ public class DataService {
         this.objectMapper = new ObjectMapper();
     }
 
-
-    public void createData(Source source, DataJob dataJob, String jsonResponse) {
+    public void createData(Source source, DataJob dataJob, InputStream inputStream) {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
 
         DataParser dataParser = dataParserFactory.getDataParser(DataParserType.JSON);
-        JsonNode rootNode = dataParser.parseData(source, dataJob, jsonResponse);
+        JsonNode rootNode = dataParser.parseData(dataJob, inputStream);
+
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            log.info("ERR inputStream close");
+        }
 
         int numFetched = rootNode == null ? 0 : rootNode.size();
         dataJob.setNumFetched(numFetched);

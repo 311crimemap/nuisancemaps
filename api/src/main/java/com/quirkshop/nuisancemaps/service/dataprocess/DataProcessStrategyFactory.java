@@ -14,7 +14,7 @@ public class DataProcessStrategyFactory {
     @Autowired
     FileDataProcessStrategy fileDataProcessStrategy;
 
-    public DataProcessStrategy getStrategy(DataProcessType dataProcessType) {
+    public DataProcessStrategy getDataProcessStrategy(DataProcessType dataProcessType) {
 
         switch (dataProcessType) {
             case MEMORY:
