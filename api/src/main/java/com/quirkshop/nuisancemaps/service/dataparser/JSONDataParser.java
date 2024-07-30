@@ -1,5 +1,8 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -18,12 +21,39 @@ public class JSONDataParser implements DataParser {
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
 
     @Override
-    public void parse(DataJob dataJob) {
+    public void parse(DataJob dataJob, InputStream inputStream) {
         // TODO Auto-generated method stub
+
     }
 
     @Override
-    public JsonNode parseData(Source source, DataJob dataJob, String jsonResponse) {
+    public JsonNode parseData(DataJob dataJob, InputStream inputStream) {
+
+        JsonNode rootNode = null;
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            rootNode = mapper.readTree(inputStream);
+        } catch (Exception e) {
+            log.info("[createData:parseData] JSON Parsing Error");
+            e.printStackTrace();
+            log.info(String.format("[parseData ERR]: %s", e.getMessage()));
+            dataJob.setStatus(DataJobStatus.PARSE_ERROR);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return rootNode;
+    }
+
+    @Override
+    public JsonNode parseData(DataJob dataJob, String jsonResponse) {
 
         JsonNode rootNode = null;
 
