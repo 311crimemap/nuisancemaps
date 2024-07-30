@@ -2,8 +2,6 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.StringUtils;
 import org.locationtech.jts.geom.Coordinate;
@@ -14,14 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Mapping;
+import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
@@ -36,6 +32,8 @@ import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.IDataEntityRepository;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +63,9 @@ public class DataService {
     @Autowired
     private DataEntityMappingService dataEntityMappingService;
 
+    @Autowired
+    private DataParserFactory dataParserFactory;
+
     // Types
     private Class<? extends IDataEntity> dataEntityClass;
     private IDataEntityRepository dataEntityRepository;
@@ -73,23 +74,6 @@ public class DataService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public JsonNode parseData(Source source, DataJob dataJob, String jsonResponse) {
-
-        JsonNode rootNode = null;
-
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            rootNode = mapper.readTree(jsonResponse);
-        } catch (Exception e) {
-            log.info("[createData:parseData] JSON Parsing Error");
-            e.printStackTrace();
-            log.info(String.format("[parseData ERR]: %s",
-                    jsonResponse != null ? jsonResponse.substring(0, 100) : null));
-            dataJob.setStatus(DataJobStatus.PARSE_ERROR);
-        }
-
-        return rootNode;
-    }
 
     public void createData(Source source, DataJob dataJob, String jsonResponse) {
 
@@ -97,7 +81,8 @@ public class DataService {
         PrintWriter pw = new PrintWriter(sw);
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
 
-        JsonNode rootNode = parseData(source, dataJob, jsonResponse);
+        DataParser dataParser = dataParserFactory.getDataParser(DataParserType.JSON);
+        JsonNode rootNode = dataParser.parseData(source, dataJob, jsonResponse);
 
         int numFetched = rootNode == null ? 0 : rootNode.size();
         dataJob.setNumFetched(numFetched);
