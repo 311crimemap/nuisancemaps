@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.client.RestTemplate;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -46,9 +45,6 @@ import okhttp3.ResponseBody;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class DataProcessStrategyFactoryTest {
-
-    @MockBean
-    private RestTemplate restTemplate;
 
     @Mock
     private Call call;
@@ -138,8 +134,6 @@ public class DataProcessStrategyFactoryTest {
 
         // num elements in fixture crime-atx
         // assertThat(num).isEqualTo(2);
-
-        // verify(restTemplate).getForObject(datajob.getUrl(), String.class);
 
     }
 }
