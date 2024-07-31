@@ -1,6 +1,7 @@
 package com.quirkshop.nuisancemaps.service;
 
 import java.lang.Thread;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
@@ -12,11 +13,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
 
 import jakarta.annotation.PostConstruct;
 
@@ -33,7 +40,10 @@ public class WorkerScheduleService {
     SourceRepository sourceRepository;
 
     @Autowired
-    DataJobRequestService dataJobRequestService;
+    DataParserFactory dataParserFactory;
+
+    @Autowired
+    DataProcessStrategyFactory dataProcessStrategyFactory;
 
     @Autowired
     DataService dataservice;
@@ -80,7 +90,10 @@ public class WorkerScheduleService {
         log.info(String.format("[Fetching] %s", logDetails));
 
         // FETCH
-        String json = dataJobRequestService.fetchJSON(datajob);
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(source.getDataProcessType());
+
+        InputStream inputStream = dataProcessStrategy.fetchData(datajob);
 
         if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
             log.info(String.format("[FetchError] %s", logDetails));
@@ -93,8 +106,14 @@ public class WorkerScheduleService {
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
 
-        log.info("createData() " + prefixLog);
-        dataservice.createData(source, datajob, json);
+        // TODO: remove
+        // log.info("createData() " + prefixLog);
+        // dataservice.createData(source, datajob, inputStream);
+
+        DataParser dataParser = dataParserFactory
+            .getDataParser(source.getDataParserType());
+
+        dataProcessStrategy.process(datajob, inputStream, dataParser);
 
         // if high error rate, mark job as error and stop future jobs
         if (datajob.getStatus() == DataJobStatus.ERROR ||

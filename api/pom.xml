@@ -74,7 +74,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <!-- see config/SnakeCaseNamingStrategy -->
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>4.12.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.github.jsurfer</groupId>
+        <artifactId>jsurfer-jackson</artifactId>
+        <version>1.6.5</version>
+    </dependency>
+    <!-- see config/SnakeCaseNamingStrategy -->
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>33.0.0-jre</version>

@@ -1,7 +1,7 @@
 
 package com.quirkshop.nuisancemaps.config;
 
-public enum DataProcessingType {
+public enum DataProcessType {
     MEMORY,
     FILE
 }

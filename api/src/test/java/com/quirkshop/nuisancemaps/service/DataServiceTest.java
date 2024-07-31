@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +23,8 @@ import org.springframework.util.FileCopyUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -137,11 +140,11 @@ public class DataServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "incident_report_number");
         dataJobRepository.save(d);
 
-        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-                StandardCharsets.UTF_8);
+        // String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
+        //         StandardCharsets.UTF_8);
 
         // dataService to create instances
-        dataService.createData(s, d, jsonResponse);
+        dataService.createData(s, d, jsonResource.getInputStream());
         assertThat(d.getNumProcessed()).isEqualTo(2);
     }
 
@@ -158,11 +161,11 @@ public class DataServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
-        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-                StandardCharsets.UTF_8);
+        // String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
+        //         StandardCharsets.UTF_8);
 
         // dataService to create instances
-        dataService.createData(s, d, jsonResponse);
+        dataService.createData(s, d, jsonResource.getInputStream());
         assertThat(d.getNumProcessed()).isEqualTo(2);
     }
 
@@ -179,11 +182,11 @@ public class DataServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
-        String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-                StandardCharsets.UTF_8);
+        // String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
+        //         StandardCharsets.UTF_8);
 
         // dataService to create instances
-        dataService.createData(s, d, jsonResponse);
+        dataService.createData(s, d, jsonResource.getInputStream());
         Iterable<DataCrime> dataCrimesIter = dataCrimeRepository.findAll();
 
         // ensure srid and proper ordering of long/lat
@@ -207,13 +210,15 @@ public class DataServiceTest {
         String jsonResponse = "[{ \"sr_missing_all_fields\": true, \"reportCategory\": \"test\", \"latitude\": \"abc\", \"longitude\": 456}, { \"sr_missing_all_fields\": true, \"reportCategory\": \"test\", \"latitude\": \"abc\", \"longitude\": 456}]";
         String objectMapperResponse = "{\"sr_missing_all_fields\":true,\"reportCategory\":\"test\",\"latitude\":\"abc\",\"longitude\":456}";
 
+        InputStream inputStream = new ByteArrayInputStream(jsonResponse.getBytes());
+
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
         // dataService to create instances
-        dataService.createData(s, d, jsonResponse);
+        dataService.createData(s, d, inputStream);
         assertThat(d.getNumFetched()).isEqualTo(2);
         assertThat(d.getNumProcessed()).isEqualTo(0);
 
