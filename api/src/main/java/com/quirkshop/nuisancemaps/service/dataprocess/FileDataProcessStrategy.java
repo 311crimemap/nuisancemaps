@@ -19,7 +19,12 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     @Override
     public void process(DataJob dataJob, InputStream inputStream, DataParser dataParser) {
         // TODO Auto-generated method stub
+        // save stream to disk:
+        // check free space
+        // set file, filename
+        // write to file
 
+        // parse
     }
 
 }

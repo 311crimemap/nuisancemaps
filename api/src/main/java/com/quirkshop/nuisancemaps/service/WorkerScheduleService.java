@@ -106,15 +106,14 @@ public class WorkerScheduleService {
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
 
-        log.info("createData() " + prefixLog);
-        dataservice.createData(source, datajob, inputStream);
+        // TODO: remove
+        // log.info("createData() " + prefixLog);
+        // dataservice.createData(source, datajob, inputStream);
 
-        /* TODO: move out parsing from createData
-         * DataParser dataParser = dataParserFactory
-         * .getDataParser(source.getDataParserType());
-         * 
-         * dataProcessStrategy.process(datajob, inputStream, dataParser);
-         */
+        DataParser dataParser = dataParserFactory
+            .getDataParser(source.getDataParserType());
+
+        dataProcessStrategy.process(datajob, inputStream, dataParser);
 
         // if high error rate, mark job as error and stop future jobs
         if (datajob.getStatus() == DataJobStatus.ERROR ||
