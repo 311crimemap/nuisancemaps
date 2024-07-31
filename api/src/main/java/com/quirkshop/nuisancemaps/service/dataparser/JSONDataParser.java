@@ -58,6 +58,7 @@ public class JSONDataParser implements DataParser {
     @Autowired
     private DataEntityMappingService dataEntityMappingService;
 
+    private final int BATCH_SIZE = 10000;
     private final int SRID = 4326; // spatial reference id
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
 
@@ -109,7 +110,7 @@ public class JSONDataParser implements DataParser {
                         }
 
                     } catch (MissingCoordinateException | MissingReportCategoryException e) {
-                        String logStr = String.format("[DataService] error: %s | id: %s",
+                        String logStr = String.format("[DataService] error: %s | %s | id: %s", e.getClass(),
                                 source.getDescription(), source.getId());
 
                         log.info(logStr);
@@ -121,7 +122,7 @@ public class JSONDataParser implements DataParser {
                         log.info(content);
 
                     } catch (Exception e) {
-                        String logStr = String.format("[DataService] error: %s | id: %s",
+                        String logStr = String.format("[DataService] error: %s | %s | id: %s", e.getClass(),
                                 source.getDescription(), source.getId());
 
                         log.info(logStr);
@@ -140,7 +141,7 @@ public class JSONDataParser implements DataParser {
 
                     parseCounter.numFetchedIncrement();
 
-                    if (reportNums.size() > 100) {
+                    if (reportNums.size() > BATCH_SIZE) {
 
                         replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
                         saveAll(parseCounter, parseNewDataMap);
@@ -188,8 +189,8 @@ public class JSONDataParser implements DataParser {
         Iterable<IDataEntity> i = dataEntityRepository
                 .saveAllEntities(parseNewDataMap.values());
 
-        int numSaved = Iterables.size(i);
-        parseCounter.setNumProcessed(numSaved);
+        int numProcessed = Iterables.size(i);
+        parseCounter.setNumProcessed(parseCounter.getNumProcessed() + numProcessed);
     }
 
     public void setTypes(Source source) {
