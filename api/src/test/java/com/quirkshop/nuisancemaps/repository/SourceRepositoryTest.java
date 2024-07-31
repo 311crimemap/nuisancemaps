@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.config.DataProcessingType;
+import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -81,7 +81,7 @@ public class SourceRepositoryTest {
         mappingRepository.save(m2);
 
         Source s = new Source(locale, "category", "description", "url",
-                              DataParserType.JSON, DataProcessingType.MEMORY);
+                              DataParserType.JSON, DataProcessType.MEMORY);
         s.setMapping(m);
 
         assertThat(s.getId()).isNull();
@@ -92,13 +92,13 @@ public class SourceRepositoryTest {
         assertThat(s.getId()).isEqualTo(t.getId());
 
         Source x = new Source(locale, "category2", "description2", "url2",
-                DataParserType.JSON, DataProcessingType.MEMORY);
+                DataParserType.JSON, DataProcessType.MEMORY);
         x.setMapping(m2);
         Source y = sourceRepository.findOrCreate(x);
         assertThat(y.getId()).isNotEqualTo(s.getId());
 
         Source z = new Source(locale, "category2", "description2", "url",
-                DataParserType.JSON, DataProcessingType.MEMORY);
+                DataParserType.JSON, DataProcessType.MEMORY);
         Source a = sourceRepository.findOrCreate(z);
         assertThat(a.getId()).isEqualTo(s.getId());
     }

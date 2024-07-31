@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.config.DataProcessingType;
+import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -47,7 +47,7 @@ public class Source {
     private String url;
 
     private DataParserType dataParserType;
-    private DataProcessingType dataProcessingType;
+    private DataProcessType dataProcessType;
 
     private Integer numRecords;
 
@@ -80,13 +80,13 @@ public class Source {
     }
 
     public Source(Locale locale, String category, String description, String url,
-            DataParserType dataParserType, DataProcessingType dataProcessingType) {
+            DataParserType dataParserType, DataProcessType dataProcessType) {
         this.locale = locale;
         this.category = category;
         this.description = description;
         this.url = url;
         this.dataParserType = dataParserType;
-        this.dataProcessingType = dataProcessingType;
+        this.dataProcessType = dataProcessType;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
@@ -164,12 +164,12 @@ public class Source {
         this.dataParserType = dataParserType;
     }
 
-    public DataProcessingType getDataProcessingType() {
-        return dataProcessingType;
+    public DataProcessType getDataProcessType() {
+        return dataProcessType;
     }
 
-    public void setDataProcessingType(DataProcessingType dataProcessingType) {
-        this.dataProcessingType = dataProcessingType;
+    public void setDataProcessType(DataProcessType dataProcessType) {
+        this.dataProcessType = dataProcessType;
     }
 
     public List<DataCrime> getDataCrimes() {
@@ -219,7 +219,7 @@ public class Source {
                 this.getUrl(),
                 this.getDescription(),
                 this.getDataParserType(),
-                this.getDataProcessingType(),
+                this.getDataProcessType(),
                 this.getNumRecords());
         return sourceDTO;
     }

@@ -5,7 +5,7 @@
         "category": "crime",
         "description": "Austin Police",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 2440821,
         "mapping": {
             "orderKey": ":id",
@@ -57,7 +57,7 @@
         "category": "311",
         "description": "Austin 311",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 1778332,
         "mapping": {
             "orderKey": ":id",
@@ -109,7 +109,7 @@
         "category": "crime",
         "description": "Dallas Police",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 1247668,
         "mapping": {
             "orderKey": ":id",
@@ -161,7 +161,7 @@
         "category": "311",
         "description": "Dallas 311",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 1655145,
         "mapping": {
             "orderKey": ":id",
@@ -213,7 +213,7 @@
         "category": "crime",
         "description": "Chicago Crime",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 8112554,
         "mapping": {
             "orderKey": ":id",
@@ -265,7 +265,7 @@
         "category": "311",
         "description": "Chicago 311",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 10365172,
         "mapping": {
             "orderKey": ":id",
@@ -317,7 +317,7 @@
         "category": "crime",
         "description": "New York City Crime YTD",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 282069,
         "mapping": {
             "orderKey": ":id",
@@ -369,7 +369,7 @@
         "category": "crime",
         "description": "New York City Crime Historic to YTD (updated quarterly)",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 8914838,
         "mapping": {
             "orderKey": ":id",
@@ -421,7 +421,7 @@
         "category": "311",
         "description": "New York City 311",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 37023044,
         "mapping": {
             "orderKey": ":id",
@@ -473,7 +473,7 @@
         "category": "crime",
         "description": "San Francisco Crime",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 872000,
         "mapping": {
             "orderKey": ":id",
@@ -525,7 +525,7 @@
         "category": "311",
         "description": "San Francisco 311",
         "dataParserType": "JSON",
-        "dataProcessingType": "MEMORY",
+        "dataProcessType": "MEMORY",
         "numRecords": 7070000,
         "mapping": {
             "orderKey": ":id",

@@ -16,6 +16,16 @@ Note extract the common `.[]` prefix when building an objec
 
 # Java Notes
 
+## Spring's restTemplate vs okHttpClient
+
+Moved from `restTemplate` to [`okHttpClient`](https://square.github.io/okhttp/)
+because `restTemplate` automatically closes its `inputStream`.
+    * https://stackoverflow.com/questions/36379835/getting-inputstream-with-resttemplate
+
+`okHttpClient` allows stream to remain open, in exchange have to manually
+`.close()` it.
+
+
 ## Entity / JPA
 
 * `@Table(name = <>)`: sets database name (generated in liquibase)

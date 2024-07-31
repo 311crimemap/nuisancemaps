@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class RestTemplateConfig {
 
-    // used in DataJobRequestService
+    // still used in SourceLoaderService for simplicity
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
