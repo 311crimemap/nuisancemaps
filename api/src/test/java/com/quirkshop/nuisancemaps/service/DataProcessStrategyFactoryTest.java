@@ -21,6 +21,7 @@ import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
 import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,18 +29,38 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Scanner;
 
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.RestTemplate;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class DataProcessStrategyFactoryTest {
 
     @MockBean
     private RestTemplate restTemplate;
+
+    @Mock
+    private Call call;
+
+    @Mock
+    private Response response;
+
+    @Mock
+    private ResponseBody responseBody;
+
+    @MockBean
+    private OkHttpClient client;
 
     @MockBean
     private DataCrimeRepository datacrime_repo;
@@ -82,12 +103,20 @@ public class DataProcessStrategyFactoryTest {
         datajob.buildURL();
         assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
-        // Mock restTemplate to return the jsonFixtureContent if it ever makes a request
-        // to url
-        // this @MockBean restTemplate is D.I'd into dataProcessStrategy.fetch(s)
-        // below
-        when(restTemplate.getForObject(datajob.getUrl(), String.class))
-                .thenReturn(jsonFixtureContent);
+        // Mock okHttpClient to return the jsonFixtureContent if it ever makes a
+        // request to url; the client.newCall(), call and execute() are set to
+        // return mocked response, responseBody (see @Autowire above)
+        //
+        // Scanner class converts inputStream to String to compare response
+        // values
+
+        InputStream mockInputStream = jsonResource.getInputStream();
+        when(response.isSuccessful()).thenReturn(true);
+        when(response.body()).thenReturn(responseBody);
+        when(responseBody.byteStream()).thenReturn(mockInputStream);
+
+        when(client.newCall(Mockito.any(Request.class))).thenReturn(call);
+        when(call.execute()).thenReturn(response);
 
         // build mock save result
         // DataCrime d = new DataCrime();
@@ -95,10 +124,16 @@ public class DataProcessStrategyFactoryTest {
 
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
                 .getDataProcessStrategy(DataProcessType.MEMORY);
-        String result = dataProcessStrategy.fetch(datajob);
 
-        assertThat(result).isEqualTo(jsonFixtureContent);
+        InputStream inputStream2 = dataProcessStrategy.fetchData(datajob);
+
+        try (Scanner scanner = new Scanner(inputStream2, StandardCharsets.UTF_8.name())) {
+            String result = scanner.useDelimiter("\\A").next();
+            assertThat(result).isEqualTo(jsonFixtureContent);
+        }
+
         assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.FETCH_COMPLETE);
+
         // int num = dataJobRequestService.createData();
 
         // num elements in fixture crime-atx
