@@ -93,7 +93,6 @@ public class WorkerScheduleService {
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
                 .getDataProcessStrategy(source.getDataProcessType());
 
-        // String json = dataProcessStrategy.fetch(datajob);
         InputStream inputStream = dataProcessStrategy.fetchData(datajob);
 
         if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
@@ -110,7 +109,7 @@ public class WorkerScheduleService {
         log.info("createData() " + prefixLog);
         dataservice.createData(source, datajob, inputStream);
 
-        /*
+        /* TODO: move out parsing from createData
          * DataParser dataParser = dataParserFactory
          * .getDataParser(source.getDataParserType());
          * 

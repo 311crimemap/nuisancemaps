@@ -52,23 +52,4 @@ public class JSONDataParser implements DataParser {
         return rootNode;
     }
 
-    @Override
-    public JsonNode parseData(DataJob dataJob, String jsonResponse) {
-
-        JsonNode rootNode = null;
-
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            rootNode = mapper.readTree(jsonResponse);
-        } catch (Exception e) {
-            log.info("[createData:parseData] JSON Parsing Error");
-            e.printStackTrace();
-            log.info(String.format("[parseData ERR]: %s",
-                    jsonResponse != null ? jsonResponse.substring(0, 100) : null));
-            dataJob.setStatus(DataJobStatus.PARSE_ERROR);
-        }
-
-        return rootNode;
-    }
-
 }

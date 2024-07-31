@@ -21,12 +21,4 @@ public class CSVDataParser implements DataParser {
         // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public JsonNode parseData(DataJob dataJob, String jsonResponse) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
 }

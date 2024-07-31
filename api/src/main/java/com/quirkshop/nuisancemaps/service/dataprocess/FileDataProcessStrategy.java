@@ -11,12 +11,6 @@ import org.springframework.stereotype.Service;
 public class FileDataProcessStrategy implements DataProcessStrategy {
 
     @Override
-    public String fetch(DataJob datajob) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public InputStream fetchData(DataJob dataJob) {
         // TODO Auto-generated method stub
         return null;

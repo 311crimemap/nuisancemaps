@@ -7,8 +7,6 @@ import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 
 public interface DataProcessStrategy {
 
-    public String fetch(DataJob dataJob);
-
     public InputStream fetchData(DataJob dataJob);
 
     public void process(DataJob dataJob, InputStream inputStream, DataParser dataParser);
