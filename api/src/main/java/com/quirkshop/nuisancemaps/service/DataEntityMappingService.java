@@ -156,16 +156,8 @@ public class DataEntityMappingService {
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
-        dataEntity.setReportNum(report_num);
-        dataEntity.setReportCategory(reportCategory);
-        dataEntity.setDescription(description);
-        dataEntity.setLocation(location);
-        dataEntity.setOrgCategory(orgCategory);
-        dataEntity.setLatitude(latitude);
-        dataEntity.setLongitude(longitude);
-        dataEntity.setPoint(point);
-        dataEntity.setReportedAt(reported_at);
-        dataEntity.setUpdatedAt(LocalDateTime.now());
+        setDataEntityFields(dataEntity, report_num, reportCategory, description, location, orgCategory, latitude,
+                longitude, point, reported_at);
 
         return dataEntity;
 
@@ -202,6 +194,15 @@ public class DataEntityMappingService {
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
+        setDataEntityFields(dataEntity, report_num, reportCategory, description, location, orgCategory, latitude,
+                longitude, point, reported_at);
+
+        return dataEntity;
+    }
+
+    private void setDataEntityFields(IDataEntity dataEntity, String report_num, String reportCategory,
+            String description, String location, Category orgCategory,
+            Double latitude, Double longitude, Point point, LocalDateTime reported_at) {
         dataEntity.setReportNum(report_num);
         dataEntity.setReportCategory(reportCategory);
         dataEntity.setDescription(description);
@@ -212,8 +213,6 @@ public class DataEntityMappingService {
         dataEntity.setPoint(point);
         dataEntity.setReportedAt(reported_at);
         dataEntity.setUpdatedAt(LocalDateTime.now());
-
-        return dataEntity;
     }
 
     public void validateReportCategory(Source source, String reportCategory) throws MissingReportCategoryException {
