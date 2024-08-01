@@ -570,5 +570,57 @@
                 "parsingStrategy": null
             }
         }
+    },
+    {
+        "sourceConfigId": 12,
+        "url": "https://data.cityofnewyork.us/api/views/5uac-w243/rows.csv?fourfour=5uac-w243&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
+        "category": "crime",
+        "description": "New York City Crime YTD",
+        "dataParserType": "CSV",
+        "dataProcessType": "FILE",
+        "numRecords": 282069,
+        "mapping": {
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "CMPLNT_NUM",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "OFNS_DESC",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": "PD_DESC",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "PREM_TYP_DESC",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "Latitude",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "Longitude",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "RPT_DT",
+                "pointer": null,
+                "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+            },
+            "reportedAt2": {
+                "field": "CMPLNT_FR_DT",
+                "pointer": null,
+                "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+            }
+        }
     }
 ]
