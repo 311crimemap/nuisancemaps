@@ -90,6 +90,8 @@ public class JSONDataParserTest {
         sourceRepository.deleteAll();
         mappingRepository.deleteAll();
         localeRepository.deleteAll();
+        textCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 
     @BeforeEach
