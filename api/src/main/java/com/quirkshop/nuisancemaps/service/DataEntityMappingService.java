@@ -140,40 +140,15 @@ public class DataEntityMappingService {
 
         Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
         Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
-        Coordinate coordinate = null;
-        Point point = null;
 
         // validate
+        validateReportCategory(source, reportCategory);
 
-        if (reportCategory == null || reportCategory.isEmpty()) {
-            String errString = String.format(
-                    "Missing reportCategory | dataType: %s | id: %s | %s | sourceURL: %s",
-                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
-            throw new MissingReportCategoryException(errString);
-        }
+        Point point = buildValidPoint(source, geometryFactory, latitude, longitude);
 
-        if (latitude != null && longitude != null) {
-            // GeoJSON/WKT is long, lat (order is "reversed").
-            coordinate = new Coordinate(longitude, latitude);
-            point = geometryFactory.createPoint(coordinate);
-        } else {
-            String errString = String.format(
-                    "Missing coordinates: (lat: %s, lng: %s) | dataType: %s | id: %s | %s | sourceURL: %s", lat, lng,
-                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
-            throw new MissingCoordinateException(errString);
-        }
-
-        // categories clarification
-        // source.category: crime / 311 / etc
-        // dataEntity.report_category: data report instance from raw data
-        // Category: our created, labeled categories
         Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
-        if (orgCategory == null) {
-            String errString = String.format("Missing category: %s | dataType: %s | id: %s | %s | sourceURL: %s",
-                    reportCategory,
-                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
-            throw new MissingCategoryException(errString);
-        }
+        validateCategory(source, orgCategory, reportCategory);
+
         // set values
 
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
@@ -214,38 +189,13 @@ public class DataEntityMappingService {
 
         Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
         Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
-        Coordinate coordinate = null;
-        Point point = null;
 
-        if (reportCategory == null || reportCategory.isEmpty()) {
-            String errString = String.format(
-                    "Missing reportCategory | dataType: %s | id: %s | %s | sourceURL: %s",
-                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
-            throw new MissingReportCategoryException(errString);
-        }
+        validateReportCategory(source, reportCategory);
 
-        if (latitude != null && longitude != null) {
-            // GeoJSON/WKT is long, lat (order is "reversed").
-            coordinate = new Coordinate(longitude, latitude);
-            point = geometryFactory.createPoint(coordinate);
-        } else {
-            String errString = String.format(
-                    "Missing coordinates: (lat: %s, lng: %s) | dataType: %s | id: %s | %s | sourceURL: %s", lat, lng,
-                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
-            throw new MissingCoordinateException(errString);
-        }
+        Point point = buildValidPoint(source, geometryFactory, latitude, longitude);
 
-        // categories clarification
-        // source.category: crime / 311 / etc
-        // dataEntity.report_category: data report instance from raw data
-        // Category: our created, labeled categories
         Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
-        if (orgCategory == null) {
-            String errString = String.format("Missing category: %s | dataType: %s | id: %s | %s | sourceURL: %s",
-                    reportCategory,
-                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
-            throw new MissingCategoryException(errString);
-        }
+        validateCategory(source, orgCategory, reportCategory);
 
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
@@ -266,4 +216,51 @@ public class DataEntityMappingService {
         return dataEntity;
     }
 
+    public void validateReportCategory(Source source, String reportCategory) throws MissingReportCategoryException {
+        if (reportCategory == null || reportCategory.isEmpty()) {
+            String errString = String.format(
+                    "Missing reportCategory | dataType: %s | id: %s | %s | sourceURL: %s",
+                    source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
+            throw new MissingReportCategoryException(errString);
+        }
+
+    }
+
+    public Point buildValidPoint(Source source, GeometryFactory geometryFactory, Double latitude, Double longitude)
+            throws MissingCoordinateException {
+        Point point = null;
+
+        if (latitude != null && longitude != null) {
+            // GeoJSON/WKT is long, lat (order is "reversed").
+            Coordinate coordinate = new Coordinate(longitude, latitude);
+            point = geometryFactory.createPoint(coordinate);
+        } else {
+            String errString = String
+                    .format("Missing coordinates: (lat: %s, lng: %s) | dataType: %s | id: %s | %s | sourceURL: %s",
+                            latitude, longitude, source.getCategory(), source.getSourceConfigId(),
+                            source.getDescription(),
+                            source.getUrl());
+            throw new MissingCoordinateException(errString);
+        }
+
+        return point;
+    }
+
+    // categories clarification nomenclature
+    //
+    // source.category: crime / 311 / etc
+    // dataEntity.report_category: data report instance from raw data
+    // Category: our created, labeled categories
+    public Category validateCategory(Source source, Category category, String reportCategory)
+            throws MissingCategoryException {
+
+        if (category == null) {
+            String errString = String
+                    .format("Missing category: %s | dataType: %s | id: %s | %s | sourceURL: %s",
+                            reportCategory,
+                            source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
+            throw new MissingCategoryException(errString);
+        }
+        return null;
+    }
 }
