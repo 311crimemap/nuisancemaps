@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Iterables;
@@ -15,6 +16,7 @@ import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
@@ -66,9 +68,9 @@ public class DataParser {
         throw new Error("Missing Implementation");
     }
 
-    public JsonNode parseData(DataJob dataJob, InputStream inputStream) {
-        throw new Error("Missing Implementation");
-    }
+    /*
+     * Common Helpers
+     */
 
     public void addDataEntity(IDataEntity dataEntity, ParseCounter parseCounter) {
 

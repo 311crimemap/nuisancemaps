@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.opencsv.CSVReaderHeaderAware;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
@@ -16,11 +15,16 @@ import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CSVDataParser extends DataParser {
 
+    @Autowired
+    MapFieldExtractor mapFieldExtractor;
+
+    @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
         Source source = dataJob.getSource();
         setTypes(source);
@@ -40,7 +44,7 @@ public class CSVDataParser extends DataParser {
                 try {
 
                     IDataEntity dataEntity = dataEntityMappingService
-                            .buildDataEntity(dataEntityClass, source, row, geometryFactory);
+                            .buildDataEntity(dataEntityClass, source, row, geometryFactory, mapFieldExtractor);
 
                     addDataEntity(dataEntity, parseCounter);
 
@@ -73,8 +77,4 @@ public class CSVDataParser extends DataParser {
 
     }
 
-    public JsonNode parseData(DataJob dataJob, InputStream inputStream) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

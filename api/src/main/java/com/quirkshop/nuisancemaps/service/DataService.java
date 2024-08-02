@@ -76,14 +76,14 @@ public class DataService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void createData(Source source, DataJob dataJob, InputStream inputStream) {
+    public void createData(Source source, DataJob dataJob, InputStream inputStream) throws IOException {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
 
-        DataParser dataParser = dataParserFactory.getDataParser(DataParserType.JSON);
-        JsonNode rootNode = dataParser.parseData(dataJob, inputStream);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(inputStream);
 
         try {
             if (inputStream != null) {
