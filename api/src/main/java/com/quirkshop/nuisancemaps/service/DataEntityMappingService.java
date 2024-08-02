@@ -55,15 +55,23 @@ public class DataEntityMappingService {
         return null;
     }
 
+    @FunctionalInterface
+    public interface BaseParser {
+        String parse(Object source, MappingField result);
+    }
+
     /*
      * hierarchy of parse methods
      * 1. vanilla string (simple getter method returns String; not MappingField)
      * 2. ParserStrategy method: if this is defined, prioritize it's use
      * 3. default MappingField pointer (json pointer)
+     *
+     * NB: baseParser is a lambda w/ typed parameters above - used to switch between
+     * JsonNode or CSV Map<String, String> (which are cast in the lambda)
      */
-    public String parseEntity(Function<Mapping, ?> mapper, Source source, JsonNode item)
-            throws NoSuchMethodException, SecurityException {
+    private String parseCustomEntity(Function<Mapping, ?> mapper, Source source, Object item, BaseParser baseParser) throws NoSuchMethodException, SecurityException {
 
+        // parseMapping(mapper, source, row);
         Method method = mapper.getClass().getMethod("apply", Object.class);
         Class<?> returnType = method.getReturnType();
 
@@ -72,7 +80,7 @@ public class DataEntityMappingService {
 
         // Vanilla String (e.g. orderKey: ":id")
         if (returnType == String.class) {
-            return (String) mappedValue;
+            value = (String) mappedValue;
         }
 
         // Parsing Strategy method if exists, otherwise use Pointer expression
@@ -81,44 +89,40 @@ public class DataEntityMappingService {
         if (result == null)
             return null;
 
-        if (result.getParsingStrategy() != null) {
-            ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
-            value = parseNode(item, strategy);
-        } else {
-            value = item.at(result.getPointer()).asText();
-        }
+        value = baseParser.parse(item, result);
 
         return value;
     }
 
+    public String parseEntity(Function<Mapping, ?> mapper, Source source, JsonNode item)
+            throws NoSuchMethodException, SecurityException {
+        // NB: (i, result) is functional interface baseParser
+        // i - item
+        return parseCustomEntity(mapper, source, item, (i, result) -> {
+
+            if (result.getParsingStrategy() != null) {
+                ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
+                return parseNode((JsonNode) i, strategy);
+            } else {
+                return ((JsonNode) i).at(result.getPointer()).asText();
+            }
+        });
+    }
+
     public String parseEntity(Function<Mapping, ?> mapper, Source source, Map<String, String> row)
             throws NoSuchMethodException, SecurityException {
-        Method method = mapper.getClass().getMethod("apply", Object.class);
-        Class<?> returnType = method.getReturnType();
+        // NB: (r, result) is functional interface baseParser
+        // r - row
 
-        Object mappedValue = mapper.apply(source.getMapping());
-        String value = null;
+        return parseCustomEntity(mapper, source, row, (r, result) -> {
 
-        // Vanilla String (e.g. orderKey: ":id")
-        if (returnType == String.class) {
-            return (String) mappedValue;
-        }
-
-        // Parsing Strategy method if exists, otherwise use Pointer expression
-        MappingField result = (MappingField) mappedValue;
-
-        if (result == null)
-            return null;
-
-        if (result.getParsingStrategy() != null) {
-            ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
-            value = parseRow(row, strategy);
-        } else {
-            value = row.get(result.getField());
-        }
-
-        return value;
-
+            if (result.getParsingStrategy() != null) {
+                ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
+                return parseRow((Map<String, String>) r, strategy);
+            } else {
+                return ((Map<String, String>) r).get(result.getField());
+            }
+        });
     }
 
     public IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source,
@@ -148,8 +152,6 @@ public class DataEntityMappingService {
 
         Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
         validateCategory(source, orgCategory, reportCategory);
-
-        // set values
 
         LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
                 : LocalDateTime.parse(reported_at1);
@@ -182,6 +184,7 @@ public class DataEntityMappingService {
         Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
         Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
 
+        // validate
         validateReportCategory(source, reportCategory);
 
         Point point = buildValidPoint(source, geometryFactory, latitude, longitude);
