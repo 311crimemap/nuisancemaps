@@ -48,6 +48,8 @@ import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
+import com.quirkshop.nuisancemaps.service.dataparser.JSONNodeFieldExtractor;
+import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -82,6 +84,9 @@ public class DataEntityMappingServiceTest {
 
     @Autowired
     private TextCategoryService textCategoryService;
+
+    @Autowired
+    JSONNodeFieldExtractor jsonNodeFieldExtractor;
 
     @Autowired
     private DataParserFactory dataParserFactory;
@@ -163,23 +168,22 @@ public class DataEntityMappingServiceTest {
         dataJobRepository.save(d);
         textCategoryService.refreshTextCategoryIdMap();
 
-
-        DataParser dataParser = dataParserFactory.getDataParser(DataParserType.JSON);
-        JsonNode rootNode = dataParser.parseData(d, jsonResource.getInputStream());
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(jsonResource.getInputStream());
 
         for (JsonNode node : rootNode) {
 
-            // test buildDataEntity matches parseEntity output
+            // test buildDataEntity matches FieldExtractor output
             Data311 data311 = (Data311) dataEntityMappingService
-                    .buildDataEntity(Data311.class, s, node, geometryFactory);
+                    .buildDataEntity(Data311.class, s, node, geometryFactory, jsonNodeFieldExtractor);
 
-            String reportNum = dataEntityMappingService.parseEntity(Mapping::getReportNum, s, node);
-            String reportCategory = dataEntityMappingService.parseEntity(Mapping::getReportCategory, s, node);
-            String description = dataEntityMappingService.parseEntity(Mapping::getDescription, s, node);
-            String location = dataEntityMappingService.parseEntity(Mapping::getLocation, s, node);
-            String lat = dataEntityMappingService.parseEntity(Mapping::getLatitude, s, node);
-            String lng = dataEntityMappingService.parseEntity(Mapping::getLongitude, s, node);
-            String reported_at1 = dataEntityMappingService.parseEntity(Mapping::getReportedAt, s, node);
+            String reportNum = jsonNodeFieldExtractor.extract(Mapping::getReportNum, s, node);
+            String reportCategory = jsonNodeFieldExtractor.extract(Mapping::getReportCategory, s, node);
+            String description = jsonNodeFieldExtractor.extract(Mapping::getDescription, s, node);
+            String location = jsonNodeFieldExtractor.extract(Mapping::getLocation, s, node);
+            String lat = jsonNodeFieldExtractor.extract(Mapping::getLatitude, s, node);
+            String lng = jsonNodeFieldExtractor.extract(Mapping::getLongitude, s, node);
+            String reported_at1 = jsonNodeFieldExtractor.extract(Mapping::getReportedAt, s, node);
 
             // accommodate for data type changes
             Double latitude = lat == null ? null : Double.parseDouble(lat);
@@ -213,14 +217,14 @@ public class DataEntityMappingServiceTest {
         categoryRepository.deleteAll();
         textCategoryService.refreshTextCategoryIdMap();
 
-        // trigger error with missing textCategory lookup in buildDataEntity
-        DataParser dataParser = dataParserFactory.getDataParser(DataParserType.JSON);
-        JsonNode rootNode = dataParser.parseData(d, jsonResource.getInputStream());
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(jsonResource.getInputStream());
 
+        // trigger error with missing textCategory lookup in buildDataEntity
         JsonNode node = rootNode.get(0);
         GeometryFactory geometryFactory = new GeometryFactory();
         assertThrows(MissingCategoryException.class, () -> {
-            dataEntityMappingService.buildDataEntity(Data311.class, s, node, geometryFactory);
+            dataEntityMappingService.buildDataEntity(Data311.class, s, node, geometryFactory, jsonNodeFieldExtractor);
         });
     }
 

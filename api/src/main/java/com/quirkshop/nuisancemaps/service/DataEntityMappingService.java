@@ -17,6 +17,7 @@ import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.service.dataparser.FieldExtractor;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -36,94 +37,54 @@ public class DataEntityMappingService {
         this.parsingFunctionsMap = parsingFunctionsMap;
     }
 
+
     @Autowired
     private TextCategoryService textCategoryService;
 
-    public String parseNode(JsonNode item, ParserStrategy strategy) {
-        Function<JsonNode, String> parser = parsingFunctionsJSON.get(strategy);
-        if (parser != null) {
-            return parser.apply(item);
-        }
-        return null;
-    }
+    public <T> IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source,
+            T item,
+            GeometryFactory geometryFactory,
+            FieldExtractor<T> extractor)
+            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
+            MissingCategoryException, MissingReportCategoryException, MissingCoordinateException {
 
-    public String parseRow(Map<String, String> row, ParserStrategy strategy) {
-        Function<Map<String, String>, String> parser = parsingFunctionsMap.get(strategy);
-        if (parser != null) {
-            return parser.apply(row);
-        }
-        return null;
-    }
+        String report_num = extractor.extract(Mapping::getReportNum, source, item);
+        String reportCategory = extractor.extract(Mapping::getReportCategory, source, item);
+        String description = extractor.extract(Mapping::getDescription, source, item);
+        String location = extractor.extract(Mapping::getLocation, source, item);
 
-    @FunctionalInterface
-    public interface BaseParser {
-        String parse(Object source, MappingField result);
+        String lat = extractor.extract(Mapping::getLatitude, source, item);
+        String lng = extractor.extract(Mapping::getLongitude, source, item);
+
+        String reported_at1 = extractor.extract(Mapping::getReportedAt, source, item);
+        String reported_at2 = extractor.extract(Mapping::getReportedAt2, source, item);
+
+        Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
+        Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
+
+        // validate
+        validateReportCategory(source, reportCategory);
+
+        Point point = buildValidPoint(source, geometryFactory, latitude, longitude);
+
+        Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
+        validateCategory(source, orgCategory, reportCategory);
+
+        LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
+                : LocalDateTime.parse(reported_at1);
+
+        IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
+
+        setDataEntityFields(dataEntity, report_num, reportCategory, description, location, orgCategory, latitude,
+                longitude, point, reported_at);
+
+        return dataEntity;
+
     }
 
     /*
-     * hierarchy of parse methods
-     * 1. vanilla string (simple getter method returns String; not MappingField)
-     * 2. ParserStrategy method: if this is defined, prioritize it's use
-     * 3. default MappingField pointer (json pointer)
-     *
-     * NB: baseParser is a lambda w/ typed parameters above - used to switch between
-     * JsonNode or CSV Map<String, String> (which are cast in the lambda)
+     * deprecated methods
      */
-    private String parseCustomEntity(Function<Mapping, ?> mapper, Source source, Object item, BaseParser baseParser) throws NoSuchMethodException, SecurityException {
-
-        // parseMapping(mapper, source, row);
-        Method method = mapper.getClass().getMethod("apply", Object.class);
-        Class<?> returnType = method.getReturnType();
-
-        Object mappedValue = mapper.apply(source.getMapping());
-        String value = null;
-
-        // Vanilla String (e.g. orderKey: ":id")
-        if (returnType == String.class) {
-            value = (String) mappedValue;
-        }
-
-        // Parsing Strategy method if exists, otherwise use Pointer expression
-        MappingField result = (MappingField) mappedValue;
-
-        if (result == null)
-            return null;
-
-        value = baseParser.parse(item, result);
-
-        return value;
-    }
-
-    public String parseEntity(Function<Mapping, ?> mapper, Source source, JsonNode item)
-            throws NoSuchMethodException, SecurityException {
-        // NB: (i, result) is functional interface baseParser
-        // i - item
-        return parseCustomEntity(mapper, source, item, (i, result) -> {
-
-            if (result.getParsingStrategy() != null) {
-                ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
-                return parseNode((JsonNode) i, strategy);
-            } else {
-                return ((JsonNode) i).at(result.getPointer()).asText();
-            }
-        });
-    }
-
-    public String parseEntity(Function<Mapping, ?> mapper, Source source, Map<String, String> row)
-            throws NoSuchMethodException, SecurityException {
-        // NB: (r, result) is functional interface baseParser
-        // r - row
-
-        return parseCustomEntity(mapper, source, row, (r, result) -> {
-
-            if (result.getParsingStrategy() != null) {
-                ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
-                return parseRow((Map<String, String>) r, strategy);
-            } else {
-                return ((Map<String, String>) r).get(result.getField());
-            }
-        });
-    }
 
     public IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source,
             Map<String, String> row,
@@ -203,6 +164,87 @@ public class DataEntityMappingService {
         return dataEntity;
     }
 
+    @FunctionalInterface
+    public interface BaseParser {
+        String parse(Object source, MappingField result);
+    }
+
+   private String parseCustomEntity(Function<Mapping, ?> mapper, Source source, Object item, BaseParser baseParser) throws NoSuchMethodException, SecurityException {
+
+        // parseMapping(mapper, source, row);
+        Method method = mapper.getClass().getMethod("apply", Object.class);
+        Class<?> returnType = method.getReturnType();
+
+        Object mappedValue = mapper.apply(source.getMapping());
+        String value = null;
+
+        // Vanilla String (e.g. orderKey: ":id")
+        if (returnType == String.class) {
+            value = (String) mappedValue;
+        }
+
+        // Parsing Strategy method if exists, otherwise use Pointer expression
+        MappingField result = (MappingField) mappedValue;
+
+        if (result == null)
+            return null;
+
+        value = baseParser.parse(item, result);
+
+        return value;
+    }
+
+    public String parseEntity(Function<Mapping, ?> mapper, Source source, JsonNode item)
+            throws NoSuchMethodException, SecurityException {
+        // NB: (i, result) is functional interface baseParser
+        // i - item
+        return parseCustomEntity(mapper, source, item, (i, result) -> {
+
+            if (result.getParsingStrategy() != null) {
+                ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
+                return parseNode((JsonNode) i, strategy);
+            } else {
+                return ((JsonNode) i).at(result.getPointer()).asText();
+            }
+        });
+    }
+
+    public String parseEntity(Function<Mapping, ?> mapper, Source source, Map<String, String> row)
+            throws NoSuchMethodException, SecurityException {
+        // NB: (r, result) is functional interface baseParser
+        // r - row
+
+        return parseCustomEntity(mapper, source, row, (r, result) -> {
+
+            if (result.getParsingStrategy() != null) {
+                ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
+                return parseRow((Map<String, String>) r, strategy);
+            } else {
+                return ((Map<String, String>) r).get(result.getField());
+            }
+        });
+    }
+
+    public String parseNode(JsonNode item, ParserStrategy strategy) {
+        Function<JsonNode, String> parser = parsingFunctionsJSON.get(strategy);
+        if (parser != null) {
+            return parser.apply(item);
+        }
+        return null;
+    }
+
+    public String parseRow(Map<String, String> row, ParserStrategy strategy) {
+        Function<Map<String, String>, String> parser = parsingFunctionsMap.get(strategy);
+        if (parser != null) {
+            return parser.apply(row);
+        }
+        return null;
+    }
+
+    /*
+     * helpers
+     */
+
     private void setDataEntityFields(IDataEntity dataEntity, String report_num, String reportCategory,
             String description, String location, Category orgCategory,
             Double latitude, Double longitude, Point point, LocalDateTime reported_at) {
@@ -218,7 +260,7 @@ public class DataEntityMappingService {
         dataEntity.setUpdatedAt(LocalDateTime.now());
     }
 
-    public void validateReportCategory(Source source, String reportCategory) throws MissingReportCategoryException {
+    private void validateReportCategory(Source source, String reportCategory) throws MissingReportCategoryException {
         if (reportCategory == null || reportCategory.isEmpty()) {
             String errString = String.format(
                     "Missing reportCategory | dataType: %s | id: %s | %s | sourceURL: %s",
@@ -228,7 +270,7 @@ public class DataEntityMappingService {
 
     }
 
-    public Point buildValidPoint(Source source, GeometryFactory geometryFactory, Double latitude, Double longitude)
+    private Point buildValidPoint(Source source, GeometryFactory geometryFactory, Double latitude, Double longitude)
             throws MissingCoordinateException {
         Point point = null;
 
@@ -253,7 +295,7 @@ public class DataEntityMappingService {
     // source.category: crime / 311 / etc
     // dataEntity.report_category: data report instance from raw data
     // Category: our created, labeled categories
-    public Category validateCategory(Source source, Category category, String reportCategory)
+    private Category validateCategory(Source source, Category category, String reportCategory)
             throws MissingCategoryException {
 
         if (category == null) {
