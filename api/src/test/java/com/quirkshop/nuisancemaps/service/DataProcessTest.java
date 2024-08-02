@@ -1,37 +1,17 @@
 package com.quirkshop.nuisancemaps.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.FileCopyUtils;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.transaction.annotation.Transactional;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
@@ -48,16 +28,28 @@ import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class DataServiceTest {
+public class DataProcessTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
-
-    @Autowired
-    private DataService dataService;
 
     @Autowired
     private LocaleRepository localeRepository;
@@ -82,6 +74,12 @@ public class DataServiceTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private DataProcessStrategyFactory dataProcessStrategyFactory;
+
+    @Autowired
+    private DataParserFactory dataParserFactory;
 
     private List<Source> sources;
 
@@ -140,11 +138,14 @@ public class DataServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "incident_report_number");
         dataJobRepository.save(d);
 
-        // String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-        //         StandardCharsets.UTF_8);
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(s.getDataProcessType());
 
-        // dataService to create instances
-        dataService.createData(s, d, jsonResource.getInputStream());
+        DataParser dataParser = dataParserFactory
+                .getDataParser(s.getDataParserType());
+
+        dataProcessStrategy.process(d, jsonResource.getInputStream(), dataParser);
+
         assertThat(d.getNumProcessed()).isEqualTo(2);
     }
 
@@ -161,11 +162,13 @@ public class DataServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
-        // String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-        //         StandardCharsets.UTF_8);
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(s.getDataProcessType());
 
-        // dataService to create instances
-        dataService.createData(s, d, jsonResource.getInputStream());
+        DataParser dataParser = dataParserFactory
+                .getDataParser(s.getDataParserType());
+
+        dataProcessStrategy.process(d, jsonResource.getInputStream(), dataParser);
         assertThat(d.getNumProcessed()).isEqualTo(2);
     }
 
@@ -182,11 +185,13 @@ public class DataServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
-        // String jsonResponse = new String(FileCopyUtils.copyToByteArray(jsonResource.getInputStream()),
-        //         StandardCharsets.UTF_8);
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(s.getDataProcessType());
 
-        // dataService to create instances
-        dataService.createData(s, d, jsonResource.getInputStream());
+        DataParser dataParser = dataParserFactory
+                .getDataParser(s.getDataParserType());
+
+        dataProcessStrategy.process(d, jsonResource.getInputStream(), dataParser);
         Iterable<DataCrime> dataCrimesIter = dataCrimeRepository.findAll();
 
         // ensure srid and proper ordering of long/lat
@@ -217,8 +222,14 @@ public class DataServiceTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
         dataJobRepository.save(d);
 
-        // dataService to create instances
-        dataService.createData(s, d, inputStream);
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(s.getDataProcessType());
+
+        DataParser dataParser = dataParserFactory
+                .getDataParser(s.getDataParserType());
+
+        dataProcessStrategy.process(d, inputStream, dataParser);
+
         assertThat(d.getNumFetched()).isEqualTo(2);
         assertThat(d.getNumProcessed()).isEqualTo(0);
 
@@ -230,7 +241,7 @@ public class DataServiceTest {
         assertThat(dataErrors.size()).isEqualTo(2);
         assertThat(dataErrors.get(0).getContent()).isEqualTo(objectMapperResponse);
         assertThat(dataErrors.get(1).getContent()).isEqualTo(objectMapperResponse);
-        assertThat(dataErrors.get(1).getErrorMsg()).contains("DataService.createDataEntities");
+        assertThat(dataErrors.get(1).getErrorMsg()).contains("[DataParser] error");
         assertThat(d.getStatus()).isEqualTo(DataJobStatus.ERROR);
     }
 }

@@ -128,12 +128,15 @@ public class DataParser {
         sw.getBuffer().setLength(0);
         e.printStackTrace(pw);
 
-        String error_msg = StringUtils.substring(sw.toString(), 0, 4096);
+        String error_msg = StringUtils
+                .substring(String.join(" - ", logStr, sw.toString()),
+                        0, 4096);
 
         DataError dataError = new DataError(dataJob, content, error_msg);
         dataErrorRepository.save(dataError);
 
         log.info(content);
+        log.info(error_msg);
     }
 
     public void batchSave(Source source, ParseCounter parseCounter) {

@@ -45,9 +45,6 @@ public class WorkerScheduleService {
     @Autowired
     DataProcessStrategyFactory dataProcessStrategyFactory;
 
-    @Autowired
-    DataService dataservice;
-
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
