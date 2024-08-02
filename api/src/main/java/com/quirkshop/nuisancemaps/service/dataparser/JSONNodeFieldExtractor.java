@@ -44,9 +44,6 @@ public class JSONNodeFieldExtractor implements FieldExtractor<JsonNode> {
         if (result == null)
             return null;
 
-        // TODO: replace
-        // value = baseParser.parse(item, result);
-
         if (result.getParsingStrategy() != null) {
             ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
             return parseNode((JsonNode) item, strategy);

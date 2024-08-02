@@ -42,9 +42,6 @@ public class MapFieldExtractor implements FieldExtractor<Map<String, String>> {
         if (result == null)
             return null;
 
-        // TODO: replace
-        // value = baseParser.parse(item, result);
-
         if (result.getParsingStrategy() != null) {
             ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
             return parseRow((Map<String, String>) row, strategy);
