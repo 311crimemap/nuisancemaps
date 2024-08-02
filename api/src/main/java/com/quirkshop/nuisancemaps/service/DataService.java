@@ -36,6 +36,7 @@ import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.IDataEntityRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
+import com.quirkshop.nuisancemaps.service.dataparser.JSONNodeFieldExtractor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +68,9 @@ public class DataService {
 
     @Autowired
     private DataParserFactory dataParserFactory;
+
+    @Autowired
+    JSONNodeFieldExtractor jsonNodeFieldExtractor;
 
     // Types
     private Class<? extends IDataEntity> dataEntityClass;
@@ -139,7 +143,7 @@ public class DataService {
             try {
 
                 IDataEntity dataEntity = dataEntityMappingService.buildDataEntity(dataEntityClass, source, item,
-                        geometryFactory);
+                                                                                  geometryFactory, jsonNodeFieldExtractor);
 
                 String report_num = dataEntity.getReportNum();
 

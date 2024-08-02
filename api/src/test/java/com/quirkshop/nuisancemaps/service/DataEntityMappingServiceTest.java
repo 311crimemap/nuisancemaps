@@ -3,12 +3,35 @@ package com.quirkshop.nuisancemaps.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
+import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
+import com.quirkshop.nuisancemaps.model.Category;
+import com.quirkshop.nuisancemaps.model.Data311;
+import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.Locale;
+import com.quirkshop.nuisancemaps.model.Mapping;
+import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.TextCategory;
+import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.repository.LocaleRepository;
+import com.quirkshop.nuisancemaps.repository.MappingRepository;
+import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
+import com.quirkshop.nuisancemaps.service.dataparser.JSONNodeFieldExtractor;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,39 +40,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.FileCopyUtils;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import java.io.File;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.config.MissingCategoryException;
-import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
-import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.model.Category;
-import com.quirkshop.nuisancemaps.model.DataJob;
-import com.quirkshop.nuisancemaps.model.Locale;
-import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.model.TextCategory;
-import com.quirkshop.nuisancemaps.model.Data311;
-import com.quirkshop.nuisancemaps.model.Mapping;
-
-import com.quirkshop.nuisancemaps.repository.CategoryRepository;
-import com.quirkshop.nuisancemaps.repository.DataJobRepository;
-import com.quirkshop.nuisancemaps.repository.LocaleRepository;
-import com.quirkshop.nuisancemaps.repository.MappingRepository;
-import com.quirkshop.nuisancemaps.repository.SourceRepository;
-import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
-import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
-import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
-import com.quirkshop.nuisancemaps.service.dataparser.JSONNodeFieldExtractor;
-import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -57,9 +50,6 @@ public class DataEntityMappingServiceTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
-
-    @Autowired
-    private DataService dataService;
 
     @Autowired
     private LocaleRepository localeRepository;

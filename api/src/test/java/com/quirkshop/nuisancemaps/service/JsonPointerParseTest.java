@@ -30,13 +30,10 @@ import com.quirkshop.nuisancemaps.model.Source;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class DataServiceParseTest {
+public class JsonPointerParseTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
-
-    @Autowired
-    private DataService dataService;
 
     @Test
     @Transactional
