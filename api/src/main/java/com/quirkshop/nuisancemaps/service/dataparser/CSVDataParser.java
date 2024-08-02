@@ -3,41 +3,19 @@ package com.quirkshop.nuisancemaps.service.dataparser;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.Iterables;
 import com.opencsv.CSVReaderHeaderAware;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.model.Category;
-import com.quirkshop.nuisancemaps.model.Data311;
-import com.quirkshop.nuisancemaps.model.DataCrime;
-import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.repository.Data311Repository;
-import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
-import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
-import com.quirkshop.nuisancemaps.repository.IDataEntityRepository;
-import com.quirkshop.nuisancemaps.service.DataEntityMappingService;
-import com.quirkshop.nuisancemaps.service.DataService;
-import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
