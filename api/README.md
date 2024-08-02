@@ -705,9 +705,104 @@ Motivated to reduce code repetition by leveraging common interfaces.
   * `IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);`
   * This is reflection: based on dynamically obtained constructor of (dynamically assigned) class.
 
+### Function type - passing functions
+
+Function Parameter: `public void test(Function<String, ?> randomFn)`
+
+* 1st parameter: input (`String`) - only single input allowed in `Function`
+* 2nd parameter: return type (`?`) - `?` indicates wildcard any output.
+
+How to pass the function?: `Class::method` - using the `::` method reference
+operator.
+
+How to call: `fn.apply(input)`, take the input type (here is `String`, but could be
+anything) as defined in the parameter.
 
 
+```
+public void test(Function<String, ?> randomMethod) {
+    String input = "abc";
+    randomMethod.apply(input)
+}
 
+// call
+// where MyClass::randomMethod is defined somewhere; randomMethod(String) returning wildcard.
+
+test(MyClass::randomMethod)
+
+```
+
+
+### Functional Interfaces
+
+Annotated, typically is the signature used to describe the lambda being passed.
+
+
+```
+@FunctionalInterface
+public interface BaseParser {
+  String parse(Object source, MappingField result);
+}
+
+
+public String test(String hello, Source source, BaseParser baseParser) {
+    ...
+    baseParser.parse(source, result)  // we call the lambda function passed in
+    ...
+}
+
+```
+
+When calling the above function `test()`, `BaseParser` expects a function, looks
+like `(Object source, MappingField result) -> { ...}` : as defined in functional
+interface
+
+```
+return test("hi", map, (source, result) -> {
+    result.something();
+    source.something();
+    return result;
+})
+```
+
+Use case: refactoring a common block but maybe need to use different data types;
+we can define a different, concrete data type or operation in the lambdas, which
+then get executed and returned in the uniform block (return value of
+`baseParser.parse`, in this case).
+
+
+### Template / Generics
+
+* `<T>` type parameter; generic. Provides type safety on any data type.
+  * think of `<>`  as setting / locking the type for the class or method
+
+* Generic class:
+
+```
+public class Box<T> {
+    private T content;
+
+    public T getContent() {
+        return content;
+    }
+}
+
+// Usage
+
+Box<String> stringBox = new Box<>();
+Box<Integer> stringBox = new Box<>();
+
+```
+
+Generic Methods: `<T>` prefix return type
+
+```
+public <T> void printArray(T[] array) {
+        for (T element : array) {
+            System.out.println(element);
+        }
+    }
+```
 ---
 
 ### Commands
