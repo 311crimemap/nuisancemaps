@@ -41,48 +41,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CSVDataParser implements DataParser {
-    @Autowired
-    private DataCrimeRepository datacrimeRepo;
+public class CSVDataParser extends DataParser {
 
-    @Autowired
-    private Data311Repository data311Repo;
-
-    @Autowired
-    private DataErrorRepository dataErrorRepository;
-
-    @Autowired
-    private TextCategoryService textCategoryService;
-
-    @Autowired
-    private DataEntityMappingService dataEntityMappingService;
-
-    private final int BATCH_SIZE = 10000;
-    private final int SRID = 4326; // spatial reference id
-    private static final Logger log = LoggerFactory.getLogger(DataService.class);
-
-    // Types
-    private Class<? extends IDataEntity> dataEntityClass;
-    private IDataEntityRepository dataEntityRepository;
-
-    @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
-
         Source source = dataJob.getSource();
-        HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
-        List<String> reportNums = new ArrayList<String>();
-
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
-
         setTypes(source);
 
         textCategoryService.refreshTextCategoryIdMap();
-
-        //
-        // unique block parse start
-        //
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
@@ -99,73 +64,28 @@ public class CSVDataParser implements DataParser {
                     IDataEntity dataEntity = dataEntityMappingService
                             .buildDataEntity(dataEntityClass, source, row, geometryFactory);
 
-                    String reportNum = dataEntity.getReportNum();
-
-                    // skip case
-                    Category orgCategory = dataEntity.getOrgCategory();
-                    if (orgCategory != null &&
-                            textCategoryService.lookupIsSkip(orgCategory.getId())) {
-
-                        parseCounter.numSkippedIncrement();
-                        parseCounter.numFetchedIncrement();
-
-                    } else {
-
-                        parseNewDataMap.put(reportNum, dataEntity);
-                        reportNums.add(reportNum);
-
-                        parseCounter.numBuiltIncrement();
-                    }
+                    addDataEntity(dataEntity, parseCounter);
 
                 } catch (MissingCoordinateException | MissingReportCategoryException e) {
-                    String logStr = String.format("[DataService] error: %s | %s | id: %s", e.getClass(),
-                            source.getDescription(), source.getId());
-
-                    log.info(logStr);
-                    sw.getBuffer().setLength(0);
-                    e.printStackTrace(pw);
-
                     String content = StringUtils.substring(row.toString(), 0, 4096);
-
-                    log.info(content);
+                    logMissingException(source, content, e);
 
                 } catch (Exception e) {
-                    String logStr = String.format("[DataService] error: %s | %s | id: %s", e.getClass(),
-                            source.getDescription(), source.getId());
-
-                    log.info(logStr);
-                    parseCounter.numErrorsIncrement();
-                    sw.getBuffer().setLength(0);
-                    e.printStackTrace(pw);
-
-                    String error_msg = StringUtils.substring(sw.toString(), 0, 4096);
                     String content = StringUtils.substring(row.toString(), 0, 4096);
-
-                    DataError dataError = new DataError(dataJob, content, error_msg);
-                    dataErrorRepository.save(dataError);
-
-                    log.info(content);
+                    logException(dataJob, content, e);
+                    parseCounter.numErrorsIncrement();
                 }
 
                 parseCounter.numFetchedIncrement();
 
                 if (reportNums.size() > BATCH_SIZE) {
-
-                    replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
-                    saveAll(parseCounter, parseNewDataMap);
-
-                    reportNums.clear();
-                    parseNewDataMap.clear();
+                    batchSave(source, parseCounter);
                 }
 
             }
 
             // flush remaining
-            replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
-            saveAll(parseCounter, parseNewDataMap);
-
-            reportNums.clear();
-            parseNewDataMap.clear();
+            batchSave(source, parseCounter);
 
             csvReader.close();
 
@@ -175,53 +95,6 @@ public class CSVDataParser implements DataParser {
 
     }
 
-    public void replaceWithNew(Source source, List<String> reportNums, ParseCounter parseCounter,
-            HashMap<String, IDataEntity> parseNewDataMap) {
-        int numReplaced = 0;
-
-        // query any existing
-        List<IDataEntity> existing = dataEntityRepository
-                .findAllBySourceIdAndReportNumIn(source.getId(), reportNums);
-
-        // replace existing with new
-        for (IDataEntity dataEntityDB : existing) {
-            int id = dataEntityDB.getId();
-            String reportNum = dataEntityDB.getReportNum();
-            IDataEntity dNew = parseNewDataMap.getOrDefault(reportNum, null);
-            if (dNew != null) {
-                dNew.setId(id); // set id to overwrite
-                numReplaced++;
-            }
-        }
-
-        parseCounter.setNumReplace(parseCounter.getNumReplaced() + numReplaced);
-        parseCounter.setNumDuplicates(parseCounter.getNumDuplicates() + existing.size());
-    }
-
-    public void saveAll(ParseCounter parseCounter, HashMap<String, IDataEntity> parseNewDataMap) {
-        Iterable<IDataEntity> i = dataEntityRepository
-                .saveAllEntities(parseNewDataMap.values());
-
-        int numProcessed = Iterables.size(i);
-        parseCounter.setNumProcessed(parseCounter.getNumProcessed() + numProcessed);
-    }
-
-    public void setTypes(Source source) {
-        switch (source.getCategory()) {
-            case "crime":
-                dataEntityRepository = datacrimeRepo;
-                dataEntityClass = DataCrime.class;
-                break;
-            case "311":
-                dataEntityRepository = data311Repo;
-                dataEntityClass = Data311.class;
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     public JsonNode parseData(DataJob dataJob, InputStream inputStream) {
         // TODO Auto-generated method stub
         return null;
