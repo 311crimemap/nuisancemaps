@@ -1,8 +1,12 @@
 package com.quirkshop.nuisancemaps.model;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -111,6 +115,25 @@ public class DataJob {
 
         this.url = _url;
         return this.url;
+    }
+
+    public String buildFilename() throws MalformedURLException {
+        String sourceURL = this.getSourceURL();
+
+        URL _url = new URL(sourceURL);
+        String hostName = _url.getHost().replaceAll("/", "-");
+        String filePath = _url.getPath().split("\\.")[0]
+                .replaceAll("/", "-").substring(1); // skip the initial path prefix '/'
+        String fileExtension = source.getDataParserType().toString().toLowerCase();
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
+        String formattedDateTime = now.format(formatter);
+
+        String fileName = String.join("-", hostName, filePath,
+                formattedDateTime + "." + fileExtension);
+
+        return fileName;
     }
 
     public String getSourceURL() {

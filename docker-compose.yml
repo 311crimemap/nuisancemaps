@@ -29,7 +29,7 @@ services:
     volumes:
       - ./api:/api
       - $HOME/.m2:/root/.m2
-      - data:/data
+      - data:${FETCH_DATA_DIR}
     working_dir: '/api'
     #command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication"
     # enable debugger via dap-mode / dap-breakpoint-toggle
