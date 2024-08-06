@@ -1,15 +1,13 @@
 package com.quirkshop.nuisancemaps.service.dataprocess;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.io.FileInputStream;
 import java.nio.file.FileStore;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -44,7 +42,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     private OkHttpClient client;
 
     @Autowired
-    DataJobRepository dataJobRepository;
+    private DataJobRepository dataJobRepository;
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
@@ -86,36 +84,48 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         ParseCounter parseCounter = new ParseCounter();
         int bytesRead = 0;
         String filePath = null;
+
         dataJob.setStatus(DataJobStatus.PROCESS_START);
+        dataJobRepository.save(dataJob);
+
+        // WRITE
 
         try {
             if (!validDiskSpace()) {
                 dataJob.setStatus(DataJobStatus.NO_SPACE_ERROR);
+                dataJobRepository.save(dataJob);
                 return;
             }
 
             String filename = dataJob.buildFilename();
             filePath = String.join("/", FETCH_DATA_DIR, filename);
 
-            bytesRead = writeToFile(filename, inputStream);
+            bytesRead = writeToFile(filePath, inputStream);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            dataJob.setStatus(DataJobStatus.WRITE_FILE_ERROR);
-        }catch (IOException e) {
+            dataJob.setStatus(DataJobStatus.BUILD_FILENAME_ERROR);
+            dataJobRepository.save(dataJob);
+            return;
+        } catch (IOException e) {
             e.printStackTrace();
             dataJob.setStatus(DataJobStatus.WRITE_FILE_ERROR);
+            dataJobRepository.save(dataJob);
             return;
         }
 
         dataJob.setStatus(DataJobStatus.WRITE_COMPLETE);
+        dataJobRepository.save(dataJob);
         log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
+
+        // PARSE
 
         dataJob.setStatus(DataJobStatus.READ_FILE_START);
         try (InputStream fileInputStream = new FileInputStream(filePath)) {
             dataParser.parse(dataJob, fileInputStream, parseCounter);
         } catch (IOException e) {
             dataJob.setStatus(DataJobStatus.READ_FILE_ERROR);
+            dataJobRepository.save(dataJob);
             e.printStackTrace();
             return;
         }
@@ -141,7 +151,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     }
 
     public int writeToFile(String filePath, InputStream inputStream) throws IOException {
-
+        // TODO: fix with -1 as finish
         int bytesRead = 0;
         File file = new File(filePath);
 

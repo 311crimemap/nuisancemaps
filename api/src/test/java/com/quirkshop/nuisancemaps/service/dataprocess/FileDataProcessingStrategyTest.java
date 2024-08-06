@@ -1,29 +1,35 @@
-package com.quirkshop.nuisancemaps.service.process;
+package com.quirkshop.nuisancemaps.service.dataprocess;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.FileStore;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.TextCategory;
+import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
-import com.quirkshop.nuisancemaps.service.dataprocess.FileDataProcessStrategy;
-import com.quirkshop.nuisancemaps.service.dataprocess.FileStoreProvider;
-import com.quirkshop.nuisancemaps.util.ParseCounter;
+import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,10 +37,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.mockito.BDDMockito.given;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -52,6 +54,12 @@ public class FileDataProcessingStrategyTest {
     @Mock
     private FileStore fs;
 
+    @Mock
+    private DataJob mockDataJob;
+
+    @MockBean
+    private DataJobRepository mockDataJobRepository;
+
     @Autowired
     private ResourceLoader resourceLoader;
 
@@ -65,12 +73,25 @@ public class FileDataProcessingStrategyTest {
     private SourceRepository sourceRepository;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TextCategoryRepository textCategoryRepository;
+
+    @Autowired
     private DataJobRepository dataJobRepository;
+
+    @Autowired
+    private DataCrimeRepository dataCrimeRepository;
+
+    @Autowired
+    private DataParserFactory dataParserFactory;
 
     @InjectMocks
     FileDataProcessStrategy fileDataProcessStrategy;
 
     private static final String FETCH_DATA_DIR = System.getenv("FETCH_DATA_DIR");
+    private static final long DATA_DIR_MIN_FREE = Long.parseLong(System.getenv("DATA_DIR_MIN_FREE"));
 
     private List<Source> sources;
 
@@ -88,6 +109,22 @@ public class FileDataProcessingStrategyTest {
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
         }
+
+        Category cat = new Category("crime", "Public Order", 0, null);
+        categoryRepository.save(cat);
+
+        ArrayList<TextCategory> textCategories = new ArrayList<TextCategory>();
+        textCategories.add(new TextCategory("crime", "SEX CRIMES", cat));
+        textCategories.add(new TextCategory("crime", "HARRASSMENT 2", cat));
+        textCategories.add(new TextCategory("crime", "PETIT LARCENY", cat));
+        textCategories.add(new TextCategory("crime", "GRAND LARCENY", cat));
+        textCategories.add(new TextCategory("crime", "MURDER & NON-NEGL. MANSLAUGHTER", cat));
+        textCategories.add(new TextCategory("crime", "CRIMINAL MISCHIEF & RELATED OF", cat));
+        textCategories.add(new TextCategory("crime", "GRAND LARCENY OF MOTOR VEHICLE", cat));
+        textCategories.add(new TextCategory("crime", "OFF. AGNST PUB ORD SENSBLTY &", cat));
+
+        textCategoryRepository.saveAll(textCategories);
+
     }
 
     @AfterAll
@@ -95,13 +132,14 @@ public class FileDataProcessingStrategyTest {
         sourceRepository.deleteAll();
         mappingRepository.deleteAll();
         localeRepository.deleteAll();
+        textCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
+        dataJobRepository.deleteAll();
     }
 
     @Test
     @Transactional
     public void validDiskSpaceTest() throws IOException {
-
-        long DATA_DIR_MIN_FREE = Long.parseLong(System.getenv("DATA_DIR_MIN_FREE"));
 
         Path path = Paths.get(FETCH_DATA_DIR);
         when(fileStoreProvider.getFileStore(path)).thenReturn(fs);
@@ -148,16 +186,38 @@ public class FileDataProcessingStrategyTest {
     @Test
     @Transactional
     public void process() throws IOException {
-        /*
-         * Resource jsonResource =
-         * resourceLoader.getResource("classpath:data/crime-nyc.csv");
-         * InputStream inputstream = jsonResource.getInputStream();
-         * ParseCounter parseCounter = new ParseCounter();
-         * 
-         * Source s = sourceRepository.findOneBySourceConfigId(12);
-         * DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "CMPLNT_NUM");
-         * dataJobRepository.save(d);
-         */
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/crime-nyc.csv");
+        InputStream inputStream = jsonResource.getInputStream();
+
+        Source source = sourceRepository.findOneBySourceConfigId(12);
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+
+        String filename = "test-" + dataJob.buildFilename();
+        String filePath = String.join("/", FETCH_DATA_DIR, filename);
+
+        Path path = Paths.get(FETCH_DATA_DIR);
+        when(fileStoreProvider.getFileStore(path)).thenReturn(fs);
+        when(fs.getUsableSpace()).thenReturn(DATA_DIR_MIN_FREE + 1);
+        when(mockDataJob.getSource()).thenReturn(source);
+        when(mockDataJob.buildFilename()).thenReturn(filename);
+
+        File file = new File(filePath);
+
+        DataParser dataParser = dataParserFactory
+                .getDataParser(source.getDataParserType());
+
+        assertThat(dataCrimeRepository.count()).isEqualTo(0);
+
+        fileDataProcessStrategy.process(mockDataJob, inputStream, dataParser);
+
+        assertThat(dataCrimeRepository.count()).isEqualTo(9);
+
+        assertThat(file.exists()).isTrue();
+
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
 }

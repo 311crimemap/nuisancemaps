@@ -103,9 +103,7 @@ public class WorkerScheduleService {
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
 
-        // TODO: remove
-        // log.info("createData() " + prefixLog);
-        // dataservice.createData(source, datajob, inputStream);
+        log.info(String.format("createData() %s", prefixLog));
 
         DataParser dataParser = dataParserFactory
             .getDataParser(source.getDataParserType());
