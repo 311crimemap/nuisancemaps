@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.quirkshop.nuisancemaps.config.DataParserType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -99,6 +100,20 @@ public class DataJob {
     }
 
     public String buildURL() throws UnsupportedEncodingException {
+
+        Source source = this.getSource();
+
+        // stand alone url, typical for full files/csv; no query string build
+        if (source.getDataParserType().equals(DataParserType.CSV)) {
+            this.setUrl(this.getSourceURL());
+            return this.getUrl();
+        }
+
+        // OpenData endpoint; typically json with query parameters
+        return buildOpenDataParamsURL();
+    }
+
+    public String buildOpenDataParamsURL() throws UnsupportedEncodingException {
         String sourceURL = this.getSourceURL();
 
         // collect fields
@@ -113,8 +128,8 @@ public class DataJob {
                 .build()
                 .toUriString();
 
-        this.url = _url;
-        return this.url;
+        this.setUrl(_url);
+        return this.getUrl();
     }
 
     public String buildFilename() throws MalformedURLException {
