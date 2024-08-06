@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.io.FileInputStream;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,17 +83,42 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     @Override
     public void process(DataJob dataJob, InputStream inputStream, DataParser dataParser) {
 
-
         ParseCounter parseCounter = new ParseCounter();
+        int bytesRead = 0;
+        String filePath = null;
+        dataJob.setStatus(DataJobStatus.PROCESS_START);
 
-        // TODO: check free space
+        try {
+            if (!validDiskSpace()) {
+                dataJob.setStatus(DataJobStatus.NO_SPACE_ERROR);
+                return;
+            }
 
-        // TODO: write to file
+            String filename = dataJob.buildFilename();
+            filePath = String.join("/", FETCH_DATA_DIR, filename);
 
-        // TODO: new inputStream from file
+            bytesRead = writeToFile(filename, inputStream);
 
-        // parse
-        dataParser.parse(dataJob, inputStream, parseCounter);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            dataJob.setStatus(DataJobStatus.WRITE_FILE_ERROR);
+        }catch (IOException e) {
+            e.printStackTrace();
+            dataJob.setStatus(DataJobStatus.WRITE_FILE_ERROR);
+            return;
+        }
+
+        dataJob.setStatus(DataJobStatus.WRITE_COMPLETE);
+        log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
+
+        dataJob.setStatus(DataJobStatus.READ_FILE_START);
+        try (InputStream fileInputStream = new FileInputStream(filePath)) {
+            dataParser.parse(dataJob, fileInputStream, parseCounter);
+        } catch (IOException e) {
+            dataJob.setStatus(DataJobStatus.READ_FILE_ERROR);
+            e.printStackTrace();
+            return;
+        }
 
         setJobStatus(dataJob.getSource(), dataJob, parseCounter);
     }
@@ -113,17 +140,19 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return false;
     }
 
-    public void writeToFile(String filename, InputStream inputStream) throws FileNotFoundException, IOException {
-        String filePath = String.join("/", FETCH_DATA_DIR, filename);
+    public int writeToFile(String filePath, InputStream inputStream) throws IOException {
 
+        int bytesRead = 0;
         File file = new File(filePath);
+
         try (OutputStream outputStream = new FileOutputStream(file)) {
             byte[] buffer = new byte[4096];
-            int bytesRead;
+
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
+        return bytesRead;
     }
 
     public void setJobStatus(Source source, DataJob dataJob, ParseCounter parseCounter) {

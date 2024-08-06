@@ -128,13 +128,14 @@ public class FileDataProcessingStrategyTest {
         Source source = sourceRepository.findOneBySourceConfigId(12);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
         String filename = "test-" + dataJob.buildFilename();
-        File file = new File(String.join("/", FETCH_DATA_DIR, filename));
+        String filePath = String.join("/", FETCH_DATA_DIR, filename);
+        File file = new File(filePath);
 
         if (file.exists()) {
             file.delete();
         }
 
-        fileDataProcessStrategy.writeToFile(filename, inputStream);
+        fileDataProcessStrategy.writeToFile(filePath, inputStream);
 
         assertThat(file.exists()).isTrue();
         assertThat(file.isFile()).isTrue();
