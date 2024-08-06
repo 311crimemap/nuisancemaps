@@ -50,6 +50,9 @@ public class SourceController {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
+    // curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d
+    // @source.json localhost:8080/locales/{id}/sources
+
     @PostMapping("/locales/{id}/sources")
     public ResponseEntity<?> create(@PathVariable("id") Integer locale_id, @RequestBody Source source) {
         JSendDTO jSendDTO;

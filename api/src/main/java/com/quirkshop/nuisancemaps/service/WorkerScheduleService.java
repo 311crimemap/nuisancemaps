@@ -45,9 +45,6 @@ public class WorkerScheduleService {
     @Autowired
     DataProcessStrategyFactory dataProcessStrategyFactory;
 
-    @Autowired
-    DataService dataservice;
-
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
@@ -106,9 +103,7 @@ public class WorkerScheduleService {
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
 
-        // TODO: remove
-        // log.info("createData() " + prefixLog);
-        // dataservice.createData(source, datajob, inputStream);
+        log.info(String.format("createData() %s", prefixLog));
 
         DataParser dataParser = dataParserFactory
             .getDataParser(source.getDataParserType());

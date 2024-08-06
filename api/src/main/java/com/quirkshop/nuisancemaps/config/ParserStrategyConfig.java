@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.config;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class ParserStrategyConfig {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     @Bean
-    public Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions() {
+    public Map<ParserStrategy, Function<JsonNode, String>> parsingFunctionsJSON() {
 
         Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = new HashMap<>();
 
@@ -31,6 +32,37 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTEDAT2_CRIME_DALLAS, this::REPORTEDAT2_CRIME_DALLAS);
 
         return parsingFunctions;
+    }
+
+    @Bean
+    public Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctionsMap() {
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = new HashMap<>();
+
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
+                this::REPORTEDAT_CRIME_NEWYORKCITY);
+
+        return parsingFunctions;
+    }
+
+    // LocalDateTime.parse requires ISO format but field is a simple date
+    // (MM/DD/YYYY) - only for CSV (but not JSON)
+    public String REPORTEDAT_CRIME_NEWYORKCITY(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("RPT_DT");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
     }
 
     public String LATITUDE_311_DALLAS(JsonNode item) {

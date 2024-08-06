@@ -1,8 +1,12 @@
 package com.quirkshop.nuisancemaps.model;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.quirkshop.nuisancemaps.config.DataParserType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -95,6 +100,20 @@ public class DataJob {
     }
 
     public String buildURL() throws UnsupportedEncodingException {
+
+        Source source = this.getSource();
+
+        // stand alone url, typical for full files/csv; no query string build
+        if (source.getDataParserType().equals(DataParserType.CSV)) {
+            this.setUrl(this.getSourceURL());
+            return this.getUrl();
+        }
+
+        // OpenData endpoint; typically json with query parameters
+        return buildOpenDataParamsURL();
+    }
+
+    public String buildOpenDataParamsURL() throws UnsupportedEncodingException {
         String sourceURL = this.getSourceURL();
 
         // collect fields
@@ -109,8 +128,27 @@ public class DataJob {
                 .build()
                 .toUriString();
 
-        this.url = _url;
-        return this.url;
+        this.setUrl(_url);
+        return this.getUrl();
+    }
+
+    public String buildFilename() throws MalformedURLException {
+        String sourceURL = this.getSourceURL();
+
+        URL _url = new URL(sourceURL);
+        String hostName = _url.getHost().replaceAll("/", "-");
+        String filePath = _url.getPath().split("\\.")[0]
+                .replaceAll("/", "-").substring(1); // skip the initial path prefix '/'
+        String fileExtension = source.getDataParserType().toString().toLowerCase();
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
+        String formattedDateTime = now.format(formatter);
+
+        String fileName = String.join("-", hostName, filePath,
+                formattedDateTime + "." + fileExtension);
+
+        return fileName;
     }
 
     public String getSourceURL() {
