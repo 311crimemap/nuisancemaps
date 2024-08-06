@@ -13,6 +13,7 @@ import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
+import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,7 +24,7 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class TextCategoryService {
 
-    private static final Logger log = LoggerFactory.getLogger(DataService.class);
+    private static final Logger log = LoggerFactory.getLogger(DataParser.class);
 
     @Autowired
     CategoryRepository categoryRepository;

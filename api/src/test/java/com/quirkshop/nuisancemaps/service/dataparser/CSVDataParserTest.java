@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -38,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class JSONDataParserTest {
+public class CSVDataParserTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -65,7 +66,7 @@ public class JSONDataParserTest {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private JSONDataParser jsonDataParser;
+    private CSVDataParser csvDataParser;
 
     private List<Source> sources;
 
@@ -99,37 +100,37 @@ public class JSONDataParserTest {
         // require textCategory mapping to exist before successful save
         // otherwise will throw MissingCategoryException and skip
         Category cat = new Category("crime", "Public Order", 0, null);
-        Category cat2 = new Category("crime", "Theft", 1, null);
         categoryRepository.save(cat);
-        categoryRepository.save(cat2);
-        TextCategory tc = new TextCategory("crime", "DWI 2ND", cat);
-        TextCategory tc2 = new TextCategory("crime", "THEFT BY SHOPLIFTING", cat2);
-        textCategoryRepository.save(tc);
-        textCategoryRepository.save(tc2);
 
-        cat = new Category("311", "Noise", 1, null);
-        categoryRepository.save(cat);
-        tc = new TextCategory("311", "APD - Non Emergency Noise/Alarm", cat);
-        textCategoryRepository.save(tc);
+        ArrayList<TextCategory> textCategories = new ArrayList<TextCategory>();
+        textCategories.add(new TextCategory("crime", "SEX CRIMES", cat));
+        textCategories.add(new TextCategory("crime", "HARRASSMENT 2", cat));
+        textCategories.add(new TextCategory("crime", "PETIT LARCENY", cat));
+        textCategories.add(new TextCategory("crime", "GRAND LARCENY", cat));
+        textCategories.add(new TextCategory("crime", "MURDER & NON-NEGL. MANSLAUGHTER", cat));
+        textCategories.add(new TextCategory("crime", "CRIMINAL MISCHIEF & RELATED OF", cat));
+        textCategories.add(new TextCategory("crime", "GRAND LARCENY OF MOTOR VEHICLE", cat));
+        textCategories.add(new TextCategory("crime", "OFF. AGNST PUB ORD SENSBLTY &", cat));
+
+        textCategoryRepository.saveAll(textCategories);
     }
-
 
     @Test
     @Transactional
     public void parse() throws IOException {
 
-        Resource jsonResource = resourceLoader.getResource("classpath:data/crime-atx.json");
+        Resource jsonResource = resourceLoader.getResource("classpath:data/crime-nyc.csv");
         InputStream inputstream = jsonResource.getInputStream();
         ParseCounter parseCounter = new ParseCounter();
 
-        Source s = sourceRepository.findOneBySourceConfigId(1);
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "incident_report_number");
+        Source s = sourceRepository.findOneBySourceConfigId(12);
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "CMPLNT_NUM");
         dataJobRepository.save(d);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
-        jsonDataParser.parse(d, inputstream, parseCounter);
+        csvDataParser.parse(d, inputstream, parseCounter);
 
-        assertThat(dataCrimeRepository.count()).isEqualTo(2);
+        assertThat(dataCrimeRepository.count()).isEqualTo(9);
     }
 }
