@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.LockModeType;
 
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 
@@ -91,6 +92,15 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
         // != 0 - has fetched so continue fetching next set until we get 0 - know for
         // sure we've reached the end.
         if (maxSessionIdOffsetDataJob.getNumFetched() != 0) {
+
+            // TODO: needs to be some kind of a FETCH_TYPE / QUEUE_TYPE config
+            // but we'll refactor when we encounter it
+
+            // for CSV, there are no next jobs
+            if (source.getDataParserType().equals(DataParserType.CSV)) {
+                return null;
+            }
+
             DataJob nextJob = createNewDataJob(source,
                     paramLimit,
                     maxSessionIdOffsetDataJob.getParamOffset() + paramLimit,
