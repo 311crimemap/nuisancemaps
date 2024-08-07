@@ -36,6 +36,8 @@ aws ecr get-login-password --profile 311crimemap --region us-east-2 | \
    * `./docker_ops.sh SSH_KEY=/root/.ssh/id_rsa ENV=dev ENV_ID=1 CMD=bash`
 2. `cd /infra/<packer|terraform|ansible>`
 
+NB: `SSH_KEY` likely has suffix `**-hetzner`.
+
 #### Packer
 
 `packer init ubuntu.pkr.hcl`
@@ -71,10 +73,10 @@ Labels are set in terraform; `type=server`, `type=app`
 cd /infra/ansible
 
 # spin up
-ansible-playbook -i hcloud.yml playbooks/site.yml
+ansible-playbook -e env_id=dev_1 -i hcloud.yml playbooks/site.yml
 
 # uninstall
-ansible-playbook -i hcloud.yml playbooks/uninstall.yml
+ansible-playbook -e env_id=dev_1 -i hcloud.yml playbooks/uninstall.yml
 ```
 
 
@@ -102,7 +104,7 @@ Currently doing local control node - easier to regenerate ECR token.
 
 scp root@<node-0-ip / host>:~/.kube/config ~/.kube/config
 
-# 3. Change clutser.server ip from 127.0.0.1 -> <node-0-ip>
+# 3. Change cluster.server ip from 127.0.0.1 -> <node-0-ip>
 
 nano ~/.kube/config  # change ip
 
@@ -111,6 +113,9 @@ nano ~/.kube/config  # change ip
 export KUBECONFIG=~/.kube/config
 
 ```
+
+#### k3s - node label
+
 
 #### ssh
 
