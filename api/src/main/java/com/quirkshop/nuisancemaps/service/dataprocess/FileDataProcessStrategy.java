@@ -10,11 +10,13 @@ import java.net.MalformedURLException;
 import java.nio.file.FileStore;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
-import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
@@ -33,7 +35,6 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
     private static final String FETCH_DATA_DIR = System.getenv("FETCH_DATA_DIR");
     private static final long DATA_DIR_MIN_FREE = Long.parseLong(System.getenv("DATA_DIR_MIN_FREE"));
-    private final int ERROR_RATE = 5;
 
     @Autowired
     private FileStoreProvider fileStoreProvider;
@@ -119,10 +120,15 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
 
         // PARSE
-
         dataJob.setStatus(DataJobStatus.READ_FILE_START);
+        dataJobRepository.save(dataJob);
+
         try (InputStream fileInputStream = new FileInputStream(filePath)) {
+            dataJob.setStatus(DataJobStatus.PENDING);
+            dataJobRepository.save(dataJob);
+
             dataParser.parse(dataJob, fileInputStream, parseCounter);
+
         } catch (IOException e) {
             dataJob.setStatus(DataJobStatus.READ_FILE_ERROR);
             dataJobRepository.save(dataJob);
@@ -131,6 +137,14 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         }
 
         setJobStatus(dataJob.getSource(), dataJob, parseCounter);
+
+        // Delete file after process - not sure yet
+        /*
+         * File file = new File(filePath);
+         * if (file.exists()) {
+         * file.delete();
+         * }
+         */
     }
 
     public boolean validDiskSpace() throws IOException {
@@ -150,45 +164,36 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return false;
     }
 
+    private TimerTask createProgressTask(String filePath, AtomicInteger totalBytesRead) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                log.info(String.format("Download: %s | %d", filePath, totalBytesRead.get()));
+            }
+        };
+    }
+
     public int writeToFile(String filePath, InputStream inputStream) throws IOException {
-        // TODO: fix with -1 as finish
-        int bytesRead = 0;
+        AtomicInteger totalBytes = new AtomicInteger(0);
         File file = new File(filePath);
+        Timer progressTimer = new Timer(true);
 
         try (OutputStream outputStream = new FileOutputStream(file)) {
             byte[] buffer = new byte[4096];
+            int bytesRead = 0;
+
+            TimerTask progressTask = createProgressTask(filePath, totalBytes);
+            progressTimer.schedule(progressTask, 0, 5000); // Delay: 0ms, Period: 5000ms
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {
+                totalBytes.addAndGet(bytesRead);
                 outputStream.write(buffer, 0, bytesRead);
             }
-        }
-        return bytesRead;
-    }
-
-    public void setJobStatus(Source source, DataJob dataJob, ParseCounter parseCounter) {
-
-        // 5% error rate, mark job as failed to figure out consistent error
-        if (parseCounter.getNumErrors() > (parseCounter.getNumProcessed() / ERROR_RATE))
-
-        {
-            dataJob.setStatus(DataJobStatus.ERROR);
+        } finally {
+            progressTimer.cancel();
         }
 
-        dataJob.setNumFetched(parseCounter.getNumFetched());
-        dataJob.setNumProcessed(parseCounter.getNumProcessed());
-
-        String logStats = String.format(
-                "%s - %s: | Offset: %s | Fetched: %s | Skipped: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
-                source.getCategory(),
-                source.getDescription(),
-                dataJob.getParamOffset(),
-                parseCounter.getNumFetched(),
-                parseCounter.getNumSkipped(),
-                parseCounter.getNumBuilt(),
-                parseCounter.getNumProcessed(),
-                parseCounter.getNumErrors(),
-                parseCounter.getNumDuplicates());
-        log.info(logStats);
+        return totalBytes.get();
     }
 
 }

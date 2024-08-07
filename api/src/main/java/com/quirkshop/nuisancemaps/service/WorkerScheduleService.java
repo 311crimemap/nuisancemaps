@@ -106,7 +106,7 @@ public class WorkerScheduleService {
         log.info(String.format("createData() %s", prefixLog));
 
         DataParser dataParser = dataParserFactory
-            .getDataParser(source.getDataParserType());
+                .getDataParser(source.getDataParserType());
 
         dataProcessStrategy.process(datajob, inputStream, dataParser);
 
@@ -159,6 +159,10 @@ public class WorkerScheduleService {
      */
 
     public void fetchAndUpdateNumSourceRecords(Source source) {
+        // TODO: no implementation for CSV
+        if (source.getDataParserType().equals(DataParserType.CSV))
+            return;
+
         LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
         boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source, nowMinusHours);
         if (!needsUpdate)
@@ -168,6 +172,7 @@ public class WorkerScheduleService {
     }
 
     public void updateSourceNumRecords(Source source) {
+
         log.info("[SourceLoaderService] FetchCount ....");
 
         Integer numRecords = sourceLoaderService.fetchCount(source);

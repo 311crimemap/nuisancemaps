@@ -141,9 +141,8 @@ public class DataJob {
                 .replaceAll("/", "-").substring(1); // skip the initial path prefix '/'
         String fileExtension = source.getDataParserType().toString().toLowerCase();
 
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
-        String formattedDateTime = now.format(formatter);
+        String formattedDateTime = this.getSessionId().format(formatter);
 
         String fileName = String.join("-", hostName, filePath,
                 formattedDateTime + "." + fileExtension);
