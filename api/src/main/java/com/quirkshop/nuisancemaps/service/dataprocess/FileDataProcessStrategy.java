@@ -121,11 +121,17 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         dataJobRepository.save(dataJob);
         log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
 
-        // PARSE
 
+        // PARSE
         dataJob.setStatus(DataJobStatus.READ_FILE_START);
+        dataJobRepository.save(dataJob);
+
         try (InputStream fileInputStream = new FileInputStream(filePath)) {
+            dataJob.setStatus(DataJobStatus.PENDING);
+            dataJobRepository.save(dataJob);
+
             dataParser.parse(dataJob, fileInputStream, parseCounter);
+
         } catch (IOException e) {
             dataJob.setStatus(DataJobStatus.READ_FILE_ERROR);
             dataJobRepository.save(dataJob);
