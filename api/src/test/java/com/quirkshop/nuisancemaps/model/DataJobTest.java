@@ -63,9 +63,8 @@ public class DataJobTest {
         Source source = sources.get(11); // id: 12
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
 
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
-        String formattedDateTime = now.format(formatter);
+        String formattedDateTime = dataJob.getSessionId().format(formatter);
 
         // String result = "data.cityofnewyork.us-api-views-5uac-w243-rows.csv";
         String result = String.format("%s-%s.csv",
