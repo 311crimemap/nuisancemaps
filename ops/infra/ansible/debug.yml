@@ -7,3 +7,9 @@
     - name : debug
       debug:
         msg: "{{ groups }}"
+    - name : debug2
+      debug:
+        msg: "{{ hostvars.keys() }}"
+    - name : debug3
+      debug:
+        msg: "{{ hostvars[ hostvars.keys() | first ].labels }}"
