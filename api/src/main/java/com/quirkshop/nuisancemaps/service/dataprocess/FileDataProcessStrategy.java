@@ -151,18 +151,19 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     }
 
     public int writeToFile(String filePath, InputStream inputStream) throws IOException {
-        // TODO: fix with -1 as finish
-        int bytesRead = 0;
+        int totalBytes = 0;
         File file = new File(filePath);
 
         try (OutputStream outputStream = new FileOutputStream(file)) {
             byte[] buffer = new byte[4096];
-
+            int bytesRead = 0;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
+                totalBytes += bytesRead;
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
-        return bytesRead;
+
+        return totalBytes;
     }
 
     public void setJobStatus(Source source, DataJob dataJob, ParseCounter parseCounter) {
