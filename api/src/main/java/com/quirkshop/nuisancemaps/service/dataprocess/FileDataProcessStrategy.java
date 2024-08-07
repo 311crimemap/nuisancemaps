@@ -137,6 +137,14 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         }
 
         setJobStatus(dataJob.getSource(), dataJob, parseCounter);
+
+        // Delete file after process - not sure yet
+        /*
+         * File file = new File(filePath);
+         * if (file.exists()) {
+         * file.delete();
+         * }
+         */
     }
 
     public boolean validDiskSpace() throws IOException {
