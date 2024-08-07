@@ -10,6 +10,9 @@ import java.net.MalformedURLException;
 import java.nio.file.FileStore;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -150,20 +153,36 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return false;
     }
 
+    private TimerTask createProgressTask(String filePath, AtomicInteger totalBytesRead) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                log.info(String.format("Download: %s | %d", filePath, totalBytesRead.get()));
+            }
+        };
+    }
+
     public int writeToFile(String filePath, InputStream inputStream) throws IOException {
-        int totalBytes = 0;
+        AtomicInteger totalBytes = new AtomicInteger(0);
         File file = new File(filePath);
+        Timer progressTimer = new Timer(true);
 
         try (OutputStream outputStream = new FileOutputStream(file)) {
             byte[] buffer = new byte[4096];
             int bytesRead = 0;
+
+            TimerTask progressTask = createProgressTask(filePath, totalBytes);
+            progressTimer.schedule(progressTask, 0, 5000); // Delay: 0ms, Period: 5000ms
+
             while ((bytesRead = inputStream.read(buffer)) != -1) {
-                totalBytes += bytesRead;
+                totalBytes.addAndGet(bytesRead);
                 outputStream.write(buffer, 0, bytesRead);
             }
+        } finally {
+            progressTimer.cancel();
         }
 
-        return totalBytes;
+        return totalBytes.get();
     }
 
     public void setJobStatus(Source source, DataJob dataJob, ParseCounter parseCounter) {
