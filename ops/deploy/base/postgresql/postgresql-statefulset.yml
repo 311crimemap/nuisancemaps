@@ -78,7 +78,7 @@ spec:
         - name: postgresql
           containerPort: 5432
         volumeMounts:
-        - name: data
+        - name: data-db
           mountPath: /bitnami/postgresql
         - name: backup-db
           mountPath: /backup_db/pgbackrest
@@ -115,7 +115,7 @@ spec:
 
   volumeClaimTemplates:
   - metadata:
-      name: data
+      name: data-db
     spec:
       # NB: creates a pvc
       storageClassName: hcloud-volumes
