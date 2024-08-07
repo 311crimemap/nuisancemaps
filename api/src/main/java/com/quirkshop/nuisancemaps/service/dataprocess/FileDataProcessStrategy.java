@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
-import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
@@ -36,7 +35,6 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
     private static final String FETCH_DATA_DIR = System.getenv("FETCH_DATA_DIR");
     private static final long DATA_DIR_MIN_FREE = Long.parseLong(System.getenv("DATA_DIR_MIN_FREE"));
-    private final int ERROR_RATE = 5;
 
     @Autowired
     private FileStoreProvider fileStoreProvider;
@@ -121,7 +119,6 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         dataJobRepository.save(dataJob);
         log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
 
-
         // PARSE
         dataJob.setStatus(DataJobStatus.READ_FILE_START);
         dataJobRepository.save(dataJob);
@@ -189,32 +186,6 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         }
 
         return totalBytes.get();
-    }
-
-    public void setJobStatus(Source source, DataJob dataJob, ParseCounter parseCounter) {
-
-        // 5% error rate, mark job as failed to figure out consistent error
-        if (parseCounter.getNumErrors() > (parseCounter.getNumProcessed() / ERROR_RATE))
-
-        {
-            dataJob.setStatus(DataJobStatus.ERROR);
-        }
-
-        dataJob.setNumFetched(parseCounter.getNumFetched());
-        dataJob.setNumProcessed(parseCounter.getNumProcessed());
-
-        String logStats = String.format(
-                "%s - %s: | Offset: %s | Fetched: %s | Skipped: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
-                source.getCategory(),
-                source.getDescription(),
-                dataJob.getParamOffset(),
-                parseCounter.getNumFetched(),
-                parseCounter.getNumSkipped(),
-                parseCounter.getNumBuilt(),
-                parseCounter.getNumProcessed(),
-                parseCounter.getNumErrors(),
-                parseCounter.getNumDuplicates());
-        log.info(logStats);
     }
 
 }
