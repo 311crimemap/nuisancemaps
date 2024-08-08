@@ -15,6 +15,8 @@ spec:
         app: postgresql
         app.kubernetes.io/name: postgresql
     spec:
+      nodeSelector:
+        node.kubernetes.io/class_id: db
       # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
       securityContext:
         runAsUser: 1001
