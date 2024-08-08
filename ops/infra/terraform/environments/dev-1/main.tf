@@ -67,6 +67,7 @@ module "app-servers" {
   image_name = "name=packer_base_311crimemap_1.0"
 
   additional_labels = {}
+  k3s_server = true
 
   network_id   = module.network.hcloud_network_id
   network_subnet_id = module.network.hcloud_network_subnet_id
@@ -95,6 +96,7 @@ module "db-server" {
   image_name = "name=packer_base_311crimemap_1.0"
 
   additional_labels = {}
+  k3s_server = false
 
   network_id   = module.network.hcloud_network_id
   network_subnet_id = module.network.hcloud_network_subnet_id
