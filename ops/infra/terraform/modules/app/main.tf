@@ -1,16 +1,5 @@
 # app main.tf
 
-resource "hcloud_network" "network" {
-  name     = var.network_name
-  ip_range = "10.0.0.0/16"
-}
-resource "hcloud_network_subnet" "network-subnet" {
-  network_id   = hcloud_network.network.id
-  type         = "cloud"
-  network_zone = var.location_zone.network_zone
-  ip_range     = "10.0.0.0/24"
-}
-
 resource "hcloud_server" "app" {
   count       = var.server_count
   name        = format(
@@ -43,7 +32,7 @@ resource "hcloud_server" "app" {
   }
 
   network {
-    network_id = hcloud_network.network.id
+    network_id = var.network_id
     # ip         = "10.0.1.5"
     # alias_ips  = [
     #   "10.0.1.6",
@@ -70,7 +59,7 @@ resource "hcloud_server" "app" {
 
 
   depends_on = [
-    hcloud_network_subnet.network-subnet
+    var.network_subnet_id
   ]
 }
 
