@@ -283,6 +283,41 @@ NB: make sure to delete pvc for fresh start
 For dev environment, currently using only superuser account, so separate init
 superuser not necessary.
 
+#### Expanding StatefulSet Volume
+
+* Shutdown postgresql service
+* On Hetzner console, wait for detach, expand filesystem
+  * `postgresql-statefulset.yml`: expand `storage` key to desired amount.
+* Restart postgresql service
+
+1. `lsblk`: check if partition is not full - might need to expand partition
+  (likely no need, since volume is standalone.) Here expanded 16gb of space is
+  visible, not partitioned
+
+```
+NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda       8:0    0 38.1G  0 disk
+├─sda1    8:1    0 37.9G  0 part /var/lib/kubelet/pods/b09d6f3f-a31f-44e3-a5f6-e08ecfc9fc9f/volume-subpaths/pgbackrest-archive-conf/postgresql/4
+│                                /var/lib/kubelet/pods/b09d6f3f-a31f-44e3-a5f6-e08ecfc9fc9f/volume-subpaths/pgbackrest-pgbackrest-conf/postgresql/3
+│                                /var/lib/kubelet/pods/b09d6f3f-a31f-44e3-a5f6-e08ecfc9fc9f/volume-subpaths/initdb/postgresql/2
+│                                /
+├─sda14   8:14   0    1M  0 part
+└─sda15   8:15   0  256M  0 part /boot/efi
+sdb       8:16   0   16G  0 disk /var/lib/kubelet/pods/b09d6f3f-a31f-44e3-a5f6-e08ecfc9fc9f/volumes/kubernetes.io~csi/pvc-abfa5b87-8120-4d70-b5b2-fc75d40bc8e5/mount
+
+```
+
+2. `resize2fs`: expand ext4 filesystem
+
+* `df -Ht`: shows a 10gb file system (even though our block is a newly expanded 16GB)
+
+```
+/dev/disk/by-id/scsi-0HC_Volume_101141679 ext4     9.8G   71M  9.7G   1% /var/lib/kubelet/pods/b09d6f3f-a31f-44e3-a5f6-e08ecfc9fc9f/volumes/kubernetes.io~csi/pvc-abfa5b87-8120-4d70-b5b2-fc75d40bc8e5/mount
+```
+
+* `sudo resize2fs /dev/disk/by-id/scsi-0HC_Volume_101141679`: expands the filesystem
+
+
 ---
 
 ### K3S Control Plane
