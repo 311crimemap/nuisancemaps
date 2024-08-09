@@ -13,6 +13,9 @@
   file:
     path: /data
     state: directory
+        # cnb "cloud buildpace user" for java containers
+    owner: "1002"
+    group: "1000"
     mode: '0755'
 
 - name: Join K3s agent(s) to the server
