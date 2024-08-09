@@ -51,6 +51,25 @@ configmap files (pgbackrest)
 
 * `kubectl apply -f base/jobs/spring-db-migration-job.yml`
 
+
+#### Boostrap Data
+
+1. Build Locales: `curl -X POST -H 'X-API-KEY: <KEY>' -H 'content-type:application/json' -d @locale_config.json http://<API_HOST>/locales/batch`
+
+2. Build Categories: `curl -X POST -H 'X-API-KEY: <KEY>' -H 'content-type:application/json' -d @classifier_categories.json http://<API_HOST>/categories`
+
+3. Submit TextCategories: `curl -X POST -H 'content-type:application/json' -H 'X-API-KEY: <KEY>' -d @labeled_crime.json http://<API_HOST>/textcategories`
+   * NB2: if bootstrapping, will have to restart once categories submitted so
+     textCategory map can build. TODO: fix this.
+
+4. NB: Once a source is submitted, worker will try to fetch
+
+5. Submit source (requires associated `locale` id)
+  * `cat source_config.json | jq '.[11]' > test.json`
+  * `curl -X POST -H 'X-API-KEY: <KEY> -H 'content-type:application/json' -d @test.json http://<API_HOST>/locales/4/sources`
+
+
+
 ---
 
 ## Uninstall
