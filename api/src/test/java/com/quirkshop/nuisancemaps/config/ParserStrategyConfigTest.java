@@ -105,4 +105,22 @@ public class ParserStrategyConfigTest {
         assertThat(parsed).isInstanceOf(LocalDateTime.class);
     }
 
+    @Test
+    @Transactional
+    public void CREATED_DATE_311_NEWYORKCITY_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.CREATED_DATE_311_NEWYORKCITY).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Created Date", "02/11/2024 10:39:24 PM");
+
+        String value = parserStrategyConfig.CREATED_DATE_311_NEWYORKCITY(row);
+        assertThat(value).isEqualTo("2024-02-11T22:39:24");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
 }
