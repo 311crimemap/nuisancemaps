@@ -41,6 +41,7 @@ public class ParserStrategyConfig {
 
         parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
                 this::REPORTEDAT_CRIME_NEWYORKCITY);
+        parsingFunctions.put(ParserStrategy.CREATED_DATE_311_NEWYORKCITY, this::CREATED_DATE_311_NEWYORKCITY);
 
         return parsingFunctions;
     }
@@ -57,6 +58,24 @@ public class ParserStrategyConfig {
             dateStr = LocalDate.parse(text, formatter)
                     .atStartOfDay()
                     .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // LocalDateTime.parse has ISO defaults that cannot handle hh:mm:ss am/pm marker
+    public String CREATED_DATE_311_NEWYORKCITY(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Created Date");
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -124,4 +143,5 @@ public class ParserStrategyConfig {
 
         return dateStr;
     }
+
 }
