@@ -66,6 +66,7 @@ public class DataJob {
     private String orderKey;
     private Integer numFetched;
     private Integer numProcessed;
+    private boolean forceDownload = false;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
@@ -262,6 +263,14 @@ public class DataJob {
 
     public void setDataErrors(List<DataError> dataErrors) {
         this.dataErrors = dataErrors;
+    }
+
+    public boolean isForceDownload() {
+        return forceDownload;
+    }
+
+    public void setForceDownload(boolean forceDownload) {
+        this.forceDownload = forceDownload;
     }
 
 }

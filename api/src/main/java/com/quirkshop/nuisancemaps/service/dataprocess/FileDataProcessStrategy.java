@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -60,11 +60,28 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         Request request = new Request.Builder().url(url).build();
 
         try {
+
+            // check if file exists before downloading
+            String filePath = buildFilePath(dataJob);
+
+            if (fileExists(filePath) && !dataJob.isForceDownload()) {
+                File file = new File(filePath);
+                long fileSizeInBytes = file.length();
+                log.info(String.format("File Detected: %s | %d bytes", filePath, fileSizeInBytes));
+
+                dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
+                dataJobRepository.save(dataJob);
+                return null;
+            }
+
+            // otherwise fetch
             Response response = client.newCall(request).execute();
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             }
+
             inputStream = response.body().byteStream();
+
         } catch (IOException e) {
             System.err.println("Error fetchData: " + e.getMessage());
             dataJob.setStatus(DataJobStatus.FETCH_ERROR);
@@ -83,25 +100,38 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     public void process(DataJob dataJob, InputStream inputStream, DataParser dataParser) {
 
         ParseCounter parseCounter = new ParseCounter();
-        int bytesRead = 0;
+        long bytesRead = 0;
         String filePath = null;
 
         dataJob.setStatus(DataJobStatus.PROCESS_START);
         dataJobRepository.save(dataJob);
 
-        // WRITE
+        /*
+         * STREAM TO FILE
+         */
 
         try {
-            if (!validDiskSpace()) {
-                dataJob.setStatus(DataJobStatus.NO_SPACE_ERROR);
-                dataJobRepository.save(dataJob);
-                return;
+
+            filePath = buildFilePath(dataJob);
+
+            // check if file exists before downloading
+            // otherwise fetch stream -> writeToFile
+            if (fileExists(filePath) && !dataJob.isForceDownload()) {
+                File file = new File(filePath);
+                bytesRead = file.length();
+                log.info(String.format("File Detected: %s | %d bytes", filePath, bytesRead));
+            } else {
+
+                // write fetch inputStream to file
+                if (!validDiskSpace()) {
+                    dataJob.setStatus(DataJobStatus.NO_SPACE_ERROR);
+                    dataJobRepository.save(dataJob);
+                    return;
+                }
+
+                bytesRead = writeToFile(filePath, inputStream);
+                log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
             }
-
-            String filename = dataJob.buildFilename();
-            filePath = String.join("/", FETCH_DATA_DIR, filename);
-
-            bytesRead = writeToFile(filePath, inputStream);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -117,9 +147,11 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
         dataJob.setStatus(DataJobStatus.WRITE_COMPLETE);
         dataJobRepository.save(dataJob);
-        log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
 
-        // PARSE
+        /*
+         * PARSE FILE
+         */
+
         dataJob.setStatus(DataJobStatus.READ_FILE_START);
         dataJobRepository.save(dataJob);
 
@@ -147,6 +179,17 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
          */
     }
 
+    private String buildFilePath(DataJob dataJob) throws MalformedURLException {
+        String filename = dataJob.buildFilename();
+        String filePath = String.join("/", FETCH_DATA_DIR, filename);
+        return filePath;
+    }
+
+    public boolean fileExists(String filePath) {
+        File file = new File(filePath);
+        return file.exists();
+    }
+
     public boolean validDiskSpace() throws IOException {
 
         File directory = new File(FETCH_DATA_DIR);
@@ -164,7 +207,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return false;
     }
 
-    private TimerTask createProgressTask(String filePath, AtomicInteger totalBytesRead) {
+    private TimerTask createProgressTask(String filePath, AtomicLong totalBytesRead) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -173,8 +216,8 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         };
     }
 
-    public int writeToFile(String filePath, InputStream inputStream) throws IOException {
-        AtomicInteger totalBytes = new AtomicInteger(0);
+    public long writeToFile(String filePath, InputStream inputStream) throws IOException {
+        AtomicLong totalBytes = new AtomicLong(0);
         File file = new File(filePath);
         Timer progressTimer = new Timer(true);
 
