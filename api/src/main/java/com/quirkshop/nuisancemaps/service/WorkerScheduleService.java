@@ -1,20 +1,11 @@
 package com.quirkshop.nuisancemaps.service;
 
-import java.lang.Thread;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -24,6 +15,13 @@ import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
 import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
 import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
 
