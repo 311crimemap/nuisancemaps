@@ -9,6 +9,15 @@
     msg:
       - "Hello from k3s agent role"
 
+- name: Create /data directory for local file storage
+  file:
+    path: /data
+    state: directory
+        # cnb "cloud buildpace user" for java containers
+    owner: "1002"
+    group: "1000"
+    mode: '0755'
+
 - name: Join K3s agent(s) to the server
   register: out
   vars:

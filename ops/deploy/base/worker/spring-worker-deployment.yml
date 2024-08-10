@@ -6,7 +6,7 @@ metadata:
     app: spring-worker
   name: spring-worker
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: spring-worker
@@ -36,6 +36,10 @@ spec:
               configMapKeyRef:
                 name: postgresql-config
                 key: POSTGRESQL_URL
+          - name: FETCH_DATA_DIR
+            value: "/data"
+          - name: DATA_DIR_MIN_FREE
+            value: "5000000000" #5gb
           - name: JAVA_OPTS
             value: "-Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication"
           - name: ASYNC_EXECUTOR_CORE_POOL_SIZE
@@ -48,6 +52,14 @@ spec:
             value: "100000"
           - name: MAX_DATA_RECORDS
             value: "10000"
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: data-pvc
 
           # # probes
           # livenessProbe:

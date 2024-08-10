@@ -1,0 +1,21 @@
+# main.yml
+# start server
+
+- name: Debug role
+  debug:
+    msg: "Hello from k3s_server_label role"
+
+- name: Apply labels to k3s nodes
+  block:
+    - name: Label k3s nodes
+      command: >
+        kubectl label nodes {{ item }}
+          {% for key, value in hostvars[item].labels.items() %}
+            {{ label_prefix }}/{{ key }}={{ value }}
+          {% endfor %}
+        --overwrite
+      loop: "{{ groups['all'] }}"
+      when: "'labels' in hostvars[item]"
+      vars:
+        label_prefix: "node.kubernetes.io"
+

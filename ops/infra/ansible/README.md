@@ -26,9 +26,11 @@ eval "$(ssh-agent -s)"
 # in docker_ops container
 cd /ops/ansible
 
-ansible-playbook -e env_id=dev-1 -i hcloud.yml playbooks/site.yml
+# note underscore in env, this is forced by ansible
 
-ansible-playbook -e env_id=dev-1 -i hcloud.yml playbooks/uninstall.yml
+ansible-playbook -e env_id=dev_1 -i hcloud.yml playbooks/site.yml
+
+ansible-playbook -e env_id=dev_1 -i hcloud.yml playbooks/uninstall.yml
 ```
 
 On local machine, just scp and export KUBECONFIG to `~/.kube/config` to run
@@ -36,13 +38,29 @@ kubectl.
 
 ### Labels
 
-Current `hcloud.yml` dynamic inventory has a labels "keyed_groups" as an
-inventory grouping to distinguish between server and agent nodes for k3s.
+Current `hcloud.yml` dynamic inventory creates group labels via "keyed_groups".
 
-These are set by terraform at the physical machine level. Currently:
+The format is `label_<key>_<value>`.
 
-* `type=server`
-* `type=agent`
+For example the groups distinguishing between server and agent nodes are labeled
+on Hetzner via terraform as `node=server`, `node=agent`. Ansible will generate
+the groups, `label_node_server`, `label_node_agent`, which contain the
+respective hostnames.
+
+We can see other grouped labels using `debug.yml`:
+
+`ansible-playbook -i hcloud.yml debug.yml`
+
+NB: Ansible automatically converts hyphens to underscore in label names (e.g.
+`dev-1` must be referrred to as `dev_1`).
+
+Current playbook has k3s installed on intersection of specified environment
+(`label_env_id_<env_id>`) and `label_node_server` / `label_node_agent`.
+
+
+* `node=server`
+* `node=agent`
+
 
 
 ##### ansible.cfg
