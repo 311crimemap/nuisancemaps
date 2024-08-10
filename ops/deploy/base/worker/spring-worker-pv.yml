@@ -1,0 +1,33 @@
+#
+# PV / PVC is not a representation of storage across nodes, but a representation
+# of the storage CLASS and CONFIGURATION. Each node’s local storage is isolated
+# but matched to the PVC’s storage class and requirements.
+#
+# When scaling up replicas, there remains only one PV and PVC on the cluster,
+# even though mounted volumes will happen on each node. Consider it a behavior
+# of local-storage. So don't expect a number of PV's like you would with 'get
+# pods'.
+#
+#
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-pv
+spec:
+  capacity:
+    storage: 30Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-path # default provided by rancher
+  local:
+    path: /data
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: node.kubernetes.io/class_id
+          operator: In
+          values:
+          - app

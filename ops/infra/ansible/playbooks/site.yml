@@ -5,6 +5,7 @@
 # underscore
 #
 #
+
 - name: Setup K3S server
   hosts: "{{ (groups['label_env_id_' ~ env_id] | intersect(groups.label_node_server)) | first}}"
   vars_files:
@@ -21,3 +22,10 @@
   roles:
     - role: k3s_agent
 
+- name: Label K3S nodes
+  hosts: "{{ (groups['label_env_id_' ~ env_id] | intersect(groups.label_node_server)) | first}}"
+  vars_files:
+    - ../vars.yml
+  gather_facts: true
+  roles:
+    - role: k3s_node_label

@@ -17,6 +17,8 @@ spec:
       labels:
         app: spring-api
     spec:
+      nodeSelector:
+        node.kubernetes.io/class_id: app
       imagePullSecrets:
         - name: regcred
       containers:
@@ -37,6 +39,15 @@ spec:
               configMapKeyRef:
                 name: postgresql-config
                 key: POSTGRESQL_URL
+          - name: ADMIN_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: api-secrets
+                key: ADMIN_API_KEY
+          - name: FETCH_DATA_DIR
+            value: "/data"
+          - name: DATA_DIR_MIN_FREE
+            value: "5000000000" #5gb
           - name: JAVA_OPTS
             value: "-Dloader.main=com.quirkshop.nuisancemaps.NuisancemapsApplication"
           - name: ASYNC_EXECUTOR_CORE_POOL_SIZE

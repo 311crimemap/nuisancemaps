@@ -54,7 +54,7 @@ variable location_zone {
 
 variable additional_labels {
   type = map(string)
-  description = "key-value pairs of labels to assign to each node, with default type to denote k3s server or agent"
+  description = "key-value pairs of labels to assign to each node"
 }
 
 variable ssh_key_name {
@@ -67,9 +67,19 @@ variable image_name {
   description = "image snapshot selector expression: e.g. name=packer_image..."
 }
 
-variable network_name {
+variable k3s_server {
+  type = bool
+  description = "whether the first node of this module should be a k3s server"
+}
+
+variable network_id {
+  type = number
+  description = "hcloud network id"
+}
+
+variable network_subnet_id {
   type = string
-  description = "hcloud network name"
+  description = "hcloud network subnet id"
 }
 
 variable firewall_id {
