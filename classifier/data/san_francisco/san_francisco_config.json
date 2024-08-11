@@ -1,16 +1,11 @@
 [
     {
         "sourceConfigId": 10,
-        "sourceConfigEntity": "San Francisco, CA",
         "url": "https://data.sfgov.org/resource/wg3w-h783.json",
-        "location": [
-            -122.432884,
-            37.776260
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "San Francisco Crime",
+        "dataParserType": "JSON",
+        "dataProcessType": "MEMORY",
         "numRecords": 872000,
         "mapping": {
             "orderKey": ":id",
@@ -58,16 +53,11 @@
     },
     {
         "sourceConfigId": 11,
-        "sourceConfigEntity": "San Francisco, CA",
         "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
-        "location": [
-            -122.432884,
-            37.776260
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "San Francisco 311",
+        "dataParserType": "JSON",
+        "dataProcessType": "MEMORY",
         "numRecords": 7070000,
         "mapping": {
             "orderKey": ":id",
