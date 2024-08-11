@@ -6,7 +6,7 @@ metadata:
     app: spring-worker
   name: spring-worker
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: spring-worker
@@ -22,6 +22,7 @@ spec:
       containers:
         - image: 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
           name: spring-worker
+          imagePullPolicy: Always
           envFrom:
           - configMapRef:
               name: postgresql-config
