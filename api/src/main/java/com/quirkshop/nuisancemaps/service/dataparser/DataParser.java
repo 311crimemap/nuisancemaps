@@ -140,9 +140,14 @@ public class DataParser {
     }
 
     public void batchSave(Source source, ParseCounter parseCounter) {
+        String logStr = String.format("[DataParser:batchSave ] sourceId: %s | numSaved: %d",
+                                      source.getId(),
+                                      parseNewDataMap.size());
 
         replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
         saveAll(parseCounter, parseNewDataMap);
+
+        log.info(logStr);
 
         reportNums.clear();
         parseNewDataMap.clear();
