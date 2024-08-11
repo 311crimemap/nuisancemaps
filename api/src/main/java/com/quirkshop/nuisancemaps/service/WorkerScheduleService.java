@@ -156,20 +156,10 @@ public class WorkerScheduleService {
      * Source numRecords
      */
 
-    public void fetchAndUpdateNumSourceRecords(Source source) {
-        // TODO: no implementation for CSV
+    public void updateSourceNumRecords(Source source) {
+
         if (source.getDataParserType().equals(DataParserType.CSV))
             return;
-
-        LocalDateTime nowMinusHours = LocalDateTime.now().minusHours(1);
-        boolean needsUpdate = sourceRepository.needsUpdateAndTouch(source, nowMinusHours);
-        if (!needsUpdate)
-            return;
-
-        updateSourceNumRecords(source);
-    }
-
-    public void updateSourceNumRecords(Source source) {
 
         log.info("[SourceLoaderService] FetchCount ....");
 
@@ -182,7 +172,8 @@ public class WorkerScheduleService {
             return;
         }
 
-        String updateNumRecords = String.format("[SourceLoaderService] FetchCount %s -> %s", source.getNumRecords(),
+        String updateNumRecords = String.format("[SourceLoaderService] FetchCount %s -> %s",
+                source.getNumRecords(),
                 numRecords);
         log.info(updateNumRecords);
 

@@ -44,6 +44,7 @@ public class TextCategoryController {
     @PostMapping("/textcategories")
     public ResponseEntity<?> create(@RequestBody List<TextLabelDTO> textLabelDTOs) {
         JSendDTO<List<TextCategory>> jSendDTO;
+        textCategoryService.initMaps();
 
         try {
             List<TextCategory> res = textCategoryService.createTextCategories(textLabelDTOs);
