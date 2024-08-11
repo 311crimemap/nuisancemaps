@@ -1,16 +1,11 @@
 [
     {
         "sourceConfigId": 5,
-        "sourceConfigEntity": "Chicago, IL",
         "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
-        "location": [
-            -87.623177,
-            41.881832
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "crime",
         "description": "Chicago Crime",
+        "dataParserType": "JSON",
+        "dataProcessType": "MEMORY",
         "numRecords": 8112554,
         "mapping": {
             "orderKey": ":id",
@@ -58,17 +53,12 @@
     },
     {
         "sourceConfigId": 6,
-        "sourceConfigEntity": "Chicago, IL",
         "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
-        "location": [
-            -87.623177,
-            41.881832
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad",
         "category": "311",
         "description": "Chicago 311",
-        "numRecords": 10361572,
+        "dataParserType": "JSON",
+        "dataProcessType": "MEMORY",
+        "numRecords": 10365172,
         "mapping": {
             "orderKey": ":id",
             "reportNum": {
