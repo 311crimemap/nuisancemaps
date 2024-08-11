@@ -674,8 +674,7 @@
                 "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
             }
         }
-    }
-
+    },
     {
         "sourceConfigId": 14,
         "url": "https://data.cityofnewyork.us/api/views/erm2-nwe9/rows.csv?fourfour=erm2-nwe9&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
