@@ -36,7 +36,6 @@ public class CSVDataParser extends DataParser {
         try {
 
             CSVReaderHeaderAware csvReader = new CSVReaderHeaderAware(reader);
-            Map<String, String> headers = csvReader.readMap(); // Read the first row which contains headers
 
             Map<String, String> row;
             while ((row = csvReader.readMap()) != null) {
@@ -60,7 +59,7 @@ public class CSVDataParser extends DataParser {
 
                 parseCounter.numFetchedIncrement();
 
-                if (reportNums.size() > BATCH_SIZE) {
+                if (reportNums.size() >= BATCH_SIZE) {
                     batchSave(source, parseCounter);
                 }
 

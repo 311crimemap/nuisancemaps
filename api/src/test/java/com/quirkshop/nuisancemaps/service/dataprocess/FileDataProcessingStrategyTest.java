@@ -17,11 +17,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
+import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
@@ -85,6 +87,9 @@ public class FileDataProcessingStrategyTest {
     private DataCrimeRepository dataCrimeRepository;
 
     @Autowired
+    private Data311Repository data311Repository;
+
+    @Autowired
     private DataParserFactory dataParserFactory;
 
     @InjectMocks
@@ -114,6 +119,7 @@ public class FileDataProcessingStrategyTest {
         categoryRepository.save(cat);
 
         ArrayList<TextCategory> textCategories = new ArrayList<TextCategory>();
+        textCategories.add(new TextCategory("crime", "RAPE", cat));
         textCategories.add(new TextCategory("crime", "SEX CRIMES", cat));
         textCategories.add(new TextCategory("crime", "HARRASSMENT 2", cat));
         textCategories.add(new TextCategory("crime", "PETIT LARCENY", cat));
@@ -123,6 +129,11 @@ public class FileDataProcessingStrategyTest {
         textCategories.add(new TextCategory("crime", "GRAND LARCENY OF MOTOR VEHICLE", cat));
         textCategories.add(new TextCategory("crime", "OFF. AGNST PUB ORD SENSBLTY &", cat));
 
+        // 311
+        Category cat2 = new Category("311", "Street Repair", 0, null);
+        categoryRepository.save(cat2);
+
+        textCategories.add(new TextCategory("311", "Street Condition", cat2));
         textCategoryRepository.saveAll(textCategories);
 
     }
@@ -185,10 +196,10 @@ public class FileDataProcessingStrategyTest {
 
     @Test
     @Transactional
-    public void process() throws IOException {
+    public void processCrimeNYCTest() throws IOException {
 
-        Resource jsonResource = resourceLoader.getResource("classpath:data/crime-nyc.csv");
-        InputStream inputStream = jsonResource.getInputStream();
+        Resource csvResource = resourceLoader.getResource("classpath:data/crime-nyc.csv");
+        InputStream inputStream = csvResource.getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(12);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
@@ -211,7 +222,51 @@ public class FileDataProcessingStrategyTest {
 
         fileDataProcessStrategy.process(mockDataJob, inputStream, dataParser);
 
-        assertThat(dataCrimeRepository.count()).isEqualTo(9);
+        assertThat(dataCrimeRepository.count()).isEqualTo(10);
+
+        assertThat(file.exists()).isTrue();
+
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    // test quoted strings with interal comma, ensure record is parsed accordingly.
+    @Test
+    @Transactional
+    public void processQuotes311NYCTest() throws IOException {
+
+        Resource csvResource = resourceLoader.getResource("classpath:data/quotes.csv");
+        InputStream inputStream = csvResource.getInputStream();
+
+        Source source = sourceRepository.findOneBySourceConfigId(14);
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+
+        String filename = "test-" + dataJob.buildFilename();
+        String filePath = String.join("/", FETCH_DATA_DIR, filename);
+
+        Path path = Paths.get(FETCH_DATA_DIR);
+        when(fileStoreProvider.getFileStore(path)).thenReturn(fs);
+        when(fs.getUsableSpace()).thenReturn(DATA_DIR_MIN_FREE + 1);
+        when(mockDataJob.getSource()).thenReturn(source);
+        when(mockDataJob.buildFilename()).thenReturn(filename);
+
+        File file = new File(filePath);
+
+        DataParser dataParser = dataParserFactory
+                .getDataParser(source.getDataParserType());
+
+        assertThat(data311Repository.count()).isEqualTo(0);
+
+        fileDataProcessStrategy.process(mockDataJob, inputStream, dataParser);
+
+        assertThat(data311Repository.count()).isEqualTo(20);
+
+        List<String> reportIds = new ArrayList<String>();
+        reportIds.add("16236266");
+        reportIds.add("16236267");
+        List<Data311> data311s = data311Repository
+            .findAllBySourceIdAndReportNumIn(source.getId(), reportIds);
 
         assertThat(file.exists()).isTrue();
 
