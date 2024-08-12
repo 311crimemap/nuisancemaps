@@ -114,8 +114,8 @@ public class DataParser {
 
         log.info(logStr);
         sw.getBuffer().setLength(0);
-        e.printStackTrace(pw);
-        log.info(content);
+        //e.printStackTrace(pw);
+        //log.info(content);
     }
 
     public void logException(DataJob dataJob, String content, Exception e) {
