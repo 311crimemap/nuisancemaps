@@ -26,7 +26,9 @@ public class CSVDataParser extends DataParser {
 
     @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
-        int numRows = 0;  //sanity check
+        // sanity checks
+        int numRows = 0;
+        int numBatch = 0;
 
         Source source = dataJob.getSource();
         setTypes(source);
@@ -64,7 +66,8 @@ public class CSVDataParser extends DataParser {
 
                 if (reportNums.size() >= BATCH_SIZE) {
                     batchSave(source, parseCounter);
-                    log.info(String.format("[CSVDataParser] numRows: %d", numRows));
+                    numBatch++;
+                    log.info(String.format("[CSVDataParser] numBatch: %d | numRows: %d", numBatch, numRows));
                 }
 
                 numRows++;
@@ -72,7 +75,8 @@ public class CSVDataParser extends DataParser {
 
             // flush remaining
             batchSave(source, parseCounter);
-            log.info(String.format("[CSVDataParser] numRows: %d", numRows));
+            numBatch++;
+            log.info(String.format("[CSVDataParser] numBatch: %d | numRows: %d", numBatch, numRows));
 
             csvReader.close();
 
