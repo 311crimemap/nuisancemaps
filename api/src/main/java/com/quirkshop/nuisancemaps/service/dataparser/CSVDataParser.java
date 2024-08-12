@@ -26,6 +26,8 @@ public class CSVDataParser extends DataParser {
 
     @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+        int numRows = 0;  //sanity check
+
         Source source = dataJob.getSource();
         setTypes(source);
 
@@ -50,6 +52,7 @@ public class CSVDataParser extends DataParser {
                 } catch (MissingCoordinateException | MissingReportCategoryException e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
                     logMissingException(source, content, e);
+                    parseCounter.numMissingIncrement();
 
                 } catch (Exception e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
@@ -63,10 +66,13 @@ public class CSVDataParser extends DataParser {
                     batchSave(source, parseCounter);
                 }
 
+                numRows++;
             }
 
             // flush remaining
             batchSave(source, parseCounter);
+
+            log.info(String.format("[CSVDataParser] numRows: %d", numRows));
 
             csvReader.close();
 
