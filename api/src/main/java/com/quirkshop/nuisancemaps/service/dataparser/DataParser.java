@@ -82,7 +82,6 @@ public class DataParser {
                 textCategoryService.lookupIsSkip(orgCategory.getId())) {
 
             parseCounter.numSkippedIncrement();
-            parseCounter.numFetchedIncrement();
 
         } else {
 

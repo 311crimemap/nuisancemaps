@@ -44,6 +44,7 @@ public class JSONDataParser extends DataParser {
                     } catch (MissingCoordinateException | MissingReportCategoryException e) {
                         String content = StringUtils.substring(item.toString(), 0, 4096);
                         logMissingException(source, content, e);
+                        parseCounter.numMissingIncrement();
 
                     } catch (Exception e) {
                         String content = StringUtils.substring(item.toString(), 0, 4096);
