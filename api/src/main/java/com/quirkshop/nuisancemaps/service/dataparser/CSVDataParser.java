@@ -64,6 +64,7 @@ public class CSVDataParser extends DataParser {
 
                 if (reportNums.size() >= BATCH_SIZE) {
                     batchSave(source, parseCounter);
+                    log.info(String.format("[CSVDataParser] numRows: %d", numRows));
                 }
 
                 numRows++;
@@ -71,7 +72,6 @@ public class CSVDataParser extends DataParser {
 
             // flush remaining
             batchSave(source, parseCounter);
-
             log.info(String.format("[CSVDataParser] numRows: %d", numRows));
 
             csvReader.close();
