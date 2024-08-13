@@ -1,0 +1,1007 @@
+[
+    {
+        "dataType": "311",
+        "text": "Animal Found",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Generic Request",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Lost",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Pick up Dead Animal",
+        "label": "0"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Inspection Request",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Egress",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Exceeding Terms of Permit",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Occupying W/Out A Valid CO/CI",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Pole Compliance",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Poor Conditions of Property",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Protection of Adjoining Property",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Rental Unit Delivery Conditions",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Squalid Living Conditions",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsafe Dangerous Conditions",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsatisfactory Living Conditions",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Work w/out Permit",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Zoning",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Billing Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Contractor Complaints",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Contractors Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Item Price Missing",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Maintenance Complaint - Residential",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Maintenance - Homeowner",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "No Price on Gas/Wrong Price",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Oil Truck - No Receipt",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Product Short Measure",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Scale Not Visible",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Scanning Overcharge",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Short Measure - Gas",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Short Term Rental",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Unit Pricing Wrong/Missing",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Bicycle Issues",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Municipal Parking Lot Complaints",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking Enforcement",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking on Front/Back Yards (Illegal Parking)",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Private Parking Lot Complaints",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Senior Shoveling",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Space Savers",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Valet Parking Problems",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Aircraft Noise Disturbance",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Animal Noise Disturbances",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Automotive Noise Disturbance",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Dumpster & Loading Noise Disturbances",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Loud Parties/Music/People",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Public Events Noise Disturbances",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Rooftop & Mechanical Disturbances",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Undefined Noise Disturbance",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Work Hours-Loud Noise Complaints",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Working Beyond Hours",
+        "label": "1"
+    },
+    {
+        "dataType": "311",
+        "text": "Alert Boston",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Big Buildings Online Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "BWSC General Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Call Log",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Capital Improvement Long Term",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire Department Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Follow-Up",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Comments For An Employee",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "General Comments For a Program or Policy",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "MBTA Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Miscellaneous Event",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "News Boxes",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Notification",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "No-Tow Complaint Confirmation",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "One Boston Day",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Phone Bank Service Inquiry",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Public Works General Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Sticker Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Student Move-in Issues",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Test Case A",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "Transportation General Request",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Walk-In Service Inquiry",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Cemetery Maintenance Request",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Ground Maintenance",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "New Tree Requests",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "New Tree Warrantee Inspection",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Park Improvement Requests",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Parks General Request",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Parks Lighting/Electrical Issues",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Planting",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Tree Emergencies",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Tree in Park",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Tree Maintenance Requests",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Upgrade Existing Lighting",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Bed Bugs",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Breathe Easy",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Carbon Monoxide",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Chronic Dampness/Mold",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire in Food Establishment",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Food Alert - Confirmed",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Food Alert - Unconfirmed",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Heat - Excessive  Insufficient",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Heat/Fuel Assistance",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Lead",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Mice Infestation - Residential",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Mosquitoes (West Nile)",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Pest Infestation - Residential",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Pigeon Infestation",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Poor Ventilation",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Rat Bite",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Rodent Activity",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Sewage/Septic Back-Up",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsanitary Conditions - Employees",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsanitary Conditions - Establishment",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsanitary Conditions - Food",
+        "label": "13"
+    },
+    {
+        "dataType": "311",
+        "text": "Catchbasin",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "City/State Snow Issues",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Misc. Snow Complaint",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Roadway Flooding",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Bridge Maintenance",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "BWSC Pothole",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Highway Maintenance",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Knockdown Replacement",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking Meter Repairs",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Pothole Repair (Internal)",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Request for Pothole Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Request for Snow Plowing",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Request for Snow Plowing (Emergency Responder)",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Requests for Street Cleaning",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Roadway Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Cover / Manhole",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Repair (Internal)",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Repair (Make Safe)",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Snow Emergency",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Snow/Ice Control",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Snow Removal",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Light Knock Downs",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Light Longterm Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Light Outages",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Light Outages (Internal)",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "StreetLight Pole WO",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Unshoveled Sidewalk",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Cross Metering - Sub-Metering",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Downed Wire",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Electrical",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Equipment Repair",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Fire Hydrant",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "General Lighting Request",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Install New Lighting",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Major System Failure",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Mechanical",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "No Utilities - Food Establishment - Electricity",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "No Utilities - Food Establishment - Flood",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "No Utilities - Food Establishment - Sewer",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "No Utilities - Food Establishment - Water",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "No Utilities Residential - Electricity",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "No Utilities Residential - Gas",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "No Utilities Residential - Water",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Pickup/Clear Conduit",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Plumbing",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Unsatisfactory Utilities - Electrical  Plumbing",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Call-In",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Casting Repair",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Water in Gas - High Priority",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Watermain Break",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "General Traffic Engineering Request",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Hero Square Sign Request",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "HP Sign Application New",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Missing Sign",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "New Sign  Crosswalk or Pavement Marking",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Pavement Marking Inspection",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Pavement Marking Maintenance",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Requests for Directional or Roadway Changes",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Requests for Traffic Signal Studies or Reviews",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Sign Repair",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Sign Shop WO",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal Inspection",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal Repair",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Abandoned Bicycle",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Abandoned Building",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Abandoned Vehicles",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Abandoned Vehicles - Private Tow",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Debris",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti Removal",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Auto Body Shop",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Dumping",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Occupancy",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Posting of Signs",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Rooming House",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Use",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Vending",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Needle Pickup",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Overcrowding",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "PWD Graffiti",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "State/Cass Shelter Sites",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Student Overcrowding",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Big Buildings Recycling (INTERNAL)",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "CE Collection",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Empty Litter Basket",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Improper Storage of Trash (Barrels)",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Litter Basket Maintenance",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Mattress_Pickup",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Missed Trash/Recycling/Yard Waste/Bulk Item",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Overflowing or Un-kept Dumpster",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Recycling Cart Inquiry",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Recycling Cart Return",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Request for Litter Basket Installation",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Request for Recycling Cart",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Schedule a Bulk Item Pickup",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Schedule a Bulk Item Pickup SS",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Trash on Vacant Lot",
+        "label": "12"
+    }
+]
