@@ -112,8 +112,8 @@ public class DataParser {
         String logStr = String.format("[DataParser] error: %s | %s | id: %s", e.getClass(),
                 source.getDescription(), source.getId());
 
-        log.info(logStr);
-        sw.getBuffer().setLength(0);
+        //log.info(logStr);
+        //sw.getBuffer().setLength(0);
         //e.printStackTrace(pw);
         //log.info(content);
     }
