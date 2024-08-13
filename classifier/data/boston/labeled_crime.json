@@ -1,0 +1,1517 @@
+[
+    {
+        "dataType": "crime",
+        "text": "ABDUCTION - INTICING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "A&B HANDS, FEET, ETC.  - MED. ATTENTION REQ.",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "A&B ON POLICE OFFICER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AFFRAY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANIMAL ABUSE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANIMAL CONTROL - DOG BITES - ETC.",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANIMAL INCIDENTS",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANIMAL INCIDENTS (DOG BITES, LOST DOG, ETC)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT - AGGRAVATED",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT - AGGRAVATED - BATTERY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT & BATTERY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT & BATTERY D/W - KNIFE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT & BATTERY D/W - OTHER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT & BATTERY D/W - OTHER ON POLICE OFFICER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT D/W - KNIFE ON POLICE OFFICER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT D/W - OTHER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT - SIMPLE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT SIMPLE - BATTERY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD ABANDONMENT (NO ASSAULT)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD ABUSE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD ENDANGERMENT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD ENDANGERMENT (NO ASSAULT)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD REQUIRING ASSISTANCE (FOMERLY CHINS)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHINS",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONTRIBUTING TO DELINQUENCY OF MINOR",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL HARASSMENT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CUSTODIAL KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXTORTION OR BLACKMAIL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARM/WEAPON - ACCIDENTAL INJURY / DEATH",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FUGITIVE FROM JUSTICE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARASSMENT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARASSMENT/ CRIMINAL HARASSMENT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HOME INVASION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HUMAN TRAFFICKING - COMMERCIAL SEX ACTS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "HUMAN TRAFFICKING - INVOLUNTARY SERVITUDE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURY BICYCLE NO M/V INVOLVED",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTIMIDATING WITNESS",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Justifiable Homicide",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING/CUSTODIAL KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING/CUSTODIAL KIDNAPPING/ ABDUCTION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING - ENTICING OR ATTEMPTED",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KILLING OF FELON BY POLICE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "MANSLAUGHTER - NEGLIGENCE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "MANSLAUGHTER - NON-VEHICLE - NEGLIGENCE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "MANSLAUGHTER - VEHICLE - NEGLIGENCE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Aggravated Assault/Aggravated Assault & Battery",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Assault/Assault & Battery",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Criminal Homicide",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Death Investigation",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Injured/Medical/Sick Assist",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Kidnapping",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Motor Vehicle Crash",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISSING PERSON",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "MURDER, NON-NEGLIGENT MANSLAUGHTER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "MURDER, NON-NEGLIGIENT MANSLAUGHTER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSSESSION OF BURGLARIOUS TOOLS",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "PRISONER ATTEMPT TO RESCUE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "PRISONER ESCAPE / ESCAPE & RECAPTURE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "PRISONER - SUICIDE / SUICIDE ATTEMPT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "STALKING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SUDDEN DEATH",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SUICIDE / SUICIDE ATTEMPT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "THREATS TO DO BODILY HARM",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "WARRANT ARREST",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "WARRANT ARREST - BOSTON WARRANT (MUST BE SUPPLEMENTAL)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "WARRANT ARREST - OUTSIDE OF BOSTON WARRANT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "B&E NON-RESIDENCE DAY - FORCIBLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "B&E NON-RESIDENCE DAY - NO FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "B&E NON-RESIDENCE DAY - NO PROP TAKEN",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "B&E NON-RESIDENCE NIGHT - FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "B&E RESIDENCE DAY - NO FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "B&E RESIDENCE DAY - NO PROP TAKEN",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "B&E RESIDENCE NIGHT - ATTEMPT FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BREAKING AND ENTERING (B&E) MOTOR VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BREAKING AND ENTERING (B&E) MOTOR VEHICLE (NO PROPERTY STOLEN)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - COMMERICAL",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - COMMERICAL - ATTEMPT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - COMMERICAL - FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - COMMERICAL - NO FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - OTHER - ATTEMPT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - OTHER - FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - OTHER - NO FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - RESIDENTIAL",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - RESIDENTIAL - ATTEMPT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - RESIDENTIAL - FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY - RESIDENTIAL - NO FORCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPLOSIVES - TURNED IN OR FOUND",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARM/WEAPON - FOUND OR CONFISCATED",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARM/WEAPON - LOST",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIRE REPORT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIRE REPORT - CAR, BRUSH, ETC.",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIRE REPORT - HOUSE, BUILDING, ETC.",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "GRAFFITI",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Burglary/Breaking and Entering",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Vandalism/Destruction of Property",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - INVOLVING BICYCLE - INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - INVOLVING BICYCLE - NO INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - INVOLVING PEDESTRIAN - INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT INVOLVING PEDESTRIAN - INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - INVOLVING PEDESTRIAN - NO INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - OTHER",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - OTHER CITY VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - PERSONAL INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - POLICE VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V ACCIDENT - PROPERTY DAMAGE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V - LEAVING SCENE - PERSONAL INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V - LEAVING SCENE - PROPERTY DAMAGE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "M/V PLATES - LOST",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - ACCIDENTAL DAMAGE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - CONCEALING LEASED",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - FOUND",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - LOST",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - LOST/ MISSING",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - LOST THEN LOCATED",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - MISSING",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - RECEIVING STOLEN",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROPERTY - STOLEN THEN RECOVERED",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "RECOVERED - MV RECOVERED IN BOSTON (STOLEN IN BOSTON) MUST BE SUPPLEMENTAL",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "RECOVERED - MV RECOVERED IN BOSTON (STOLEN OUTSIDE BOSTON)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "RECOVERED STOLEN PLATE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "TOWED MOTOR VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "VANDALISM",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT - LEASED/RENTED VEHICLE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT LEASE/RENT VEHICLE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT - MOTORCYCLE / SCOOTER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT OTHER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT - OUTSIDE - RECOVERED IN BOSTON",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT - RECOVERED IN BY POLICE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "EVADING FARE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY ALL OTHERS",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY BICYCLE $200 & OVER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY IN A BUILDING $200 & OVER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY IN A BUILDING $50 TO $199",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY IN A BUILDING UNDER $50",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY NON-ACCESSORY FROM VEH. $200 & OVER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY NON-ACCESSORY FROM VEH. $50 TO $199",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY NON-ACCESSORY FROM VEH. UNDER $50",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY OTHER $200 & OVER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY OTHER $50 TO $199",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY OTHER UNDER $50",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY PICK-POCKET",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY PURSE SNATCH - NO FORCE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY PURSE SNATCH - NO FORCE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY SHOPLIFTING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY SHOPLIFTING $200 & OVER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY SHOPLIFTING $50 TO $199",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY SHOPLIFTING UNDER $50",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY THEFT FROM BUILDING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY THEFT FROM COIN-OP MACHINE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY THEFT FROM MV - NON-ACCESSORY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY THEFT OF BICYCLE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "LARCENY THEFT OF MV PARTS & ACCESSORIES",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Auto Theft",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Larceny From MV",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Other Larceny",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Robbery",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Stolen Property",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY ATTEMPT - KNIFE - BANK",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - BANK",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - CAR JACKING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - COMMERCIAL",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - HOME INVASION",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - KNIFE - STREET",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - OTHER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - STREET",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - UNARMED - BUSINESS",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - UNARMED - CHAIN STORE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - UNARMED - RESIDENCE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY - UNARMED - STREET",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "STOLEN PROPERTY - BUYING / RECEIVING / POSSESSING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "COUNTERFEITING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "EMBEZZLEMENT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY / COUNTERFEITING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY OR UTTERING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - CREDIT CARD / ATM FRAUD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - FALSE PRETENSE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - FALSE PRETENSE / SCHEME",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - IMPERSONATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUDS - ALL OTHER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - WELFARE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - WIRE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Counterfeiting/Forgery",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Embezzlement",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Fraud",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - CLASS A TRAFFICKING OVER 18 GRAMS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - CLASS B TRAFFICKING OVER 18 GRAMS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - CLASS D TRAFFICKING OVER 50 GRAMS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - CONSP TO VIOL CONTROLLED SUBSTANCE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - GLUE INHALATION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS A - HEROIN, ETC.",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS A - HEROIN, ETC.",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS A - INTENT TO MFR DIST DISP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS B - COCAINE, ETC.",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS B - INTENT TO MFR DIST DISP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS C",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS C - INTENT TO MFR DIST DISP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS D",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS D - INTENT MFR DIST DISP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS D - INTENT TO MFR DIST DISP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS D - MARIJUANA, ETC.",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS E",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS E INTENT TO MF DIST DISP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSS CLASS E - INTENT TO MFR DIST DISP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSSESSION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSSESSION OF DRUG PARAPHANALIA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - POSSESSION/ SALE/ MANUFACTURING/ USE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - SALE / MANUFACTURING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - SICK ASSIST - HEROIN",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - SICK ASSIST - OTHER HARMFUL DRUG",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUGS - SICK ASSIST - OTHER NARCOTIC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPLOSIVES - POSSESSION OR USE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARM/WEAPON - CARRY - SELL - RENT",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARM/WEAPON - POSSESSION OF DANGEROUS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "GAMBLING - BETTING / WAGERING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Drugs - Possession/Manufacturing/Distribute",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Weapons Violation",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBSCENE MATERIALS - PORNOGRAPHY",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBSCENE PHONE CALLS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OPERATING UNDER THE INFLUENCE ALCOHOL",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OPERATING UNDER THE INFLUENCE DRUGS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OPERATING UNDER THE INFLUENCE (OUI) ALCOHOL",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OPERATING UNDER THE INFLUENCE (OUI) DRUGS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTE - COMMON NIGHTWALKER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTION - ASSISTING OR PROMOTING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTION - COMMON NIGHTWALKER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTION - SOLICITING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "VAL - OPERATING AFTER REV/SUSP.",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "VAL - OPERATING UNREG/UNINS CAR",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "VAL - OPERATING WITHOUT LICENSE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "VAL - OPERATING W/O AUTHORIZATION LAWFUL",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "VAL - VIOLATION OF AUTO LAW",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "VAL - VIOLATION OF AUTO LAW - OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPON - FIREARM - CARRYING / POSSESSING, ETC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPON - FIREARM - OTHER VIOLATION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPON - FIREARM - SALE / TRAFFICKING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPON - OTHER - CARRYING / POSSESSING, ETC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPON - OTHER - OTHER VIOLATION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPON VIOLATION - CARRY/ POSSESSING/ SALE/ TRAFFICKING/ OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANNOYING AND ACCOSTIN",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANNOYING AND ACCOSTING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEMONSTRATIONS/RIOT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISORDERLY CONDUCT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISORDERLY PERSON",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISTURBING THE PEACE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISTURBING THE PEACE/ DISORDERLY CONDUCT/ GATHERING CAUSING ANNOYANCE/ NOISY PAR",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUNKENNESS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIRE REPORT/ALARM - FALSE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "GATHERING CAUSING ANNOYANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARBOR INCIDENT / VIOLATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LICENSE PREMISE VIOLATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LIQUOR/ALCOHOL - DRINKING IN PUBLIC",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LIQUOR - DRINKING IN PUBLIC",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LIQUOR LAW VIOLATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Affray/Disturbing the Peace/Disorderly Conduct",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Auto Law Violation",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "NOISY PARTY/RADIO-ARREST",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "NOISY PARTY/RADIO-NO ARREST",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRESPASSING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VERBAL DISPUTE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOLATION - CITY ORDINANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOLATION - CITY ORDINANCE CONSTRUCTION PERMIT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOLATION - HARASSMENT PREVENTION ORDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOLATION - HAWKER AND PEDDLER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOLATION - RESTRAINING ORDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOLATION - RESTRAINING ORDER (NO ARREST)",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL. OF RESTRAINING ORDER W ARREST",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL. OF RESTRAINING ORDER W NO ARREST",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRCRAFT INCIDENTS",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "BALLISTICS EVIDENCE/FOUND",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "BIOLOGICAL THREATS",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "BOMB THREAT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONSPIRACY EXCEPT DRUG LAW",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DANGEROUS OR HAZARDOUS CONDITION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEATH INVESTIGATION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Evidence Tracker Incidents",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "INVESTIGATE PERSON",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "INVESTIGATE PROPERTY",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "INVESTIGATION FOR ANOTHER AGENCY",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "LANDLORD - TENANT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "LANDLORD - TENANT SERVICE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Investigate Person",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Investigate Property",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Other Part II",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "Migrated Report - Other Part III",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISSING PERSON - LOCATED",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISSING PERSON - NOT REPORTED - LOCATED",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER OFFENSE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROTECTIVE CUSTODY / SAFEKEEPING",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "REPORT AFFECTING OTHER DEPTS.",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEARCH WARRANT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SERVICE TO OTHER AGENCY",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SERVICE TO OTHER PD INSIDE OF MA.",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SERVICE TO OTHER PD OUTSIDE OF MA.",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SICK ASSIST",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SICK ASSIST - DRUG RELATED ILLNESS",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SICK/INJURED/MEDICAL - PERSON",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SICK/INJURED/MEDICAL - POLICE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRUANCY / RUNAWAY",
+        "label": "6"
+    }
+]

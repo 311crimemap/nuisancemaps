@@ -23,19 +23,27 @@ All data is in `/data/<city>`.
 * `cat /data/<city>/data_311.json | jq -r '.[].<field>' > data/<city>/data_311.txt`
 * `cat /data/<city>/data_crime.json | jq -r'.[].<field>' > data/<city>/data_crime.txt`
 
+3. Sort uniq if needed
+
+* `sort /data/<city>/data_311.txt | uniq > sorted_311.txt`
+* `sort /data/<city>/data_crime.txt | uniq > sorted_crime.txt`
+
+and overwrite `data_311.txt`, `data_crime.txt` with sorted versions.
+
+
 #### `1-classifier.py <type> <city>`
 
 sends text list to openAI for labeling
 
 #### `2-convert-out_to_csv.py`
 
-* Avoid copy paste, convert api json to csv, open file directly in excel.
+1. Avoid copy paste, convert api json to csv, open file directly in excel.
   * need to preserve text formatting, as there's all sorts of hidden / garbage
     text that needs to be properly mapped.
 
-* Correct any labels, add SKIP, etc and save as `labeled_311.csv`, `labeled_crime.csv`.
+2. Correct any labels, add SKIP, etc and save as `labeled_311.csv`, `labeled_crime.csv`.
 
-* Make sure `dataType`, `text`, `label` are the columns
+3. Make sure `dataType`, `text`, `label` are the columns
 
 #### `3-convert_csv_to_json.py <city>`
 
@@ -43,7 +51,8 @@ sends text list to openAI for labeling
 
 #### Submit to API /textcategories endpoing
 
-* `curl -X POST -H 'content-type: application/json' H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
+* `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
+
 
 ---
 

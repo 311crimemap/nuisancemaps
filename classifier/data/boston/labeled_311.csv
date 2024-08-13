@@ -1,0 +1,202 @@
+dataType,text,label
+311,Animal Found,0
+311,Animal Generic Request,0
+311,Animal Lost,0
+311,Pick up Dead Animal,0
+311,Building Inspection Request,3
+311,Egress,3
+311,Exceeding Terms of Permit,3
+311,Occupying W/Out A Valid CO/CI,3
+311,Pole Compliance,3
+311,Poor Conditions of Property,3
+311,Protection of Adjoining Property,3
+311,Rental Unit Delivery Conditions,3
+311,Squalid Living Conditions,3
+311,Unsafe Dangerous Conditions,3
+311,Unsatisfactory Living Conditions,3
+311,Work w/out Permit,3
+311,Zoning,3
+311,Billing Complaint,4
+311,Contractor Complaints,4
+311,Contractors Complaint,4
+311,Item Price Missing,4
+311,Maintenance Complaint - Residential,4
+311,Maintenance - Homeowner,4
+311,No Price on Gas/Wrong Price,4
+311,Oil Truck - No Receipt,4
+311,Product Short Measure,4
+311,Scale Not Visible,4
+311,Scanning Overcharge,4
+311,Short Measure - Gas,4
+311,Short Term Rental,4
+311,Unit Pricing Wrong/Missing,4
+311,Bicycle Issues,9
+311,Municipal Parking Lot Complaints,9
+311,Parking Enforcement,9
+311,Parking on Front/Back Yards (Illegal Parking),9
+311,Private Parking Lot Complaints,9
+311,Senior Shoveling,9
+311,Space Savers,9
+311,Valet Parking Problems,9
+311,Aircraft Noise Disturbance,1
+311,Animal Noise Disturbances,1
+311,Automotive Noise Disturbance,1
+311,Dumpster & Loading Noise Disturbances,1
+311,Loud Parties/Music/People,1
+311,Public Events Noise Disturbances,1
+311,Rooftop & Mechanical Disturbances,1
+311,Undefined Noise Disturbance,1
+311,Work Hours-Loud Noise Complaints,1
+311,Working Beyond Hours,1
+311,Alert Boston,14
+311,Big Buildings Online Request,14
+311,BWSC General Request,14
+311,Call Log,14
+311,Capital Improvement Long Term,14
+311,Fire Department Request,14
+311,Follow-Up,14
+311,General Comments For An Employee,14
+311,General Comments For a Program or Policy,14
+311,MBTA Request,14
+311,Miscellaneous Event,14
+311,News Boxes,14
+311,Notification,14
+311,No-Tow Complaint Confirmation,9
+311,One Boston Day,14
+311,Phone Bank Service Inquiry,14
+311,Public Works General Request,14
+311,Sticker Request,14
+311,Student Move-in Issues,14
+311,Test Case A,15
+311,Transportation General Request,14
+311,Walk-In Service Inquiry,14
+311,Cemetery Maintenance Request,10
+311,Ground Maintenance,10
+311,New Tree Requests,10
+311,New Tree Warrantee Inspection,10
+311,Park Improvement Requests,10
+311,Parks General Request,10
+311,Parks Lighting/Electrical Issues,10
+311,Planting,10
+311,Tree Emergencies,10
+311,Tree in Park,10
+311,Tree Maintenance Requests,10
+311,Upgrade Existing Lighting,10
+311,Bed Bugs,13
+311,Breathe Easy,13
+311,Carbon Monoxide,13
+311,Chronic Dampness/Mold,13
+311,Fire in Food Establishment,13
+311,Food Alert - Confirmed,13
+311,Food Alert - Unconfirmed,13
+311,Heat - Excessive  Insufficient,13
+311,Heat/Fuel Assistance,13
+311,Lead,13
+311,Mice Infestation - Residential,13
+311,Mosquitoes (West Nile),13
+311,Pest Infestation - Residential,13
+311,Pigeon Infestation,13
+311,Poor Ventilation,13
+311,Rat Bite,13
+311,Rodent Activity,13
+311,Sewage/Septic Back-Up,13
+311,Unsanitary Conditions - Employees,13
+311,Unsanitary Conditions - Establishment,13
+311,Unsanitary Conditions - Food,13
+311,Catchbasin,7
+311,City/State Snow Issues,7
+311,Misc. Snow Complaint,7
+311,Roadway Flooding,7
+311,Bridge Maintenance,5
+311,BWSC Pothole,5
+311,Highway Maintenance,5
+311,Knockdown Replacement,5
+311,Parking Meter Repairs,5
+311,Pothole Repair (Internal),5
+311,Request for Pothole Repair,5
+311,Request for Snow Plowing,5
+311,Request for Snow Plowing (Emergency Responder),5
+311,Requests for Street Cleaning,5
+311,Roadway Repair,5
+311,Sidewalk Cover / Manhole,5
+311,Sidewalk Repair,5
+311,Sidewalk Repair (Internal),5
+311,Sidewalk Repair (Make Safe),5
+311,Snow Emergency,5
+311,Snow/Ice Control,5
+311,Snow Removal,5
+311,Street Light Knock Downs,5
+311,Street Light Longterm Repair,5
+311,Street Light Outages,5
+311,Street Light Outages (Internal),5
+311,StreetLight Pole WO,5
+311,Unshoveled Sidewalk,5
+311,Cross Metering - Sub-Metering,11
+311,Downed Wire,11
+311,Electrical,11
+311,Equipment Repair,11
+311,Fire Hydrant,11
+311,General Lighting Request,11
+311,Install New Lighting,11
+311,Major System Failure,11
+311,Mechanical,11
+311,No Utilities - Food Establishment - Electricity,11
+311,No Utilities - Food Establishment - Flood,11
+311,No Utilities - Food Establishment - Sewer,11
+311,No Utilities - Food Establishment - Water,11
+311,No Utilities Residential - Electricity,11
+311,No Utilities Residential - Gas,11
+311,No Utilities Residential - Water,11
+311,Pickup/Clear Conduit,11
+311,Plumbing,11
+311,Unsatisfactory Utilities - Electrical  Plumbing,11
+311,Utility Call-In,11
+311,Utility Casting Repair,11
+311,Water in Gas - High Priority,11
+311,Watermain Break,11
+311,General Traffic Engineering Request,6
+311,Hero Square Sign Request,6
+311,HP Sign Application New,6
+311,Missing Sign,6
+311,New Sign  Crosswalk or Pavement Marking,6
+311,Pavement Marking Inspection,6
+311,Pavement Marking Maintenance,6
+311,Requests for Directional or Roadway Changes,6
+311,Requests for Traffic Signal Studies or Reviews,6
+311,Sign Repair,6
+311,Sign Shop WO,6
+311,Traffic Signal Inspection,6
+311,Traffic Signal Repair,6
+311,Abandoned Bicycle,2
+311,Abandoned Building,2
+311,Abandoned Vehicles,2
+311,Abandoned Vehicles - Private Tow,2
+311,Construction Debris,2
+311,Graffiti Removal,2
+311,Illegal Auto Body Shop,2
+311,Illegal Dumping,2
+311,Illegal Occupancy,2
+311,Illegal Posting of Signs,2
+311,Illegal Rooming House,2
+311,Illegal Use,2
+311,Illegal Vending,2
+311,Needle Pickup,2
+311,Overcrowding,2
+311,PWD Graffiti,2
+311,State/Cass Shelter Sites,2
+311,Student Overcrowding,2
+311,Big Buildings Recycling (INTERNAL),12
+311,CE Collection,12
+311,Empty Litter Basket,12
+311,Improper Storage of Trash (Barrels),12
+311,Litter Basket Maintenance,12
+311,Mattress_Pickup,12
+311,Missed Trash/Recycling/Yard Waste/Bulk Item,12
+311,Overflowing or Un-kept Dumpster,12
+311,Recycling Cart Inquiry,12
+311,Recycling Cart Return,12
+311,Request for Litter Basket Installation,12
+311,Request for Recycling Cart,12
+311,Schedule a Bulk Item Pickup,12
+311,Schedule a Bulk Item Pickup SS,12
+311,Trash on Vacant Lot,12
