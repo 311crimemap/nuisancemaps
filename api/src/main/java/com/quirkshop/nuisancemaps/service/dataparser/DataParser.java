@@ -82,7 +82,6 @@ public class DataParser {
                 textCategoryService.lookupIsSkip(orgCategory.getId())) {
 
             parseCounter.numSkippedIncrement();
-            parseCounter.numFetchedIncrement();
 
         } else {
 
@@ -113,10 +112,10 @@ public class DataParser {
         String logStr = String.format("[DataParser] error: %s | %s | id: %s", e.getClass(),
                 source.getDescription(), source.getId());
 
-        log.info(logStr);
-        sw.getBuffer().setLength(0);
-        e.printStackTrace(pw);
-        log.info(content);
+        //log.info(logStr);
+        //sw.getBuffer().setLength(0);
+        //e.printStackTrace(pw);
+        //log.info(content);
     }
 
     public void logException(DataJob dataJob, String content, Exception e) {

@@ -1,12 +1,14 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import com.opencsv.CSVReaderHeaderAware;
+import com.opencsv.exceptions.CsvException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.DataJob;
@@ -26,6 +28,10 @@ public class CSVDataParser extends DataParser {
 
     @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+        // sanity checks
+        int numRows = 0;
+        int numBatch = 0;
+
         Source source = dataJob.getSource();
         setTypes(source);
 
@@ -34,12 +40,25 @@ public class CSVDataParser extends DataParser {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
         try {
-
             CSVReaderHeaderAware csvReader = new CSVReaderHeaderAware(reader);
-
             Map<String, String> row;
-            while ((row = csvReader.readMap()) != null) {
 
+            while (true) {
+
+                try {
+                    row = csvReader.readMap();
+                } catch (CsvException | IOException e) {
+                    // handle bad row; improper number of columns vs. headers, etc.
+                    log.info("[CSVDataParser]: " + e.getMessage());
+                    parseCounter.numRowErrorsIncrement();
+                    continue;
+                }
+
+                // EOF
+                if (row == null)
+                    break;
+
+                // PROCESS
                 try {
 
                     IDataEntity dataEntity = dataEntityMappingService
@@ -50,6 +69,7 @@ public class CSVDataParser extends DataParser {
                 } catch (MissingCoordinateException | MissingReportCategoryException e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
                     logMissingException(source, content, e);
+                    parseCounter.numMissingIncrement();
 
                 } catch (Exception e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
@@ -61,17 +81,42 @@ public class CSVDataParser extends DataParser {
 
                 if (reportNums.size() >= BATCH_SIZE) {
                     batchSave(source, parseCounter);
+                    numBatch++;
+                    log.info(String.format("[CSVDataParser] dataJob: %d | numBatch: %d | numRows: %d",
+                            dataJob.getId(), numBatch, numRows));
+
+                    log.info(String.format(
+                            "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
+                            dataJob.getId(),
+                            csvReader.getLinesRead(),
+                            csvReader.getRecordsRead(),
+                            csvReader.getSkipLines(),
+                            csvReader.getMultilineLimit()));
+
                 }
 
+                numRows++;
             }
 
             // flush remaining
             batchSave(source, parseCounter);
+            numBatch++;
+            log.info(String.format("[CSVDataParser] dataJob: %d | numBatch: %d | numRows: %d",
+                    dataJob.getId(), numBatch, numRows));
+
+            log.info(String.format(
+                    "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
+                    dataJob.getId(),
+                    csvReader.getLinesRead(),
+                    csvReader.getRecordsRead(),
+                    csvReader.getSkipLines(),
+                    csvReader.getMultilineLimit()));
 
             csvReader.close();
 
         } catch (Exception e) {
-
+            log.info("[CSVDataParser] ERR: " + e.getMessage());
+            e.printStackTrace();
         }
 
     }

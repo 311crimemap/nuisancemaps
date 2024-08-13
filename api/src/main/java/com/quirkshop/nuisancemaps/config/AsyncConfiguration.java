@@ -31,6 +31,8 @@ public class AsyncConfiguration {
         executor.setMaxPoolSize(maxPoolSize); // bursty workloads; 2-3x core size
         executor.setQueueCapacity(queueCapacity); // capacity - new task but threads all busy; ~ maxPoolsize
         executor.setThreadNamePrefix("AsyncExecutorThread-");
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+
         // handler to quietly reject scheduled tasks that exceed queue
         executor.setRejectedExecutionHandler(new ConcurrentQueueRejectedExecutionHandler());
         executor.initialize();
