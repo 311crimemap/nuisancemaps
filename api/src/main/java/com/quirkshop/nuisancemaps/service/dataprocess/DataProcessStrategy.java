@@ -35,12 +35,14 @@ public interface DataProcessStrategy {
         dataJob.setNumProcessed(parseCounter.getNumProcessed());
 
         String logStats = String.format(
-                "%s - %s: | Offset: %s | Fetched: %s | Skipped: %s | Built: %s | Processed: %s | Errors: %s | Duplicates: %s",
+                "%s - %s: | Offset: %s | Fetched: %d | RowErrors: %d | Skipped: %d | Missing: %d | Built: %d | Processed: %d | Errors: %d | Duplicates: %d",
                 source.getCategory(),
                 source.getDescription(),
                 dataJob.getParamOffset(),
                 parseCounter.getNumFetched(),
+                parseCounter.getNumRowErrors(),
                 parseCounter.getNumSkipped(),
+                parseCounter.getNumMissing(),
                 parseCounter.getNumBuilt(),
                 parseCounter.getNumProcessed(),
                 parseCounter.getNumErrors(),
