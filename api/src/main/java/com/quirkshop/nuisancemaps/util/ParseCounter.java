@@ -6,12 +6,17 @@ public class ParseCounter {
     int numMissing = 0;
     int numBuilt = 0;
     int numErrors = 0;
+    int numRowErrors = 0;
 
     int numReplaced = 0;
     int numProcessed = 0;
     int numDuplicates = 0;
 
     public ParseCounter() {}
+
+    public void numRowErrorsIncrement() {
+        this.numRowErrors++;
+    }
 
     public void numFetchedIncrement() {
         this.numFetched++;
@@ -75,6 +80,10 @@ public class ParseCounter {
 
     public int getNumMissing() {
         return numMissing;
+    }
+
+    public int getNumRowErrors() {
+        return numRowErrors;
     }
 
 }
