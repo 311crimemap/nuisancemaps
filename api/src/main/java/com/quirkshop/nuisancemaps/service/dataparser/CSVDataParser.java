@@ -46,6 +46,10 @@ public class CSVDataParser extends DataParser {
         try {
             CSVReaderHeaderAware csvReader = new CSVReaderHeaderAware(reader);
             csvReader.skip(dataJob.getParamOffset());
+            if (dataJob.getParamOffset() > 0) {
+                log.info(String.format("[CSVDataParser]: offset detected skipping %d lines",
+                        dataJob.getParamOffset()));
+            }
 
             Map<String, String> row;
 
