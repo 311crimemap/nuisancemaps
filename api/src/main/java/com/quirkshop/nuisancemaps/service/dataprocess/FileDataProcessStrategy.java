@@ -54,6 +54,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         // only want initial source URL, no params or built URL
         String url = dataJob.getSourceURL();
 
+        dataJob.setParamLimit(0);  // NB: CSV download entire file
         dataJob.setStatus(DataJobStatus.FETCH_START);
         dataJobRepository.save(dataJob);
 
