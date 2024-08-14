@@ -328,7 +328,7 @@ sdb       8:16   0   16G  0 disk /var/lib/kubelet/pods/b09d6f3f-a31f-44e3-a5f6-e
 
 2. `resize2fs`: expand ext4 filesystem
 
-* `df -Ht`: shows a 10gb file system (even though our block is a newly expanded 16GB)
+* `df -HT`: shows a 10gb file system (even though our block is a newly expanded 16GB)
 
 ```
 /dev/disk/by-id/scsi-0HC_Volume_101141679 ext4     9.8G   71M  9.7G   1% /var/lib/kubelet/pods/b09d6f3f-a31f-44e3-a5f6-e08ecfc9fc9f/volumes/kubernetes.io~csi/pvc-abfa5b87-8120-4d70-b5b2-fc75d40bc8e5/mount
