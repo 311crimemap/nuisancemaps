@@ -35,6 +35,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
     private static final String FETCH_DATA_DIR = System.getenv("FETCH_DATA_DIR");
     private static final long DATA_DIR_MIN_FREE = Long.parseLong(System.getenv("DATA_DIR_MIN_FREE"));
+    private static final int BATCH_SIZE = Integer.parseInt(System.getenv("BATCH_SIZE"));
 
     @Autowired
     private FileStoreProvider fileStoreProvider;
@@ -54,6 +55,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         // only want initial source URL, no params or built URL
         String url = dataJob.getSourceURL();
 
+        dataJob.setParamLimit(BATCH_SIZE);  // NB: CSV download entire file
         dataJob.setStatus(DataJobStatus.FETCH_START);
         dataJobRepository.save(dataJob);
 

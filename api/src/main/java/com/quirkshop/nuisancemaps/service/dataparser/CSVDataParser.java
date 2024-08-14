@@ -14,6 +14,7 @@ import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CSVDataParser extends DataParser {
+
+    @Autowired
+    DataJobRepository dataJobRepository;
 
     @Autowired
     MapFieldExtractor mapFieldExtractor;
@@ -41,6 +45,12 @@ public class CSVDataParser extends DataParser {
 
         try {
             CSVReaderHeaderAware csvReader = new CSVReaderHeaderAware(reader);
+            csvReader.skip(dataJob.getParamOffset());
+            if (dataJob.getParamOffset() > 0) {
+                log.info(String.format("[CSVDataParser]: offset detected skipping %d lines",
+                        dataJob.getParamOffset()));
+            }
+
             Map<String, String> row;
 
             while (true) {
@@ -58,7 +68,7 @@ public class CSVDataParser extends DataParser {
                 if (row == null)
                     break;
 
-                // PROCESS
+                // PARSE
                 try {
 
                     IDataEntity dataEntity = dataEntityMappingService
@@ -80,37 +90,15 @@ public class CSVDataParser extends DataParser {
                 parseCounter.numFetchedIncrement();
 
                 if (reportNums.size() >= BATCH_SIZE) {
-                    batchSave(source, parseCounter);
                     numBatch++;
-                    log.info(String.format("[CSVDataParser] dataJob: %d | numBatch: %d | numRows: %d",
-                            dataJob.getId(), numBatch, numRows));
-
-                    log.info(String.format(
-                            "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
-                            dataJob.getId(),
-                            csvReader.getLinesRead(),
-                            csvReader.getRecordsRead(),
-                            csvReader.getSkipLines(),
-                            csvReader.getMultilineLimit()));
-
+                    logSaveBatch(dataJob, parseCounter, csvReader, numBatch, numRows);
                 }
 
                 numRows++;
             }
 
-            // flush remaining
-            batchSave(source, parseCounter);
             numBatch++;
-            log.info(String.format("[CSVDataParser] dataJob: %d | numBatch: %d | numRows: %d",
-                    dataJob.getId(), numBatch, numRows));
-
-            log.info(String.format(
-                    "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
-                    dataJob.getId(),
-                    csvReader.getLinesRead(),
-                    csvReader.getRecordsRead(),
-                    csvReader.getSkipLines(),
-                    csvReader.getMultilineLimit()));
+            logSaveBatch(dataJob, parseCounter, csvReader, numBatch, numRows);
 
             csvReader.close();
 
@@ -118,6 +106,29 @@ public class CSVDataParser extends DataParser {
             log.info("[CSVDataParser] ERR: " + e.getMessage());
             e.printStackTrace();
         }
+
+    }
+
+    private void logSaveBatch(DataJob dataJob, ParseCounter parseCounter, CSVReaderHeaderAware csvReader,
+            int numBatch, int numRows) {
+
+        // flush remaining
+        batchSave(dataJob.getSource(), parseCounter);
+
+        log.info(String.format("[CSVDataParser] dataJob: %d | numBatch: %d | numRows: %d",
+                dataJob.getId(), numBatch, numRows));
+
+        log.info(String.format(
+                "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
+                dataJob.getId(),
+                csvReader.getLinesRead(),
+                csvReader.getRecordsRead(),
+                csvReader.getSkipLines(),
+                csvReader.getMultilineLimit()));
+
+        // update offset for possible restart
+        dataJob.setParamOffset((int) csvReader.getLinesRead());
+        dataJobRepository.save(dataJob);
 
     }
 
