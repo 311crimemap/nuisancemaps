@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.config;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +40,56 @@ public class ParserStrategyConfig {
 
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = new HashMap<>();
 
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON, this::REPORTEDAT_BOSTON);
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET, this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
         parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
                 this::REPORTEDAT_CRIME_NEWYORKCITY);
         parsingFunctions.put(ParserStrategy.CREATED_DATE_311_NEWYORKCITY, this::CREATED_DATE_311_NEWYORKCITY);
 
         return parsingFunctions;
+    }
+
+    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr time
+    // (MM-DD-YYYY HH:mm:ss) 2020-12-31 20:30:00
+    public String REPORTEDAT_BOSTON(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("OCCURRED_ON_DATE");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
+    // time and timezone offset: 2020-12-31 20:30:00+00
+    public String REPORTEDAT_BOSTON_TIMEZONE_OFFSET(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("OCCURRED_ON_DATE");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssX");
+
+            // Parse the input string to a ZonedDateTime
+            ZonedDateTime zonedDateTime = ZonedDateTime.parse(text, formatter);
+
+            // Convert ZonedDateTime to LocalDateTime
+            LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = localDateTime.format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
     }
 
     // LocalDateTime.parse requires ISO format but field is a simple date
