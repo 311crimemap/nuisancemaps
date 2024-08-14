@@ -119,12 +119,12 @@ public class CSVDataParserTest {
     @Transactional
     public void parse() throws IOException {
 
-        Resource jsonResource = resourceLoader.getResource("classpath:data/crime-nyc.csv");
-        InputStream inputstream = jsonResource.getInputStream();
+        Resource csvResource = resourceLoader.getResource("classpath:data/crime-nyc.csv");
+        InputStream inputstream = csvResource.getInputStream();
         ParseCounter parseCounter = new ParseCounter();
 
         Source s = sourceRepository.findOneBySourceConfigId(12);
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "CMPLNT_NUM");
+        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 0, "CMPLNT_NUM");
         dataJobRepository.save(d);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);

@@ -49,7 +49,7 @@ public class DataParser {
     @Autowired
     protected DataEntityMappingService dataEntityMappingService;
 
-    protected final int BATCH_SIZE = 10000;
+    protected final int BATCH_SIZE = Integer.parseInt(System.getenv("BATCH_SIZE"));
     protected final int SRID = 4326; // spatial reference id
     protected static final Logger log = LoggerFactory.getLogger(DataParser.class);
 
