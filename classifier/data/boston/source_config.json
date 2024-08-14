@@ -42,7 +42,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -94,7 +94,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -146,7 +146,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -198,7 +198,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -250,7 +250,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -302,7 +302,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -354,7 +354,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -406,7 +406,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -458,7 +458,7 @@
             "reportedAt": {
                 "field": "OCCURRED_ON_DATE",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -510,7 +510,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -562,7 +562,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -614,7 +614,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -666,7 +666,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -718,7 +718,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -770,7 +770,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -822,7 +822,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -874,7 +874,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -926,7 +926,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,
@@ -978,7 +978,7 @@
             "reportedAt": {
                 "field": "open_dt",
                 "pointer": null,
-                "parsingStrategy": null
+                "parsingStrategy": "REPORTEDAT_BOSTON"
             },
             "reportedAt2": {
                 "field": null,

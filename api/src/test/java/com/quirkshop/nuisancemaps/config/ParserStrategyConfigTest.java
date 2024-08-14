@@ -123,4 +123,40 @@ public class ParserStrategyConfigTest {
         assertThat(parsed).isInstanceOf(LocalDateTime.class);
     }
 
+    @Test
+    @Transactional
+    public void REPORTEDAT_BOSTON_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTEDAT_BOSTON).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("OCCURRED_ON_DATE", "2020-12-31 20:30:00");
+
+        String value = parserStrategyConfig.REPORTEDAT_BOSTON(row);
+        assertThat(value).isEqualTo("2020-12-31T20:30:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
+    @Test
+    @Transactional
+    public void REPORTEDAT_BOSTON_TIMEZONE_OFFSET_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("OCCURRED_ON_DATE", "2020-12-31 20:30:00+00");
+
+        String value = parserStrategyConfig.REPORTEDAT_BOSTON_TIMEZONE_OFFSET(row);
+        assertThat(value).isEqualTo("2020-12-31T20:30:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
 }
