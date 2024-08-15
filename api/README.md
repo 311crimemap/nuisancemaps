@@ -117,6 +117,21 @@ public interface UserRepository extends Repository<User, Long> {
 * `@Autowired`, allows object to be a `@Mock` in a test.
 
 
+#### Default Singleton Beans v. Prototype-Scoped (new) Beans
+
+* By default, injected beans are singletons
+
+* This is tricky when using threads (e.g. Scheduled worker) - any private
+  variables within the Bean will be shared across threads, and likely conflict.
+
+* `@Scope("prototype")` annotation will enable new instances of the Bean. See
+  `CSVDataParser`, `JsonDatParser`.
+  * in particular, the member variables within the underlying `DataParser` class,
+    `parseNewDataMap`, and `reportNums` will be scoped to that particular instance.
+
+* Factories need to use `ObjectFactory<T>` to return a prototype scoped bean.
+  See `DataParserFactory`.
+
 #### JSON Response
 
 Example of parsing a list of objects
