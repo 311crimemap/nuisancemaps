@@ -12,6 +12,7 @@ import com.opencsv.exceptions.CsvException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.DataJob;
+import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
@@ -19,9 +20,11 @@ import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
+@Scope("prototype")
 public class CSVDataParser extends DataParser {
 
     @Autowired
@@ -43,9 +46,10 @@ public class CSVDataParser extends DataParser {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
-        try {
-            CSVReaderHeaderAware csvReader = new CSVReaderHeaderAware(reader);
+        try (CSVReaderHeaderAware csvReader = new CSVReaderHeaderAware(reader)) {
+
             csvReader.skip(dataJob.getParamOffset());
+
             if (dataJob.getParamOffset() > 0) {
                 log.info(String.format("[CSVDataParser]: offset detected skipping %d lines",
                         dataJob.getParamOffset()));
@@ -87,24 +91,23 @@ public class CSVDataParser extends DataParser {
                     parseCounter.numErrorsIncrement();
                 }
 
-                parseCounter.numFetchedIncrement();
-
                 if (reportNums.size() >= BATCH_SIZE) {
                     numBatch++;
                     logSaveBatch(dataJob, parseCounter, csvReader, numBatch, numRows);
                 }
 
+                parseCounter.numFetchedIncrement();
                 numRows++;
             }
 
             numBatch++;
             logSaveBatch(dataJob, parseCounter, csvReader, numBatch, numRows);
 
-            csvReader.close();
-
         } catch (Exception e) {
-            log.info("[CSVDataParser] ERR: " + e.getMessage());
+            log.info("[CSVDataParser] parse ERR: " + e.getMessage());
             e.printStackTrace();
+            dataJob.setStatus(DataJobStatus.ERROR);
+            dataJobRepository.save(dataJob);
         }
 
     }
@@ -112,7 +115,6 @@ public class CSVDataParser extends DataParser {
     private void logSaveBatch(DataJob dataJob, ParseCounter parseCounter, CSVReaderHeaderAware csvReader,
             int numBatch, int numRows) {
 
-        // flush remaining
         batchSave(dataJob.getSource(), parseCounter);
 
         log.info(String.format("[CSVDataParser] dataJob: %d | numBatch: %d | numRows: %d",
@@ -129,7 +131,6 @@ public class CSVDataParser extends DataParser {
         // update offset for possible restart
         dataJob.setParamOffset((int) csvReader.getLinesRead());
         dataJobRepository.save(dataJob);
-
     }
 
 }

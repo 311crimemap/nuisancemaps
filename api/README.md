@@ -117,6 +117,21 @@ public interface UserRepository extends Repository<User, Long> {
 * `@Autowired`, allows object to be a `@Mock` in a test.
 
 
+#### Default Singleton Beans v. Prototype-Scoped (new) Beans
+
+* By default, injected beans are singletons
+
+* This is tricky when using threads (e.g. Scheduled worker) - any private
+  variables within the Bean will be shared across threads, and likely conflict.
+
+* `@Scope("prototype")` annotation will enable new instances of the Bean. See
+  `CSVDataParser`, `JsonDatParser`.
+  * in particular, the member variables within the underlying `DataParser` class,
+    `parseNewDataMap`, and `reportNums` will be scoped to that particular instance.
+
+* Factories need to use `ObjectFactory<T>` to return a prototype scoped bean.
+  See `DataParserFactory`.
+
 #### JSON Response
 
 Example of parsing a list of objects
@@ -773,10 +788,16 @@ then get executed and returned in the uniform block (return value of
 
 ### Template / Generics
 
-* `<T>` type parameter; generic. Provides type safety on any data type.
-  * think of `<>`  as setting / locking the type for the class or method
 
-* Generic class:
+##### `<T>`
+
+* `<T>` is a type parameter used in generic classes, interfaces. Provides a
+  "placeholder" type safety on any data type.
+  * `<T>` sets / locks a consistent type throughout the class or method.
+  * Typically found in interfaces, declarations - with a concrete type in its actual usage.
+  * can use `<E>`, `<K>` - arbitrary.
+
+* Generic Type `<T>` class:
 
 ```
 public class Box<T> {
@@ -803,6 +824,52 @@ public <T> void printArray(T[] array) {
         }
     }
 ```
+
+##### `?`
+
+Wildcard `<?>` represents an unknown type - want some type but not entirely sure
+(e.g. at runtime).
+
+* can be in method parameters: `List<?> list` - just any old data type.
+* can also bind a wildcard type: `? extends MyClass` - to reduce set of
+  compatible types.
+
+
+#### IDataEntity and IDataEntityRepository<T> Generic Usage
+
+Try to "genericize" between crime and 311 types at runtime.
+
+* `DataCrime` and `Data311` implements `IDataEntity` - this is the common
+  "generic" interface
+
+Repository relations:
+
+* `Data311Repository extends IDataEntityRepository<Data311>`
+* `DataCrimeRepository extends IDataEntityRepository<DataCrime>`
+
+Common `IDataEntityRepository` interface:
+
+* `interface IDataEntityRepository<T extends IDataEntity>`:
+  * declarations indicate it takes a bound parameter type: `<T extends IDataEntity>`.
+    * `Iterable<IDataEntity> saveAllEntities(...)`
+    * `List<T> findAllBySourceIdAndReportNumIn(...)`: place holder T, where the
+      concrete implementation of `<T>` in `Data311Repository` /
+      `DataCrimeRepository` - the `T` represents specific type, `Data311`, and
+      `DataCrime`.
+
+Usage in `DataParser` relies on wildcard:
+
+* Variable type declaration: `IDataEntityRepository<? extends IDataEntity> dataEntityRepository`
+  * remember `T` is typically used for placeholder declarations; esp in interface.
+* method declaration: `List<T> findAllBySourceIdAndReportNumIn(...)` -> where
+  `T` is represented with a wildcard;
+  * points to a compatible subclass of `IDataEntity` (either `Data311`, `DataCrime`):
+* Usage in `DataParser.java`:
+  * `List<? extends IDataEntity> existing =
+    dataEntityRepository.findAllBySourceIdAndReportNumIn(...)`
+  * where this is `List<Data311>` or `List<DataCrime>` - that matches the
+      wildcard type definition of `<? extends IDataEntity>`.
+
 ---
 
 ### Commands
