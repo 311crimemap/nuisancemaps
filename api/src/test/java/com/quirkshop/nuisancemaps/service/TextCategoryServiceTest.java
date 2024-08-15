@@ -4,9 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -59,8 +58,9 @@ public class TextCategoryServiceTest {
 
         textCategoryService.initMaps();
 
-        HashMap<Integer, Integer> data311CategoryLabelToIdMap = textCategoryService.getData311CategoryLabelToIdMap();
-        HashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap = textCategoryService
+        ConcurrentHashMap<Integer, Integer> data311CategoryLabelToIdMap = textCategoryService
+                .getData311CategoryLabelToIdMap();
+        ConcurrentHashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap = textCategoryService
                 .getDataCrimeCategoryLabelToIdMap();
 
         // count number of categories with labels (no parents, just
@@ -98,8 +98,8 @@ public class TextCategoryServiceTest {
 
         textCategoryService.initMaps();
 
-        HashMap<String, Integer> data311TextCatMap = textCategoryService.getData311TextToCategoryIdMap();
-        HashMap<String, Integer> dataCrimeTextCatMap = textCategoryService.getDataCrimeTextToCategoryIdMap();
+        ConcurrentHashMap<String, Integer> data311TextCatMap = textCategoryService.getData311TextToCategoryIdMap();
+        ConcurrentHashMap<String, Integer> dataCrimeTextCatMap = textCategoryService.getDataCrimeTextToCategoryIdMap();
 
         assertThat(data311TextCatMap.size()).isEqualTo(1);
         assertThat(dataCrimeTextCatMap.size()).isEqualTo(1);
@@ -152,12 +152,12 @@ public class TextCategoryServiceTest {
 
         textCategoryService.initMaps();
 
-        HashSet<Integer> skipSet = textCategoryService.getSkipSet();
+        ConcurrentHashMap<Integer, Boolean> skipSet = textCategoryService.getSkipSet();
         assertThat(skipSet.size()).isEqualTo(2);
 
         List<Category> cats = categoryRepository.findAllByText("SKIP");
         for (Category cat : cats) {
-            assertThat(skipSet.contains(cat.getId())).isTrue();
+            assertThat(skipSet.containsKey(cat.getId())).isTrue();
             assertThat(textCategoryService.lookupIsSkip(cat.getId())).isTrue();
         }
     }

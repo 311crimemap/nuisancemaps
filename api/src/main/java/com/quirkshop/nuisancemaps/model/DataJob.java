@@ -62,10 +62,10 @@ public class DataJob {
     private DataJobStatus status;
     private String url; // actual crawlURL, uses source as base?
     private int paramLimit;
-    private int paramOffset;
+    private int paramOffset;             //csv: readLines
     private String orderKey;
-    private Integer numFetched;
-    private Integer numProcessed;
+    private Integer numFetched;          //csv: valid lines (skip malformed rows)
+    private Integer numProcessed;        //csv: valid entity save to DB
     private boolean forceDownload = false;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
