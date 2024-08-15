@@ -14,9 +14,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsfr.json.JsonSurfer;
 import org.jsfr.json.JsonSurferJackson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
+@Scope("prototype")
 public class JSONDataParser extends DataParser {
 
     @Autowired
