@@ -6,9 +6,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
@@ -16,7 +14,6 @@ import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
-import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
@@ -59,7 +56,7 @@ public class DataParser {
 
     // Types
     protected Class<? extends IDataEntity> dataEntityClass;
-    protected IDataEntityRepository dataEntityRepository;
+    protected IDataEntityRepository<? extends IDataEntity> dataEntityRepository;
 
     HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
     List<String> reportNums = new ArrayList<String>();
@@ -112,10 +109,10 @@ public class DataParser {
         String logStr = String.format("[DataParser] error: %s | %s | id: %s", e.getClass(),
                 source.getDescription(), source.getId());
 
-        //log.info(logStr);
-        //sw.getBuffer().setLength(0);
-        //e.printStackTrace(pw);
-        //log.info(content);
+        // log.info(logStr);
+        // sw.getBuffer().setLength(0);
+        // e.printStackTrace(pw);
+        // log.info(content);
     }
 
     public void logException(DataJob dataJob, String content, Exception e) {
@@ -140,8 +137,8 @@ public class DataParser {
 
     public void batchSave(Source source, ParseCounter parseCounter) {
         String logStr = String.format("[DataParser:batchSave ] sourceId: %s | numSaved: %d",
-                                      source.getId(),
-                                      parseNewDataMap.size());
+                source.getId(),
+                parseNewDataMap.size());
 
         replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
         saveAll(parseCounter, parseNewDataMap);
@@ -157,7 +154,7 @@ public class DataParser {
         int numReplaced = 0;
 
         // query any existing
-        List<IDataEntity> existing = dataEntityRepository
+        List<? extends IDataEntity> existing = dataEntityRepository
                 .findAllBySourceIdAndReportNumIn(source.getId(), reportNums);
 
         // replace existing with new
