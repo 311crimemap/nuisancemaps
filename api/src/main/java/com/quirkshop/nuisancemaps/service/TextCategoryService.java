@@ -1,12 +1,8 @@
 package com.quirkshop.nuisancemaps.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
 import com.quirkshop.nuisancemaps.model.Category;
@@ -15,6 +11,8 @@ import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -35,34 +33,38 @@ public class TextCategoryService {
     @Autowired
     CategoryService categoryService;
 
-    private HashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap;
-    private HashMap<Integer, Integer> data311CategoryLabelToIdMap;
-    private HashMap<String, Integer> dataCrimeTextToCategoryIdMap;
-    private HashMap<String, Integer> data311TextToCategoryIdMap;
-    private HashSet<Integer> skipSet;
+    // label -> category_id (submitting labeled text categories)
+    private ConcurrentHashMap<Integer, Integer> dataCrimeCategoryLabelToIdMap;
+    private ConcurrentHashMap<Integer, Integer> data311CategoryLabelToIdMap;
+
+    // text -> category_id (building data entities)
+    private ConcurrentHashMap<String, Integer> dataCrimeTextToCategoryIdMap;
+    private ConcurrentHashMap<String, Integer> data311TextToCategoryIdMap;
+    private ConcurrentHashMap<Integer, Boolean> skipSet;
 
     public TextCategoryService() {
-        dataCrimeCategoryLabelToIdMap = new HashMap<Integer, Integer>();
-        data311CategoryLabelToIdMap = new HashMap<Integer, Integer>();
-        dataCrimeTextToCategoryIdMap = new HashMap<String, Integer>();
-        data311TextToCategoryIdMap = new HashMap<String, Integer>();
-        skipSet = new HashSet<Integer>();
+        dataCrimeCategoryLabelToIdMap = new ConcurrentHashMap<Integer, Integer>();
+        data311CategoryLabelToIdMap = new ConcurrentHashMap<Integer, Integer>();
+        dataCrimeTextToCategoryIdMap = new ConcurrentHashMap<String, Integer>();
+        data311TextToCategoryIdMap = new ConcurrentHashMap<String, Integer>();
+        skipSet = new ConcurrentHashMap<Integer, Boolean>();
     }
 
     @PostConstruct
     public void initMaps() {
         log.info("[TextCategoryService] initMap");
 
-        // only want labels
+        clearAllMaps();
+
+        // for label -> category_id lookup during textCategory submission
         initCategoryLabelMap(dataCrimeCategoryLabelToIdMap, "crime");
         initCategoryLabelMap(data311CategoryLabelToIdMap, "311");
 
-        // lookups text -> category_id during data creation
+        // for text -> category_id lookup during data entity creation
         refreshTextCategoryIdMap();
     }
 
-    public void initCategoryLabelMap(HashMap<Integer, Integer> map, String dataType) {
-
+    public void initCategoryLabelMap(ConcurrentHashMap<Integer, Integer> map, String dataType) {
         List<Category> data = categoryRepository.findAllByDataType(dataType);
 
         for (Category category : data) {
@@ -72,25 +74,30 @@ public class TextCategoryService {
         }
     }
 
-    public void loadCategorySkipSet(String skipText) {
-        List<Category> skips = categoryRepository.findAllByText(skipText);
-        for (Category skip : skips) {
-            skipSet.add(skip.getId());
-        }
-    }
-
-    // TODO: refactor
     public void refreshTextCategoryIdMap() {
         loadTextCategoryIdMap(dataCrimeTextToCategoryIdMap, "crime");
         loadTextCategoryIdMap(data311TextToCategoryIdMap, "311");
         loadCategorySkipSet("SKIP");
     }
 
-    public void loadTextCategoryIdMap(HashMap<String, Integer> map, String dataType) {
-        map.clear();
+    public void clearAllMaps() {
+        dataCrimeCategoryLabelToIdMap.clear();
+        data311CategoryLabelToIdMap.clear();
+        dataCrimeTextToCategoryIdMap.clear();
+        data311TextToCategoryIdMap.clear();
+    }
+
+    private void loadTextCategoryIdMap(ConcurrentHashMap<String, Integer> map, String dataType) {
         List<TextCategory> textCategories = textCategoryRepository.findAllByDataType(dataType);
         for (TextCategory textCategory : textCategories) {
             map.put(textCategory.getText(), textCategory.getCategory().getId());
+        }
+    }
+
+    private void loadCategorySkipSet(String skipText) {
+        List<Category> skips = categoryRepository.findAllByText(skipText);
+        for (Category skip : skips) {
+            skipSet.put(skip.getId(), true);
         }
     }
 
@@ -99,7 +106,7 @@ public class TextCategoryService {
         Integer id = null;
 
         // default crime
-        HashMap<String, Integer> map = dataCrimeTextToCategoryIdMap;
+        ConcurrentHashMap<String, Integer> map = dataCrimeTextToCategoryIdMap;
 
         if (dataType.equals("311"))
             map = data311TextToCategoryIdMap;
@@ -123,7 +130,7 @@ public class TextCategoryService {
 
         // lookup each in map
         Integer category_id = null;
-        HashMap<Integer, Integer> mapping = null;
+        ConcurrentHashMap<Integer, Integer> mapping = null;
         for (TextLabelDTO textLabelDTO : textLabelDTOs) {
 
             if (textLabelDTO.getDataType().equals("crime")) {
@@ -157,22 +164,22 @@ public class TextCategoryService {
     }
 
     public boolean lookupIsSkip(Integer category_id) {
-        return skipSet.contains(category_id);
+        return skipSet.containsKey(category_id);
     }
 
-    public HashMap<Integer, Integer> getDataCrimeCategoryLabelToIdMap() {
+    public ConcurrentHashMap<Integer, Integer> getDataCrimeCategoryLabelToIdMap() {
         return dataCrimeCategoryLabelToIdMap;
     }
 
-    public void setDataCrimeCategoryLabelToIdMap(HashMap<Integer, Integer> dataCrimeMap) {
+    public void setDataCrimeCategoryLabelToIdMap(ConcurrentHashMap<Integer, Integer> dataCrimeMap) {
         this.dataCrimeCategoryLabelToIdMap = dataCrimeMap;
     }
 
-    public HashMap<Integer, Integer> getData311CategoryLabelToIdMap() {
+    public ConcurrentHashMap<Integer, Integer> getData311CategoryLabelToIdMap() {
         return data311CategoryLabelToIdMap;
     }
 
-    public void setData311CategoryLabelToIdMap(HashMap<Integer, Integer> data311Map) {
+    public void setData311CategoryLabelToIdMap(ConcurrentHashMap<Integer, Integer> data311Map) {
         this.data311CategoryLabelToIdMap = data311Map;
     }
 
@@ -204,23 +211,23 @@ public class TextCategoryService {
         this.categoryService = categoryService;
     }
 
-    public HashMap<String, Integer> getDataCrimeTextToCategoryIdMap() {
+    public ConcurrentHashMap<String, Integer> getDataCrimeTextToCategoryIdMap() {
         return dataCrimeTextToCategoryIdMap;
     }
 
-    public void setDataCrimeTextToCategoryIdMap(HashMap<String, Integer> dataCrimeTextToCategoryIdMap) {
+    public void setDataCrimeTextToCategoryIdMap(ConcurrentHashMap<String, Integer> dataCrimeTextToCategoryIdMap) {
         this.dataCrimeTextToCategoryIdMap = dataCrimeTextToCategoryIdMap;
     }
 
-    public HashMap<String, Integer> getData311TextToCategoryIdMap() {
+    public ConcurrentHashMap<String, Integer> getData311TextToCategoryIdMap() {
         return data311TextToCategoryIdMap;
     }
 
-    public void setData311TextToCategoryIdMap(HashMap<String, Integer> data311TextToCategoryIdMap) {
+    public void setData311TextToCategoryIdMap(ConcurrentHashMap<String, Integer> data311TextToCategoryIdMap) {
         this.data311TextToCategoryIdMap = data311TextToCategoryIdMap;
     }
 
-    public HashSet<Integer> getSkipSet() {
+    public ConcurrentHashMap<Integer, Boolean> getSkipSet() {
         return skipSet;
     }
 

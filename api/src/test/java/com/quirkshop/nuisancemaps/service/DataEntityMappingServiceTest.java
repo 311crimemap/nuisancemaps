@@ -205,7 +205,7 @@ public class DataEntityMappingServiceTest {
         // remove mapping - trigger MissingCategory exception
         textCategoryRepository.deleteAll();
         categoryRepository.deleteAll();
-        textCategoryService.refreshTextCategoryIdMap();
+        textCategoryService.clearAllMaps();
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(jsonResource.getInputStream());
