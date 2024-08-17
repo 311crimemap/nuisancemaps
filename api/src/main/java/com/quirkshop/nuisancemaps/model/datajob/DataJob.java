@@ -7,18 +7,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.DataError;
-import com.quirkshop.nuisancemaps.model.Mapping;
-import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.model.Source;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -64,6 +64,11 @@ public class DataJob {
     @Enumerated(EnumType.STRING)
     private DataJobStatus status;
     private String url; // actual crawlURL, uses source as base?
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "parameters", columnDefinition = "jsonb")
+    private Map<String, Object> parameters;
+
     private int paramLimit;
     private int paramOffset;             //csv: readLines
     private String orderKey;
@@ -172,6 +177,14 @@ public class DataJob {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
     }
 
     public int getParamLimit() {
