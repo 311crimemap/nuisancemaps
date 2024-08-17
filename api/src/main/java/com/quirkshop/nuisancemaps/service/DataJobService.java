@@ -80,14 +80,6 @@ public class DataJobService {
         // sure we've reached the end.
         if (maxSessionIdOffsetDataJob.getNumFetched() != 0) {
 
-            // TODO: needs to be some kind of a FETCH_TYPE / QUEUE_TYPE config
-            // but we'll refactor when we encounter it
-
-            // for CSV, there are no next jobs
-            if (source.getDataParserType().equals(DataParserType.CSV)) {
-                return null;
-            }
-
             DataJob nextJob = createNewDataJob(source, maxSessionIdOffsetDataJob);
             return nextJob;
         }
@@ -108,17 +100,22 @@ public class DataJobService {
             dataJob = new DataJob(LocalDateTime.now(), source, key);
             dataJob.initURL();
         } else {
-            // next offset in same session
+
+            // generate dataJob and  url for next sequence of session
+            //
+            // NB: url can be null if DataJobURLType indicates run only once -
+            // don't create next job.
             String url = prevDataJob.buildNextURL();
+
+            if (url == null)
+                return null;
 
             dataJob = new DataJob(prevDataJob.getSessionId(),
                     source,
                     prevDataJob.getOrderKey());
+
             dataJob.setUrl(url);
         }
-
-        if (dataJob.getUrl() == null)
-            return null;
 
         dataJobRepository.save(dataJob);
         return dataJob;
