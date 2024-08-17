@@ -30,13 +30,6 @@ public class MemoryDataProcessStrategy implements DataProcessStrategy {
     public InputStream fetchData(DataJob dataJob) {
         InputStream inputStream = null;
 
-        try {
-            dataJob.buildURL();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-
         String url = dataJob.getUrl();
 
         dataJob.setStatus(DataJobStatus.FETCH_START);

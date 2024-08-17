@@ -52,8 +52,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     public InputStream fetchData(DataJob dataJob) {
         InputStream inputStream = null;
 
-        // only want initial source URL, no params or built URL
-        String url = dataJob.getSourceURL();
+        String url = dataJob.getUrl();
 
         dataJob.setParamLimit(BATCH_SIZE);  // NB: CSV download entire file
         dataJob.setStatus(DataJobStatus.FETCH_START);
