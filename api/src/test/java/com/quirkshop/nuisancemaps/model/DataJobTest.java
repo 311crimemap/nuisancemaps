@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.OpenDataURL;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,8 @@ public class DataJobTest {
 
         DataJob d = new DataJob(LocalDateTime.now(), s, limit, offset, order_key);
         String url = d.buildURL();
-        final String select = d.buildURLFields(s.getMapping());
+        OpenDataURL openDataURL = new OpenDataURL();
+        final String select = openDataURL.buildURLFields(s.getMapping());
 
         assertThat(s.getUrl()).isEqualTo(d.getSourceURL());
         assertThat(url).isEqualTo(
