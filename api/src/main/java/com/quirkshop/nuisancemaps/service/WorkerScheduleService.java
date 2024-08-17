@@ -32,6 +32,9 @@ public class WorkerScheduleService {
     SourceLoaderService sourceLoaderService;
 
     @Autowired
+    DataJobService dataJobService;
+
+    @Autowired
     DataJobRepository dataJobRepository;
 
     @Autowired
@@ -64,7 +67,7 @@ public class WorkerScheduleService {
         // log.info("[checkDataJobQueue] " + currentThreadName);
 
         // GET / CREATE NEXT JOB
-        DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
+        DataJob datajob = dataJobService.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
 
             // log.info("No Jobs Queued");
@@ -139,7 +142,7 @@ public class WorkerScheduleService {
 
         for (Source source : sources) {
 
-            DataJob nextJob = dataJobRepository.createNextDataJob(source, PARAM_LIMIT);
+            DataJob nextJob = dataJobService.createNextDataJob(source, PARAM_LIMIT);
             if (nextJob == null)
                 continue;
 

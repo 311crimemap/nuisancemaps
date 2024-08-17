@@ -13,6 +13,7 @@ import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.service.DataJobService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DataJobController {
+
+    @Autowired
+    DataJobService dataJobService;
 
     @Autowired
     DataJobRepository dataJobRepository;
@@ -105,7 +109,7 @@ public class DataJobController {
         }
 
         try {
-            dataJob = dataJobRepository.createNewDataJob(source, PARAM_LIMIT, 0, null);
+            dataJob = dataJobService.createNewDataJob(source, PARAM_LIMIT, 0, null);
         } catch (UnsupportedEncodingException e) {
             response.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

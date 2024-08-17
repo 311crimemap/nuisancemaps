@@ -1,11 +1,8 @@
 package com.quirkshop.nuisancemaps.repository;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 
@@ -37,81 +34,6 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     DataJob findTopByStatusOrderByIdAsc(DataJobStatus status);
 
-    // "earliest" QUEUED job (regardless of source or session)
-    @Transactional
-    default DataJob getNextDataJob(DataJobStatus status) {
-        DataJob dataJob = findTopByStatusOrderByIdAsc(status);
-        if (dataJob == null)
-            return null;
-        dataJob.setStatus(DataJobStatus.START);
-        dataJob = save(dataJob);
-        return dataJob;
-    }
-
-    @Transactional
-    default DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
-            throws UnsupportedEncodingException {
-
-        String key = source.getMapping().getOrderKey(); // NB: prevDataJob might exist
-        DataJob dataJob;
-
-        if (prevDataJob == null) {
-            // start new 'crawl' session
-            dataJob = new DataJob(LocalDateTime.now(), source, paramLimit, paramOffset, key);
-        } else {
-            // next offset in same session
-            dataJob = new DataJob(prevDataJob.getSessionId(),
-                    source,
-                    paramLimit,
-                    paramOffset,
-                    prevDataJob.getOrderKey());
-        }
-
-        dataJob.buildURL();
-        save(dataJob);
-        return dataJob;
-    }
-
-    @Transactional
-    default DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
-
-        // NB: Locked
-        DataJob maxSessionIdOffsetDataJob = findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
-
-        // no job for source has ever existed, start fresh 0
-        if (maxSessionIdOffsetDataJob == null) {
-            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
-            return newJob;
-        }
-
-        // numFetched null: have a Source DataJob but yet to fetch, or in mid-fetch
-        // we can wait until next round
-        if (maxSessionIdOffsetDataJob.getNumFetched() == null)
-            return null;
-
-        // != 0 - has fetched so continue fetching next set until we get 0 - know for
-        // sure we've reached the end.
-        if (maxSessionIdOffsetDataJob.getNumFetched() != 0) {
-
-            // TODO: needs to be some kind of a FETCH_TYPE / QUEUE_TYPE config
-            // but we'll refactor when we encounter it
-
-            // for CSV, there are no next jobs
-            if (source.getDataParserType().equals(DataParserType.CSV)) {
-                return null;
-            }
-
-            DataJob nextJob = createNewDataJob(source,
-                    paramLimit,
-                    maxSessionIdOffsetDataJob.getParamOffset() + paramLimit,
-                    maxSessionIdOffsetDataJob);
-            return nextJob;
-        }
-
-        // all caught up, last job had num_fetched == 0 -> no new jobs
-        return null;
-    }
-
     // NB: JPQL doesn't support enums as params
     // but is allowed in queries (e.g. where)
     @Transactional
@@ -124,7 +46,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     @Modifying
     @Query("UPDATE DataJob SET status = :status, updatedAt = :updatedAt WHERE status IN :statuses AND updatedAt >= :cutOffTime")
     int updateAllErrorsToQueuedBefore(DataJobStatus status, LocalDateTime updatedAt,
-                                      List<DataJobStatus> statuses, LocalDateTime cutOffTime);
+            List<DataJobStatus> statuses, LocalDateTime cutOffTime);
 
     @Query("SELECT d from DataJob d WHERE d.status IN :statuses ORDER BY id DESC")
     List<DataJob> findAllInStatuses(List<DataJobStatus> statuses);
