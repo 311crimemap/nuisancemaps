@@ -124,7 +124,7 @@ public class CSVDataParserTest {
         ParseCounter parseCounter = new ParseCounter();
 
         Source s = sourceRepository.findOneBySourceConfigId(12);
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 0, "CMPLNT_NUM");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "CMPLNT_NUM");
         dataJobRepository.save(d);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);

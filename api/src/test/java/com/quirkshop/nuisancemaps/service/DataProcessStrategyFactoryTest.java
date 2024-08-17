@@ -93,8 +93,8 @@ public class DataProcessStrategyFactoryTest {
         when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
 
         // DataJob
-        DataJob datajob = new DataJob(LocalDateTime.now(), s, 100, 50, "id");
-        datajob.buildURL();
+        DataJob datajob = new DataJob(LocalDateTime.now(), s, "id");
+        datajob.buildInitURL();
         assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
         // Mock okHttpClient to return the jsonFixtureContent if it ever makes a

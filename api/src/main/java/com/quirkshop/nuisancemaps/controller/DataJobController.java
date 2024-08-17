@@ -109,7 +109,7 @@ public class DataJobController {
         }
 
         try {
-            dataJob = dataJobService.createNewDataJob(source, PARAM_LIMIT, 0, null);
+            dataJob = dataJobService.createNewDataJob(source, null);
         } catch (UnsupportedEncodingException e) {
             response.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

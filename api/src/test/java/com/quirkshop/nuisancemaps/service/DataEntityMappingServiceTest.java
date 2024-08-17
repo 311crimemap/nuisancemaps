@@ -154,7 +154,7 @@ public class DataEntityMappingServiceTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "service_request_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "service_request_number");
         dataJobRepository.save(d);
         textCategoryService.refreshTextCategoryIdMap();
 
@@ -199,7 +199,7 @@ public class DataEntityMappingServiceTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "sr_number");
         dataJobRepository.save(d);
 
         // remove mapping - trigger MissingCategory exception

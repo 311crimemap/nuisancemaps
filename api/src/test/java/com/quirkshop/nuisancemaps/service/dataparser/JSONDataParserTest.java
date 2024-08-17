@@ -123,7 +123,7 @@ public class JSONDataParserTest {
         ParseCounter parseCounter = new ParseCounter();
 
         Source s = sourceRepository.findOneBySourceConfigId(1);
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "incident_report_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "incident_report_number");
         dataJobRepository.save(d);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);

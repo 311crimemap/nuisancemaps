@@ -135,7 +135,7 @@ public class DataProcessTest {
 
         // DataJob to crawl: replace job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "incident_report_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "incident_report_number");
         dataJobRepository.save(d);
 
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
@@ -159,7 +159,7 @@ public class DataProcessTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "sr_number");
         dataJobRepository.save(d);
 
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
@@ -182,7 +182,7 @@ public class DataProcessTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "sr_number");
         dataJobRepository.save(d);
 
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
@@ -219,7 +219,7 @@ public class DataProcessTest {
 
         // DataJob to crawl: stub job and fetch with json fixture response
         // Read the content of the JSON file vs actual fetch
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 100, "sr_number");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "sr_number");
         dataJobRepository.save(d);
 
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory

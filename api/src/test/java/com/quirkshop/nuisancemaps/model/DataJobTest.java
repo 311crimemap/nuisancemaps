@@ -49,8 +49,11 @@ public class DataJobTest {
         final int offset = 20000;
         final String order_key = "id";
 
-        DataJob d = new DataJob(LocalDateTime.now(), s, limit, offset, order_key);
-        String url = d.buildURL();
+        DataJob d = new DataJob(LocalDateTime.now(), s, order_key);
+        d.setParamLimit(limit);
+        d.setParamOffset(offset);
+
+        String url = d.buildInitURL();
         OpenDataURL openDataURL = new OpenDataURL();
         final String select = openDataURL.buildURLFields(s.getMapping());
 
@@ -66,7 +69,7 @@ public class DataJobTest {
     public void DataJobBuildFilenameTest() throws IOException {
 
         Source source = sources.get(11); // id: 12
-        DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
         String formattedDateTime = dataJob.getSessionId().format(formatter);

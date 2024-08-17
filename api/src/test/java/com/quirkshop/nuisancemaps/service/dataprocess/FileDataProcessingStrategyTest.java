@@ -175,7 +175,7 @@ public class FileDataProcessingStrategyTest {
                 .getResource("classpath:data/source_config.json").getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(12);
-        DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
         String filename = "test-" + dataJob.buildFilename();
         String filePath = String.join("/", FETCH_DATA_DIR, filename);
         File file = new File(filePath);
@@ -202,7 +202,7 @@ public class FileDataProcessingStrategyTest {
         InputStream inputStream = csvResource.getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(12);
-        DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
 
         String filename = "test-" + dataJob.buildFilename();
         String filePath = String.join("/", FETCH_DATA_DIR, filename);
@@ -240,7 +240,7 @@ public class FileDataProcessingStrategyTest {
         InputStream inputStream = csvResource.getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(14);
-        DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
 
         String filename = "test-" + dataJob.buildFilename();
         String filePath = String.join("/", FETCH_DATA_DIR, filename);

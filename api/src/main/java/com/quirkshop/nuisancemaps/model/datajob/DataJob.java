@@ -77,63 +77,47 @@ public class DataJob {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updatedAt;
 
+    private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
+
     public DataJob() {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
 
-    public DataJob(LocalDateTime sessionId, Source source, int paramLimit, int paramOffset, String orderKey) {
+    public DataJob(LocalDateTime sessionId, Source source, String orderKey) {
         this.sessionId = sessionId;
         this.source = source;
-        this.paramLimit = paramLimit;
-        this.paramOffset = paramOffset;
         this.orderKey = orderKey;
+        this.paramLimit = PARAM_LIMIT;
+        this.paramOffset = 0;
         this.status = DataJobStatus.QUEUED;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
 
-    // Map<String, Object> mapping
-    public String buildURLFields(Mapping mapping) {
 
-        List<String> fields = mapping.getAnnotationValues(MappingField::getField);
-
-        return String.join(",", fields);
-    }
-
-    public String buildURL() throws UnsupportedEncodingException {
+    public String buildInitURL() throws UnsupportedEncodingException {
 
         Source source = this.getSource();
 
-        // stand alone url, typical for full files/csv; no query string build
-        if (source.getDataParserType().equals(DataParserType.CSV)) {
-            this.setUrl(this.getSourceURL());
-            return this.getUrl();
-        }
+        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
 
-        // OpenData endpoint; typically json with query parameters
-        return buildOpenDataParamsURL();
+        String url = dataJobURL.buildInitURL(this);
+        this.setUrl(url);
+        return url;
     }
 
-    public String buildOpenDataParamsURL() throws UnsupportedEncodingException {
-        String sourceURL = this.getSourceURL();
+    public String buildNextURL(DataJob prevDataJob) throws UnsupportedEncodingException {
 
-        // collect fields
-        Mapping mapping = source.getMapping();
-        String $select = buildURLFields(mapping);
+        Source source = this.getSource();
 
-        String _url = UriComponentsBuilder.fromUriString(sourceURL)
-                .queryParam("$limit", Integer.toString(paramLimit))
-                .queryParam("$offset", Integer.toString(paramOffset))
-                .queryParam("$order", orderKey)
-                .queryParam("$select", $select)
-                .build()
-                .toUriString();
+        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
 
-        this.setUrl(_url);
-        return this.getUrl();
+        String url = dataJobURL.buildNextURL(this, prevDataJob);
+        this.setUrl(url);
+        return url;
     }
 
     public String buildFilename() throws MalformedURLException {

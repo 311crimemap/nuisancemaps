@@ -47,13 +47,11 @@ public class DataJobService {
 
         for (Source source : sources) {
 
-            DataJob nextJob = createNextDataJob(source, PARAM_LIMIT);
+            DataJob nextJob = createNextDataJob(source);
             if (nextJob == null)
                 continue;
 
-            String logStr = String.format("[createNewJobs] param limit: %s | next job: %s",
-                    PARAM_LIMIT,
-                    nextJob.getUrl());
+            String logStr = String.format("[createNewJobs] next job: %s", nextJob.getUrl());
 
             log.info(logStr);
         }
@@ -61,31 +59,7 @@ public class DataJobService {
     }
 
     @Transactional
-    public DataJob createNewDataJob(Source source, Integer paramLimit, Integer paramOffset, DataJob prevDataJob)
-            throws UnsupportedEncodingException {
-
-        String key = source.getMapping().getOrderKey(); // NB: prevDataJob might exist
-        DataJob dataJob;
-
-        if (prevDataJob == null) {
-            // start new 'crawl' session
-            dataJob = new DataJob(LocalDateTime.now(), source, paramLimit, paramOffset, key);
-        } else {
-            // next offset in same session
-            dataJob = new DataJob(prevDataJob.getSessionId(),
-                    source,
-                    paramLimit,
-                    paramOffset,
-                    prevDataJob.getOrderKey());
-        }
-
-        dataJob.buildURL();
-        dataJobRepository.save(dataJob);
-        return dataJob;
-    }
-
-    @Transactional
-    private DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
+    private DataJob createNextDataJob(Source source) throws UnsupportedEncodingException {
 
         // NB: Locked
         DataJob maxSessionIdOffsetDataJob = dataJobRepository
@@ -93,7 +67,7 @@ public class DataJobService {
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {
-            DataJob newJob = createNewDataJob(source, paramLimit, 0, null);
+            DataJob newJob = createNewDataJob(source, null);
             return newJob;
         }
 
@@ -114,15 +88,38 @@ public class DataJobService {
                 return null;
             }
 
-            DataJob nextJob = createNewDataJob(source,
-                    paramLimit,
-                    maxSessionIdOffsetDataJob.getParamOffset() + paramLimit,
-                    maxSessionIdOffsetDataJob);
+            DataJob nextJob = createNewDataJob(source, maxSessionIdOffsetDataJob);
             return nextJob;
         }
 
         // all caught up, last job had num_fetched == 0 -> no new jobs
         return null;
+    }
+
+    @Transactional
+    public DataJob createNewDataJob(Source source, DataJob prevDataJob)
+            throws UnsupportedEncodingException {
+
+        String key = source.getMapping().getOrderKey(); // NB: prevDataJob might exist
+        DataJob dataJob;
+
+        if (prevDataJob == null) {
+            // start new 'crawl' session
+            dataJob = new DataJob(LocalDateTime.now(), source, key);
+            dataJob.buildInitURL();
+        } else {
+            // next offset in same session
+            dataJob = new DataJob(prevDataJob.getSessionId(),
+                    source,
+                    prevDataJob.getOrderKey());
+            dataJob.buildNextURL(prevDataJob);
+        }
+
+        if (dataJob.getUrl() == null)
+            return null;
+
+        dataJobRepository.save(dataJob);
+        return dataJob;
     }
 
 }
