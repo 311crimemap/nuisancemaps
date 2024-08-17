@@ -2,15 +2,15 @@ package com.quirkshop.nuisancemaps.service.dataprocess;
 
 import java.io.InputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.quirkshop.nuisancemaps.WorkerApplication;
-import com.quirkshop.nuisancemaps.model.DataJob;
-import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public interface DataProcessStrategy {
 

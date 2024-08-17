@@ -8,12 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,12 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.quirkshop.nuisancemaps.model.DataJob;
-import com.quirkshop.nuisancemaps.model.DataJobStatus;
-import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.repository.DataJobRepository;
-import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
 @RestController
 public class DataJobController {

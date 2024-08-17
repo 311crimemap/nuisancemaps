@@ -1,4 +1,4 @@
-package com.quirkshop.nuisancemaps.model;
+package com.quirkshop.nuisancemaps.model.datajob;
 
 public enum DataJobStatus {
     QUEUED("QUEUED"),

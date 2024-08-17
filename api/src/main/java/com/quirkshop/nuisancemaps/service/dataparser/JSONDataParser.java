@@ -5,9 +5,9 @@ import java.io.InputStream;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;

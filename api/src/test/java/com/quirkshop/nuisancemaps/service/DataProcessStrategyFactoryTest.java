@@ -1,29 +1,5 @@
 package com.quirkshop.nuisancemaps.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.config.DataProcessType;
-import com.quirkshop.nuisancemaps.model.DataJob;
-import com.quirkshop.nuisancemaps.model.DataJobStatus;
-import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
-import com.quirkshop.nuisancemaps.repository.DataJobRepository;
-import com.quirkshop.nuisancemaps.repository.SourceRepository;
-import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
-import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
-
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -35,6 +11,28 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.config.DataProcessType;
+import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
+import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
+import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 
 import okhttp3.Call;

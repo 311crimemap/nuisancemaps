@@ -4,6 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,11 +18,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.LockModeType;
-
-import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.model.DataJob;
-import com.quirkshop.nuisancemaps.model.DataJobStatus;
 
 @Repository
 public interface DataJobRepository extends CrudRepository<DataJob, Integer> {

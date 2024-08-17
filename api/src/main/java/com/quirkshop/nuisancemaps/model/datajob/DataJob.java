@@ -1,4 +1,4 @@
-package com.quirkshop.nuisancemaps.model;
+package com.quirkshop.nuisancemaps.model.datajob;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -6,15 +6,18 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.model.DataError;
+import com.quirkshop.nuisancemaps.model.Mapping;
+import com.quirkshop.nuisancemaps.model.MappingField;
+import com.quirkshop.nuisancemaps.model.Source;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
