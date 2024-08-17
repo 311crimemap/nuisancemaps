@@ -98,26 +98,24 @@ public class DataJob {
     }
 
 
-    public String buildInitURL() throws UnsupportedEncodingException {
+    public void initURL() throws UnsupportedEncodingException {
 
         Source source = this.getSource();
 
         DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
 
         String url = dataJobURL.buildInitURL(this);
+
         this.setUrl(url);
-        return url;
     }
 
-    public String buildNextURL(DataJob prevDataJob) throws UnsupportedEncodingException {
+    public String buildNextURL() throws UnsupportedEncodingException {
 
         Source source = this.getSource();
 
         DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
 
-        String url = dataJobURL.buildNextURL(this, prevDataJob);
-        this.setUrl(url);
-        return url;
+        return dataJobURL.buildNextURL(this);
     }
 
     public String buildFilename() throws MalformedURLException {

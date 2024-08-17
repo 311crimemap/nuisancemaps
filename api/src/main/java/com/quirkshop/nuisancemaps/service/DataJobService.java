@@ -106,13 +106,15 @@ public class DataJobService {
         if (prevDataJob == null) {
             // start new 'crawl' session
             dataJob = new DataJob(LocalDateTime.now(), source, key);
-            dataJob.buildInitURL();
+            dataJob.initURL();
         } else {
             // next offset in same session
+            String url = prevDataJob.buildNextURL();
+
             dataJob = new DataJob(prevDataJob.getSessionId(),
                     source,
                     prevDataJob.getOrderKey());
-            dataJob.buildNextURL(prevDataJob);
+            dataJob.setUrl(url);
         }
 
         if (dataJob.getUrl() == null)

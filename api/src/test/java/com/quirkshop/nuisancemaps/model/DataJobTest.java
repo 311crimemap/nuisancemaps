@@ -52,8 +52,9 @@ public class DataJobTest {
         DataJob d = new DataJob(LocalDateTime.now(), s, order_key);
         d.setParamLimit(limit);
         d.setParamOffset(offset);
+        d.initURL();
 
-        String url = d.buildInitURL();
+        String url = d.getUrl();
         OpenDataURL openDataURL = new OpenDataURL();
         final String select = openDataURL.buildURLFields(s.getMapping());
 
