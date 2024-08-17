@@ -46,8 +46,6 @@ public class WorkerScheduleService {
     @Autowired
     DataProcessStrategyFactory dataProcessStrategyFactory;
 
-    private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
-
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     @PostConstruct // method called once after beans all loaded
@@ -71,7 +69,7 @@ public class WorkerScheduleService {
         if (datajob == null) {
 
             // log.info("No Jobs Queued");
-            createNewJobs();
+            dataJobService.createNewJobs();
             return;
         }
 
@@ -134,25 +132,6 @@ public class WorkerScheduleService {
         if (datajob.getParamOffset() == 0) {
             updateSourceNumRecords(source);
         }
-    }
-
-    public void createNewJobs() throws UnsupportedEncodingException {
-
-        Iterable<Source> sources = sourceRepository.findAll();
-
-        for (Source source : sources) {
-
-            DataJob nextJob = dataJobService.createNextDataJob(source, PARAM_LIMIT);
-            if (nextJob == null)
-                continue;
-
-            String logStr = String.format("[createNewJobs] param limit: %s | next job: %s",
-                    PARAM_LIMIT,
-                    nextJob.getUrl());
-
-            log.info(logStr);
-        }
-
     }
 
     /*

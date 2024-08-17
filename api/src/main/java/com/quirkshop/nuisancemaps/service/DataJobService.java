@@ -3,12 +3,16 @@ package com.quirkshop.nuisancemaps.service;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
+import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataJobService {
 
     @Autowired
+    SourceRepository sourceRepository;
+
+    @Autowired
     DataJobRepository dataJobRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
+
+    private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     // "earliest" QUEUED job (regardless of source or session)
     @Transactional
@@ -28,6 +39,25 @@ public class DataJobService {
         dataJob.setStatus(DataJobStatus.START);
         dataJob = dataJobRepository.save(dataJob);
         return dataJob;
+    }
+
+    public void createNewJobs() throws UnsupportedEncodingException {
+
+        Iterable<Source> sources = sourceRepository.findAll();
+
+        for (Source source : sources) {
+
+            DataJob nextJob = createNextDataJob(source, PARAM_LIMIT);
+            if (nextJob == null)
+                continue;
+
+            String logStr = String.format("[createNewJobs] param limit: %s | next job: %s",
+                    PARAM_LIMIT,
+                    nextJob.getUrl());
+
+            log.info(logStr);
+        }
+
     }
 
     @Transactional
@@ -58,7 +88,8 @@ public class DataJobService {
     public DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
 
         // NB: Locked
-        DataJob maxSessionIdOffsetDataJob = dataJobRepository.findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
+        DataJob maxSessionIdOffsetDataJob = dataJobRepository
+                .findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {
