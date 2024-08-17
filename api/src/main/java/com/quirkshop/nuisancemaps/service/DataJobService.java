@@ -85,7 +85,7 @@ public class DataJobService {
     }
 
     @Transactional
-    public DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
+    private DataJob createNextDataJob(Source source, Integer paramLimit) throws UnsupportedEncodingException {
 
         // NB: Locked
         DataJob maxSessionIdOffsetDataJob = dataJobRepository
