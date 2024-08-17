@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.dto;
 
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
 
 public class SourceDTO {
 
@@ -12,10 +13,12 @@ public class SourceDTO {
     private String url;
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
+    private DataJobURLType dataJobURLType;
     private Integer numRecords;
 
     public SourceDTO(Integer id, Integer sourceConfigId, String category, String url, String description,
-            DataParserType dataParserType, DataProcessType dataProcessType, Integer numRecords) {
+            DataParserType dataParserType, DataProcessType dataProcessType, DataJobURLType dataJobURLType,
+            Integer numRecords) {
         this.id = id;
         this.sourceConfigId = sourceConfigId;
         this.category = category;
@@ -23,6 +26,7 @@ public class SourceDTO {
         this.description = description;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
+        this.dataJobURLType = dataJobURLType;
         this.numRecords = numRecords;
     }
 
@@ -88,6 +92,14 @@ public class SourceDTO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public DataJobURLType getDataJobURLType() {
+        return dataJobURLType;
+    }
+
+    public void setDataJobURLType(DataJobURLType dataJobURLType) {
+        this.dataJobURLType = dataJobURLType;
     }
 
 }

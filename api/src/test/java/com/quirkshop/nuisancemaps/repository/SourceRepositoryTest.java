@@ -14,6 +14,7 @@ import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -81,7 +82,7 @@ public class SourceRepositoryTest {
         mappingRepository.save(m2);
 
         Source s = new Source(locale, "category", "description", "url",
-                              DataParserType.JSON, DataProcessType.MEMORY);
+                              DataParserType.JSON, DataProcessType.MEMORY, DataJobURLType.BASE);
         s.setMapping(m);
 
         assertThat(s.getId()).isNull();
@@ -92,13 +93,13 @@ public class SourceRepositoryTest {
         assertThat(s.getId()).isEqualTo(t.getId());
 
         Source x = new Source(locale, "category2", "description2", "url2",
-                DataParserType.JSON, DataProcessType.MEMORY);
+                DataParserType.JSON, DataProcessType.MEMORY, DataJobURLType.BASE);
         x.setMapping(m2);
         Source y = sourceRepository.findOrCreate(x);
         assertThat(y.getId()).isNotEqualTo(s.getId());
 
         Source z = new Source(locale, "category2", "description2", "url",
-                DataParserType.JSON, DataProcessType.MEMORY);
+                DataParserType.JSON, DataProcessType.MEMORY, DataJobURLType.BASE);
         Source a = sourceRepository.findOrCreate(z);
         assertThat(a.getId()).isEqualTo(s.getId());
     }
