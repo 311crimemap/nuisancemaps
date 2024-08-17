@@ -6,6 +6,7 @@
         "description": "Chicago Crime",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
+        "dataJobURLType": "OPENDATA",
         "numRecords": 8112554,
         "mapping": {
             "orderKey": ":id",
@@ -58,6 +59,7 @@
         "description": "Chicago 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
+        "dataJobURLType": "OPENDATA",
         "numRecords": 10365172,
         "mapping": {
             "orderKey": ":id",
