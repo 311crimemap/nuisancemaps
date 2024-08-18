@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,6 +39,7 @@ public class Mapping {
     @SequenceGenerator(name = "mapping_seq", allocationSize = 1)
     private Integer id;
 
+    private String rootPath;
     private String orderKey;
 
     @Embedded
@@ -118,11 +118,13 @@ public class Mapping {
         this.updatedAt = now;
     }
 
-    public Mapping(MappingField reportNum, MappingField reportCategory, String orderKey, MappingField description,
+    public Mapping(MappingField reportNum, MappingField reportCategory, String rootPath, String orderKey,
+            MappingField description,
             MappingField location, MappingField latitude,
             MappingField longitude, MappingField reportedAt, MappingField reportedAt2) {
         this.reportNum = reportNum;
         this.reportCategory = reportCategory;
+        this.rootPath = rootPath;
         this.orderKey = orderKey;
         this.description = description;
         this.location = location;
@@ -204,6 +206,14 @@ public class Mapping {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getRootPath() {
+        return rootPath;
+    }
+
+    public void setRootPath(String rootPath) {
+        this.rootPath = rootPath;
     }
 
     public String getOrderKey() {

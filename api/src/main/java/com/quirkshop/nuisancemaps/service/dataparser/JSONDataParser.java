@@ -31,10 +31,12 @@ public class JSONDataParser extends DataParser {
 
         textCategoryService.refreshTextCategoryIdMap();
 
+        String rootPath = source.getMapping().getRootPath();
+
         JsonSurfer surfer = JsonSurferJackson.INSTANCE;
 
         surfer.configBuilder()
-                .bind("$[*]", (item, context) -> {
+                .bind(rootPath, (item, context) -> {
 
                     try {
 
@@ -44,6 +46,7 @@ public class JSONDataParser extends DataParser {
                         addDataEntity(dataEntity, parseCounter);
 
                     } catch (MissingCoordinateException | MissingReportCategoryException e) {
+
                         String content = StringUtils.substring(item.toString(), 0, 4096);
                         logMissingException(source, content, e);
                         parseCounter.numMissingIncrement();

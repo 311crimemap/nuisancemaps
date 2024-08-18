@@ -9,6 +9,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 2440821,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "description": {
                 "field": null,
@@ -62,6 +63,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 1778332,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "description": {
                 "field": null,
@@ -115,6 +117,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 1247668,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "description": {
                 "field": null,
@@ -168,6 +171,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 1655145,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "description": {
                 "field": null,
@@ -221,6 +225,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 8112554,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "reportNum": {
                 "field": "case_number",
@@ -274,6 +279,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 10365172,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "reportNum": {
                 "field": "sr_number",
@@ -327,6 +333,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 282069,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "reportNum": {
                 "field": "cmplnt_num",
@@ -380,6 +387,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 8914838,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "reportNum": {
                 "field": "cmplnt_num",
@@ -433,6 +441,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 37023044,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "reportNum": {
                 "field": "unique_key",
@@ -486,6 +495,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 872000,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "reportNum": {
                 "field": "incident_id",
@@ -539,6 +549,7 @@
         "dataJobURLType": "OPENDATA",
         "numRecords": 7070000,
         "mapping": {
+            "rootPath": "$[*]",
             "orderKey": ":id",
             "reportNum": {
                 "field": "service_request_id",
@@ -592,6 +603,7 @@
         "dataJobURLType": "BASE",
         "numRecords": 282069,
         "mapping": {
+            "rootPath": null,
             "orderKey": ":id",
             "reportNum": {
                 "field": "CMPLNT_NUM",
@@ -645,6 +657,7 @@
         "dataJobURLType": "BASE",
         "numRecords": 891000000,
         "mapping": {
+            "rootPath": null,
             "orderKey": ":id",
             "reportNum": {
                 "field": "CMPLNT_NUM",
@@ -698,6 +711,7 @@
         "dataJobURLType": "BASE",
         "numRecords": 37023044,
         "mapping": {
+            "rootPath": null,
             "orderKey": ":id",
             "reportNum": {
                 "field": "Unique Key",
@@ -733,6 +747,60 @@
                 "field": "Created Date",
                 "pointer": null,
                 "parsingStrategy": "CREATED_DATE_311_NEWYORKCITY"
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 15,
+        "url": "https://maps.austintexas.gov/gis/rest/APDCrimeViewer/APD_Reported_Crimes/MapServer/3/query?f=json&where=1=1 AND OCCURRENCE_DATE BETWEEN date '07/01/2024' AND date '08/15/2024' &returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={\"rings\":[[[3018272.9057345022,10242548.737086222],[3070539.572401169,10280948.737086222],[3290272.9057345022,10247882.070419556],[3234806.2390678357,9873482.070419554],[2911606.2390678357,9984415.403752888],[3018272.9057345022,10242548.737086222]]],\"spatialReference\":{\"wkid\":102739,\"latestWkid\":2277}}&geometryType=esriGeometryPolygon&inSR=102739&outFields=*&orderByFields=OCCURRENCE_DATE&outSR=4326",
+        "category": "crime",
+        "description": "ERSI Austin Crime Map 07/01/2024 - Present",
+        "dataParserType": "JSON",
+        "dataProcessType": "MEMORY",
+        "dataJobURLType": "ERSI",
+        "numRecords": 1000,
+        "mapping": {
+            "rootPath": "$.features[*]",
+            "orderKey": ":id",
+            "reportNum": {
+                "field": "objectid",
+                "pointer": "/attributes/objectid",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "CRIME_DESCRIPTION",
+                "pointer": "/attributes/CRIME_DESCRIPTION",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "STREET_NAME",
+                "pointer": null,
+                "parsingStrategy": "STREET_NAME_ERSI_AUSTIN"
+            },
+            "latitude": {
+                "field": "y",
+                "pointer": "/geometry/y",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "x",
+                "pointer": "/geometry/x",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "OCCURRENCE_DATE",
+                "pointer": null,
+                "parsingStrategy": "OCCURRENCE_DATE_ERSI_AUSTIN"
             },
             "reportedAt2": {
                 "field": null,
