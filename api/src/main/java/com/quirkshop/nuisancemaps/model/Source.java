@@ -45,6 +45,8 @@ public class Source {
 
     private String category;
     private String description;
+
+    @Column(length = 1024)
     private String url;
 
     private DataParserType dataParserType;

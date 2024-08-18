@@ -64,6 +64,8 @@ public class DataJob {
     // completed, error
     @Enumerated(EnumType.STRING)
     private DataJobStatus status;
+
+    @Column(length = 1024)
     private String url; // actual crawlURL, uses source as base?
 
     @JdbcTypeCode(SqlTypes.JSON)
