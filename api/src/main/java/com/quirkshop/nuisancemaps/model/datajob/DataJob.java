@@ -6,6 +6,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public class DataJob {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "parameters", columnDefinition = "jsonb")
-    private Map<String, Object> parameters;
+    private HashMap<String, Object> parameters;
 
     private int paramLimit;
     private int paramOffset;             //csv: readLines
@@ -85,6 +86,7 @@ public class DataJob {
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     public DataJob() {
+        this.parameters = new HashMap<String, Object>();
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
@@ -94,6 +96,7 @@ public class DataJob {
         this.sessionId = sessionId;
         this.source = source;
         this.orderKey = orderKey;
+        this.parameters = new HashMap<String, Object>();
         this.paramLimit = PARAM_LIMIT;
         this.paramOffset = 0;
         this.status = DataJobStatus.QUEUED;
@@ -103,7 +106,7 @@ public class DataJob {
     }
 
 
-    public void initURL() throws UnsupportedEncodingException {
+    public void initURL() {
 
         Source source = this.getSource();
 
@@ -114,7 +117,7 @@ public class DataJob {
         this.setUrl(url);
     }
 
-    public String buildNextURL() throws UnsupportedEncodingException {
+    public String buildNextURL() {
 
         Source source = this.getSource();
 
@@ -179,11 +182,11 @@ public class DataJob {
         this.url = url;
     }
 
-    public Map<String, Object> getParameters() {
+    public HashMap<String, Object> getParameters() {
         return parameters;
     }
 
-    public void setParameters(Map<String, Object> parameters) {
+    public void setParameters(HashMap<String, Object> parameters) {
         this.parameters = parameters;
     }
 

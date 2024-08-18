@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -50,8 +51,9 @@ public class DataJobTest {
         final String order_key = "id";
 
         DataJob d = new DataJob(LocalDateTime.now(), s, order_key);
-        d.setParamLimit(limit);
-        d.setParamOffset(offset);
+        HashMap<String, Object> parameters = d.getParameters();
+        parameters.put("paramLimit", limit);
+        parameters.put("paramOffset", offset);
         d.initURL();
 
         String url = d.getUrl();
