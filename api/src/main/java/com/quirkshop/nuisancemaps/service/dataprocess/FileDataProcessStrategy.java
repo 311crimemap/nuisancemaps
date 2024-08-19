@@ -15,6 +15,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.Request.Builder;
 
 @Service
 public class FileDataProcessStrategy implements DataProcessStrategy {
@@ -53,12 +55,17 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         InputStream inputStream = null;
 
         String url = dataJob.getUrl();
+        Source source = dataJob.getSource();
+        String cookie = source.getCookie();
+        Builder requestBuilder = new Request.Builder().url(url);
+        if (cookie != null) {
+            requestBuilder.addHeader("Cookie", cookie);
+        }
+        Request request = requestBuilder.build();
 
         dataJob.setParamLimit(BATCH_SIZE);  // NB: CSV download entire file
         dataJob.setStatus(DataJobStatus.FETCH_START);
         dataJobRepository.save(dataJob);
-
-        Request request = new Request.Builder().url(url).build();
 
         try {
 

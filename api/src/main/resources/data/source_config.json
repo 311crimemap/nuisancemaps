@@ -823,5 +823,60 @@
                 "parsingStrategy": null
             }
         }
+    },
+        {
+        "sourceConfigId": 16,
+        "url": "https://services.austintexas.gov/police/reports/search2.cfm?startdate=08/01/2024&numdays=1&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit",
+        "cookie": "APD_IRSEARCH=true",
+        "category": "crime",
+        "description": "Austin Crime APD Incident Report",
+        "dataParserType": "HTML",
+        "dataProcessType": "MEMORY",
+        "dataJobURLType": "APDINCIDENTREPORT",
+        "numRecords": 999999,
+        "mapping": {
+            "rootPath": null,
+            "orderKey": "reportNum",
+            "reportNum": {
+                "field": "objectid",
+                "pointer": "/attributes/objectid",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "CRIME_DESCRIPTION",
+                "pointer": "/attributes/CRIME_DESCRIPTION",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "STREET_NAME",
+                "pointer": null,
+                "parsingStrategy": "STREET_NAME_ERSI_AUSTIN"
+            },
+            "latitude": {
+                "field": "y",
+                "pointer": "/geometry/y",
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "x",
+                "pointer": "/geometry/x",
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "OCCURRENCE_DATE",
+                "pointer": null,
+                "parsingStrategy": "OCCURRENCE_DATE_ERSI_AUSTIN"
+            },
+            "reportedAt2": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            }
+        }
     }
 ]
