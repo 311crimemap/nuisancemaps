@@ -83,6 +83,28 @@ public class JSONDataParserTest {
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
         }
+
+        Category cat = new Category("crime", "Public Order", 0, null);
+        Category cat2 = new Category("crime", "Theft", 1, null);
+        categoryRepository.save(cat);
+        categoryRepository.save(cat2);
+
+        TextCategory tc = new TextCategory("crime", "DWI 2ND", cat);
+        TextCategory tc2 = new TextCategory("crime", "THEFT BY SHOPLIFTING", cat2);
+        textCategoryRepository.save(tc);
+        textCategoryRepository.save(tc2);
+
+        cat = new Category("311", "Noise", 1, null);
+        categoryRepository.save(cat);
+        tc = new TextCategory("311", "APD - Non Emergency Noise/Alarm", cat);
+        textCategoryRepository.save(tc);
+
+        tc = new TextCategory("crime", "BURGLARY NON RESIDENCE", cat2);
+        tc2 = new TextCategory("crime", "BURGLARY OF RESIDENCE", cat2);
+        TextCategory tc3 = new TextCategory("crime", "BURGLARY OF SHED/DETACHED GARAGE/STORAGE UNIT", cat2);
+        textCategoryRepository.save(tc);
+        textCategoryRepository.save(tc2);
+        textCategoryRepository.save(tc3);
     }
 
     @AfterAll
@@ -93,26 +115,6 @@ public class JSONDataParserTest {
         textCategoryRepository.deleteAll();
         categoryRepository.deleteAll();
     }
-
-    @BeforeEach
-    public void setUp() throws IOException {
-        // require textCategory mapping to exist before successful save
-        // otherwise will throw MissingCategoryException and skip
-        Category cat = new Category("crime", "Public Order", 0, null);
-        Category cat2 = new Category("crime", "Theft", 1, null);
-        categoryRepository.save(cat);
-        categoryRepository.save(cat2);
-        TextCategory tc = new TextCategory("crime", "DWI 2ND", cat);
-        TextCategory tc2 = new TextCategory("crime", "THEFT BY SHOPLIFTING", cat2);
-        textCategoryRepository.save(tc);
-        textCategoryRepository.save(tc2);
-
-        cat = new Category("311", "Noise", 1, null);
-        categoryRepository.save(cat);
-        tc = new TextCategory("311", "APD - Non Emergency Noise/Alarm", cat);
-        textCategoryRepository.save(tc);
-    }
-
 
     @Test
     @Transactional
@@ -131,5 +133,24 @@ public class JSONDataParserTest {
         jsonDataParser.parse(d, inputstream, parseCounter);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(2);
+    }
+
+    @Test
+    @Transactional
+    public void parseERSI() throws IOException {
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/ersi-2024-07-01-2024-08-15-atx.json");
+        InputStream inputstream = jsonResource.getInputStream();
+        ParseCounter parseCounter = new ParseCounter();
+
+        Source s = sourceRepository.findOneBySourceConfigId(15);
+        DataJob d = new DataJob(LocalDateTime.now(), s, "objectid");
+        dataJobRepository.save(d);
+
+        assertThat(dataCrimeRepository.count()).isEqualTo(0);
+
+        jsonDataParser.parse(d, inputstream, parseCounter);
+
+        assertThat(dataCrimeRepository.count()).isEqualTo(5);
     }
 }

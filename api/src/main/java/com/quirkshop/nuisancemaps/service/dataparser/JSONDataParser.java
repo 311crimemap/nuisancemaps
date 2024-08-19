@@ -36,12 +36,13 @@ public class JSONDataParser extends DataParser {
         JsonSurfer surfer = JsonSurferJackson.INSTANCE;
 
         surfer.configBuilder()
-                .bind(rootPath, (item, context) -> {
+            .bind(rootPath, (item, context) -> {
 
                     try {
 
                         IDataEntity dataEntity = dataEntityMappingService
-                            .buildDataEntity(dataEntityClass, source, (JsonNode) item, geometryFactory, jsonNodeFieldExtractor);
+                            .buildDataEntity(dataEntityClass, source, (JsonNode) item,
+                                             geometryFactory, jsonNodeFieldExtractor);
 
                         addDataEntity(dataEntity, parseCounter);
 
@@ -64,7 +65,7 @@ public class JSONDataParser extends DataParser {
                     }
 
                 })
-                .buildAndSurf(inputStream);
+            .buildAndSurf(inputStream);
 
         // flush remaining
         batchSave(source, parseCounter);
