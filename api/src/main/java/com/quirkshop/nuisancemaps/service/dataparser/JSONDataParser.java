@@ -5,9 +5,9 @@ import java.io.InputStream;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,19 +31,23 @@ public class JSONDataParser extends DataParser {
 
         textCategoryService.refreshTextCategoryIdMap();
 
+        String rootPath = source.getMapping().getRootPath();
+
         JsonSurfer surfer = JsonSurferJackson.INSTANCE;
 
         surfer.configBuilder()
-                .bind("$[*]", (item, context) -> {
+            .bind(rootPath, (item, context) -> {
 
                     try {
 
                         IDataEntity dataEntity = dataEntityMappingService
-                            .buildDataEntity(dataEntityClass, source, (JsonNode) item, geometryFactory, jsonNodeFieldExtractor);
+                            .buildDataEntity(dataEntityClass, source, (JsonNode) item,
+                                             geometryFactory, jsonNodeFieldExtractor);
 
                         addDataEntity(dataEntity, parseCounter);
 
                     } catch (MissingCoordinateException | MissingReportCategoryException e) {
+
                         String content = StringUtils.substring(item.toString(), 0, 4096);
                         logMissingException(source, content, e);
                         parseCounter.numMissingIncrement();
@@ -61,7 +65,7 @@ public class JSONDataParser extends DataParser {
                     }
 
                 })
-                .buildAndSurf(inputStream);
+            .buildAndSurf(inputStream);
 
         // flush remaining
         batchSave(source, parseCounter);

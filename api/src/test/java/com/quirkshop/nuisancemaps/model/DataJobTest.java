@@ -2,21 +2,26 @@ package com.quirkshop.nuisancemaps.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.OpenDataURL;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.config.DataParserType;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(classes = NuisancemapsApplication.class)
@@ -45,9 +50,15 @@ public class DataJobTest {
         final int offset = 20000;
         final String order_key = "id";
 
-        DataJob d = new DataJob(LocalDateTime.now(), s, limit, offset, order_key);
-        String url = d.buildURL();
-        final String select = d.buildURLFields(s.getMapping());
+        DataJob d = new DataJob(LocalDateTime.now(), s, order_key);
+        HashMap<String, Object> parameters = d.getParameters();
+        parameters.put("paramLimit", limit);
+        parameters.put("paramOffset", offset);
+        d.initURL();
+
+        String url = d.getUrl();
+        OpenDataURL openDataURL = new OpenDataURL();
+        final String select = openDataURL.buildURLFields(s.getMapping());
 
         assertThat(s.getUrl()).isEqualTo(d.getSourceURL());
         assertThat(url).isEqualTo(
@@ -61,7 +72,7 @@ public class DataJobTest {
     public void DataJobBuildFilenameTest() throws IOException {
 
         Source source = sources.get(11); // id: 12
-        DataJob dataJob = new DataJob(LocalDateTime.now(), source, 0, 0, "id");
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
         String formattedDateTime = dataJob.getSessionId().format(formatter);

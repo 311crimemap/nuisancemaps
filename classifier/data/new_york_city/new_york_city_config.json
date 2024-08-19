@@ -6,6 +6,7 @@
         "description": "New York City Crime YTD",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
+        "dataJobURLType": "OPENDATA",
         "numRecords": 282069,
         "mapping": {
             "orderKey": ":id",
@@ -58,6 +59,7 @@
         "description": "New York City Crime Historic to YTD (updated quarterly)",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
+        "dataJobURLType": "OPENDATA",
         "numRecords": 8914838,
         "mapping": {
             "orderKey": ":id",
@@ -110,6 +112,7 @@
         "description": "New York City 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
+        "dataJobURLType": "OPENDATA",
         "numRecords": 37023044,
         "mapping": {
             "orderKey": ":id",
@@ -162,6 +165,7 @@
         "description": "New York City Crime YTD",
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
+        "dataJobURLType": "BASE",
         "numRecords": 282069,
         "mapping": {
             "orderKey": ":id",
@@ -214,6 +218,7 @@
         "description": "New York City Crime Complaint Historic",
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
+        "dataJobURLType": "BASE",
         "numRecords": 891000000,
         "mapping": {
             "orderKey": ":id",
@@ -266,6 +271,7 @@
         "description": "New York City 311 2010 - Present",
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
+        "dataJobURLType": "BASE",
         "numRecords": 37023044,
         "mapping": {
             "orderKey": ":id",

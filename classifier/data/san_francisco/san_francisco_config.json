@@ -6,6 +6,7 @@
         "description": "San Francisco Crime",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
+        "dataJobURLType": "OPENDATA",
         "numRecords": 872000,
         "mapping": {
             "orderKey": ":id",
@@ -58,6 +59,7 @@
         "description": "San Francisco 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
+        "dataJobURLType": "OPENDATA",
         "numRecords": 7070000,
         "mapping": {
             "orderKey": ":id",
