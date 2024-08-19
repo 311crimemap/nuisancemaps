@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.config;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -31,6 +32,8 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.LONGITUDE_311_DALLAS, this::LONGITUDE_311_DALLAS);
         parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_DALLAS, this::REPORTEDAT_CRIME_DALLAS);
         parsingFunctions.put(ParserStrategy.REPORTEDAT2_CRIME_DALLAS, this::REPORTEDAT2_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.STREET_NAME_ERSI_AUSTIN, this::STREET_NAME_ERSI_AUSTIN);
+        parsingFunctions.put(ParserStrategy.OCCURRENCE_DATE_ERSI_AUSTIN, this::OCCURRENCE_DATE_ERSI_AUSTIN);
 
         return parsingFunctions;
     }
@@ -183,6 +186,45 @@ public class ParserStrategyConfig {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    public String STREET_NAME_ERSI_AUSTIN(JsonNode item) {
+        String value = null;
+
+        try {
+            String addressBlock = item.at("/attributes/ADDRESS_BLOCK").asText();
+            String streetName = item.at("/attributes/STREET_NAME").asText();
+            String streetType = item.at("/attributes/STREET_TYPE").asText();
+            value = String.join(" ", addressBlock, streetName, streetType);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return value;
+    }
+
+    public String OCCURRENCE_DATE_ERSI_AUSTIN(JsonNode item) {
+        String dateStr = null;
+
+        try {
+            long occurrenceDate = item.at("/attributes/OCCURRENCE_DATE").asLong();
+            long occurenceTime = item.at("/attributes/OCCURRENCE_TIME").asLong();
+
+            //use epoch to get GMT date (e.g midnight of that day)
+            //occurrence time for that GMT date - example: 824, 1352.
+            LocalDateTime date = LocalDateTime.ofEpochSecond(occurrenceDate / 1000, 0, ZoneOffset.UTC)
+                .withHour((int) occurenceTime / 100)
+                .withMinute((int) occurenceTime % 100);
+
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = date.format(outputFormatter);
+
         } catch (Exception e) {
             log.info(e.getMessage());
         }

@@ -6,12 +6,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.function.Function;
@@ -22,6 +26,9 @@ import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ParserStrategyConfigTest {
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @Autowired
     private ParserStrategyConfig parserStrategyConfig;
@@ -157,6 +164,44 @@ public class ParserStrategyConfigTest {
         // ensure it's parseable downstream
         LocalDateTime parsed = LocalDateTime.parse(value);
         assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
+    @Test
+    @Transactional
+    public void STREET_NAME_ERSI_AUSTIN_TEST() throws JsonMappingException, JsonProcessingException, IOException {
+        assertThat(ParserStrategy.STREET_NAME_ERSI_AUSTIN).isNotNull();
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/ersi-2024-07-01-2024-08-15-atx.json");
+        InputStream inputstream = jsonResource.getInputStream();
+
+        Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions =
+            parserStrategyConfig.parsingFunctionsJSON();
+
+        JsonNode items = objectMapper.readTree(inputstream);
+        //System.out.println(items);
+        JsonNode item = items.at("/features/2");
+        String value = parserStrategyConfig.STREET_NAME_ERSI_AUSTIN(item);
+        assertThat(value).isEqualTo("8800 NORTH PLZ");
+    }
+
+    @Test
+    @Transactional
+    public void OCCURRENCE_DATE_ERSI_AUSTIN_TEST() throws JsonMappingException, JsonProcessingException, IOException {
+        assertThat(ParserStrategy.STREET_NAME_ERSI_AUSTIN).isNotNull();
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/ersi-2024-07-01-2024-08-15-atx.json");
+        InputStream inputstream = jsonResource.getInputStream();
+
+        Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = parserStrategyConfig.parsingFunctionsJSON();
+
+        JsonNode items = objectMapper.readTree(inputstream);
+        // System.out.println(items);
+        JsonNode item = items.at("/features/2");
+
+        //date: 1705276800000
+        //time: 1136
+        String value = parserStrategyConfig.OCCURRENCE_DATE_ERSI_AUSTIN(item);
+        assertThat(value).isEqualTo("2024-01-15T11:36:00");
     }
 
 }

@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 
 @Entity
 @Table(name = "data_error")

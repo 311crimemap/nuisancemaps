@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.model.DataJob;
-import com.quirkshop.nuisancemaps.model.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
@@ -32,6 +32,9 @@ public class WorkerScheduleService {
     SourceLoaderService sourceLoaderService;
 
     @Autowired
+    DataJobService dataJobService;
+
+    @Autowired
     DataJobRepository dataJobRepository;
 
     @Autowired
@@ -42,8 +45,6 @@ public class WorkerScheduleService {
 
     @Autowired
     DataProcessStrategyFactory dataProcessStrategyFactory;
-
-    private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
@@ -64,11 +65,11 @@ public class WorkerScheduleService {
         // log.info("[checkDataJobQueue] " + currentThreadName);
 
         // GET / CREATE NEXT JOB
-        DataJob datajob = dataJobRepository.getNextDataJob(DataJobStatus.QUEUED);
+        DataJob datajob = dataJobService.getNextDataJob(DataJobStatus.QUEUED);
         if (datajob == null) {
 
             // log.info("No Jobs Queued");
-            createNewJobs();
+            dataJobService.createNewJobs();
             return;
         }
 
@@ -131,25 +132,6 @@ public class WorkerScheduleService {
         if (datajob.getParamOffset() == 0) {
             updateSourceNumRecords(source);
         }
-    }
-
-    public void createNewJobs() throws UnsupportedEncodingException {
-
-        Iterable<Source> sources = sourceRepository.findAll();
-
-        for (Source source : sources) {
-
-            DataJob nextJob = dataJobRepository.createNextDataJob(source, PARAM_LIMIT);
-            if (nextJob == null)
-                continue;
-
-            String logStr = String.format("[createNewJobs] param limit: %s | next job: %s",
-                    PARAM_LIMIT,
-                    nextJob.getUrl());
-
-            log.info(logStr);
-        }
-
     }
 
     /*

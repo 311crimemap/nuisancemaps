@@ -15,8 +15,8 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
-import com.quirkshop.nuisancemaps.model.DataJob;
-import com.quirkshop.nuisancemaps.model.DataJobStatus;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
@@ -52,8 +52,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     public InputStream fetchData(DataJob dataJob) {
         InputStream inputStream = null;
 
-        // only want initial source URL, no params or built URL
-        String url = dataJob.getSourceURL();
+        String url = dataJob.getUrl();
 
         dataJob.setParamLimit(BATCH_SIZE);  // NB: CSV download entire file
         dataJob.setStatus(DataJobStatus.FETCH_START);

@@ -1,4 +1,4 @@
-package com.quirkshop.nuisancemaps.model;
+package com.quirkshop.nuisancemaps.model.datajob;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -6,16 +6,20 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.util.UriComponentsBuilder;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.quirkshop.nuisancemaps.config.DataParserType;
+import com.quirkshop.nuisancemaps.model.DataError;
+import com.quirkshop.nuisancemaps.model.Source;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -60,7 +64,14 @@ public class DataJob {
     // completed, error
     @Enumerated(EnumType.STRING)
     private DataJobStatus status;
+
+    @Column(length = 1024)
     private String url; // actual crawlURL, uses source as base?
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "parameters", columnDefinition = "jsonb")
+    private HashMap<String, Object> parameters;
+
     private int paramLimit;
     private int paramOffset;             //csv: readLines
     private String orderKey;
@@ -74,63 +85,47 @@ public class DataJob {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime updatedAt;
 
+    private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
+
     public DataJob() {
+        this.parameters = new HashMap<String, Object>();
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
 
-    public DataJob(LocalDateTime sessionId, Source source, int paramLimit, int paramOffset, String orderKey) {
+    public DataJob(LocalDateTime sessionId, Source source, String orderKey) {
         this.sessionId = sessionId;
         this.source = source;
-        this.paramLimit = paramLimit;
-        this.paramOffset = paramOffset;
         this.orderKey = orderKey;
+        this.parameters = new HashMap<String, Object>();
+        this.paramLimit = PARAM_LIMIT;
+        this.paramOffset = 0;
         this.status = DataJobStatus.QUEUED;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
 
-    // Map<String, Object> mapping
-    public String buildURLFields(Mapping mapping) {
 
-        List<String> fields = mapping.getAnnotationValues(MappingField::getField);
-
-        return String.join(",", fields);
-    }
-
-    public String buildURL() throws UnsupportedEncodingException {
+    public void initURL() {
 
         Source source = this.getSource();
 
-        // stand alone url, typical for full files/csv; no query string build
-        if (source.getDataParserType().equals(DataParserType.CSV)) {
-            this.setUrl(this.getSourceURL());
-            return this.getUrl();
-        }
+        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
 
-        // OpenData endpoint; typically json with query parameters
-        return buildOpenDataParamsURL();
+        String url = dataJobURL.buildInitURL(this);
+
+        this.setUrl(url);
     }
 
-    public String buildOpenDataParamsURL() throws UnsupportedEncodingException {
-        String sourceURL = this.getSourceURL();
+    public String buildNextURL() {
 
-        // collect fields
-        Mapping mapping = source.getMapping();
-        String $select = buildURLFields(mapping);
+        Source source = this.getSource();
 
-        String _url = UriComponentsBuilder.fromUriString(sourceURL)
-                .queryParam("$limit", Integer.toString(paramLimit))
-                .queryParam("$offset", Integer.toString(paramOffset))
-                .queryParam("$order", orderKey)
-                .queryParam("$select", $select)
-                .build()
-                .toUriString();
+        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
 
-        this.setUrl(_url);
-        return this.getUrl();
+        return dataJobURL.buildNextURL(this);
     }
 
     public String buildFilename() throws MalformedURLException {
@@ -187,6 +182,14 @@ public class DataJob {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public HashMap<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(HashMap<String, Object> parameters) {
+        this.parameters = parameters;
     }
 
     public int getParamLimit() {

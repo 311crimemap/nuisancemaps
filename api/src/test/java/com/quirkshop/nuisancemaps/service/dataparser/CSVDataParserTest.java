@@ -13,10 +13,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
-import com.quirkshop.nuisancemaps.model.DataJob;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
@@ -124,7 +124,7 @@ public class CSVDataParserTest {
         ParseCounter parseCounter = new ParseCounter();
 
         Source s = sourceRepository.findOneBySourceConfigId(12);
-        DataJob d = new DataJob(LocalDateTime.now(), s, 1000, 0, "CMPLNT_NUM");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "CMPLNT_NUM");
         dataJobRepository.save(d);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);

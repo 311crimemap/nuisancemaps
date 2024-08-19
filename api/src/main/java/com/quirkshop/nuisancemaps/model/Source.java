@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
+import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,7 +19,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -44,10 +45,23 @@ public class Source {
 
     private String category;
     private String description;
+
+    @Column(length = 1024)
     private String url;
 
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
+
+    @Column(name = "data_job_url_type")
+    private DataJobURLType dataJobURLType;
+
+    public DataJobURLType getDataJobURLType() {
+        return dataJobURLType;
+    }
+
+    public void setDataJobURLType(DataJobURLType dataJobURLType) {
+        this.dataJobURLType = dataJobURLType;
+    }
 
     private Integer numRecords;
 
@@ -80,13 +94,14 @@ public class Source {
     }
 
     public Source(Locale locale, String category, String description, String url,
-            DataParserType dataParserType, DataProcessType dataProcessType) {
+            DataParserType dataParserType, DataProcessType dataProcessType, DataJobURLType dataJobURLType) {
         this.locale = locale;
         this.category = category;
         this.description = description;
         this.url = url;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
+        this.dataJobURLType = dataJobURLType;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
@@ -220,6 +235,7 @@ public class Source {
                 this.getDescription(),
                 this.getDataParserType(),
                 this.getDataProcessType(),
+                this.getDataJobURLType(),
                 this.getNumRecords());
         return sourceDTO;
     }
