@@ -53,31 +53,24 @@ public class APDIncidentReportDataParser extends DataParser {
 
         textCategoryService.refreshTextCategoryIdMap();
 
-        /*
-         * collect "rows"
-         * NB: first row is outlier
-         */
-
         List<Element> elements = buildElements(dataJob, inputStream);
-
-        System.out.println("--------");
 
         for (Element element : elements) {
 
             List<Map<String, String>> rows = buildRowMap(element);
 
-            numRows += rows.size();
-
             for (Map<String, String> row : rows) {
                 // TODO: collect to single list - flatten
-                // TODO: fix row data
-                // send for enrichment before buildDataEntity
+
             }
 
         }
 
-        System.out.println("COUNT: " + numRows);
 
+        // TODO: batch send for geocoding
+        // check if already geocoded -> should be...in geoCoderService
+
+        // TODO: send to buildDataEntity
     }
 
     /*
@@ -98,10 +91,9 @@ public class APDIncidentReportDataParser extends DataParser {
             String location = element.select("tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)").text();
 
             int reportNumCounter = 1;
-            Elements offensesTD = element.select("tr:nth-of-type(5) td");
+            Elements offensesTD = element.select("tr:nth-of-type(5) td:nth-of-type(2) td");
 
-            // fix: see 2024-2141103
-            for (int i = 1; i < offensesTD.size(); i += 2) {
+            for (int i = 0; i < offensesTD.size(); i++) {
 
                 Map<String, String> row = new HashMap<String, String>();
 
@@ -111,7 +103,7 @@ public class APDIncidentReportDataParser extends DataParser {
                 row.put("reportCategory", reportCategory);
                 row.put("location", location);
 
-                // NB: missing lat / lng, needs this data set needs enrichment
+                // NB: data set needs enrichment to get lat/lng
 
                 row.put("reportedAt", reportDate);
                 row.put("reportedAt2", offenseDate);

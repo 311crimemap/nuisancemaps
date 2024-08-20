@@ -844,7 +844,7 @@
             },
             "reportCategory": {
                 "field": "reportCategory",
-                "pointer": "tr:nth-of-type(5) td",
+                "pointer": "tr:nth-of-type(5) td:nth-of-type(2) td",
                 "parsingStrategy": null
             },
             "description": {
