@@ -1,6 +1,7 @@
 package com.quirkshop.nuisancemaps.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategy;
 import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 
+import kotlin.Pair;
 import okhttp3.Call;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -97,6 +101,7 @@ public class DataProcessStrategyFactoryTest {
         datajob.initURL();
         assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
+
         // Mock okHttpClient to return the jsonFixtureContent if it ever makes a
         // request to url; the client.newCall(), call and execute() are set to
         // return mocked response, responseBody (see @Autowire above)
@@ -134,4 +139,68 @@ public class DataProcessStrategyFactoryTest {
         // assertThat(num).isEqualTo(2);
 
     }
+
+
+    @Test
+    @Transactional
+    void testFetchDataCookieWithMock() throws IOException {
+
+        Resource htmlResource = resourceLoader.getResource("classpath:data/crime-atx.html");
+
+        String htmlFixtureContent = new String(FileCopyUtils.copyToByteArray(htmlResource.getInputStream()),
+                StandardCharsets.UTF_8);
+
+        // Source
+        ObjectMapper objectMapper = new ObjectMapper();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+
+        List<Source> sources = objectMapper.readValue(sourceJSON,
+                                                      new TypeReference<List<Source>>() {
+        });
+
+        Source s = sources.get(15); //html apd incident
+
+        when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
+
+        // DataJob
+        DataJob datajob = new DataJob(LocalDateTime.now(), s, "reportNum");
+        datajob.initURL();
+
+        // Mock okHttpClient to return the jsonFixtureContent if it ever makes a
+        // request to url; the client.newCall(), call and execute() are set to
+        // return mocked response, responseBody (see @Autowire above)
+        //
+        // Scanner class converts inputStream to String to compare response
+        // values
+
+        InputStream mockInputStream = htmlResource.getInputStream();
+        when(response.isSuccessful()).thenReturn(true);
+        when(response.body()).thenReturn(responseBody);
+        when(responseBody.byteStream()).thenReturn(mockInputStream);
+
+        when(client.newCall(Mockito.any(Request.class))).thenReturn(call);
+        when(call.execute()).thenReturn(response);
+
+        // Capture the Request
+        ArgumentCaptor<Request> requestCaptor = ArgumentCaptor.forClass(Request.class);
+
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(DataProcessType.MEMORY);
+
+        InputStream inputStream2 = dataProcessStrategy.fetchData(datajob);
+
+        try (Scanner scanner = new Scanner(inputStream2, StandardCharsets.UTF_8.name())) {
+            String result = scanner.useDelimiter("\\A").next();
+            assertThat(result).isEqualTo(htmlFixtureContent);
+        }
+
+        // "collect" captured request - client.newCall is the "context" for the
+        // Request being captured
+        verify(client).newCall(requestCaptor.capture());
+
+        Request capturedRequest = requestCaptor.getValue();
+        Headers headers = capturedRequest.headers();
+        assertThat(headers.get("cookie")).isEqualTo(s.getCookie());
+    }
+
 }

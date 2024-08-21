@@ -49,6 +49,9 @@ public class Source {
     @Column(length = 1024)
     private String url;
 
+    @Column(length = 1024)
+    private String cookie;
+
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
 
@@ -161,6 +164,14 @@ public class Source {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
     }
 
     public Integer getNumRecords() {

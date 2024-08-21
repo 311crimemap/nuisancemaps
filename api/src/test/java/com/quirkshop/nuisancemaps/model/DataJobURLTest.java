@@ -9,11 +9,13 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.datajob.APDIncidentReportURL;
 import com.quirkshop.nuisancemaps.model.datajob.BaseURL;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.ERSIURL;
@@ -125,6 +127,50 @@ public class DataJobURLTest {
         dataJob.initURL();
         dataJob.buildNextURL();
         dataJob.buildNextURL();
+        dataJob.buildNextURL();
+        assertThat(url).isEqualTo(dataJob.getUrl());
+    }
+
+    @Test
+    public void APDIncidentReport_BuildInitURLTest() {
+        Source source = sources.get(15);
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "reportNum");
+        APDIncidentReportURL apdIncidentReportURL = new APDIncidentReportURL();
+        String url = apdIncidentReportURL.buildInitURL(dataJob);
+
+        assertThat(url).isEqualTo(
+                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/01/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
+
+        // test DataJob factory
+        dataJob.initURL();
+        assertThat(url).isEqualTo(dataJob.getUrl());
+    }
+
+    @Test
+    public void APDIncidentReport_BuildNextURLTest() {
+        Source source = sources.get(15);
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "reportNum");
+        HashMap<String, Object> parameters = dataJob.getParameters();
+        parameters.put("paramStartDate", "07/01/2024");
+        parameters.put("paramEndDate", "08/01/2024");
+
+        // NB: numDays is inclusive
+        // numDays + 1 -> (7 days) is next start date
+        APDIncidentReportURL apdIncidentReportURL = new APDIncidentReportURL();
+        apdIncidentReportURL.buildInitURL(dataJob); // startdate: 7/01/2024
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/08/2024
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/15/2024
+        String url = apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/22/2024
+
+        assertThat(url).isEqualTo(
+                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/22/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
+
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/29/2024
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 8/6/2024
+        url = apdIncidentReportURL.buildNextURL(dataJob);
+        assertThat(url).isNull();
+
+        // test DataJob factory
         dataJob.buildNextURL();
         assertThat(url).isEqualTo(dataJob.getUrl());
     }
