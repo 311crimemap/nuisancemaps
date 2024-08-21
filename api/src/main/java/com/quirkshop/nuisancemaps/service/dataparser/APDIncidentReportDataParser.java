@@ -1,10 +1,9 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +14,8 @@ import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.service.GeocoderService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +37,9 @@ public class APDIncidentReportDataParser extends DataParser {
     @Autowired
     MapFieldExtractor mapFieldExtractor;
 
+    @Autowired
+    GeocoderService geocoderService;
+
     /*
      * custom parser for apd incident report source
      */
@@ -52,9 +54,51 @@ public class APDIncidentReportDataParser extends DataParser {
         setTypes(source);
 
         textCategoryService.refreshTextCategoryIdMap();
-        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
         List<Element> elements = buildElements(dataJob, inputStream);
+
+        List<Map<String, String>> rows = parseToRowMaps(elements);
+
+        geocode(rows);
+
+        // send to buildDataEntity
+
+        for (Map<String, String> row : rows) {
+            // PARSE
+            try {
+
+                IDataEntity dataEntity = dataEntityMappingService
+                        .buildDataEntity(dataEntityClass, source, row, geometryFactory, mapFieldExtractor);
+
+                addDataEntity(dataEntity, parseCounter);
+
+            } catch (MissingCoordinateException | MissingReportCategoryException e) {
+                String content = StringUtils.substring(row.toString(), 0, 4096);
+                logMissingException(source, content, e);
+                parseCounter.numMissingIncrement();
+
+            } catch (Exception e) {
+                String content = StringUtils.substring(row.toString(), 0, 4096);
+                logException(dataJob, content, e);
+                parseCounter.numErrorsIncrement();
+            }
+
+            if (reportNums.size() >= BATCH_SIZE) {
+                numBatch++;
+                logSaveBatch(dataJob, parseCounter, numBatch, numRows);
+            }
+
+            parseCounter.numFetchedIncrement();
+            numRows++;
+        }
+
+        numBatch++;
+        logSaveBatch(dataJob, parseCounter, numBatch, numRows);
+    }
+
+    public List<Map<String, String>> parseToRowMaps(List<Element> elements) {
+
+        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
         for (Element element : elements) {
 
@@ -63,13 +107,41 @@ public class APDIncidentReportDataParser extends DataParser {
             for (Map<String, String> row : rows) {
                 data.add(row);
             }
-
         }
 
-        // TODO: batch send for geocoding
-        // check if already geocoded -> should be...in geoCoderService
+        return data;
+    }
 
-        // TODO: send to buildDataEntity
+    public void geocode(List<Map<String, String>> data) {
+
+        // batch send for geocoding
+        // TODO: check if already geocoded -> should be...in geoCoderService
+        List<String> addresses = new ArrayList<String>();
+        for (Map<String, String> row : data) {
+            addresses.add(row.get("location"));
+        }
+
+        List<double[]> coordinates = geocoderService
+                .geocodeBatchRequest(addresses);
+
+        if (data.size() != coordinates.size()) {
+            String err = String.format("Address count: %d does not match coordinate counts: %d",
+                    data.size(), coordinates.size());
+            throw new Error(err);
+        }
+
+        // add data points
+        for (int i = 0; i < coordinates.size(); i++) {
+
+            Map<String, String> row = data.get(i);
+            double[] latlng = coordinates.get(i);
+
+            if (latlng != null) {
+                row.put("latitude", String.valueOf(latlng[0]));
+                row.put("longitude", String.valueOf(latlng[1]));
+            }
+
+        }
     }
 
     // remove apt component if it exists, and any excess spaces
@@ -98,13 +170,13 @@ public class APDIncidentReportDataParser extends DataParser {
 
         try {
 
-            String reportNum = element.select("tr:nth-of-type(1) td:nth-of-type(2)").text();
+            String reportNum = element.select("tr:nth-of-type(1) td:nth-of-type(2)").text().trim();
 
-            String reportDate = element.select("tr:nth-of-type(1) td:nth-of-type(4)").text();
+            String reportDate = element.select("tr:nth-of-type(1) td:nth-of-type(4)").text().trim();
 
-            String offenseDate = element.select("tr:nth-of-type(3) td:nth-of-type(2)").text();
+            String offenseDate = element.select("tr:nth-of-type(3) td:nth-of-type(2)").text().trim();
 
-            String location = element.select("tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)").text();
+            String location = element.select("tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)").text().trim();
             location = formatAddress(location); // dropping apt
 
             int reportNumCounter = 1;
@@ -121,14 +193,16 @@ public class APDIncidentReportDataParser extends DataParser {
                 row.put("location", location);
 
                 // NB: data set needs enrichment to get lat/lng
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, MMM-dd-yyyy HH:mm");
+                DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-                row.put("reportedAt", reportDate);
-                row.put("reportedAt2", offenseDate);
+                row.put("reportedAt", LocalDateTime.parse(offenseDate, formatter).format(outputFormatter));
+                row.put("reportedAt2", LocalDateTime.parse(reportDate, formatter).format(outputFormatter));
 
                 reportNumCounter++;
 
                 rows.add(row);
-                System.out.println(row);
+                // System.out.println(row);
             }
 
         } catch (Exception e) {
@@ -171,4 +245,15 @@ public class APDIncidentReportDataParser extends DataParser {
 
         return elements;
     }
+
+    private void logSaveBatch(DataJob dataJob, ParseCounter parseCounter, int numBatch, int numRows) {
+
+        batchSave(dataJob.getSource(), parseCounter);
+
+        log.info(String.format("[APDIncidentREportDataParser] dataJob: %d | numBatch: %d | numRows: %d",
+                dataJob.getId(), numBatch, numRows));
+
+        dataJobRepository.save(dataJob);
+    }
+
 }
