@@ -40,10 +40,10 @@ public class APDIncidentReportURL implements DataJobURL {
         LocalDate _startDate = LocalDate.parse(startDate, formatter);
         LocalDate _endDate = LocalDate.parse(endDate, formatter);
 
-        if (_startDate.plusDays(numDays).isBefore(_endDate)) {
+        if (_startDate.plusDays(numDays + 1).isBefore(_endDate)) {
             // increment start date by numDays
             parameters.put("paramStartDate",
-                    _startDate.plusDays(numDays).format(formatter));
+                    _startDate.plusDays(numDays + 1).format(formatter));
             parameters.put("paramEndDate", endDate);
             parameters.put("paramNumDays", parameters.getOrDefault("numDays", 6));
 

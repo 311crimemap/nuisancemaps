@@ -154,17 +154,19 @@ public class DataJobURLTest {
         parameters.put("paramStartDate", "07/01/2024");
         parameters.put("paramEndDate", "08/01/2024");
 
+        // NB: numDays is inclusive
+        // numDays + 1 -> (7 days) is next start date
         APDIncidentReportURL apdIncidentReportURL = new APDIncidentReportURL();
         apdIncidentReportURL.buildInitURL(dataJob); // startdate: 7/01/2024
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 7/07/2024
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 7/13/2024
-        String url = apdIncidentReportURL.buildNextURL(dataJob); // + 6 7/19/2024
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/08/2024
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/15/2024
+        String url = apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/22/2024
 
         assertThat(url).isEqualTo(
-                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/19/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
+                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/22/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
 
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 7/25/2024
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 7/31/2024
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/29/2024
+        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 8/6/2024
         url = apdIncidentReportURL.buildNextURL(dataJob);
         assertThat(url).isNull();
 
