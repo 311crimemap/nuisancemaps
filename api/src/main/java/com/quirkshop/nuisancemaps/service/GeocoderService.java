@@ -89,6 +89,13 @@ public class GeocoderService {
         for (JsonNode item : items) {
 
             try {
+
+                // empty (no) result for query
+                if (!item.at("/features").has(0)) {
+                    coordinates.add(null);
+                    continue;
+                }
+
                 JsonNode feature = item.at("/features").get(0);
                 double relevance = feature.at("/relevance").asDouble();
 

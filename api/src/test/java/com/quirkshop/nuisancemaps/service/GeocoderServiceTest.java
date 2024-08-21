@@ -103,6 +103,18 @@ public class GeocoderServiceTest {
 
     @Test
     @Transactional
+    public void parseResponseEmptyTest() throws IOException {
+        Resource jsonResource = resourceLoader.getResource("classpath:data/maptiler-empty-response.json");
+        InputStream inputStream = jsonResource.getInputStream();
+
+        List<double[]> coordinates = geocoderService.parseResponse(inputStream);
+
+        List<double[]> manual_coordinates = Arrays.asList(null, null);
+        assertThat(coordinates).usingRecursiveComparison().isEqualTo(manual_coordinates);
+    }
+
+    @Test
+    @Transactional
     public void geocodeBatchRequestTest() throws IOException {
         Resource jsonResource = resourceLoader.getResource("classpath:data/maptiler-response.json");
 
@@ -161,7 +173,8 @@ public class GeocoderServiceTest {
                 null);
 
         // test batches given array of addresses size 151 - result in 4 batches
-        // each batch api response mocked with return of set of 3 manual_coordinates (because I'm lazy)
+        // each batch api response mocked with return of set of 3 manual_coordinates
+        // (because I'm lazy)
         // yes 50 requests -> 3 response, but its fine. Test is to counting batches.
         assertThat(coordinates.size()).isEqualTo(4 * 3);
         assertThat(coordinates.subList(0, 3)).usingRecursiveComparison().isEqualTo(manual_coordinates);
