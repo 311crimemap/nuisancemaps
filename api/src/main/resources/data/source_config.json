@@ -2,6 +2,7 @@
     {
         "sourceConfigId": 1,
         "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
+        "cookie": null,
         "category": "crime",
         "description": "Austin Police",
         "dataParserType": "JSON",
@@ -56,6 +57,7 @@
     {
         "sourceConfigId": 2,
         "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
+        "cookie": null,
         "category": "311",
         "description": "Austin 311",
         "dataParserType": "JSON",
@@ -110,6 +112,7 @@
     {
         "sourceConfigId": 3,
         "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
+        "cookie": null,
         "category": "crime",
         "description": "Dallas Police",
         "dataParserType": "JSON",
@@ -164,6 +167,7 @@
     {
         "sourceConfigId": 4,
         "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
+        "cookie": null,
         "category": "311",
         "description": "Dallas 311",
         "dataParserType": "JSON",
@@ -218,6 +222,7 @@
     {
         "sourceConfigId": 5,
         "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
+        "cookie": null,
         "category": "crime",
         "description": "Chicago Crime",
         "dataParserType": "JSON",
@@ -272,6 +277,7 @@
     {
         "sourceConfigId": 6,
         "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
+        "cookie": null,
         "category": "311",
         "description": "Chicago 311",
         "dataParserType": "JSON",
@@ -326,6 +332,7 @@
     {
         "sourceConfigId": 7,
         "url": "https://data.cityofnewyork.us/resource/5uac-w243.json",
+        "cookie": null,
         "category": "crime",
         "description": "New York City Crime YTD",
         "dataParserType": "JSON",
@@ -380,6 +387,7 @@
     {
         "sourceConfigId": 8,
         "url": "https://data.cityofnewyork.us/resource/qgea-i56i.json",
+        "cookie": null,
         "category": "crime",
         "description": "New York City Crime Historic to YTD (updated quarterly)",
         "dataParserType": "JSON",
@@ -434,6 +442,7 @@
     {
         "sourceConfigId": 9,
         "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+        "cookie": null,
         "category": "311",
         "description": "New York City 311",
         "dataParserType": "JSON",
@@ -488,6 +497,7 @@
     {
         "sourceConfigId": 10,
         "url": "https://data.sfgov.org/resource/wg3w-h783.json",
+        "cookie": null,
         "category": "crime",
         "description": "San Francisco Crime",
         "dataParserType": "JSON",
@@ -542,6 +552,7 @@
     {
         "sourceConfigId": 11,
         "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
+        "cookie": null,
         "category": "311",
         "description": "San Francisco 311",
         "dataParserType": "JSON",
@@ -596,6 +607,7 @@
     {
         "sourceConfigId": 12,
         "url": "https://data.cityofnewyork.us/api/views/5uac-w243/rows.csv?fourfour=5uac-w243&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
+        "cookie": null,
         "category": "crime",
         "description": "New York City Crime YTD",
         "dataParserType": "CSV",
@@ -650,6 +662,7 @@
     {
         "sourceConfigId": 13,
         "url": "https://data.cityofnewyork.us/api/views/qgea-i56i/rows.csv?fourfour=qgea-i56i&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
+        "cookie": null,
         "category": "crime",
         "description": "New York City Crime Complaint Historic",
         "dataParserType": "CSV",
@@ -704,6 +717,7 @@
     {
         "sourceConfigId": 14,
         "url": "https://data.cityofnewyork.us/api/views/erm2-nwe9/rows.csv?fourfour=erm2-nwe9&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
+        "cookie": null,
         "category": "311",
         "description": "New York City 311 2010 - Present",
         "dataParserType": "CSV",
@@ -758,6 +772,7 @@
     {
         "sourceConfigId": 15,
         "url": "https://maps.austintexas.gov/gis/rest/APDCrimeViewer/APD_Reported_Crimes/MapServer/3/query?f=json&where=1=1 AND OCCURRENCE_DATE BETWEEN date '07/01/2024' AND date '08/15/2024' &returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={\"rings\":[[[3018272.9057345022,10242548.737086222],[3070539.572401169,10280948.737086222],[3290272.9057345022,10247882.070419556],[3234806.2390678357,9873482.070419554],[2911606.2390678357,9984415.403752888],[3018272.9057345022,10242548.737086222]]],\"spatialReference\":{\"wkid\":102739,\"latestWkid\":2277}}&geometryType=esriGeometryPolygon&inSR=102739&outFields=*&orderByFields=OCCURRENCE_DATE&outSR=4326",
+        "cookie": null,
         "category": "crime",
         "description": "ERSI Austin Crime Map 07/01/2024 - Present",
         "dataParserType": "JSON",
@@ -805,6 +820,61 @@
             "reportedAt2": {
                 "field": null,
                 "pointer": null,
+                "parsingStrategy": null
+            }
+        }
+    },
+    {
+        "sourceConfigId": 16,
+        "url": "https://services.austintexas.gov/police/reports/search2.cfm?startdate=08/01/2024&numdays=1&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit",
+        "cookie": "APD_IRSEARCH=true",
+        "category": "crime",
+        "description": "Austin Crime APD Incident Report",
+        "dataParserType": "APDINCIDENTREPORT",
+        "dataProcessType": "MEMORY",
+        "dataJobURLType": "APDINCIDENTREPORT",
+        "numRecords": 999999,
+        "mapping": {
+            "rootPath": null,
+            "orderKey": "reportNum",
+            "reportNum": {
+                "field": "reportNum",
+                "pointer": "tr:nth-of-type(1) td:nth-of-type(2)",
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "reportCategory",
+                "pointer": "tr:nth-of-type(5) td:nth-of-type(2) td",
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "location",
+                "pointer": "tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)",
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "latitude",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "longitude",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "reportedAt",
+                "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
+                "parsingStrategy": null
+            },
+            "reportedAt2": {
+                "field": "reportedAt2",
+                "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
                 "parsingStrategy": null
             }
         }
