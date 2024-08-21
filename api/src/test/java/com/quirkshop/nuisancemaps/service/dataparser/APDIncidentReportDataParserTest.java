@@ -66,7 +66,7 @@ public class APDIncidentReportDataParserTest {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private APDIncidentReportDataParser apdHTMLDataParser;
+    private APDIncidentReportDataParser apdIncidentReportDataParser;
 
     private List<Source> sources;
 
@@ -114,6 +114,25 @@ public class APDIncidentReportDataParserTest {
 
     @Test
     @Transactional
+    public void formatAddressTest() {
+
+        String input = "7918 WEST GATE BLVD, Apt # B ,    AUSTIN  78745";
+        String input2 = "4825 DAVIS LN, Apt # 1214 ,    AUSTIN  78749";
+        String input3 = "12424 RESEARCH BLVD SVRD SB,     AUSTIN  78759";
+
+        assertThat(apdIncidentReportDataParser.formatAddress(input))
+                .isEqualTo("7918 WEST GATE BLVD, AUSTIN 78745");
+
+        assertThat(apdIncidentReportDataParser.formatAddress(input2))
+                .isEqualTo("4825 DAVIS LN, AUSTIN 78749");
+
+        assertThat(apdIncidentReportDataParser.formatAddress(input3))
+                .isEqualTo("12424 RESEARCH BLVD SVRD SB, AUSTIN 78759");
+
+    }
+
+    @Test
+    @Transactional
     public void parse() throws IOException {
 
         Resource htmlResource = resourceLoader.getResource("classpath:data/crime-atx.html");
@@ -121,12 +140,12 @@ public class APDIncidentReportDataParserTest {
         ParseCounter parseCounter = new ParseCounter();
 
         Source s = sourceRepository.findOneBySourceConfigId(15);
-        DataJob d = new DataJob(LocalDateTime.now(), s, "report_num");
+        DataJob d = new DataJob(LocalDateTime.now(), s, "reportNum");
         dataJobRepository.save(d);
 
         // assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
-        apdHTMLDataParser.parse(d, inputstream, parseCounter);
+        apdIncidentReportDataParser.parse(d, inputstream, parseCounter);
 
         // assertThat(dataCrimeRepository.count()).isEqualTo(9);
     }

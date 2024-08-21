@@ -52,6 +52,7 @@ public class APDIncidentReportDataParser extends DataParser {
         setTypes(source);
 
         textCategoryService.refreshTextCategoryIdMap();
+        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
         List<Element> elements = buildElements(dataJob, inputStream);
 
@@ -60,17 +61,32 @@ public class APDIncidentReportDataParser extends DataParser {
             List<Map<String, String>> rows = buildRowMap(element);
 
             for (Map<String, String> row : rows) {
-                // TODO: collect to single list - flatten
-
+                data.add(row);
             }
 
         }
-
 
         // TODO: batch send for geocoding
         // check if already geocoded -> should be...in geoCoderService
 
         // TODO: send to buildDataEntity
+    }
+
+    // remove apt component if it exists, and any excess spaces
+    public String formatAddress(String address) {
+        String[] splits = address.split(",");
+
+        if (splits.length == 2) {
+            return address.replaceAll("\\s+", " ");
+        }
+
+        // remove apt case throws off geocoding
+        if (splits.length == 3) {
+            return String.join(",", splits[0], splits[2])
+                    .replaceAll("\\s+", " ");
+        }
+
+        return address;
     }
 
     /*
@@ -89,6 +105,7 @@ public class APDIncidentReportDataParser extends DataParser {
             String offenseDate = element.select("tr:nth-of-type(3) td:nth-of-type(2)").text();
 
             String location = element.select("tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)").text();
+            location = formatAddress(location); // dropping apt
 
             int reportNumCounter = 1;
             Elements offensesTD = element.select("tr:nth-of-type(5) td:nth-of-type(2) td");
