@@ -99,7 +99,9 @@ public class GeocodeRepositoryTest {
         assertThat(geocodeRepository.count()).isEqualTo(3);
 
         // skip the non-existent
-        List<Geocode> results = geocodeRepository.findAllByAddressIn(addresses);
+        List<Geocode> results = geocodeRepository
+                .findBySourceAndAddressInAndLatitudeIsNotNullAndLongitudeIsNotNull(s, addresses);
+
         assertThat(results.get(0).getAddress()).isEqualTo(addresses.get(0));
         assertThat(results.get(1).getAddress()).isEqualTo(addresses.get(1));
         assertThat(results.get(2).getAddress()).isEqualTo(addresses.get(3));
@@ -134,5 +136,6 @@ public class GeocodeRepositoryTest {
         });
 
         // NB: transaction state is in flux after throws
+        // subsequent repo actions will break
     }
 }

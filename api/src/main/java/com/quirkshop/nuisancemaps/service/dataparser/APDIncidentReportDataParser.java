@@ -59,7 +59,7 @@ public class APDIncidentReportDataParser extends DataParser {
 
         List<Map<String, String>> rows = parseToRowMaps(elements);
 
-        geocode(rows);
+        geocode(source, rows);
 
         // send to buildDataEntity
 
@@ -112,17 +112,16 @@ public class APDIncidentReportDataParser extends DataParser {
         return data;
     }
 
-    public void geocode(List<Map<String, String>> data) {
+    public void geocode(Source source, List<Map<String, String>> data) {
 
         // batch send for geocoding
-        // TODO: check if already geocoded -> should be...in geoCoderService
         List<String> addresses = new ArrayList<String>();
         for (Map<String, String> row : data) {
             addresses.add(row.get("location"));
         }
 
         List<double[]> coordinates = geocoderService
-                .geocodeBatchRequest(addresses);
+            .geocodeBatchRequest(source, addresses);
 
         if (data.size() != coordinates.size()) {
             String err = String.format("Address count: %d does not match coordinate counts: %d",
