@@ -4,11 +4,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.Geocode;
+import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.repository.GeocodeRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +34,9 @@ public class GeocoderService {
     @Autowired
     private OkHttpClient client;
 
+    @Autowired
+    private GeocodeRepository geocodeRepository;
+
     private static final String MAPTILER_API_KEY = System.getenv("VITE_MAPTILER_API_KEY");
     private static final int MAPTILER_API_BATCH_SIZE = 50;
     private static final double MAPTILER_API_RELEVANCE_SCORE = .75;
@@ -34,7 +44,70 @@ public class GeocoderService {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     // batchRequest
-    public List<double[]> geocodeBatchRequest(List<String> addresses) {
+    public List<double[]> geocodeBatchRequest(Source source, List<String> addresses) {
+
+        // address->coord map
+        HashMap<String, double[]> geocodeMap = getCachedAddresses(source, addresses);
+
+        // filter & collect new addresses with no saved coordinates
+        Set<String> addressSet = new HashSet<String>(); // ensure we don't request dupes
+        for (String address : addresses) {
+            if (!geocodeMap.containsKey(address)) {
+                addressSet.add(address);
+            }
+        }
+
+        // fetchBatch call service
+        List<String> newAddresses = new ArrayList<String>(addressSet);
+        List<double[]> newCoordinates = fetchBatch(newAddresses);
+
+        // update geocodeMap with fetched new coordinates
+        HashMap<String, Geocode> newGeocodes = new HashMap<String, Geocode>();
+
+        for (int i = 0; i < newCoordinates.size(); i++) {
+            String address = newAddresses.get(i);
+            double[] coords = newCoordinates.get(i);
+
+            // NB: we don't return it from geoCoderService
+            // but do save addresses with null coordinates to track for later
+            // lookup (newGeocodes). Null values are not pulled in getCachedAddresses.
+            Geocode geocode = new Geocode(source, address, null, null);
+
+            if (coords != null) {
+                geocode = new Geocode(source, address, coords[0], coords[1]);
+                geocodeMap.putIfAbsent(address, coords);
+            }
+
+            newGeocodes.put(address, geocode);
+        }
+
+        geocodeRepository.saveAll(newGeocodes.values()); // add to cache
+
+        // collect addresses with coords
+        // loop our original inputs and populate to ensure order (HashMap geocodeMap)
+        ArrayList<double[]> results = new ArrayList<double[]>();
+        for (String address : addresses) {
+            results.add(geocodeMap.get(address));
+        }
+
+        return results;
+    }
+
+    public HashMap<String, double[]> getCachedAddresses(Source source, List<String> addresses) {
+
+        List<Geocode> geocodeCached = geocodeRepository
+                .findBySourceAndAddressInAndLatitudeIsNotNullAndLongitudeIsNotNull(source, addresses);
+
+        HashMap<String, double[]> geocodeMap = new HashMap<String, double[]>();
+        for (Geocode geocode : geocodeCached) {
+            double[] latlng = { geocode.getLatitude(), geocode.getLongitude() };
+            geocodeMap.put(geocode.getAddress(), latlng);
+        }
+
+        return geocodeMap;
+    }
+
+    public List<double[]> fetchBatch(List<String> addresses) {
 
         List<double[]> results = new ArrayList<double[]>();
 
