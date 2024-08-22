@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "geocode", indexes = { @Index(name = "idx_address", columnList = "address") }, uniqueConstraints = {
+@Table(name = "geocode", indexes = { @Index(name = "idx_source_address", columnList = "source_id, address") }, uniqueConstraints = {
         @UniqueConstraint(columnNames = { "source_id", "address" }) })
 public class Geocode {
 
