@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -88,7 +87,6 @@ public class GeocoderService {
             log.info("[GeocoderService] duplicate: " + e.getMessage());
         }
 
-
         // collect addresses with coords
         // loop our original inputs and populate to ensure order (HashMap geocodeMap)
         ArrayList<double[]> results = new ArrayList<double[]>();
@@ -145,7 +143,7 @@ public class GeocoderService {
                 }
 
                 String fetchStatus = String.format("[GeocoderService] fetching batch: [%d / %d]",
-                                                   numFetch, (int) Math.ceil(addresses.size() / batchURLs.size()));
+                        numFetch, (int) Math.ceil(addresses.size() / batchURLs.size()));
                 log.info(fetchStatus);
 
                 // response
@@ -185,6 +183,31 @@ public class GeocoderService {
                 JsonNode feature = item.at("/features").get(0);
                 double relevance = feature.at("/relevance").asDouble();
 
+                // Criteria
+                //
+                // 1. has "address" field - otherwise accuracy suffers wildly
+                // even though correct "street"
+                //
+                // 2. precision <= 6-8 coordinate digits: anything greater is a derived
+                // coordinate; answer is almost always off
+                //
+                // *. Relevance is more about answer quality versus relevance to
+                // query. 95% relevance score on street, but without numeric
+                // address field it's still too inaccurate.
+
+                if (!feature.has("address")) {
+                    coordinates.add(null);
+                    continue;
+                }
+
+                String latString = feature.at("/geometry/coordinates/0").asText();
+                String lngString = feature.at("/geometry/coordinates/1").asText();
+
+                if (!(validPrecision(latString) && validPrecision(lngString))) {
+                    coordinates.add(null);
+                    continue;
+                }
+
                 if (relevance > MAPTILER_API_RELEVANCE_SCORE) {
                     double lng = feature.at("/geometry/coordinates/0").asDouble();
                     double lat = feature.at("/geometry/coordinates/1").asDouble();
@@ -197,9 +220,8 @@ public class GeocoderService {
                 log.info("[GeocoderServce] parseResponse ERR: " + e.getMessage());
             }
 
-            // need a placeholder to maintain alignment with batch.
-            // if coordinates don't exceed relevance threshold; don't exist, or
-            // there's some parsing error
+            // need a placeholder to maintain alignment with batch; if
+            // coordinates trip some criteria; don't exist, parsing error
             coordinates.add(null);
         }
 
@@ -225,6 +247,20 @@ public class GeocoderService {
         }
 
         return formattedAddresses;
+    }
+
+    // result is almost always better when coordinates are less precise;
+    // implies entity wasn't calculated / averaged
+    private boolean validPrecision(String coord) {
+        final int MAX_PRECISION = 8;
+        int precision = 0;
+        int decimalIndex = coord.indexOf(".");
+
+        if (decimalIndex > 0) {
+            precision = coord.length() - decimalIndex - 1;
+        }
+
+        return precision <= MAX_PRECISION;
     }
 
     public String buildMapTilerURL(List<String> addresses, String MAPTILER_API_KEY)
