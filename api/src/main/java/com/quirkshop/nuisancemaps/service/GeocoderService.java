@@ -20,6 +20,7 @@ import com.quirkshop.nuisancemaps.repository.GeocodeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -81,7 +82,12 @@ public class GeocoderService {
             newGeocodes.put(address, geocode);
         }
 
-        geocodeRepository.saveAll(newGeocodes.values()); // add to cache
+        try {
+            geocodeRepository.saveAll(newGeocodes.values()); // add to cache
+        } catch (DataIntegrityViolationException e) {
+            log.info("[GeocoderService] duplicate: " + e.getMessage());
+        }
+
 
         // collect addresses with coords
         // loop our original inputs and populate to ensure order (HashMap geocodeMap)
@@ -108,6 +114,8 @@ public class GeocoderService {
     }
 
     public List<double[]> fetchBatch(List<String> addresses) {
+        int numFetch = 1;
+        log.info("[GeocoderService] fetchBatch: total num fetch: " + addresses.size());
 
         List<double[]> results = new ArrayList<double[]>();
 
@@ -136,6 +144,10 @@ public class GeocoderService {
                     throw new IOException("Unexpected code " + response);
                 }
 
+                String fetchStatus = String.format("[GeocoderService] fetching batch: [%d / %d]",
+                                                   numFetch, (int) Math.ceil(addresses.size() / batchURLs.size()));
+                log.info(fetchStatus);
+
                 // response
                 InputStream inputStream = response.body().byteStream();
                 List<double[]> coordinates = parseResponse(inputStream);
@@ -143,12 +155,11 @@ public class GeocoderService {
 
             } catch (Exception e) {
                 log.info("[GeocoderServce] geocodeBatchRequest: ERR" + e.getMessage());
-                // dataJob.setStatus(DataJobStatus.FETCH_ERROR);
-                // dataJobRepository.save(dataJob);
                 e.printStackTrace();
             }
 
             batchURLs.clear();
+            numFetch++;
         }
 
         return results;
@@ -159,6 +170,8 @@ public class GeocoderService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode items = objectMapper.readTree(inputStream);
+
+        log.info("[GeocoderService] parsing items: " + items.size());
         for (JsonNode item : items) {
 
             try {
