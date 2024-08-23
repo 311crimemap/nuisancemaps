@@ -28,6 +28,8 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     List<DataJob> findAllByOrderByUpdatedAtDesc(PageRequest n);
 
     /* return highest offset job from most recent session per source */
+    DataJob findTopBySourceIdOrderBySessionIdDescParamOffsetDescIdDesc(Integer sourceId);
+
     DataJob findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(Integer sourceId);
 
     DataJob findTopBySourceIdOrderByParamOffsetDesc(Integer source_id);

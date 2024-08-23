@@ -61,9 +61,10 @@ public class DataJobService {
     @Transactional
     private DataJob createNextDataJob(Source source) throws UnsupportedEncodingException {
 
+
         // NB: Locked
         DataJob maxSessionIdOffsetDataJob = dataJobRepository
-                .findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(source.getId());
+                .findTopBySourceIdOrderBySessionIdDescParamOffsetDescIdDesc(source.getId());
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {
