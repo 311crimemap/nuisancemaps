@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
@@ -46,6 +47,9 @@ public class APDIncidentReportDataParser extends DataParser {
 
     @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+
+        log.info(String.format("[APDIncidentReport] parse() | DataJob: %s", dataJob.getId()));
+
         // sanity checks
         int numRows = 0;
         int numBatch = 0;
@@ -98,6 +102,8 @@ public class APDIncidentReportDataParser extends DataParser {
 
     public List<Map<String, String>> parseToRowMaps(List<Element> elements) {
 
+        log.info(String.format("[APDIncidentReport] parseToRowMaps()"));
+
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
         for (Element element : elements) {
@@ -114,6 +120,8 @@ public class APDIncidentReportDataParser extends DataParser {
 
     public void geocode(Source source, List<Map<String, String>> data) {
 
+        log.info(String.format("[APDIncidentReport] geocode()"));
+
         // batch send for geocoding
         List<String> addresses = new ArrayList<String>();
         for (Map<String, String> row : data) {
@@ -121,7 +129,7 @@ public class APDIncidentReportDataParser extends DataParser {
         }
 
         List<double[]> coordinates = geocoderService
-            .geocodeBatchRequest(source, addresses);
+                .geocodeBatchRequest(source, addresses);
 
         if (data.size() != coordinates.size()) {
             String err = String.format("Address count: %d does not match coordinate counts: %d",
@@ -148,7 +156,8 @@ public class APDIncidentReportDataParser extends DataParser {
         String[] splits = address.split(",");
 
         if (splits.length == 2) {
-            return address.replaceAll("\\s+", " ");
+            return address
+                    .replaceAll("\\s+", " ");
         }
 
         // remove apt case throws off geocoding
@@ -185,7 +194,9 @@ public class APDIncidentReportDataParser extends DataParser {
 
                 Map<String, String> row = new HashMap<String, String>();
 
-                String reportCategory = offensesTD.get(i).text().trim();
+                String reportCategory = offensesTD.get(i).text()
+                        .replaceAll("\u00A0", " ")
+                        .trim();
 
                 row.put("reportNum", reportNum + "-" + String.valueOf(reportNumCounter));
                 row.put("reportCategory", reportCategory);
