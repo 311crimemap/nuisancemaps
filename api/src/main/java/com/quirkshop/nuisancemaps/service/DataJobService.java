@@ -116,6 +116,9 @@ public class DataJobService {
                     prevDataJob.getOrderKey());
 
             dataJob.setUrl(url);
+            // TODO: refactor this to buildNextParamters() logic and state is
+            // getting convoluted here
+            dataJob.setParameters(prevDataJob.getParameters());
         }
 
         dataJobRepository.save(dataJob);
