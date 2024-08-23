@@ -193,6 +193,27 @@ public class GeocoderService {
         return coordinates;
     }
 
+    // to help geocoder
+    // remove "BLOCK" - much more accurate to just use address
+    // remove forward-slash: these are interpreted as a subpath route in api
+    //
+    private List<String> formatAddresses(List<String> addresses) {
+        List<String> formattedAddresses = new ArrayList<String>();
+
+        for (String address : addresses) {
+            if (address == null)
+                continue;
+
+            String formattedAddress = address
+                    .replaceAll("BLOCK", "")
+                    .replaceAll("/", "");
+
+            formattedAddresses.add(formattedAddress);
+        }
+
+        return formattedAddresses;
+    }
+
     public String buildMapTilerURL(List<String> addresses, String MAPTILER_API_KEY)
             throws UnsupportedEncodingException {
 
@@ -202,7 +223,7 @@ public class GeocoderService {
 
         final String centerLngLat = "-97.733330,30.266666";
 
-        String locations = String.join(";", addresses) + ".json";
+        String locations = String.join(";", formatAddresses(addresses)) + ".json";
 
         String baseURL = String.format("https://api.maptiler.com/geocoding/%s",
                 locations);
