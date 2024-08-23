@@ -16,6 +16,8 @@ import com.quirkshop.nuisancemaps.model.Geocode;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.GeocodeRepository;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +85,7 @@ public class GeocoderService {
          */
         List<String> newAddresses = new ArrayList<String>(addressSet);
 
-        List<double[]> newCoordinates = fetchBatch(newAddresses);
+        List<double[]> newCoordinates = fetchBatch(source, newAddresses);
 
         // update geocodeMap with fetched new coordinates
         HashMap<String, Geocode> newGeocodes = new HashMap<String, Geocode>();
@@ -148,7 +150,7 @@ public class GeocoderService {
         return missingCoordinates;
     }
 
-    public List<double[]> fetchBatch(List<String> addresses) {
+    public List<double[]> fetchBatch(Source source, List<String> addresses) {
         int numFetch = 1;
         log.info("[GeocoderService] fetchBatch: total num fetch: " + addresses.size());
 
@@ -170,7 +172,7 @@ public class GeocoderService {
             // request
             try {
 
-                String url = buildMapTilerURL(batchURLs, MAPTILER_API_KEY);
+                String url = buildMapTilerURL(source, batchURLs, MAPTILER_API_KEY);
                 Builder requestBuilder = new Request.Builder().url(url);
                 Request request = requestBuilder.build();
                 Response response = client.newCall(request).execute();
@@ -300,14 +302,16 @@ public class GeocoderService {
         return precision <= MAX_PRECISION;
     }
 
-    public String buildMapTilerURL(List<String> addresses, String MAPTILER_API_KEY)
+    public String buildMapTilerURL(Source source, List<String> addresses, String MAPTILER_API_KEY)
             throws UnsupportedEncodingException {
 
         if (addresses.size() > MAPTILER_API_BATCH_SIZE) {
             throw new Error("Exceed API Batch Size");
         }
 
-        final String centerLngLat = "-97.733330,30.266666";
+        // NB: both locale and proximity param is lng,lat
+        Point location = source.getLocale().getLocation();
+        final String centerLngLat = String.format("%f,%f", location.getX(), location.getY());
 
         String locations = String.join(";", formatAddresses(addresses)) + ".json";
 

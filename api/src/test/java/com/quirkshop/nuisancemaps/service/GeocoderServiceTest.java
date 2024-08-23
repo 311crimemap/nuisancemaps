@@ -29,6 +29,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -85,12 +88,18 @@ public class GeocoderServiceTest {
     @BeforeAll
     public void setUpOnce() throws IOException {
         // Source
+        GeometryFactory geometryFactory = new GeometryFactory();
+
         ObjectMapper objectMapper = new ObjectMapper();
         File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
         List<Source> sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
         });
+
         for (Source s : sources) {
             Locale locale = new Locale();
+            Coordinate coordinate = new Coordinate(-97.733330, 30.266666);
+            Point point = geometryFactory.createPoint(coordinate);
+            locale.setLocation(point);
             localeRepository.save(locale);
             s.setLocale(locale);
 
@@ -114,7 +123,8 @@ public class GeocoderServiceTest {
                 "2921 E 12TH ST AUSTIN 78702",
                 "7918 WEST GATE BLVD, AUSTIN 78745");
 
-        String url = geocoderService.buildMapTilerURL(addresses, MAPTILER_API_KEY);
+        Source source = sourceRepository.findOneBySourceConfigId(16);
+        String url = geocoderService.buildMapTilerURL(source, addresses, MAPTILER_API_KEY);
 
         String manualURL = "https://api.maptiler.com/geocoding/5629%20N%20LAMAR%20BLVD,%20AUSTIN%2078751;2921%20E%2012TH%20ST%20AUSTIN%2078702;7918%20WEST%20GATE%20BLVD,%20AUSTIN%2078745.json?language=en&country=us&proximity=-97.733330,30.266666&key="
                 + MAPTILER_API_KEY;
@@ -129,10 +139,11 @@ public class GeocoderServiceTest {
         List<String> addressesValid = Arrays.asList(new String[50]);
         List<String> addressesErr = Arrays.asList(new String[51]);
 
-        geocoderService.buildMapTilerURL(addressesValid, MAPTILER_API_KEY);
+        Source source = sourceRepository.findOneBySourceConfigId(16);
+        geocoderService.buildMapTilerURL(source, addressesValid, MAPTILER_API_KEY);
 
         assertThatThrownBy(() -> {
-            geocoderService.buildMapTilerURL(addressesErr, MAPTILER_API_KEY);
+            geocoderService.buildMapTilerURL(source, addressesErr, MAPTILER_API_KEY);
         }).isInstanceOf(Error.class)
                 .hasMessage("Exceed API Batch Size");
     }
