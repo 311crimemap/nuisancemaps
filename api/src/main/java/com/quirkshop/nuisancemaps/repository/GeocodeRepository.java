@@ -14,4 +14,7 @@ public interface GeocodeRepository extends CrudRepository<Geocode, Integer> {
     List<Geocode> findBySourceAndAddressInAndLatitudeIsNotNullAndLongitudeIsNotNull(Source source,
             List<String> address);
 
+    List<Geocode> findBySourceAndAddressInAndLatitudeIsNullAndLongitudeIsNull(Source source,
+            List<String> address);
+
 }

@@ -46,19 +46,43 @@ public class GeocoderService {
     // batchRequest
     public List<double[]> geocodeBatchRequest(Source source, List<String> addresses) {
 
-        // address->coord map
-        HashMap<String, double[]> geocodeMap = getCachedAddresses(source, addresses);
+        /*
+         * PREP
+         */
 
-        // filter & collect new addresses with no saved coordinates
+        // address -> coord map
+        HashMap<String, double[]> geocodeMap = getCachedAddresses(source, addresses);
+        HashSet<String> missingCoordinates = getAddressesNoCoordinates(source, addresses);
+
+        // 1. filter out addresses with null coordinates (we've tried, no valid data)
+        // 2. collect any new addresses
         Set<String> addressSet = new HashSet<String>(); // ensure we don't request dupes
         for (String address : addresses) {
+
+            // Skip address: we've tried this address, but there were no viable
+            // coordinates
+            if (missingCoordinates.contains(address))
+                continue;
+
+            // new address, add for fetch
             if (!geocodeMap.containsKey(address)) {
                 addressSet.add(address);
             }
         }
 
-        // fetchBatch call service
+        String logRecords = String.format(
+                "[GeocoderService] Batch Dataset: numInitial: %d | numCached: %d | numFiltered: %d | " +
+                        "numQuery: %d | (NB: does not count dupes)",
+                addresses.size(), geocodeMap.size(), missingCoordinates.size(), addressSet.size());
+        log.info(logRecords);
+
+        /*
+         * FETCH
+         * fetchBatch: calls service
+         * addressSet: set of new addresses to be geocoded
+         */
         List<String> newAddresses = new ArrayList<String>(addressSet);
+
         List<double[]> newCoordinates = fetchBatch(newAddresses);
 
         // update geocodeMap with fetched new coordinates
@@ -82,7 +106,7 @@ public class GeocoderService {
         }
 
         try {
-            geocodeRepository.saveAll(newGeocodes.values()); // add to cache
+            geocodeRepository.saveAll(newGeocodes.values()); // add to Geocode cache table
         } catch (DataIntegrityViolationException e) {
             log.info("[GeocoderService] duplicate: " + e.getMessage());
         }
@@ -109,6 +133,19 @@ public class GeocoderService {
         }
 
         return geocodeMap;
+    }
+
+    public HashSet<String> getAddressesNoCoordinates(Source source, List<String> addresses) {
+
+        List<Geocode> geocodes = geocodeRepository
+                .findBySourceAndAddressInAndLatitudeIsNullAndLongitudeIsNull(source, addresses);
+
+        HashSet<String> missingCoordinates = new HashSet<String>();
+        for (Geocode geocode : geocodes) {
+            missingCoordinates.add(geocode.getAddress());
+        }
+
+        return missingCoordinates;
     }
 
     public List<double[]> fetchBatch(List<String> addresses) {
