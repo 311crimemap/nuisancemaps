@@ -1,10 +1,8 @@
 package com.quirkshop.nuisancemaps.service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class SourceLoaderService {
@@ -51,57 +48,5 @@ public class SourceLoaderService {
         mappingRepository.save(source.getMapping());
         source = sourceRepository.save(source);
         return source;
-    }
-
-    public Integer fetchCount(Source source) {
-        final String RESPONSE_PREFIX = "count_";
-
-        String sourceURL = source.getUrl();
-
-        Mapping mapping = source.getMapping();
-        if (mapping == null)
-            return null;
-
-        String id = mapping.getReportNum().getPointer();
-        if (id == null)
-            return null;
-
-        // replace for field name vs json path
-        id = id.replaceFirst("/", "");
-        String jsonResponse;
-        JsonNode rootNode = null;
-
-        try {
-            String url = buildCountURL(sourceURL, id);
-            jsonResponse = restTemplate.getForObject(url, String.class);
-            rootNode = objectMapper.readTree(jsonResponse);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        // parse
-        Integer numRecords = null;
-
-        try {
-            JsonNode node = rootNode.get(0);
-            numRecords = node.at("/" + RESPONSE_PREFIX + id).asInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return numRecords;
-    }
-
-    public String buildCountURL(String sourceURL, String id) throws UnsupportedEncodingException {
-        // 'https://data.austintexas.gov/resource/xwdj-i9he.json?$select=count(sr_number)'
-        String countIdString = String.format("count('%s')", id.replaceFirst("/", ""));
-        String url = UriComponentsBuilder.fromUriString(sourceURL)
-                .queryParam("$select", countIdString)
-                .build()
-                .toUriString();
-
-        return url;
     }
 }

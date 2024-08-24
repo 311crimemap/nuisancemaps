@@ -9,7 +9,7 @@ import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -55,18 +55,8 @@ public class Source {
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
 
-    @Column(name = "data_job_url_type")
-    private DataJobURLType dataJobURLType;
-
-    public DataJobURLType getDataJobURLType() {
-        return dataJobURLType;
-    }
-
-    public void setDataJobURLType(DataJobURLType dataJobURLType) {
-        this.dataJobURLType = dataJobURLType;
-    }
-
-    private Integer numRecords;
+    @Column(name = "data_job_configurator_type")
+    private DataJobConfiguratorType dataJobConfiguratorType;
 
     @OneToOne // NB: creates unique constraint mapping_id
     @JoinColumn(name = "mapping_id", nullable = false)
@@ -97,14 +87,15 @@ public class Source {
     }
 
     public Source(Locale locale, String category, String description, String url,
-            DataParserType dataParserType, DataProcessType dataProcessType, DataJobURLType dataJobURLType) {
+            DataParserType dataParserType, DataProcessType dataProcessType,
+            DataJobConfiguratorType dataJobConfiguratorType) {
         this.locale = locale;
         this.category = category;
         this.description = description;
         this.url = url;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
-        this.dataJobURLType = dataJobURLType;
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
@@ -174,14 +165,6 @@ public class Source {
         this.cookie = cookie;
     }
 
-    public Integer getNumRecords() {
-        return numRecords;
-    }
-
-    public void setNumRecords(Integer numRecords) {
-        this.numRecords = numRecords;
-    }
-
     public DataParserType getDataParserType() {
         return dataParserType;
     }
@@ -238,6 +221,14 @@ public class Source {
         this.mapping = mapping;
     }
 
+    public DataJobConfiguratorType getDataJobConfiguratorType() {
+        return dataJobConfiguratorType;
+    }
+
+    public void setDataJobConfiguratorType(DataJobConfiguratorType dataJobConfiguratorType) {
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
+    }
+
     public SourceDTO toDTO() {
         SourceDTO sourceDTO = new SourceDTO(this.getId(),
                 this.getSourceConfigId(),
@@ -246,8 +237,7 @@ public class Source {
                 this.getDescription(),
                 this.getDataParserType(),
                 this.getDataProcessType(),
-                this.getDataJobURLType(),
-                this.getNumRecords());
+                this.getDataJobConfiguratorType());
         return sourceDTO;
     }
 

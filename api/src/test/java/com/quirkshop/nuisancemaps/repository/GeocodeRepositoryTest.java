@@ -11,13 +11,9 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.Geocode;
 import com.quirkshop.nuisancemaps.model.Locale;
-import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,9 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;

@@ -18,6 +18,8 @@ import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorFactory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
@@ -97,9 +99,12 @@ public class DataProcessStrategyFactoryTest {
         when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
 
         // DataJob
-        DataJob datajob = new DataJob(LocalDateTime.now(), s, "id");
-        datajob.initURL();
-        assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
+        DataJob dataJob = new DataJob(LocalDateTime.now(), s, "id");
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(s.getDataJobConfiguratorType());
+        dataJob = dataJobConfigurator.initialize(dataJob);
+
+        assertThat(dataJob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
 
         // Mock okHttpClient to return the jsonFixtureContent if it ever makes a
@@ -124,14 +129,14 @@ public class DataProcessStrategyFactoryTest {
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
                 .getDataProcessStrategy(DataProcessType.MEMORY);
 
-        InputStream inputStream2 = dataProcessStrategy.fetchData(datajob);
+        InputStream inputStream2 = dataProcessStrategy.fetchData(dataJob);
 
         try (Scanner scanner = new Scanner(inputStream2, StandardCharsets.UTF_8.name())) {
             String result = scanner.useDelimiter("\\A").next();
             assertThat(result).isEqualTo(jsonFixtureContent);
         }
 
-        assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.FETCH_COMPLETE);
+        assertThat(dataJob.getStatus()).isEqualTo(DataJobStatus.FETCH_COMPLETE);
 
         // int num = dataJobRequestService.createData();
 
@@ -163,8 +168,10 @@ public class DataProcessStrategyFactoryTest {
         when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
 
         // DataJob
-        DataJob datajob = new DataJob(LocalDateTime.now(), s, "reportNum");
-        datajob.initURL();
+        DataJob dataJob = new DataJob(LocalDateTime.now(), s, "reportNum");
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(s.getDataJobConfiguratorType());
+        dataJob = dataJobConfigurator.initialize(dataJob);
 
         // Mock okHttpClient to return the jsonFixtureContent if it ever makes a
         // request to url; the client.newCall(), call and execute() are set to
@@ -187,7 +194,7 @@ public class DataProcessStrategyFactoryTest {
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
                 .getDataProcessStrategy(DataProcessType.MEMORY);
 
-        InputStream inputStream2 = dataProcessStrategy.fetchData(datajob);
+        InputStream inputStream2 = dataProcessStrategy.fetchData(dataJob);
 
         try (Scanner scanner = new Scanner(inputStream2, StandardCharsets.UTF_8.name())) {
             String result = scanner.useDelimiter("\\A").next();

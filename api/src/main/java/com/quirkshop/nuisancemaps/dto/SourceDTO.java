@@ -2,7 +2,7 @@ package com.quirkshop.nuisancemaps.dto;
 
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 
 public class SourceDTO {
 
@@ -13,12 +13,11 @@ public class SourceDTO {
     private String url;
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
-    private DataJobURLType dataJobURLType;
-    private Integer numRecords;
+    private DataJobConfiguratorType dataJobConfiguratorType;
 
     public SourceDTO(Integer id, Integer sourceConfigId, String category, String url, String description,
-            DataParserType dataParserType, DataProcessType dataProcessType, DataJobURLType dataJobURLType,
-            Integer numRecords) {
+            DataParserType dataParserType, DataProcessType dataProcessType,
+            DataJobConfiguratorType dataJobConfiguratorType) {
         this.id = id;
         this.sourceConfigId = sourceConfigId;
         this.category = category;
@@ -26,8 +25,7 @@ public class SourceDTO {
         this.description = description;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
-        this.dataJobURLType = dataJobURLType;
-        this.numRecords = numRecords;
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
     }
 
     public Integer getId() {
@@ -78,14 +76,6 @@ public class SourceDTO {
         this.dataProcessType = dataProcessType;
     }
 
-    public Integer getNumRecords() {
-        return numRecords;
-    }
-
-    public void setNumRecords(Integer numRecords) {
-        this.numRecords = numRecords;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -94,12 +84,11 @@ public class SourceDTO {
         this.url = url;
     }
 
-    public DataJobURLType getDataJobURLType() {
-        return dataJobURLType;
+    public DataJobConfiguratorType getDataJobConfiguratorType() {
+        return dataJobConfiguratorType;
     }
 
-    public void setDataJobURLType(DataJobURLType dataJobURLType) {
-        this.dataJobURLType = dataJobURLType;
+    public void setDataJobConfiguratorType(DataJobConfiguratorType dataJobConfiguratorType) {
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
     }
-
 }

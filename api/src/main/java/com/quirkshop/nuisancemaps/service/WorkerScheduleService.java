@@ -2,10 +2,8 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
-import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
@@ -127,43 +125,6 @@ public class WorkerScheduleService {
                 datajob.getNumFetched(),
                 datajob.getNumProcessed());
         log.info(logDone);
-
-        // Fetch Num records on initial session
-        if (datajob.getParamOffset() == 0) {
-            //updateSourceNumRecords(source);
-        }
-    }
-
-    /*
-     * Source numRecords
-     */
-
-    public void updateSourceNumRecords(Source source) {
-
-        if (source.getDataParserType().equals(DataParserType.CSV))
-            return;
-
-        log.info("[SourceLoaderService] FetchCount ....");
-
-        Integer numRecords = sourceLoaderService.fetchCount(source);
-        if (numRecords == null) {
-            String logErr = String.format("[SourceLoaderService] FetchCount Error for Source: %s | id :%s ",
-                    source.getDescription(),
-                    source.getId());
-            log.info(logErr);
-            return;
-        }
-
-        String updateNumRecords = String.format("[SourceLoaderService] FetchCount %s -> %s",
-                source.getNumRecords(),
-                numRecords);
-        log.info(updateNumRecords);
-
-        if (numRecords != null) {
-            source.setNumRecords(numRecords);
-            source.setUpdatedAt(LocalDateTime.now());
-            sourceRepository.save(source);
-        }
     }
 
 }

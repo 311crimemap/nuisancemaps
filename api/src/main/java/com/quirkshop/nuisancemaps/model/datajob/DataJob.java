@@ -1,6 +1,5 @@
 package com.quirkshop.nuisancemaps.model.datajob;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -8,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -73,10 +71,10 @@ public class DataJob {
     private HashMap<String, Object> parameters;
 
     private int paramLimit;
-    private int paramOffset;             //csv: readLines
+    private int paramOffset; // csv: readLines
     private String orderKey;
-    private Integer numFetched;          //csv: valid lines (skip malformed rows)
-    private Integer numProcessed;        //csv: valid entity save to DB
+    private Integer numFetched; // csv: valid lines (skip malformed rows)
+    private Integer numProcessed; // csv: valid entity save to DB
     private boolean forceDownload = false;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -107,25 +105,19 @@ public class DataJob {
         this.updatedAt = now;
     }
 
-
-    public void initURL() {
-
-        Source source = this.getSource();
-
-        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
-
-        String url = dataJobURL.buildInitURL(this);
-
-        this.setUrl(url);
-    }
-
-    public String buildNextURL() {
-
-        Source source = this.getSource();
-
-        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
-
-        return dataJobURL.buildNextURL(this);
+    public DataJob(DataJob dataJob) {
+        this.sessionId = dataJob.getSessionId();
+        ;
+        this.source = dataJob.getSource();
+        this.orderKey = dataJob.getOrderKey();
+        this.parameters = dataJob.getParameters();
+        this.url = dataJob.getUrl();
+        this.paramLimit = dataJob.getParamLimit();
+        this.paramOffset = dataJob.getParamOffset();
+        this.status = DataJobStatus.QUEUED;
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     public String buildFilename() throws MalformedURLException {
@@ -135,12 +127,21 @@ public class DataJob {
         String hostName = _url.getHost().replaceAll("/", "-");
         String filePath = _url.getPath().split("\\.")[0]
                 .replaceAll("/", "-").substring(1); // skip the initial path prefix '/'
+        String query = _url.getQuery();
+
+        // append query string to filename to differentiate dataJob / source
+        // if no query
+        String params = "";
+        if (query != null) {
+            params = "-" + query.replaceAll("&", "__").replaceAll("=", "_");
+        }
+
         String fileExtension = source.getDataParserType().toString().toLowerCase();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
         String formattedDateTime = this.getSessionId().format(formatter);
 
-        String fileName = String.join("-", hostName, filePath,
+        String fileName = String.join("-", hostName, filePath + params,
                 formattedDateTime + "." + fileExtension);
 
         return fileName;
