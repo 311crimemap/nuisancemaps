@@ -19,7 +19,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "text_category", uniqueConstraints = {
-        @UniqueConstraint(name = "UniqueDataTypeAndTextAndLabel", columnNames = { "dataType", "text", "category_id" })
+        @UniqueConstraint(name = "UniqueDataTypeAndText", columnNames = { "dataType", "text" })
 }, indexes = {
         @Index(name = "idx_data_type_text_category", columnList = "dataType")
 })
