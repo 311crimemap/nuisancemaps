@@ -17,6 +17,9 @@ public class APDIncidentReportURL implements DataJobURL {
     public String buildInitURL(DataJob dataJob) {
 
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
 
         String startDate = "07/01/2024"; // last csv contains data from 07/06/2024
 
@@ -29,6 +32,10 @@ public class APDIncidentReportURL implements DataJobURL {
     public String buildNextURL(DataJob dataJob) {
 
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
         String startDate = (String) parameters
@@ -56,6 +63,9 @@ public class APDIncidentReportURL implements DataJobURL {
     public String buildAPDParamsURL(DataJob dataJob) {
 
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
 
         String paramStartDate = (String) parameters.get("paramStartDate");
         int paramNumDays = (int) parameters.get("paramNumDays");

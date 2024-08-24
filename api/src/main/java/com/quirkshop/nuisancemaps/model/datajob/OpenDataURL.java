@@ -16,6 +16,10 @@ public class OpenDataURL implements DataJobURL {
     public String buildInitURL(DataJob dataJob) {
         // if parameters in the initial case are somehow set prior, use those
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
+
         parameters.putIfAbsent("paramLimit", PARAM_LIMIT);
         parameters.putIfAbsent("paramOffset", 0);
 
@@ -25,6 +29,10 @@ public class OpenDataURL implements DataJobURL {
     public String buildNextURL(DataJob dataJob) {
 
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
+
         parameters.put("paramLimit", (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT));
         parameters.put("paramOffset", (Integer) parameters.getOrDefault("paramOffset", 0) + PARAM_LIMIT);
 
@@ -33,6 +41,10 @@ public class OpenDataURL implements DataJobURL {
 
     public String buildOpenDataParamsURL(DataJob dataJob) {
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
+
         int paramLimit = (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT);
         int paramOffset = (Integer) parameters.getOrDefault("paramOffset", 0);
 
