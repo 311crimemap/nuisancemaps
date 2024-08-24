@@ -52,6 +52,10 @@ public class DataEntityMappingService {
         Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
         Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
 
+        // format
+        reportCategory = formatString(reportCategory);
+        location = formatString(location);
+
         // validate
         validateReportCategory(source, reportCategory);
 
@@ -75,6 +79,22 @@ public class DataEntityMappingService {
     /*
      * helpers
      */
+
+    // consistent format for Strings:
+    // - remove any nbsp;
+    // - collapse any additional spaces like html
+    //
+    // For address, location and reportCategory: used in other lookups /
+    // "caches" so ensure consistent match is important (location / Geocode,
+    // reportCategory / TextCategory)
+    private String formatString(String input) {
+        if (input == null)
+            return input;
+
+        return input
+                .replaceAll("\u00A0", " ")
+                .replaceAll("\\s+", " ");
+    }
 
     private void setDataEntityFields(IDataEntity dataEntity, String report_num, String reportCategory,
             String description, String location, Category orgCategory,

@@ -260,7 +260,7 @@ public class APDIncidentReportDataParser extends DataParser {
 
         batchSave(dataJob.getSource(), parseCounter);
 
-        log.info(String.format("[APDIncidentREportDataParser] dataJob: %d | numBatch: %d | numRows: %d",
+        log.info(String.format("[APDIncidentReportDataParser] dataJob: %d | numBatch: %d | numRows: %d",
                 dataJob.getId(), numBatch, numRows));
 
         dataJobRepository.save(dataJob);

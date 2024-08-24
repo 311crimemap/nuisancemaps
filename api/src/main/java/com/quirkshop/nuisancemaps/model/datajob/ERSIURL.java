@@ -13,6 +13,9 @@ public class ERSIURL implements DataJobURL {
     public String buildInitURL(DataJob dataJob) {
 
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
 
         String startDate = "07/01/2024"; // last csv contains data from 07/06/2024
         String endDate = buildEndDate(LocalDate.now());
@@ -28,6 +31,10 @@ public class ERSIURL implements DataJobURL {
     // date range should remain
     public String buildNextURL(DataJob dataJob) {
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
+
         int nextVal = (int) parameters.getOrDefault("paramMapServer", 0) + 1;
         parameters.put("paramMapServer", nextVal);
 
@@ -46,6 +53,9 @@ public class ERSIURL implements DataJobURL {
 
     public String buildERSIParamsURL(DataJob dataJob) {
         HashMap<String, Object> parameters = dataJob.getParameters();
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
 
         String paramStartDate = (String) parameters.get("paramStartDate");
         String paramEndDate= (String) parameters.get("paramEndDate");

@@ -199,3 +199,34 @@ OpenAI Crime Example
 Submit
 
 `curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
+
+
+## Helpful Queries
+
+Sometimes duplicate TextCategory records might occur (shouldn't with newly
+fixed constraints)...but just in case:
+
+Quick query to count duplicates and return the id and category.
+
+Decide which label is incorrect and delete the record from the table.
+
+```
+SELECT
+    tc.text,
+    COUNT(*) as occurrence_count,
+    STRING_AGG(tc.id::text, ', ') AS ids,
+    STRING_AGG(c.id::text, ', ') AS category_ids,
+    STRING_AGG(c.text, ', ') AS category_names
+FROM
+    text_category tc
+JOIN
+    category c ON tc.category_id = c.id
+GROUP BY
+    tc.text
+HAVING
+    COUNT(*) > 1
+ORDER BY
+    occurrence_count DESC,
+    tc.text;
+
+```
