@@ -130,7 +130,7 @@ public class WorkerScheduleService {
 
         // Fetch Num records on initial session
         if (datajob.getParamOffset() == 0) {
-            updateSourceNumRecords(source);
+            //updateSourceNumRecords(source);
         }
     }
 
