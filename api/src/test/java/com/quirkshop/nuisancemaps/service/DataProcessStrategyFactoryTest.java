@@ -98,7 +98,7 @@ public class DataProcessStrategyFactoryTest {
 
         // DataJob
         DataJob datajob = new DataJob(LocalDateTime.now(), s, "id");
-        datajob.initURL();
+        datajob.initDataJobParameters();;
         assertThat(datajob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
 
@@ -164,7 +164,7 @@ public class DataProcessStrategyFactoryTest {
 
         // DataJob
         DataJob datajob = new DataJob(LocalDateTime.now(), s, "reportNum");
-        datajob.initURL();
+        datajob.initDataJobParameters();;
 
         // Mock okHttpClient to return the jsonFixtureContent if it ever makes a
         // request to url; the client.newCall(), call and execute() are set to

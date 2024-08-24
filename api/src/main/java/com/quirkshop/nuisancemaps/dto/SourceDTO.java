@@ -2,7 +2,7 @@ package com.quirkshop.nuisancemaps.dto;
 
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobParametersType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 
 public class SourceDTO {
 
@@ -13,11 +13,12 @@ public class SourceDTO {
     private String url;
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
-    private DataJobParametersType dataJobParametersType;
+    private DataJobConfiguratorType dataJobConfiguratorType;
     private Integer numRecords;
 
     public SourceDTO(Integer id, Integer sourceConfigId, String category, String url, String description,
-            DataParserType dataParserType, DataProcessType dataProcessType, DataJobParametersType dataJobParametersType,
+            DataParserType dataParserType, DataProcessType dataProcessType,
+            DataJobConfiguratorType dataJobConfiguratorType,
             Integer numRecords) {
         this.id = id;
         this.sourceConfigId = sourceConfigId;
@@ -26,7 +27,7 @@ public class SourceDTO {
         this.description = description;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
-        this.dataJobParametersType = dataJobParametersType;
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
         this.numRecords = numRecords;
     }
 
@@ -94,12 +95,11 @@ public class SourceDTO {
         this.url = url;
     }
 
-    public DataJobParametersType getDataJobParametersType() {
-        return dataJobParametersType;
+    public DataJobConfiguratorType getDataJobConfiguratorType() {
+        return dataJobConfiguratorType;
     }
 
-    public void setDataJobParametersType(DataJobParametersType dataJobParametersType) {
-        this.dataJobParametersType = dataJobParametersType;
+    public void setDataJobConfiguratorType(DataJobConfiguratorType dataJobConfiguratorType) {
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
     }
-
 }

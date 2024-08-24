@@ -105,44 +105,18 @@ public class DataJob {
         this.updatedAt = now;
     }
 
-    public DataJob(LocalDateTime sessionId, Source source, String orderKey,
-            HashMap<String, Object> parameters, String url) {
-        this.sessionId = sessionId;
-        this.source = source;
-        this.orderKey = orderKey;
-        this.parameters = parameters;
-        this.url = url;
-        this.paramLimit = PARAM_LIMIT;
-        this.paramOffset = 0;
+    public DataJob(DataJob dataJob) {
+        this.sessionId = dataJob.getSessionId();;
+        this.source = dataJob.getSource();
+        this.orderKey = dataJob.getOrderKey();
+        this.parameters = dataJob.getParameters();
+        this.url = dataJob.getUrl();
+        this.paramLimit = dataJob.getParamLimit();
+        this.paramOffset = dataJob.getParamOffset();
         this.status = DataJobStatus.QUEUED;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
-    }
-
-    public void initDataJobParameters() {
-
-        Source source = this.getSource();
-
-        DataJobParameters dataJobParameters = DataJobParametersFactory
-                .create(source.getDataJobParametersType());
-
-        String url = dataJobParameters.buildInitURL(this);
-
-        this.setUrl(url);
-    }
-
-    public DataJobParameters buildNextDataJobParameters() {
-
-        Source source = this.getSource();
-
-        DataJobParameters dataJobParameters = DataJobParametersFactory
-                .create(source.getDataJobParametersType());
-
-        dataJobParameters.buildNextURL(this);
-
-        return dataJobParameters;
-
     }
 
     public String buildFilename() throws MalformedURLException {

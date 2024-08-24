@@ -1,6 +1,6 @@
 package com.quirkshop.nuisancemaps.model.datajob;
 
-public enum DataJobParametersType {
+public enum DataJobConfiguratorType {
     BASE,
     OPENDATA,
     ERSI,

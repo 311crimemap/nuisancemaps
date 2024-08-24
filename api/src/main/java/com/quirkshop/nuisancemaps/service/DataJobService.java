@@ -8,7 +8,8 @@ import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobParameters;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorFactory;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
@@ -97,22 +98,20 @@ public class DataJobService {
         String key = source.getMapping().getOrderKey(); // NB: prevDataJob might exist
         DataJob dataJob;
 
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(source.getDataJobConfiguratorType());
+
         if (prevDataJob == null) {
             // start new 'crawl' session
             dataJob = new DataJob(LocalDateTime.now(), source, key);
-            dataJob.initDataJobParameters();
+            dataJob = dataJobConfigurator.initialize(dataJob);
         } else {
 
-            DataJobParameters dataJobParameters = prevDataJob.buildNextDataJobParameters();
+            dataJob = dataJobConfigurator.next( new DataJob(prevDataJob) );
 
-            if (dataJobParameters == null)
+            if (dataJob == null)
                 return null;
 
-            dataJob = new DataJob(prevDataJob.getSessionId(),
-                                  prevDataJob.getSource(),
-                                  prevDataJob.getOrderKey(),
-                                  dataJobParameters.getNextParameters(),
-                                  dataJobParameters.getNextUrl());
         }
 
         dataJobRepository.save(dataJob);

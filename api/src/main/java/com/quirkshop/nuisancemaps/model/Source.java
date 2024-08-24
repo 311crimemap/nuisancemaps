@@ -9,7 +9,7 @@ import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.dto.SourceDTO;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobParametersType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -55,8 +55,8 @@ public class Source {
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
 
-    @Column(name = "data_job_parameters_type")
-    private DataJobParametersType dataJobParametersType;
+    @Column(name = "data_job_configurator_type")
+    private DataJobConfiguratorType dataJobConfiguratorType;
 
     private Integer numRecords;
 
@@ -90,14 +90,14 @@ public class Source {
 
     public Source(Locale locale, String category, String description, String url,
             DataParserType dataParserType, DataProcessType dataProcessType,
-            DataJobParametersType dataJobParametersType) {
+            DataJobConfiguratorType dataJobConfiguratorType) {
         this.locale = locale;
         this.category = category;
         this.description = description;
         this.url = url;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
-        this.dataJobParametersType = dataJobParametersType;
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
@@ -231,12 +231,12 @@ public class Source {
         this.mapping = mapping;
     }
 
-    public DataJobParametersType getDataJobParametersType() {
-        return dataJobParametersType;
+    public DataJobConfiguratorType getDataJobConfiguratorType() {
+        return dataJobConfiguratorType;
     }
 
-    public void setDataJobParametersType(DataJobParametersType dataJobParametersType) {
-        this.dataJobParametersType = dataJobParametersType;
+    public void setDataJobConfiguratorType(DataJobConfiguratorType dataJobConfiguratorType) {
+        this.dataJobConfiguratorType = dataJobConfiguratorType;
     }
 
     public SourceDTO toDTO() {
@@ -247,7 +247,7 @@ public class Source {
                 this.getDescription(),
                 this.getDataParserType(),
                 this.getDataProcessType(),
-                this.getDataJobParametersType(),
+                this.getDataJobConfiguratorType(),
                 this.getNumRecords());
         return sourceDTO;
     }

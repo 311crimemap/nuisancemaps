@@ -9,18 +9,13 @@ import com.quirkshop.nuisancemaps.model.Source;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class OpenDataParameters implements DataJobParameters {
-
-    private HashMap<String, Object> parameters;
-    private String url;
-    private HashMap<String, Object> nextParameters;
-    private String nextUrl;
+public class OpenDataConfigurator implements DataJobConfigurator {
 
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
-    public String buildInitURL(DataJob dataJob) {
-        // if parameters in the initial case are somehow set prior, use those
-        parameters = dataJob.getParameters();
+    public DataJob initialize(DataJob dataJob) {
+
+        HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -28,13 +23,16 @@ public class OpenDataParameters implements DataJobParameters {
         parameters.putIfAbsent("paramLimit", PARAM_LIMIT);
         parameters.putIfAbsent("paramOffset", 0);
 
-        this.url = buildOpenDataParamsURL(dataJob);
-        return this.url;
+        String url = buildOpenDataParamsURL(dataJob, parameters);
+
+        dataJob.setParameters(parameters);
+        dataJob.setUrl(url);
+        return dataJob;
     }
 
-    public String buildNextURL(DataJob dataJob) {
-        nextParameters = new HashMap<String, Object>();
-        parameters = dataJob.getParameters();
+    public DataJob next(DataJob dataJob) {
+
+        HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -42,15 +40,14 @@ public class OpenDataParameters implements DataJobParameters {
         parameters.put("paramLimit", (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT));
         parameters.put("paramOffset", (Integer) parameters.getOrDefault("paramOffset", 0) + PARAM_LIMIT);
 
-        this.nextUrl = buildOpenDataParamsURL(dataJob);
-        return this.nextUrl;
+        String url = buildOpenDataParamsURL(dataJob, parameters);
+
+        dataJob.setParameters(parameters);
+        dataJob.setUrl(url);
+        return dataJob;
     }
 
-    public String buildOpenDataParamsURL(DataJob dataJob) {
-        HashMap<String, Object> parameters = dataJob.getParameters();
-        if (parameters == null) {
-            parameters = new HashMap<String, Object>();
-        }
+    public String buildOpenDataParamsURL(DataJob dataJob, HashMap<String, Object> parameters) {
 
         int paramLimit = (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT);
         int paramOffset = (Integer) parameters.getOrDefault("paramOffset", 0);
@@ -79,26 +76,6 @@ public class OpenDataParameters implements DataJobParameters {
         List<String> fields = mapping.getAnnotationValues(MappingField::getField);
 
         return String.join(",", fields);
-    }
-
-    public HashMap<String, Object> getParameters() {
-        return parameters;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public HashMap<String, Object> getNextParameters() {
-        return nextParameters;
-    }
-
-    public String getNextUrl() {
-        return nextUrl;
-    }
-
-    public static int getParamLimit() {
-        return PARAM_LIMIT;
     }
 
 }

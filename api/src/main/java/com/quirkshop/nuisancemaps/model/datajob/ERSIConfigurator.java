@@ -6,18 +6,13 @@ import java.util.HashMap;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class ERSIParameters implements DataJobParameters {
-
-    private HashMap<String, Object> parameters;
-    private String url;
-    private HashMap<String, Object> nextParameters;
-    private String nextUrl;
+public class ERSIConfigurator implements DataJobConfigurator {
 
     final static int MAX_MAP_SERVER = 8;
 
-    public String buildInitURL(DataJob dataJob) {
+    public DataJob initialize(DataJob dataJob) {
 
-        parameters = dataJob.getParameters();
+        HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -29,15 +24,18 @@ public class ERSIParameters implements DataJobParameters {
         parameters.putIfAbsent("paramEndDate", endDate);
         parameters.putIfAbsent("paramMapServer", 1);
 
-        this.url = buildERSIParamsURL(dataJob);
-        return this.url;
+        String url = buildERSIParamsURL(dataJob, parameters);
+        dataJob.setParameters(parameters);
+        dataJob.setUrl(url);
+
+        return dataJob;
     }
 
     // increment map server url 1-8
     // date range should remain
-    public String buildNextURL(DataJob dataJob) {
-        nextParameters = new HashMap<String, Object>();
-        parameters = dataJob.getParameters();
+    public DataJob next(DataJob dataJob) {
+
+        HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -45,10 +43,14 @@ public class ERSIParameters implements DataJobParameters {
         int nextVal = (int) parameters.getOrDefault("paramMapServer", 0) + 1;
         parameters.put("paramMapServer", nextVal);
 
-        if (nextVal > MAX_MAP_SERVER) return null;
+        if (nextVal > MAX_MAP_SERVER)
+            return null;
 
-        this.nextUrl = buildERSIParamsURL(dataJob);
-        return this.nextUrl;
+        String url = buildERSIParamsURL(dataJob, parameters);
+        dataJob.setParameters(parameters);
+        dataJob.setUrl(url);
+
+        return dataJob;
     }
 
     public String buildEndDate(LocalDate date) {
@@ -59,11 +61,7 @@ public class ERSIParameters implements DataJobParameters {
         return endDate;
     }
 
-    public String buildERSIParamsURL(DataJob dataJob) {
-        HashMap<String, Object> parameters = dataJob.getParameters();
-        if (parameters == null) {
-            parameters = new HashMap<String, Object>();
-        }
+    public String buildERSIParamsURL(DataJob dataJob, HashMap<String, Object> parameters) {
 
         String paramStartDate = (String) parameters.get("paramStartDate");
         String paramEndDate= (String) parameters.get("paramEndDate");
@@ -93,26 +91,6 @@ public class ERSIParameters implements DataJobParameters {
             .toUriString();
 
         return url;
-    }
-
-    public HashMap<String, Object> getParameters() {
-        return parameters;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public HashMap<String, Object> getNextParameters() {
-        return nextParameters;
-    }
-
-    public String getNextUrl() {
-        return nextUrl;
-    }
-
-    public static int getMaxMapServer() {
-        return MAX_MAP_SERVER;
     }
 
 }
