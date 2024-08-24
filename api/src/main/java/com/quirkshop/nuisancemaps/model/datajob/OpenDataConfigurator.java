@@ -9,12 +9,14 @@ import com.quirkshop.nuisancemaps.model.Source;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class OpenDataURL implements DataJobURL {
+public class OpenDataConfigurator implements DataJobConfigurator {
 
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
-    public String buildInitURL(DataJob dataJob) {
-        // if parameters in the initial case are somehow set prior, use those
+    public DataJob initialize(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
+
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
@@ -23,10 +25,16 @@ public class OpenDataURL implements DataJobURL {
         parameters.putIfAbsent("paramLimit", PARAM_LIMIT);
         parameters.putIfAbsent("paramOffset", 0);
 
-        return buildOpenDataParamsURL(dataJob);
+        String url = buildOpenDataParamsURL(dataJob, parameters);
+
+        dataJob.setParameters(parameters);
+        dataJob.setUrl(url);
+        return dataJob;
     }
 
-    public String buildNextURL(DataJob dataJob) {
+    public DataJob next(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
@@ -36,14 +44,14 @@ public class OpenDataURL implements DataJobURL {
         parameters.put("paramLimit", (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT));
         parameters.put("paramOffset", (Integer) parameters.getOrDefault("paramOffset", 0) + PARAM_LIMIT);
 
-        return buildOpenDataParamsURL(dataJob);
+        String url = buildOpenDataParamsURL(dataJob, parameters);
+
+        dataJob.setParameters(parameters);
+        dataJob.setUrl(url);
+        return dataJob;
     }
 
-    public String buildOpenDataParamsURL(DataJob dataJob) {
-        HashMap<String, Object> parameters = dataJob.getParameters();
-        if (parameters == null) {
-            parameters = new HashMap<String, Object>();
-        }
+    public String buildOpenDataParamsURL(DataJob dataJob, HashMap<String, Object> parameters) {
 
         int paramLimit = (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT);
         int paramOffset = (Integer) parameters.getOrDefault("paramOffset", 0);

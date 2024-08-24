@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,11 +13,11 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.model.datajob.APDIncidentReportURL;
-import com.quirkshop.nuisancemaps.model.datajob.BaseURL;
+import com.quirkshop.nuisancemaps.model.datajob.APDIncidentReportConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.BaseConfigurator;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
-import com.quirkshop.nuisancemaps.model.datajob.ERSIURL;
-import com.quirkshop.nuisancemaps.model.datajob.OpenDataURL;
+import com.quirkshop.nuisancemaps.model.datajob.ERSIConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.OpenDataConfigurator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -30,7 +28,7 @@ import org.springframework.core.io.ResourceLoader;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(classes = NuisancemapsApplication.class)
-public class DataJobURLTest {
+public class DataJobConfiguratorTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -48,187 +46,149 @@ public class DataJobURLTest {
     }
 
     @Test
-    public void BaseURL_buildInitURL_Test() {
+    public void BaseConfigurator_initialize_test() {
         Source source = sources.get(11);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
-        BaseURL baseURL = new BaseURL();
+        BaseConfigurator baseConfigurator = new BaseConfigurator();
 
-        String url = baseURL.buildInitURL(dataJob);
+        dataJob = baseConfigurator.initialize(dataJob);
         String canonURL = source.getUrl();
 
-        assertThat(url).isEqualTo(canonURL);
-
-        // test DataJob factory
-        dataJob.initURL();
-        assertThat(url).isEqualTo(dataJob.getUrl());
+        assertThat(dataJob.getUrl()).isEqualTo(canonURL);
     }
 
     @Test
-    public void BaseURL_buildNextURL_Test() {
+    public void BaseConfigurator_next_test() {
         Source source = sources.get(11);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
-        BaseURL baseURL = new BaseURL();
+        BaseConfigurator baseConfigurator = new BaseConfigurator();
 
-        String url = baseURL.buildInitURL(dataJob);
-        assertThat(url).isEqualTo(source.getUrl());
+        dataJob = baseConfigurator.initialize(dataJob);
+        assertThat(dataJob.getUrl()).isEqualTo(source.getUrl());
 
-        url = baseURL.buildNextURL(dataJob);
-        assertThat(url).isNull();
-
-        // test DataJob factory
-        dataJob.initURL();
-        String dataJobNextURL = dataJob.buildNextURL();
-        assertThat(url).isEqualTo(dataJobNextURL);
+        dataJob = baseConfigurator.next(dataJob);
+        assertThat(dataJob).isNull();
     }
 
     @Test
-    public void OpenDataURL_buildInitURL_Test() {
+    public void OpenDataConfigurator_initialize_test() {
         Source source = sources.get(1);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
-        OpenDataURL openDataURL = new OpenDataURL();
+        OpenDataConfigurator openDataConfigurator = new OpenDataConfigurator();
 
-        String url = openDataURL.buildInitURL(dataJob);
+        dataJob = openDataConfigurator.initialize(dataJob);
 
         String limit = System.getenv("WORKER_QUERY_LIMIT");
         String offset = "0";
         String order_key = "id";
-        String select = openDataURL.buildURLFields(source.getMapping());
+        String select = openDataConfigurator.buildURLFields(source.getMapping());
         String canonURL = source.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" +
                 order_key + "&$select=" + select;
 
-        assertThat(url).isEqualTo(canonURL);
-
-        // test DataJob factory
-        dataJob.initURL();
-        assertThat(url).isEqualTo(dataJob.getUrl());
+        assertThat(dataJob.getUrl()).isEqualTo(canonURL);
     }
 
     @Test
-    public void OpenDataURL_buildNextURL_Test() {
+    public void OpenDataConfigurator_next_test() {
         Source source = sources.get(1);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
-        OpenDataURL openDataURL = new OpenDataURL();
+        OpenDataConfigurator openDataParameters = new OpenDataConfigurator();
 
-        openDataURL.buildInitURL(dataJob); // offset: 0
-        openDataURL.buildNextURL(dataJob); // offset: 1 * PARAM_LIMIT
-        openDataURL.buildNextURL(dataJob); // offset: 2 * PARAM_LIMIT
-        String url = openDataURL.buildNextURL(dataJob); // offset: 3 * PARAM_LIMIT
+        dataJob = openDataParameters.initialize(dataJob); // offset: 0
+        dataJob = openDataParameters.next(dataJob); // offset: 1 * PARAM_LIMIT
+        dataJob = openDataParameters.next(dataJob); // offset: 2 * PARAM_LIMIT
+        dataJob = openDataParameters.next(dataJob); // offset: 3 * PARAM_LIMIT
 
         String limit = System.getenv("WORKER_QUERY_LIMIT");
         String offset = String.valueOf(3 * Integer.parseInt(limit));
         String order_key = "id";
-        String select = openDataURL.buildURLFields(source.getMapping());
+        String select = openDataParameters.buildURLFields(source.getMapping());
         String canonURL = source.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" +
                 order_key + "&$select=" + select;
 
-        assertThat(url).isEqualTo(canonURL);
-
-        // test DataJob factory
-        dataJob.initURL();
-        dataJob.buildNextURL();
-        dataJob.buildNextURL();
-        dataJob.buildNextURL();
-        assertThat(url).isEqualTo(dataJob.getUrl());
+        assertThat(dataJob.getUrl()).isEqualTo(canonURL);
     }
 
     @Test
-    public void APDIncidentReport_BuildInitURLTest() {
+    public void APDIncidentReportConfigurator_initialize_test() {
         Source source = sources.get(15);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "reportNum");
-        APDIncidentReportURL apdIncidentReportURL = new APDIncidentReportURL();
-        String url = apdIncidentReportURL.buildInitURL(dataJob);
+        APDIncidentReportConfigurator apdIncidentReportConfigurator = new APDIncidentReportConfigurator();
+        dataJob = apdIncidentReportConfigurator.initialize(dataJob);
 
-        assertThat(url).isEqualTo(
+        assertThat(dataJob.getUrl()).isEqualTo(
                 "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/01/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
-
-        // test DataJob factory
-        dataJob.initURL();
-        assertThat(url).isEqualTo(dataJob.getUrl());
     }
 
     @Test
-    public void APDIncidentReport_BuildNextURLTest() {
+    public void APDIncidentReportConfigurator_next_test() {
         Source source = sources.get(15);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "reportNum");
+
+        // set dataJob parameters to end sooner than .now()
         HashMap<String, Object> parameters = dataJob.getParameters();
-        parameters.put("paramStartDate", "07/01/2024");
         parameters.put("paramEndDate", "08/01/2024");
 
         // NB: numDays is inclusive
         // numDays + 1 -> (7 days) is next start date
-        APDIncidentReportURL apdIncidentReportURL = new APDIncidentReportURL();
-        apdIncidentReportURL.buildInitURL(dataJob); // startdate: 7/01/2024
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/08/2024
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/15/2024
-        String url = apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/22/2024
+        APDIncidentReportConfigurator apdIncidentReportConfigurator = new APDIncidentReportConfigurator();
+        dataJob = apdIncidentReportConfigurator.initialize(dataJob); // startdate: 7/01/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/08/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/15/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/22/2024
 
-        assertThat(url).isEqualTo(
+        assertThat(dataJob.getUrl()).isEqualTo(
                 "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/22/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
 
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 7/29/2024
-        apdIncidentReportURL.buildNextURL(dataJob); // + 6 + 1 -> 8/6/2024
-        url = apdIncidentReportURL.buildNextURL(dataJob);
-        assertThat(url).isNull();
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/29/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/6/2024 X end
 
-        // test DataJob factory
-        dataJob.buildNextURL();
-        assertThat(url).isEqualTo(dataJob.getUrl());
+        //this should also be null (null input, null output)
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/13/2024
+
+        assertThat(dataJob).isNull();
     }
 
     @Test
-    public void ERSIURL_BuildEndDate_Test() {
-        ERSIURL ersiURL = new ERSIURL();
+    public void ERSIConfigurator_buildEndDate_test() {
+        ERSIConfigurator ersiConfigurator = new ERSIConfigurator();
         LocalDate date = LocalDate.of(2024, 8, 18);
-        String endDate = ersiURL.buildEndDate(date);
+        String endDate = ersiConfigurator.buildEndDate(date);
         assertThat(endDate).isEqualTo("08/18/2024");
     }
 
     @Test
-    public void buildInitERSIParamsURL_Test() throws UnsupportedEncodingException {
+    public void ERSIConfigurator_initialize_test() throws UnsupportedEncodingException {
         DataJob dataJob = new DataJob();
-        ERSIURL ersiURL = new ERSIURL();
+        ERSIConfigurator ersiConfigurator = new ERSIConfigurator();
         String startDate = "07/01/2024";
-        String endDate = ersiURL.buildEndDate(LocalDate.now());
+        String endDate = ersiConfigurator.buildEndDate(LocalDate.now());
 
-        String url = ersiURL.buildInitURL(dataJob);
+        dataJob = ersiConfigurator.initialize(dataJob);
         String canonURL = String.format(
                 "https://maps.austintexas.gov/gis/rest/APDCrimeViewer/APD_Reported_Crimes/MapServer/1/query?f=json&where=1=1 AND OCCURRENCE_DATE BETWEEN date '%s' AND date '%s' &returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={\"rings\":[[[3018272.9057345022,10242548.737086222],[3070539.572401169,10280948.737086222],[3290272.9057345022,10247882.070419556],[3234806.2390678357,9873482.070419554],[2911606.2390678357,9984415.403752888],[3018272.9057345022,10242548.737086222]]],\"spatialReference\":{\"wkid\":102739,\"latestWkid\":2277}}&geometryType=esriGeometryPolygon&inSR=102739&outFields=*&orderByFields=OCCURRENCE_DATE&outSR=4326",
                 startDate, endDate);
 
-        assertThat(url).isEqualTo(canonURL);
-
-        // TODO: add ERSI source
-        // test DataJob factory
-        // dataJob.initURL();
-        // assertThat(url).isEqualTo(dataJob.getUrl());
+        assertThat(dataJob.getUrl()).isEqualTo(canonURL);
     }
 
     @Test
-    public void buildNextERSIParamsURL_Test() throws UnsupportedEncodingException {
+    public void ERSIConfigurator_next_test() throws UnsupportedEncodingException {
         DataJob dataJob = new DataJob();
-        ERSIURL ersiURL = new ERSIURL();
+        ERSIConfigurator ersiConfigurator = new ERSIConfigurator();
         String startDate = "07/01/2024";
-        String endDate = ersiURL.buildEndDate(LocalDate.now());
+        String endDate = ersiConfigurator.buildEndDate(LocalDate.now());
 
-        ersiURL.buildInitURL(dataJob); // paramMapServer: 1
-        ersiURL.buildNextURL(dataJob); // paramMapServer: 2
-        ersiURL.buildNextURL(dataJob); // paramMapServer: 3
-        String url = ersiURL.buildNextURL(dataJob); // paramMapServer: 4
+        dataJob = ersiConfigurator.initialize(dataJob); // paramMapServer: 1
+        dataJob = ersiConfigurator.next(dataJob);       // paramMapServer: 2
+        dataJob = ersiConfigurator.next(dataJob);       // paramMapServer: 3
+        dataJob = ersiConfigurator.next(dataJob);       // paramMapServer: 4
 
         String canonURL = String.format(
                 "https://maps.austintexas.gov/gis/rest/APDCrimeViewer/APD_Reported_Crimes/MapServer/4/query?f=json&where=1=1 AND OCCURRENCE_DATE BETWEEN date '%s' AND date '%s' &returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={\"rings\":[[[3018272.9057345022,10242548.737086222],[3070539.572401169,10280948.737086222],[3290272.9057345022,10247882.070419556],[3234806.2390678357,9873482.070419554],[2911606.2390678357,9984415.403752888],[3018272.9057345022,10242548.737086222]]],\"spatialReference\":{\"wkid\":102739,\"latestWkid\":2277}}&geometryType=esriGeometryPolygon&inSR=102739&outFields=*&orderByFields=OCCURRENCE_DATE&outSR=4326",
                 startDate, endDate);
 
-        assertThat(url).isEqualTo(canonURL);
-
-        // TODO: add ERSI source
-        // test DataJob factory
-        // dataJob.initURL();
-        // dataJob.buildNextURL();
-        // dataJob.buildNextURL();
-        // dataJob.buildNextURL();
-        // String dataJobNextURL = dataJob.buildNextURL();
-        // assertThat(url).isEqualTo(dataJobNextURL);
+        assertThat(dataJob.getUrl()).isEqualTo(canonURL);
     }
 
 }

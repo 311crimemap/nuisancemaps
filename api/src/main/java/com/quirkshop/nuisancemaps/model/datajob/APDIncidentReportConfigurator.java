@@ -12,24 +12,32 @@ import org.springframework.web.util.UriComponentsBuilder;
  * EndDate: String
  * numDays: int
  */
-public class APDIncidentReportURL implements DataJobURL {
+public class APDIncidentReportConfigurator implements DataJobConfigurator {
 
-    public String buildInitURL(DataJob dataJob) {
+    public DataJob initialize(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
 
+        // defaults
         String startDate = "07/01/2024"; // last csv contains data from 07/06/2024
-
         parameters.putIfAbsent("paramStartDate", startDate);
         parameters.putIfAbsent("paramNumDays", 6);
 
-        return buildAPDParamsURL(dataJob);
+        String url = buildAPDParamsURL(dataJob, parameters);
+
+        dataJob.setParameters(parameters);
+        dataJob.setUrl(url);
+        return dataJob;
     }
 
-    public String buildNextURL(DataJob dataJob) {
+    public DataJob next(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
@@ -38,10 +46,9 @@ public class APDIncidentReportURL implements DataJobURL {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-        String startDate = (String) parameters
-                .getOrDefault("paramStartDate", "07/01/2024");
-        String endDate = (String) parameters
-                .getOrDefault("paramEndDate", LocalDate.now().format(formatter));
+        String startDate = (String) parameters.getOrDefault("paramStartDate", "07/01/2024");
+        String endDate = (String) parameters.getOrDefault("paramEndDate",
+                                                          LocalDate.now().format(formatter));
         int numDays = (int) parameters.getOrDefault("paramNumDays", 6);
 
         LocalDate _startDate = LocalDate.parse(startDate, formatter);
@@ -54,18 +61,17 @@ public class APDIncidentReportURL implements DataJobURL {
             parameters.put("paramEndDate", endDate);
             parameters.put("paramNumDays", parameters.getOrDefault("numDays", 6));
 
-            return buildAPDParamsURL(dataJob);
+            String url = buildAPDParamsURL(dataJob, parameters);
+            dataJob.setParameters(parameters);
+            dataJob.setUrl(url);
+
+            return dataJob;
         }
 
         return null;
     }
 
-    public String buildAPDParamsURL(DataJob dataJob) {
-
-        HashMap<String, Object> parameters = dataJob.getParameters();
-        if (parameters == null) {
-            parameters = new HashMap<String, Object>();
-        }
+    public String buildAPDParamsURL(DataJob dataJob, HashMap<String, Object> parameters) {
 
         String paramStartDate = (String) parameters.get("paramStartDate");
         int paramNumDays = (int) parameters.get("paramNumDays");
@@ -91,4 +97,5 @@ public class APDIncidentReportURL implements DataJobURL {
 
         return url;
     }
+
 }

@@ -4,9 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
-import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorFactory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -96,29 +97,20 @@ public class DataJobService {
         String key = source.getMapping().getOrderKey(); // NB: prevDataJob might exist
         DataJob dataJob;
 
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(source.getDataJobConfiguratorType());
+
         if (prevDataJob == null) {
             // start new 'crawl' session
             dataJob = new DataJob(LocalDateTime.now(), source, key);
-            dataJob.initURL();
+            dataJob = dataJobConfigurator.initialize(dataJob);
         } else {
 
-            // generate dataJob and  url for next sequence of session
-            //
-            // NB: url can be null if DataJobURLType indicates run only once -
-            // don't create next job.
-            String url = prevDataJob.buildNextURL();
+            dataJob = dataJobConfigurator.next( new DataJob(prevDataJob) );
 
-            if (url == null)
+            if (dataJob == null)
                 return null;
 
-            dataJob = new DataJob(prevDataJob.getSessionId(),
-                    source,
-                    prevDataJob.getOrderKey());
-
-            dataJob.setUrl(url);
-            // TODO: refactor this to buildNextParamters() logic and state is
-            // getting convoluted here
-            dataJob.setParameters(prevDataJob.getParameters());
         }
 
         dataJobRepository.save(dataJob);
