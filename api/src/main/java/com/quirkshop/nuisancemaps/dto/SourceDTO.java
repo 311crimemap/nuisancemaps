@@ -14,12 +14,10 @@ public class SourceDTO {
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
     private DataJobConfiguratorType dataJobConfiguratorType;
-    private Integer numRecords;
 
     public SourceDTO(Integer id, Integer sourceConfigId, String category, String url, String description,
             DataParserType dataParserType, DataProcessType dataProcessType,
-            DataJobConfiguratorType dataJobConfiguratorType,
-            Integer numRecords) {
+            DataJobConfiguratorType dataJobConfiguratorType) {
         this.id = id;
         this.sourceConfigId = sourceConfigId;
         this.category = category;
@@ -28,7 +26,6 @@ public class SourceDTO {
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
         this.dataJobConfiguratorType = dataJobConfiguratorType;
-        this.numRecords = numRecords;
     }
 
     public Integer getId() {
@@ -77,14 +74,6 @@ public class SourceDTO {
 
     public void setDataProcessType(DataProcessType dataProcessType) {
         this.dataProcessType = dataProcessType;
-    }
-
-    public Integer getNumRecords() {
-        return numRecords;
-    }
-
-    public void setNumRecords(Integer numRecords) {
-        this.numRecords = numRecords;
     }
 
     public String getUrl() {

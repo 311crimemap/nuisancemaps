@@ -8,7 +8,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 2440821,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -63,7 +62,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 1778332,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -118,7 +116,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 1247668,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -173,7 +170,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 1655145,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -228,7 +224,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 8112554,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -283,7 +278,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 10365172,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -338,7 +332,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 282069,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -393,7 +386,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 8914838,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -448,7 +440,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 37023044,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -503,7 +494,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 872000,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -558,7 +548,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "OPENDATA",
-        "numRecords": 7070000,
         "mapping": {
             "rootPath": "$[*]",
             "orderKey": ":id",
@@ -613,7 +602,6 @@
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
         "dataJobConfiguratorType": "BASE",
-        "numRecords": 282069,
         "mapping": {
             "rootPath": null,
             "orderKey": ":id",
@@ -668,7 +656,6 @@
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
         "dataJobConfiguratorType": "BASE",
-        "numRecords": 891000000,
         "mapping": {
             "rootPath": null,
             "orderKey": ":id",
@@ -723,7 +710,6 @@
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
         "dataJobConfiguratorType": "BASE",
-        "numRecords": 37023044,
         "mapping": {
             "rootPath": null,
             "orderKey": ":id",
@@ -778,7 +764,6 @@
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
         "dataJobConfiguratorType": "ERSI",
-        "numRecords": 1000,
         "mapping": {
             "rootPath": "$.features[*]",
             "orderKey": ":id",
@@ -833,7 +818,6 @@
         "dataParserType": "APDINCIDENTREPORT",
         "dataProcessType": "FILE",
         "dataJobConfiguratorType": "APDINCIDENTREPORT",
-        "numRecords": 999999,
         "mapping": {
             "rootPath": null,
             "orderKey": "reportNum",

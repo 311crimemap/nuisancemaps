@@ -58,8 +58,6 @@ public class Source {
     @Column(name = "data_job_configurator_type")
     private DataJobConfiguratorType dataJobConfiguratorType;
 
-    private Integer numRecords;
-
     @OneToOne // NB: creates unique constraint mapping_id
     @JoinColumn(name = "mapping_id", nullable = false)
     private Mapping mapping;
@@ -167,14 +165,6 @@ public class Source {
         this.cookie = cookie;
     }
 
-    public Integer getNumRecords() {
-        return numRecords;
-    }
-
-    public void setNumRecords(Integer numRecords) {
-        this.numRecords = numRecords;
-    }
-
     public DataParserType getDataParserType() {
         return dataParserType;
     }
@@ -247,8 +237,7 @@ public class Source {
                 this.getDescription(),
                 this.getDataParserType(),
                 this.getDataProcessType(),
-                this.getDataJobConfiguratorType(),
-                this.getNumRecords());
+                this.getDataJobConfiguratorType());
         return sourceDTO;
     }
 
