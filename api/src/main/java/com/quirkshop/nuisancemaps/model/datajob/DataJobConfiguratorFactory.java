@@ -1,5 +1,8 @@
 package com.quirkshop.nuisancemaps.model.datajob;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DataJobConfiguratorFactory {
 
     public static DataJobConfigurator create(DataJobConfiguratorType type) {

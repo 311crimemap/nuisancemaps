@@ -4,12 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
-import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobConfigurator;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorFactory;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 

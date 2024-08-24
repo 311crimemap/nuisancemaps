@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
-import com.quirkshop.nuisancemaps.model.datajob.OpenDataParameters;
+import com.quirkshop.nuisancemaps.model.datajob.OpenDataConfigurator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -50,22 +50,19 @@ public class DataJobTest {
         final int offset = 20000;
         final String order_key = "id";
 
-        DataJob d = new DataJob(LocalDateTime.now(), s, order_key);
-        HashMap<String, Object> parameters = d.getParameters();
+        DataJob dataJob = new DataJob(LocalDateTime.now(), s, order_key);
+        HashMap<String, Object> parameters = dataJob.getParameters();
         parameters.put("paramLimit", limit);
         parameters.put("paramOffset", offset);
-        d.initDataJobParameters();
 
-        String url = d.getUrl();
-        OpenDataParameters openDataURL = new OpenDataParameters();
-        final String select = openDataURL.buildURLFields(s.getMapping());
+        OpenDataConfigurator openDataConfigurator = new OpenDataConfigurator();
+        dataJob = openDataConfigurator.initialize(dataJob);
+        final String select = openDataConfigurator.buildURLFields(s.getMapping());
 
-        assertThat(s.getUrl()).isEqualTo(d.getSourceURL());
-        assertThat(url).isEqualTo(
+        assertThat(s.getUrl()).isEqualTo(dataJob.getSourceURL());
+        assertThat(dataJob.getUrl()).isEqualTo(
                 s.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" + order_key + "&$select=" + select);
-        assertThat(d.getUrl()).isEqualTo(url);
         assertThat(select).isNotBlank();
-
     }
 
     @Test

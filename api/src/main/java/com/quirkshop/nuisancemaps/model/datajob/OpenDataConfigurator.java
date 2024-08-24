@@ -14,6 +14,8 @@ public class OpenDataConfigurator implements DataJobConfigurator {
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     public DataJob initialize(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
@@ -31,6 +33,8 @@ public class OpenDataConfigurator implements DataJobConfigurator {
     }
 
     public DataJob next(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {

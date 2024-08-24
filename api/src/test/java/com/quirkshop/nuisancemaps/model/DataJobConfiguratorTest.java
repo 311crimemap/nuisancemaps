@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -124,6 +125,10 @@ public class DataJobConfiguratorTest {
         Source source = sources.get(15);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "reportNum");
 
+        // set dataJob parameters to end sooner than .now()
+        HashMap<String, Object> parameters = dataJob.getParameters();
+        parameters.put("paramEndDate", "08/01/2024");
+
         // NB: numDays is inclusive
         // numDays + 1 -> (7 days) is next start date
         APDIncidentReportConfigurator apdIncidentReportConfigurator = new APDIncidentReportConfigurator();
@@ -136,8 +141,11 @@ public class DataJobConfiguratorTest {
                 "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/22/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
 
         dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/29/2024
-        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/6/2024
-        dataJob = apdIncidentReportConfigurator.next(dataJob);
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/6/2024 X end
+
+        //this should also be null (null input, null output)
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/13/2024
+
         assertThat(dataJob).isNull();
     }
 

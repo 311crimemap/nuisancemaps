@@ -11,6 +11,8 @@ public class ERSIConfigurator implements DataJobConfigurator {
     final static int MAX_MAP_SERVER = 8;
 
     public DataJob initialize(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
@@ -34,6 +36,8 @@ public class ERSIConfigurator implements DataJobConfigurator {
     // increment map server url 1-8
     // date range should remain
     public DataJob next(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {

@@ -7,7 +7,7 @@
         "description": "Austin Police",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 2440821,
         "mapping": {
             "rootPath": "$[*]",
@@ -62,7 +62,7 @@
         "description": "Austin 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 1778332,
         "mapping": {
             "rootPath": "$[*]",
@@ -117,7 +117,7 @@
         "description": "Dallas Police",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 1247668,
         "mapping": {
             "rootPath": "$[*]",
@@ -172,7 +172,7 @@
         "description": "Dallas 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 1655145,
         "mapping": {
             "rootPath": "$[*]",
@@ -227,7 +227,7 @@
         "description": "Chicago Crime",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 8112554,
         "mapping": {
             "rootPath": "$[*]",
@@ -282,7 +282,7 @@
         "description": "Chicago 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 10365172,
         "mapping": {
             "rootPath": "$[*]",
@@ -337,7 +337,7 @@
         "description": "New York City Crime YTD",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 282069,
         "mapping": {
             "rootPath": "$[*]",
@@ -392,7 +392,7 @@
         "description": "New York City Crime Historic to YTD (updated quarterly)",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 8914838,
         "mapping": {
             "rootPath": "$[*]",
@@ -447,7 +447,7 @@
         "description": "New York City 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 37023044,
         "mapping": {
             "rootPath": "$[*]",
@@ -502,7 +502,7 @@
         "description": "San Francisco Crime",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 872000,
         "mapping": {
             "rootPath": "$[*]",
@@ -557,7 +557,7 @@
         "description": "San Francisco 311",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "OPENDATA",
+        "dataJobConfiguratorType": "OPENDATA",
         "numRecords": 7070000,
         "mapping": {
             "rootPath": "$[*]",
@@ -612,7 +612,7 @@
         "description": "New York City Crime YTD",
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
-        "dataJobURLType": "BASE",
+        "dataJobConfiguratorType": "BASE",
         "numRecords": 282069,
         "mapping": {
             "rootPath": null,
@@ -667,7 +667,7 @@
         "description": "New York City Crime Complaint Historic",
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
-        "dataJobURLType": "BASE",
+        "dataJobConfiguratorType": "BASE",
         "numRecords": 891000000,
         "mapping": {
             "rootPath": null,
@@ -722,7 +722,7 @@
         "description": "New York City 311 2010 - Present",
         "dataParserType": "CSV",
         "dataProcessType": "FILE",
-        "dataJobURLType": "BASE",
+        "dataJobConfiguratorType": "BASE",
         "numRecords": 37023044,
         "mapping": {
             "rootPath": null,
@@ -777,7 +777,7 @@
         "description": "ERSI Austin Crime Map 07/01/2024 - Present",
         "dataParserType": "JSON",
         "dataProcessType": "MEMORY",
-        "dataJobURLType": "ERSI",
+        "dataJobConfiguratorType": "ERSI",
         "numRecords": 1000,
         "mapping": {
             "rootPath": "$.features[*]",
@@ -831,8 +831,8 @@
         "category": "crime",
         "description": "Austin Crime APD Incident Report",
         "dataParserType": "APDINCIDENTREPORT",
-        "dataProcessType": "MEMORY",
-        "dataJobURLType": "APDINCIDENTREPORT",
+        "dataProcessType": "FILE",
+        "dataJobConfiguratorType": "APDINCIDENTREPORT",
         "numRecords": 999999,
         "mapping": {
             "rootPath": null,

@@ -15,6 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class APDIncidentReportConfigurator implements DataJobConfigurator {
 
     public DataJob initialize(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
@@ -34,6 +36,8 @@ public class APDIncidentReportConfigurator implements DataJobConfigurator {
     }
 
     public DataJob next(DataJob dataJob) {
+        if (dataJob == null)
+            return null;
 
         HashMap<String, Object> parameters = dataJob.getParameters();
         if (parameters == null) {
