@@ -1,8 +1,5 @@
 package com.quirkshop.nuisancemaps.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +7,8 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.dto.JSendDTO;
+import com.quirkshop.nuisancemaps.dto.SourceDTO;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
@@ -17,6 +16,8 @@ import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.service.SourceLoaderService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -27,11 +28,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.quirkshop.nuisancemaps.dto.JSendDTO;
-import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 @RestController
 public class SourceController {
@@ -78,7 +75,7 @@ public class SourceController {
     @PostMapping("/locales/{id}/sources/batch")
     @Transactional
     public ResponseEntity<?> createBatch(@PathVariable("id") Integer locale_id,
-                                         @RequestBody List<Source> sources) {
+            @RequestBody List<Source> sources) {
         JSendDTO jSendDTO;
         List<SourceDTO> res = new ArrayList<SourceDTO>();
         Locale locale = localeRepository.findById(locale_id).orElse(null);
@@ -140,27 +137,6 @@ public class SourceController {
         Source source = sourceRepository.findById(id).orElse(null);
         if (source != null) {
             return ResponseEntity.status(HttpStatus.OK).body(source.toDTO());
-        }
-
-        return ResponseEntity.status(404).body(null);
-    }
-
-    @GetMapping("/sources/{id}/updateNumRecords")
-    public ResponseEntity<?> updateNumRecords(@PathVariable(value = "id") final int id) {
-        JSendDTO jSendDTO;
-        Source source = sourceRepository.findById(id).orElse(null);
-
-        if (source != null) {
-            log.info("Source ID: " + source.getId() + " Fetch updateNumRecords");
-
-            int numRecords = sourceLoaderService.fetchCount(source);
-            log.info("prev: " + source.getNumRecords() + " new: " + numRecords);
-
-            source.setNumRecords(numRecords);
-            source = sourceLoaderService.saveTransaction(source);
-            jSendDTO = new JSendDTO("success", source.toDTO());
-
-            return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
         }
 
         return ResponseEntity.status(404).body(null);
