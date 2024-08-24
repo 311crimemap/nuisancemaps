@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -68,21 +69,23 @@ public class DataJobTest {
     @Test
     public void DataJobBuildFilenameTest() throws IOException {
 
-        Source source = sources.get(11); // id: 12
+        Source source = sources.get(11); // id: 12, params
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
         String formattedDateTime = dataJob.getSessionId().format(formatter);
+        String params = new URL(source.getUrl()).getQuery()
+                .replaceAll("&", "__").replaceAll("=", "_");
 
-        // String result = "data.cityofnewyork.us-api-views-5uac-w243-rows.csv";
-        String result = String.format("%s-%s.csv",
+        String result = String.format("%s-%s-%s.csv",
                 "data.cityofnewyork.us-api-views-5uac-w243-rows",
+                params,
                 formattedDateTime);
 
         String filename = dataJob.buildFilename();
         assertThat(filename).isEqualTo(result);
 
-        String url2 = "https://data.sfgov.org/resource/vw6y-z8j6.json";
+        String url2 = "https://data.sfgov.org/resource/vw6y-z8j6.json"; //no params
         source.setDataParserType(DataParserType.JSON);
         source.setUrl(url2);
         String result2 = String.format("%s-%s.json",

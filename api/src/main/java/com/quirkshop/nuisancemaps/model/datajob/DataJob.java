@@ -106,7 +106,8 @@ public class DataJob {
     }
 
     public DataJob(DataJob dataJob) {
-        this.sessionId = dataJob.getSessionId();;
+        this.sessionId = dataJob.getSessionId();
+        ;
         this.source = dataJob.getSource();
         this.orderKey = dataJob.getOrderKey();
         this.parameters = dataJob.getParameters();
@@ -126,12 +127,21 @@ public class DataJob {
         String hostName = _url.getHost().replaceAll("/", "-");
         String filePath = _url.getPath().split("\\.")[0]
                 .replaceAll("/", "-").substring(1); // skip the initial path prefix '/'
+        String query = _url.getQuery();
+
+        // append query string to filename to differentiate dataJob / source
+        // if no query
+        String params = "";
+        if (query != null) {
+            params = "-" + query.replaceAll("&", "__").replaceAll("=", "_");
+        }
+
         String fileExtension = source.getDataParserType().toString().toLowerCase();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
         String formattedDateTime = this.getSessionId().format(formatter);
 
-        String fileName = String.join("-", hostName, filePath,
+        String fileName = String.join("-", hostName, filePath + params,
                 formattedDateTime + "." + fileExtension);
 
         return fileName;
