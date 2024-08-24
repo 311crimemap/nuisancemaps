@@ -6,13 +6,18 @@ import java.util.HashMap;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class ERSIURL implements DataJobURL {
+public class ERSIParameters implements DataJobParameters {
+
+    private HashMap<String, Object> parameters;
+    private String url;
+    private HashMap<String, Object> nextParameters;
+    private String nextUrl;
 
     final static int MAX_MAP_SERVER = 8;
 
     public String buildInitURL(DataJob dataJob) {
 
-        HashMap<String, Object> parameters = dataJob.getParameters();
+        parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -24,13 +29,15 @@ public class ERSIURL implements DataJobURL {
         parameters.putIfAbsent("paramEndDate", endDate);
         parameters.putIfAbsent("paramMapServer", 1);
 
-        return buildERSIParamsURL(dataJob);
+        this.url = buildERSIParamsURL(dataJob);
+        return this.url;
     }
 
     // increment map server url 1-8
     // date range should remain
     public String buildNextURL(DataJob dataJob) {
-        HashMap<String, Object> parameters = dataJob.getParameters();
+        nextParameters = new HashMap<String, Object>();
+        parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -40,7 +47,8 @@ public class ERSIURL implements DataJobURL {
 
         if (nextVal > MAX_MAP_SERVER) return null;
 
-        return buildERSIParamsURL(dataJob);
+        this.nextUrl = buildERSIParamsURL(dataJob);
+        return this.nextUrl;
     }
 
     public String buildEndDate(LocalDate date) {
@@ -85,6 +93,26 @@ public class ERSIURL implements DataJobURL {
             .toUriString();
 
         return url;
+    }
+
+    public HashMap<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public HashMap<String, Object> getNextParameters() {
+        return nextParameters;
+    }
+
+    public String getNextUrl() {
+        return nextUrl;
+    }
+
+    public static int getMaxMapServer() {
+        return MAX_MAP_SERVER;
     }
 
 }

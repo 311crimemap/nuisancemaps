@@ -8,6 +8,7 @@ import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobParameters;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 
@@ -99,26 +100,19 @@ public class DataJobService {
         if (prevDataJob == null) {
             // start new 'crawl' session
             dataJob = new DataJob(LocalDateTime.now(), source, key);
-            dataJob.initURL();
+            dataJob.initDataJobParameters();
         } else {
 
-            // generate dataJob and  url for next sequence of session
-            //
-            // NB: url can be null if DataJobURLType indicates run only once -
-            // don't create next job.
-            String url = prevDataJob.buildNextURL();
+            DataJobParameters dataJobParameters = prevDataJob.buildNextDataJobParameters();
 
-            if (url == null)
+            if (dataJobParameters == null)
                 return null;
 
             dataJob = new DataJob(prevDataJob.getSessionId(),
-                    source,
-                    prevDataJob.getOrderKey());
-
-            dataJob.setUrl(url);
-            // TODO: refactor this to buildNextParamters() logic and state is
-            // getting convoluted here
-            dataJob.setParameters(prevDataJob.getParameters());
+                                  prevDataJob.getSource(),
+                                  prevDataJob.getOrderKey(),
+                                  dataJobParameters.getNextParameters(),
+                                  dataJobParameters.getNextUrl());
         }
 
         dataJobRepository.save(dataJob);

@@ -1,6 +1,5 @@
 package com.quirkshop.nuisancemaps.model.datajob;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -8,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -73,10 +71,10 @@ public class DataJob {
     private HashMap<String, Object> parameters;
 
     private int paramLimit;
-    private int paramOffset;             //csv: readLines
+    private int paramOffset; // csv: readLines
     private String orderKey;
-    private Integer numFetched;          //csv: valid lines (skip malformed rows)
-    private Integer numProcessed;        //csv: valid entity save to DB
+    private Integer numFetched; // csv: valid lines (skip malformed rows)
+    private Integer numProcessed; // csv: valid entity save to DB
     private boolean forceDownload = false;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -107,25 +105,44 @@ public class DataJob {
         this.updatedAt = now;
     }
 
+    public DataJob(LocalDateTime sessionId, Source source, String orderKey,
+            HashMap<String, Object> parameters, String url) {
+        this.sessionId = sessionId;
+        this.source = source;
+        this.orderKey = orderKey;
+        this.parameters = parameters;
+        this.url = url;
+        this.paramLimit = PARAM_LIMIT;
+        this.paramOffset = 0;
+        this.status = DataJobStatus.QUEUED;
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
 
-    public void initURL() {
+    public void initDataJobParameters() {
 
         Source source = this.getSource();
 
-        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
+        DataJobParameters dataJobParameters = DataJobParametersFactory
+                .create(source.getDataJobParametersType());
 
-        String url = dataJobURL.buildInitURL(this);
+        String url = dataJobParameters.buildInitURL(this);
 
         this.setUrl(url);
     }
 
-    public String buildNextURL() {
+    public DataJobParameters buildNextDataJobParameters() {
 
         Source source = this.getSource();
 
-        DataJobURL dataJobURL = DataJobURLFactory.create(source.getDataJobURLType());
+        DataJobParameters dataJobParameters = DataJobParametersFactory
+                .create(source.getDataJobParametersType());
 
-        return dataJobURL.buildNextURL(this);
+        dataJobParameters.buildNextURL(this);
+
+        return dataJobParameters;
+
     }
 
     public String buildFilename() throws MalformedURLException {

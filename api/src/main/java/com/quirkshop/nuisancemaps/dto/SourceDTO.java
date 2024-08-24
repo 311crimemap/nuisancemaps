@@ -2,7 +2,7 @@ package com.quirkshop.nuisancemaps.dto;
 
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobParametersType;
 
 public class SourceDTO {
 
@@ -13,11 +13,11 @@ public class SourceDTO {
     private String url;
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
-    private DataJobURLType dataJobURLType;
+    private DataJobParametersType dataJobParametersType;
     private Integer numRecords;
 
     public SourceDTO(Integer id, Integer sourceConfigId, String category, String url, String description,
-            DataParserType dataParserType, DataProcessType dataProcessType, DataJobURLType dataJobURLType,
+            DataParserType dataParserType, DataProcessType dataProcessType, DataJobParametersType dataJobParametersType,
             Integer numRecords) {
         this.id = id;
         this.sourceConfigId = sourceConfigId;
@@ -26,7 +26,7 @@ public class SourceDTO {
         this.description = description;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
-        this.dataJobURLType = dataJobURLType;
+        this.dataJobParametersType = dataJobParametersType;
         this.numRecords = numRecords;
     }
 
@@ -94,12 +94,12 @@ public class SourceDTO {
         this.url = url;
     }
 
-    public DataJobURLType getDataJobURLType() {
-        return dataJobURLType;
+    public DataJobParametersType getDataJobParametersType() {
+        return dataJobParametersType;
     }
 
-    public void setDataJobURLType(DataJobURLType dataJobURLType) {
-        this.dataJobURLType = dataJobURLType;
+    public void setDataJobParametersType(DataJobParametersType dataJobParametersType) {
+        this.dataJobParametersType = dataJobParametersType;
     }
 
 }

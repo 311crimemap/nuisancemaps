@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
-import com.quirkshop.nuisancemaps.model.datajob.OpenDataURL;
+import com.quirkshop.nuisancemaps.model.datajob.OpenDataParameters;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -54,10 +54,10 @@ public class DataJobTest {
         HashMap<String, Object> parameters = d.getParameters();
         parameters.put("paramLimit", limit);
         parameters.put("paramOffset", offset);
-        d.initURL();
+        d.initDataJobParameters();
 
         String url = d.getUrl();
-        OpenDataURL openDataURL = new OpenDataURL();
+        OpenDataParameters openDataURL = new OpenDataParameters();
         final String select = openDataURL.buildURLFields(s.getMapping());
 
         assertThat(s.getUrl()).isEqualTo(d.getSourceURL());

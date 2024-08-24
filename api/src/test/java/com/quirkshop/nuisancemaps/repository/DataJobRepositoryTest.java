@@ -14,7 +14,7 @@ import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobURLType;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobParametersType;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,9 +52,9 @@ public class DataJobRepositoryTest {
         mappingRepository.save(mapping);
         mappingRepository.save(mapping2);
         source = new Source(locale, "category", "description", "url",
-                            DataParserType.JSON, DataProcessType.MEMORY, DataJobURLType.BASE);
+                            DataParserType.JSON, DataProcessType.MEMORY, DataJobParametersType.BASE);
         source2 = new Source(locale, "category", "description", "url",
-                             DataParserType.JSON, DataProcessType.MEMORY, DataJobURLType.BASE);
+                             DataParserType.JSON, DataProcessType.MEMORY, DataJobParametersType.BASE);
         source.setMapping(mapping);
         source2.setMapping(mapping2);
         sourceRepository.save(source);

@@ -9,13 +9,18 @@ import com.quirkshop.nuisancemaps.model.Source;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class OpenDataURL implements DataJobURL {
+public class OpenDataParameters implements DataJobParameters {
+
+    private HashMap<String, Object> parameters;
+    private String url;
+    private HashMap<String, Object> nextParameters;
+    private String nextUrl;
 
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     public String buildInitURL(DataJob dataJob) {
         // if parameters in the initial case are somehow set prior, use those
-        HashMap<String, Object> parameters = dataJob.getParameters();
+        parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -23,12 +28,13 @@ public class OpenDataURL implements DataJobURL {
         parameters.putIfAbsent("paramLimit", PARAM_LIMIT);
         parameters.putIfAbsent("paramOffset", 0);
 
-        return buildOpenDataParamsURL(dataJob);
+        this.url = buildOpenDataParamsURL(dataJob);
+        return this.url;
     }
 
     public String buildNextURL(DataJob dataJob) {
-
-        HashMap<String, Object> parameters = dataJob.getParameters();
+        nextParameters = new HashMap<String, Object>();
+        parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -36,7 +42,8 @@ public class OpenDataURL implements DataJobURL {
         parameters.put("paramLimit", (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT));
         parameters.put("paramOffset", (Integer) parameters.getOrDefault("paramOffset", 0) + PARAM_LIMIT);
 
-        return buildOpenDataParamsURL(dataJob);
+        this.nextUrl = buildOpenDataParamsURL(dataJob);
+        return this.nextUrl;
     }
 
     public String buildOpenDataParamsURL(DataJob dataJob) {
@@ -72,6 +79,26 @@ public class OpenDataURL implements DataJobURL {
         List<String> fields = mapping.getAnnotationValues(MappingField::getField);
 
         return String.join(",", fields);
+    }
+
+    public HashMap<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public HashMap<String, Object> getNextParameters() {
+        return nextParameters;
+    }
+
+    public String getNextUrl() {
+        return nextUrl;
+    }
+
+    public static int getParamLimit() {
+        return PARAM_LIMIT;
     }
 
 }

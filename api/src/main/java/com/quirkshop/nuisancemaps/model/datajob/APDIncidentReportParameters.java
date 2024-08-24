@@ -12,11 +12,16 @@ import org.springframework.web.util.UriComponentsBuilder;
  * EndDate: String
  * numDays: int
  */
-public class APDIncidentReportURL implements DataJobURL {
+public class APDIncidentReportParameters implements DataJobParameters {
+
+    private HashMap<String, Object>  parameters;
+    private String url;
+    private HashMap<String, Object> nextParameters;
+    private String nextUrl;
 
     public String buildInitURL(DataJob dataJob) {
 
-        HashMap<String, Object> parameters = dataJob.getParameters();
+        parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -26,12 +31,14 @@ public class APDIncidentReportURL implements DataJobURL {
         parameters.putIfAbsent("paramStartDate", startDate);
         parameters.putIfAbsent("paramNumDays", 6);
 
-        return buildAPDParamsURL(dataJob);
+        this.url = buildAPDParamsURL(dataJob, parameters);
+        return this.url;
     }
 
-    public String buildNextURL(DataJob dataJob) {
 
-        HashMap<String, Object> parameters = dataJob.getParameters();
+    public String buildNextURL(DataJob dataJob) {
+        nextParameters = new HashMap<String, Object>();
+        parameters = dataJob.getParameters();
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -49,23 +56,19 @@ public class APDIncidentReportURL implements DataJobURL {
 
         if (_startDate.plusDays(numDays + 1).isBefore(_endDate)) {
             // increment start date by numDays
-            parameters.put("paramStartDate",
-                    _startDate.plusDays(numDays + 1).format(formatter));
-            parameters.put("paramEndDate", endDate);
-            parameters.put("paramNumDays", parameters.getOrDefault("numDays", 6));
+            nextParameters.put("paramStartDate",
+                               _startDate.plusDays(numDays + 1).format(formatter));
+            nextParameters.put("paramEndDate", endDate);
+            nextParameters.put("paramNumDays", parameters.getOrDefault("numDays", 6));
 
-            return buildAPDParamsURL(dataJob);
+            this.nextUrl = buildAPDParamsURL(dataJob, nextParameters);
+            return this.nextUrl;
         }
 
         return null;
     }
 
-    public String buildAPDParamsURL(DataJob dataJob) {
-
-        HashMap<String, Object> parameters = dataJob.getParameters();
-        if (parameters == null) {
-            parameters = new HashMap<String, Object>();
-        }
+    public String buildAPDParamsURL(DataJob dataJob, HashMap<String, Object> parameters) {
 
         String paramStartDate = (String) parameters.get("paramStartDate");
         int paramNumDays = (int) parameters.get("paramNumDays");
@@ -91,4 +94,23 @@ public class APDIncidentReportURL implements DataJobURL {
 
         return url;
     }
+
+
+    public HashMap<String, Object> getNextParameters() {
+        return nextParameters;
+    }
+
+    public String getNextUrl() {
+        return nextUrl;
+    }
+
+    public HashMap<String, Object> getParameters() {
+        return parameters;
+    }
+
+
+    public String getUrl() {
+        return url;
+    }
+
 }
