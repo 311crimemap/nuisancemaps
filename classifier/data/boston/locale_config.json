@@ -1,12 +1,10 @@
-[
-    {
-        "name": "Boston, MA",
-        "description": "",
-        "location": [
-            -71.057083,
-            42.361145
-        ],
-        "iconName": "building",
-        "iconUnicode": "\uf1ad"
-    }
-]
+{
+    "name": "Boston, MA",
+    "description": "",
+    "location": [
+        -71.057083,
+        42.361145
+    ],
+    "iconName": "building",
+    "iconUnicode": "\uf1ad"
+}
