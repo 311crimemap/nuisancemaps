@@ -170,6 +170,7 @@ public class DataEntityMappingServiceTest {
             String reportNum = jsonNodeFieldExtractor.extract(Mapping::getReportNum, s, node);
             String reportCategory = jsonNodeFieldExtractor.extract(Mapping::getReportCategory, s, node);
             String description = jsonNodeFieldExtractor.extract(Mapping::getDescription, s, node);
+            String address = jsonNodeFieldExtractor.extract(Mapping::getAddress, s, node);
             String location = jsonNodeFieldExtractor.extract(Mapping::getLocation, s, node);
             String lat = jsonNodeFieldExtractor.extract(Mapping::getLatitude, s, node);
             String lng = jsonNodeFieldExtractor.extract(Mapping::getLongitude, s, node);
@@ -183,6 +184,7 @@ public class DataEntityMappingServiceTest {
             assertThat(reportNum).isEqualTo(data311.getReportNum());
             assertThat(reportCategory).isEqualTo(data311.getReportCategory());
             assertThat(description).isEqualTo(data311.getDescription());
+            assertThat(address).isEqualTo(data311.getAddress());
             assertThat(location).isEqualTo(data311.getLocation());
             assertThat(latitude).isEqualTo(data311.getLatitude());
             assertThat(longitude).isEqualTo(data311.getLongitude());

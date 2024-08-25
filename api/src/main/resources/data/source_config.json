@@ -147,7 +147,7 @@
             "address": {
                 "field": "incident_address",
                 "pointer": "/incident_address",
-                "parsingStrategy": null,
+                "parsingStrategy": null
             },
             "location": {
                 "field": "premise",
@@ -324,7 +324,7 @@
             "address": {
                 "field": "street_address",
                 "pointer": "/street_address",
-                "parsingStrategy": null,
+                "parsingStrategy": null
             },
             "location": {
                 "field": null,
@@ -501,7 +501,7 @@
             "address": {
                 "field": "incident_address",
                 "pointer": "/incident_address",
-                "parsingStrategy": null,
+                "parsingStrategy": null
             },
             "location": {
                 "field": "location_type",
