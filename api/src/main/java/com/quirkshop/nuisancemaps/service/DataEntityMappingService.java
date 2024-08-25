@@ -1,21 +1,14 @@
 package com.quirkshop.nuisancemaps.service;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.function.Function;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.config.ParserStrategy;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
-import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
-import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.service.dataparser.FieldExtractor;
 
@@ -41,6 +34,7 @@ public class DataEntityMappingService {
         String report_num = extractor.extract(Mapping::getReportNum, source, item);
         String reportCategory = extractor.extract(Mapping::getReportCategory, source, item);
         String description = extractor.extract(Mapping::getDescription, source, item);
+        String address = extractor.extract(Mapping::getAddress, source, item);
         String location = extractor.extract(Mapping::getLocation, source, item);
 
         String lat = extractor.extract(Mapping::getLatitude, source, item);
@@ -69,8 +63,8 @@ public class DataEntityMappingService {
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
-        setDataEntityFields(dataEntity, report_num, reportCategory, description, location, orgCategory, latitude,
-                longitude, point, reported_at);
+        setDataEntityFields(dataEntity, report_num, reportCategory, description, address, location,
+                orgCategory, latitude, longitude, point, reported_at);
 
         return dataEntity;
 
@@ -97,11 +91,12 @@ public class DataEntityMappingService {
     }
 
     private void setDataEntityFields(IDataEntity dataEntity, String report_num, String reportCategory,
-            String description, String location, Category orgCategory,
+            String description, String address, String location, Category orgCategory,
             Double latitude, Double longitude, Point point, LocalDateTime reported_at) {
         dataEntity.setReportNum(report_num);
         dataEntity.setReportCategory(reportCategory);
         dataEntity.setDescription(description);
+        dataEntity.setAddress(address);
         dataEntity.setLocation(location);
         dataEntity.setOrgCategory(orgCategory);
         dataEntity.setLatitude(latitude);
