@@ -4,6 +4,7 @@
 # python 0-data_crime.py 07/22/2024
 #
 import os
+import re
 import json
 import requests
 import argparse
@@ -40,10 +41,20 @@ def read_file(filename):
         html_content = file.read()
     return html_content
 
+
+# Note: JSoup (java) vs BS4
+#
+# jSoup collapses multiple spaces; akin to rendering html into text.
+# BS4 returns the literal text and preserves intermediate spaces.
+#
+# jSoup is used as source of truth, want to mimic jsoup parsing
+# behavior, so we re.sub to remove excess spaces.
+#
 def extract(td):
     offenses = []
     for j in range(0, len(td)):
-        text = td[j].text.strip()
+        # text = td[j].text.replace('\xa0', ' ').strip()
+        text = re.sub(r'\s+', ' ', td[j].text.replace('\xa0', ' ')).strip()
         val = {"crime": text}
         offenses.append(val)
     return offenses

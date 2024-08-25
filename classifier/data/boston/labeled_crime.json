@@ -721,7 +721,7 @@
     },
     {
         "dataType": "crime",
-        "text": "LARCENY PURSE SNATCH - NO FORCE",
+        "text": "LARCENY PURSE SNATCH - NO FORCE ",
         "label": "2"
     },
     {
@@ -971,7 +971,7 @@
     },
     {
         "dataType": "crime",
-        "text": "DRUGS - POSS CLASS A - HEROIN, ETC.",
+        "text": "DRUGS - POSS CLASS A - HEROIN, ETC. ",
         "label": "4"
     },
     {
