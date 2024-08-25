@@ -26,6 +26,11 @@
                 "pointer": "/crime_type",
                 "parsingStrategy": null
             },
+            "address": {
+                "field": "address",
+                "pointer": "/address",
+                "parsingStrategy": null
+            },
             "location": {
                 "field": "location_type",
                 "pointer": "/location_type",
@@ -80,9 +85,14 @@
                 "pointer": "/sr_type_desc",
                 "parsingStrategy": null
             },
-            "location": {
+            "address": {
                 "field": "sr_location",
                 "pointer": "/sr_location",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": null,
+                "pointer": null,
                 "parsingStrategy": null
             },
             "latitude": {
@@ -133,6 +143,11 @@
                 "field": "offincident",
                 "pointer": "/offincident",
                 "parsingStrategy": null
+            },
+            "address": {
+                "field": "incident_address",
+                "pointer": "/incident_address",
+                "parsingStrategy": null,
             },
             "location": {
                 "field": "premise",
@@ -186,6 +201,11 @@
             "reportCategory": {
                 "field": "service_request_type",
                 "pointer": "/service_request_type",
+                "parsingStrategy": null
+            },
+            "address": {
+                "field": "address",
+                "pointer": "/address",
                 "parsingStrategy": null
             },
             "location": {
@@ -242,6 +262,11 @@
                 "pointer": "/description",
                 "parsingStrategy": null
             },
+            "address": {
+                "field": "block",
+                "pointer": "/block",
+                "parsingStrategy": null
+            },
             "location": {
                 "field": "location_description",
                 "pointer": "/location_description",
@@ -296,9 +321,14 @@
                 "pointer": "/owner_department",
                 "parsingStrategy": null
             },
-            "location": {
+            "address": {
                 "field": "street_address",
                 "pointer": "/street_address",
+                "parsingStrategy": null,
+            },
+            "location": {
+                "field": null,
+                "pointer": null,
                 "parsingStrategy": null
             },
             "latitude": {
@@ -348,6 +378,11 @@
             "description": {
                 "field": "pd_desc",
                 "pointer": "/pd_desc",
+                "parsingStrategy": null
+            },
+            "address": {
+                "field": null,
+                "pointer": null,
                 "parsingStrategy": null
             },
             "location": {
@@ -404,6 +439,11 @@
                 "pointer": "/pd_desc",
                 "parsingStrategy": null
             },
+            "address": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
             "location": {
                 "field": "prem_typ_desc",
                 "pointer": "/prem_typ_desc",
@@ -458,9 +498,14 @@
                 "pointer": "/descriptor",
                 "parsingStrategy": null
             },
-            "location": {
+            "address": {
                 "field": "incident_address",
                 "pointer": "/incident_address",
+                "parsingStrategy": null,
+            },
+            "location": {
+                "field": "location_type",
+                "pointer": "/location_type",
                 "parsingStrategy": null
             },
             "latitude": {
@@ -510,6 +555,11 @@
             "description": {
                 "field": "incident_description",
                 "pointer": "/incident_description",
+                "parsingStrategy": null
+            },
+            "address": {
+                "field": "intersection",
+                "pointer": "/intersection",
                 "parsingStrategy": null
             },
             "location": {
@@ -566,9 +616,14 @@
                 "pointer": null,
                 "parsingStrategy": null
             },
-            "location": {
+            "address": {
                 "field": "address",
                 "pointer": "/address",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "neighborhoods_sffind_boundaries",
+                "pointer": "/neighborhoods_sffind_boundaries",
                 "parsingStrategy": null
             },
             "latitude": {
@@ -617,6 +672,11 @@
             },
             "description": {
                 "field": "PD_DESC",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "address": {
+                "field": null,
                 "pointer": null,
                 "parsingStrategy": null
             },
@@ -674,6 +734,11 @@
                 "pointer": null,
                 "parsingStrategy": null
             },
+            "address": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
             "location": {
                 "field": "PREM_TYP_DESC",
                 "pointer": null,
@@ -725,6 +790,11 @@
             },
             "description": {
                 "field": "Descriptor",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "address": {
+                "field": "Incident Address",
                 "pointer": null,
                 "parsingStrategy": null
             },
@@ -782,10 +852,15 @@
                 "pointer": null,
                 "parsingStrategy": null
             },
-            "location": {
+            "address": {
                 "field": "STREET_NAME",
                 "pointer": null,
                 "parsingStrategy": "STREET_NAME_ERSI_AUSTIN"
+            },
+            "location": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
             },
             "latitude": {
                 "field": "y",
@@ -836,9 +911,14 @@
                 "pointer": null,
                 "parsingStrategy": null
             },
-            "location": {
+            "address": {
                 "field": "location",
                 "pointer": "tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)",
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": null,
+                "pointer": null,
                 "parsingStrategy": null
             },
             "latitude": {
