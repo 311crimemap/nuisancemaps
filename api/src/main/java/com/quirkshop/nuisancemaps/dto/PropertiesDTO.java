@@ -5,12 +5,15 @@ import java.time.LocalDateTime;
 public class PropertiesDTO {
     private String reportNum;
     private String reportCategory;
+    private String address;
     private String location;
     private CategoryDTO category;
     private LocalDateTime reportedAt;
 
-    public PropertiesDTO(String reportCategory, String location, LocalDateTime reportedAt, String reportNum, CategoryDTO category) {
+    public PropertiesDTO(String reportCategory, String address, String location,
+            LocalDateTime reportedAt, String reportNum, CategoryDTO category) {
         this.reportCategory = reportCategory;
+        this.address = address;
         this.location = location;
         this.reportedAt = reportedAt;
         this.reportNum = reportNum;
@@ -31,6 +34,14 @@ public class PropertiesDTO {
 
     public void setReportCategory(String category) {
         this.reportCategory = category;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getLocation() {

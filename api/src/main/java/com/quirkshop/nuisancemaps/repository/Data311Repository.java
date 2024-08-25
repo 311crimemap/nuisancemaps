@@ -1,22 +1,21 @@
 package com.quirkshop.nuisancemaps.repository;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.quirkshop.nuisancemaps.dto.CategoryDTO;
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.dto.FeatureDTO;
 import com.quirkshop.nuisancemaps.dto.GeometryDTO;
 import com.quirkshop.nuisancemaps.dto.PropertiesDTO;
-import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.Category;
+import com.quirkshop.nuisancemaps.model.Data311;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface Data311Repository extends IDataEntityRepository<Data311>, CrudRepository<Data311, Integer> {
@@ -48,6 +47,7 @@ public interface Data311Repository extends IDataEntityRepository<Data311>, CrudR
                             c.getIconName(), c.getIconUnicode());
 
                     PropertiesDTO p = new PropertiesDTO(data311.getReportCategory(),
+                            data311.getAddress(),
                             data311.getLocation(),
                             data311.getReportedAt(), data311.getReportNum(), cDTO);
 
@@ -76,24 +76,25 @@ public interface Data311Repository extends IDataEntityRepository<Data311>, CrudR
     default FeatureCollectionDTO findAllByBoundsOrderByReportedAtDescGeoJSON(double sw_lat, double sw_lng,
             double ne_lat, double ne_lng, LocalDateTime startDate, LocalDateTime endDate, int limit) {
 
-        List<Data311> dataCrimes = findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng, startDate,
+        List<Data311> data311s = findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng, startDate,
                 endDate, limit);
 
-        List<FeatureDTO> featuresDTO = dataCrimes
+        List<FeatureDTO> featuresDTO = data311s
                 .stream()
-                .map(dataCrime -> {
+                .map(data311 -> {
 
                     GeometryDTO g = new GeometryDTO("Point",
-                            new Double[] { dataCrime.getLongitude(), dataCrime.getLatitude(), 0.0 });
+                            new Double[] { data311.getLongitude(), data311.getLatitude(), 0.0 });
 
-                    Category c = dataCrime.getOrgCategory();
+                    Category c = data311.getOrgCategory();
 
                     CategoryDTO cDTO = new CategoryDTO(c.getId(), c.getDataType(), c.getText(), c.getLabel(),
                             c.getIconName(), c.getIconUnicode());
 
-                    PropertiesDTO p = new PropertiesDTO(dataCrime.getReportCategory(),
-                            dataCrime.getLocation(),
-                            dataCrime.getReportedAt(), dataCrime.getReportNum(), cDTO);
+                    PropertiesDTO p = new PropertiesDTO(data311.getReportCategory(),
+                            data311.getAddress(),
+                            data311.getLocation(),
+                            data311.getReportedAt(), data311.getReportNum(), cDTO);
 
                     FeatureDTO f = new FeatureDTO("Feature", g, p);
                     return f;
