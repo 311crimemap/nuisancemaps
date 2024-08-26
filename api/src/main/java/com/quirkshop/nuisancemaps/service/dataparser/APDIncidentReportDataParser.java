@@ -12,7 +12,7 @@ import java.util.Map;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
@@ -71,7 +71,7 @@ public class APDIncidentReportDataParser extends DataParser {
             // PARSE
             try {
 
-                IDataEntity dataEntity = dataEntityMappingService
+                DataEntity dataEntity = dataEntityMappingService
                         .buildDataEntity(dataEntityClass, source, row, geometryFactory, mapFieldExtractor);
 
                 addDataEntity(dataEntity, parseCounter);

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
@@ -40,7 +40,7 @@ public class JSONDataParser extends DataParser {
 
                     try {
 
-                        IDataEntity dataEntity = dataEntityMappingService
+                        DataEntity dataEntity = dataEntityMappingService
                             .buildDataEntity(dataEntityClass, source, (JsonNode) item,
                                              geometryFactory, jsonNodeFieldExtractor);
 
