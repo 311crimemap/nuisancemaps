@@ -16,7 +16,6 @@ import com.quirkshop.nuisancemaps.model.Geocode;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.GeocodeRepository;
 
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -313,10 +312,10 @@ public class GeocoderService {
         Point location = source.getLocale().getLocation();
         final String centerLngLat = String.format("%f,%f", location.getX(), location.getY());
 
-        String locations = String.join(";", formatAddresses(addresses)) + ".json";
+        String queryAddresses = String.join(";", formatAddresses(addresses)) + ".json";
 
         String baseURL = String.format("https://api.maptiler.com/geocoding/%s",
-                locations);
+                queryAddresses);
 
         String url = UriComponentsBuilder.fromUriString(baseURL)
                 .queryParam("language", "en")

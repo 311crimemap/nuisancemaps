@@ -44,10 +44,13 @@ public class ParserStrategyConfig {
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = new HashMap<>();
 
         parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON, this::REPORTEDAT_BOSTON);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET, this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET,
+                             this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
         parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
                 this::REPORTEDAT_CRIME_NEWYORKCITY);
         parsingFunctions.put(ParserStrategy.CREATED_DATE_311_NEWYORKCITY, this::CREATED_DATE_311_NEWYORKCITY);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN, this::REPORTED_AT_CSV_AUSTIN);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_AUSTIN, this::REPORTED_AT2_CSV_AUSTIN);
 
         return parsingFunctions;
     }
@@ -227,6 +230,41 @@ public class ParserStrategyConfig {
 
         } catch (Exception e) {
             log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // '09/21/2023 07:18:00 AM'
+    public String REPORTED_AT_CSV_AUSTIN(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Occurred Date Time");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info("REPORTED_AT_CSV_AUSTIN: " + row.get("Occurred Date Time") + " | " + e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+
+    // '09/21/2023 07:18:00 AM'
+    public String REPORTED_AT2_CSV_AUSTIN(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Report Date Time");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info("REPORTED_AT2_CSV_AUSTIN: " + row.get("Report Date Time") + " | " + e.getMessage());
         }
 
         return dateStr;

@@ -166,7 +166,7 @@ public class APDIncidentReportDataParserTest {
             {
                 put("reportNum", "123");
                 put("reportCategory", "TEST CRIME");
-                put("location", "7918 WEST GATE BLVD, AUSTIN 78745");
+                put("address", "7918 WEST GATE BLVD, AUSTIN 78745");
                 put("reportedAt", LocalDateTime.parse("Thu, Aug-01-2024 02:10", formatter)
                         .format(outputFormatter));
                 put("reportedAt2", LocalDateTime.parse("Thu, Aug-01-2024 02:10", formatter)
@@ -180,7 +180,7 @@ public class APDIncidentReportDataParserTest {
             {
                 put("reportNum", "1234");
                 put("reportCategory", "TEST CRIME 2");
-                put("location", "4825 DAVIS LN, AUSTIN 78749");
+                put("address", "4825 DAVIS LN, AUSTIN 78749");
                 put("reportedAt", LocalDateTime.parse("Fri, Aug-02-2024 02:10", formatter)
                         .format(outputFormatter));
                 put("reportedAt2", LocalDateTime.parse("Fri, Aug-02-2024 02:10", formatter)
@@ -193,7 +193,7 @@ public class APDIncidentReportDataParserTest {
             {
                 put("reportNum", "12345");
                 put("reportCategory", "TEST CRIME 3");
-                put("location", "12424 RESEARCH BLVD SVRD SB, AUSTIN 78759");
+                put("address", "12424 RESEARCH BLVD SVRD SB, AUSTIN 78759");
                 put("reportedAt", LocalDateTime.parse("Sat, Aug-03-2024 02:10", formatter)
                         .format(outputFormatter));
                 put("reportedAt2", LocalDateTime.parse("Sat, Aug-03-2024 02:10", formatter)

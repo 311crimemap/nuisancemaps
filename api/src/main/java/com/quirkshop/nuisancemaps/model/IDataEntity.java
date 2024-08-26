@@ -19,6 +19,8 @@ public interface IDataEntity {
 
     public void setDescription(String description);
 
+    public void setAddress(String address);
+
     public void setLocation(String location);
 
     public void setOrgCategory(Category orgCategory);

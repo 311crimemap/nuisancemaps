@@ -68,6 +68,14 @@ public class Mapping {
 
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "field", column = @Column(name = "address_field")),
+            @AttributeOverride(name = "pointer", column = @Column(name = "address_pointer")),
+            @AttributeOverride(name = "parsingStrategy", column = @Column(name = "address_parsing_strategy"))
+    })
+    private MappingField address;
+
+    @Embedded
+    @AttributeOverrides({
             @AttributeOverride(name = "field", column = @Column(name = "location_field")),
             @AttributeOverride(name = "pointer", column = @Column(name = "location_pointer")),
             @AttributeOverride(name = "parsingStrategy", column = @Column(name = "location_parsing_strategy"))
@@ -119,7 +127,7 @@ public class Mapping {
     }
 
     public Mapping(MappingField reportNum, MappingField reportCategory, String rootPath, String orderKey,
-            MappingField description,
+            MappingField description, MappingField address,
             MappingField location, MappingField latitude,
             MappingField longitude, MappingField reportedAt, MappingField reportedAt2) {
         this.reportNum = reportNum;
@@ -127,6 +135,7 @@ public class Mapping {
         this.rootPath = rootPath;
         this.orderKey = orderKey;
         this.description = description;
+        this.address = address;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -249,6 +258,15 @@ public class Mapping {
 
     public void setReportCategory(MappingField reportCategory) {
         this.reportCategory = reportCategory;
+    }
+
+    @Mapped
+    public MappingField getAddress() {
+        return address;
+    }
+
+    public void setAddress(MappingField address) {
+        this.address = address;
     }
 
     @Mapped

@@ -75,7 +75,9 @@ public class DataJobTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
         String formattedDateTime = dataJob.getSessionId().format(formatter);
         String params = new URL(source.getUrl()).getQuery()
-                .replaceAll("&", "__").replaceAll("=", "_");
+                .replaceAll("/", "-")
+                .replaceAll("&", "__")
+                .replaceAll("=", "_");
 
         String result = String.format("%s-%s-%s.csv",
                 "data.cityofnewyork.us-api-views-5uac-w243-rows",
@@ -85,7 +87,7 @@ public class DataJobTest {
         String filename = dataJob.buildFilename();
         assertThat(filename).isEqualTo(result);
 
-        String url2 = "https://data.sfgov.org/resource/vw6y-z8j6.json"; //no params
+        String url2 = "https://data.sfgov.org/resource/vw6y-z8j6.json"; // no params
         source.setDataParserType(DataParserType.JSON);
         source.setUrl(url2);
         String result2 = String.format("%s-%s.json",
@@ -94,6 +96,20 @@ public class DataJobTest {
 
         String filename2 = dataJob.buildFilename();
         assertThat(filename2).isEqualTo(result2);
+
+        // params w/ date
+        String url3 = "https://data.sfgov.org/resource/vw6y-z8j6.csv?test=123&date=8/1/2024&test2=abc";
+        source.setDataParserType(DataParserType.CSV);
+        source.setUrl(url3);
+
+        String result3 = String.format("%s-%s-%s.csv",
+                "data.sfgov.org-resource-vw6y-z8j6",
+                "test_123__date_8-1-2024__test2_abc",
+                formattedDateTime);
+
+        String filename3 = dataJob.buildFilename();
+        assertThat(filename3).isEqualTo(result3);
+
     }
 
 }
