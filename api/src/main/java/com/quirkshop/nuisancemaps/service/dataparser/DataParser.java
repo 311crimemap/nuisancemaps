@@ -14,6 +14,7 @@ import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
@@ -153,9 +154,12 @@ public class DataParser {
             HashMap<String, IDataEntity> parseNewDataMap) {
         int numReplaced = 0;
 
-        // query any existing
+        Locale locale = source.getLocale();
+
+        // query any existing in shared locale
+        // allows for different data sources (source_id) contributing to same area
         List<? extends IDataEntity> existing = dataEntityRepository
-                .findAllBySourceIdAndReportNumIn(source.getId(), reportNums);
+                .findAllBySource_Locale_IdAndReportNumIn(locale.getId(), reportNums);
 
         // replace existing with new
         for (IDataEntity dataEntityDB : existing) {

@@ -29,6 +29,8 @@ public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, C
 
     List<DataCrime> findAllByReportNumIn(List<String> reportNums);
 
+    List<DataCrime> findAllBySource_Locale_IdAndReportNumIn(Integer localeId, List<String> reportNums);
+
     List<DataCrime> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
     default FeatureCollectionDTO findAllByOrderByReportedAtDescGeoJSON(int distance, double latitude, double longitude,
