@@ -133,7 +133,10 @@ public class DataJob {
         // if no query
         String params = "";
         if (query != null) {
-            params = "-" + query.replaceAll("&", "__").replaceAll("=", "_");
+            params = "-" + query
+                .replaceAll("/", "-")   // avoid date format breaking into subdirectories
+                .replaceAll("&", "__")
+                .replaceAll("=", "_");
         }
 
         String fileExtension = source.getDataParserType().toString().toLowerCase();

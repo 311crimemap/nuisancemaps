@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
@@ -146,7 +147,7 @@ public class DataEntityMappingServiceTest {
     public void BuildDataEntityParseEntityTest()
             throws IOException, NoSuchMethodException, IllegalAccessException, InstantiationException,
             InvocationTargetException, MissingReportCategoryException, MissingCategoryException,
-            MissingCoordinateException {
+            InvalidCoordinateException, MissingCoordinateException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-dallas.json");
         Source s = sourceRepository.findOneBySourceConfigId(4);
@@ -170,6 +171,7 @@ public class DataEntityMappingServiceTest {
             String reportNum = jsonNodeFieldExtractor.extract(Mapping::getReportNum, s, node);
             String reportCategory = jsonNodeFieldExtractor.extract(Mapping::getReportCategory, s, node);
             String description = jsonNodeFieldExtractor.extract(Mapping::getDescription, s, node);
+            String address = jsonNodeFieldExtractor.extract(Mapping::getAddress, s, node);
             String location = jsonNodeFieldExtractor.extract(Mapping::getLocation, s, node);
             String lat = jsonNodeFieldExtractor.extract(Mapping::getLatitude, s, node);
             String lng = jsonNodeFieldExtractor.extract(Mapping::getLongitude, s, node);
@@ -183,6 +185,7 @@ public class DataEntityMappingServiceTest {
             assertThat(reportNum).isEqualTo(data311.getReportNum());
             assertThat(reportCategory).isEqualTo(data311.getReportCategory());
             assertThat(description).isEqualTo(data311.getDescription());
+            assertThat(address).isEqualTo(data311.getAddress());
             assertThat(location).isEqualTo(data311.getLocation());
             assertThat(latitude).isEqualTo(data311.getLatitude());
             assertThat(longitude).isEqualTo(data311.getLongitude());

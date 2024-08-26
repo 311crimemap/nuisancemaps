@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.opencsv.CSVReaderHeaderAware;
@@ -56,6 +57,7 @@ public class CSVDataParser extends DataParser {
             }
 
             Map<String, String> row;
+            Map<String, String> trimmedRow;
 
             while (true) {
 
@@ -72,11 +74,27 @@ public class CSVDataParser extends DataParser {
                 if (row == null)
                     break;
 
+                // CLEAN
+
+                // fix any BOM / byte order marks, weird invisible characters
+                trimmedRow = new HashMap<String, String>();
+
+                for (Map.Entry<String, String> entry : row.entrySet()) {
+                    String trimKey = entry.getKey()
+                            .replaceAll("\uFEFF", "") // BOM
+                            .replaceAll("\u00A0", "") // non-breaking spaces (shouldn't be an issue but)
+                            .replaceAll("\u200B", "") // zero-width spaces
+                            .trim(); // Standard trim
+                    String value = entry.getValue();
+                    trimmedRow.put(trimKey, value);
+                }
+
                 // PARSE
+
                 try {
 
                     IDataEntity dataEntity = dataEntityMappingService
-                            .buildDataEntity(dataEntityClass, source, row, geometryFactory, mapFieldExtractor);
+                            .buildDataEntity(dataEntityClass, source, trimmedRow, geometryFactory, mapFieldExtractor);
 
                     addDataEntity(dataEntity, parseCounter);
 
@@ -87,6 +105,7 @@ public class CSVDataParser extends DataParser {
 
                 } catch (Exception e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
+                    log.info("[CSVDataParser] row: " + numRows);
                     logException(dataJob, content, e);
                     parseCounter.numErrorsIncrement();
                 }

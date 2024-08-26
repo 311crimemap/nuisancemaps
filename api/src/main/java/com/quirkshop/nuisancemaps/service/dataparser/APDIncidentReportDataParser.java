@@ -125,7 +125,7 @@ public class APDIncidentReportDataParser extends DataParser {
         // batch send for geocoding
         List<String> addresses = new ArrayList<String>();
         for (Map<String, String> row : data) {
-            addresses.add(row.get("location"));
+            addresses.add(row.get("address"));
         }
 
         List<double[]> coordinates = geocoderService
@@ -184,8 +184,8 @@ public class APDIncidentReportDataParser extends DataParser {
 
             String offenseDate = element.select("tr:nth-of-type(3) td:nth-of-type(2)").text().trim();
 
-            String location = element.select("tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)").text().trim();
-            location = formatAddress(location); // dropping apt
+            String address = element.select("tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)").text().trim();
+            address = formatAddress(address); // dropping apt
 
             int reportNumCounter = 1;
             Elements offensesTD = element.select("tr:nth-of-type(5) td:nth-of-type(2) td");
@@ -200,7 +200,7 @@ public class APDIncidentReportDataParser extends DataParser {
 
                 row.put("reportNum", reportNum + "-" + String.valueOf(reportNumCounter));
                 row.put("reportCategory", reportCategory);
-                row.put("location", location);
+                row.put("address", address);
 
                 // NB: data set needs enrichment to get lat/lng
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, MMM-dd-yyyy HH:mm");

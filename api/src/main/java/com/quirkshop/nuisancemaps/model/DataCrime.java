@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -44,6 +45,9 @@ public class DataCrime implements IDataEntity {
     private String reportNum;
     private String reportCategory;
     private String description;
+
+    @Column(length = 512)
+    private String address;
     private String location;
 
     @ManyToOne
@@ -121,6 +125,14 @@ public class DataCrime implements IDataEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getLocation() {
