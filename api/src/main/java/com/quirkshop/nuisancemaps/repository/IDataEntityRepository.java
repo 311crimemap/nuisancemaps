@@ -11,6 +11,8 @@ public interface IDataEntityRepository<T extends IDataEntity> {
         return ((CrudRepository<IDataEntity, Integer>) this).saveAll(entities);
     }
 
+    List<T> findAllBySource_Locale_IdAndReportNumIn(Integer localeId, List<String> reportNums);
+
     // Abstract query method for findAllBySourceIdAndReportNumIn
     List<T> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
