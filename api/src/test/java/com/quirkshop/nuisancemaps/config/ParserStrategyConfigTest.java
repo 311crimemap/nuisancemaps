@@ -174,11 +174,10 @@ public class ParserStrategyConfigTest {
         Resource jsonResource = resourceLoader.getResource("classpath:data/ersi-2024-07-01-2024-08-15-atx.json");
         InputStream inputstream = jsonResource.getInputStream();
 
-        Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions =
-            parserStrategyConfig.parsingFunctionsJSON();
+        Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = parserStrategyConfig.parsingFunctionsJSON();
 
         JsonNode items = objectMapper.readTree(inputstream);
-        //System.out.println(items);
+        // System.out.println(items);
         JsonNode item = items.at("/features/2");
         String value = parserStrategyConfig.STREET_NAME_ERSI_AUSTIN(item);
         assertThat(value).isEqualTo("8800 NORTH PLZ");
@@ -198,10 +197,46 @@ public class ParserStrategyConfigTest {
         // System.out.println(items);
         JsonNode item = items.at("/features/2");
 
-        //date: 1705276800000
-        //time: 1136
+        // date: 1705276800000
+        // time: 1136
         String value = parserStrategyConfig.OCCURRENCE_DATE_ERSI_AUSTIN(item);
         assertThat(value).isEqualTo("2024-01-15T11:36:00");
+    }
+
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_AUSTIN_TEST() {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_AUSTIN).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Occurred Date Time", "09/21/2023 07:18:00 AM");
+
+        String value = parserStrategyConfig.REPORTED_AT_CSV_AUSTIN(row);
+        assertThat(value).isEqualTo("2023-09-21T07:18:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
+    @Test
+    @Transactional
+    public void REPORTED_AT2_CSV_AUSTIN_TEST() {
+        assertThat(ParserStrategy.REPORTED_AT2_CSV_AUSTIN).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Report Date Time", "04/15/2016 01:09:00 PM");
+
+        String value = parserStrategyConfig.REPORTED_AT2_CSV_AUSTIN(row);
+        assertThat(value).isEqualTo("2016-04-15T13:09:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
     }
 
 }
