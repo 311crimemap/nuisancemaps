@@ -12,14 +12,14 @@ import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataError;
-import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
-import com.quirkshop.nuisancemaps.repository.IDataEntityRepository;
+import com.quirkshop.nuisancemaps.repository.DataEntityRepository;
 import com.quirkshop.nuisancemaps.service.DataEntityMappingService;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
@@ -56,10 +56,10 @@ public class DataParser {
     protected GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), SRID);
 
     // Types
-    protected Class<? extends IDataEntity> dataEntityClass;
-    protected IDataEntityRepository<? extends IDataEntity> dataEntityRepository;
+    protected Class<? extends DataEntity> dataEntityClass;
+    protected DataEntityRepository<? extends DataEntity> dataEntityRepository;
 
-    HashMap<String, IDataEntity> parseNewDataMap = new HashMap<String, IDataEntity>();
+    HashMap<String, DataEntity> parseNewDataMap = new HashMap<String, DataEntity>();
     List<String> reportNums = new ArrayList<String>();
 
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
@@ -70,7 +70,7 @@ public class DataParser {
      * Common Helpers
      */
 
-    public void addDataEntity(IDataEntity dataEntity, ParseCounter parseCounter) {
+    public void addDataEntity(DataEntity dataEntity, ParseCounter parseCounter) {
 
         String reportNum = dataEntity.getReportNum();
 
@@ -151,21 +151,21 @@ public class DataParser {
     }
 
     private void replaceWithNew(Source source, List<String> reportNums, ParseCounter parseCounter,
-            HashMap<String, IDataEntity> parseNewDataMap) {
+            HashMap<String, DataEntity> parseNewDataMap) {
         int numReplaced = 0;
 
         Locale locale = source.getLocale();
 
         // query any existing in shared locale
         // allows for different data sources (source_id) contributing to same area
-        List<? extends IDataEntity> existing = dataEntityRepository
+        List<? extends DataEntity> existing = dataEntityRepository
                 .findAllBySource_Locale_IdAndReportNumIn(locale.getId(), reportNums);
 
         // replace existing with new
-        for (IDataEntity dataEntityDB : existing) {
+        for (DataEntity dataEntityDB : existing) {
             int id = dataEntityDB.getId();
             String reportNum = dataEntityDB.getReportNum();
-            IDataEntity dNew = parseNewDataMap.getOrDefault(reportNum, null);
+            DataEntity dNew = parseNewDataMap.getOrDefault(reportNum, null);
             if (dNew != null) {
                 dNew.setId(id); // set id to overwrite
                 numReplaced++;
@@ -176,8 +176,8 @@ public class DataParser {
         parseCounter.setNumDuplicates(parseCounter.getNumDuplicates() + existing.size());
     }
 
-    private void saveAll(ParseCounter parseCounter, HashMap<String, IDataEntity> parseNewDataMap) {
-        Iterable<IDataEntity> i = dataEntityRepository
+    private void saveAll(ParseCounter parseCounter, HashMap<String, DataEntity> parseNewDataMap) {
+        Iterable<DataEntity> i = dataEntityRepository
                 .saveAllEntities(parseNewDataMap.values());
 
         int numProcessed = Iterables.size(i);

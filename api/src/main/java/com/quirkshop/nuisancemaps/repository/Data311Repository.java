@@ -18,7 +18,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Data311Repository extends IDataEntityRepository<Data311>, CrudRepository<Data311, Integer> {
+public interface Data311Repository extends DataEntityRepository<Data311>, CrudRepository<Data311, Integer> {
 
     Data311 findOneByReportNum(String reportNum);
 

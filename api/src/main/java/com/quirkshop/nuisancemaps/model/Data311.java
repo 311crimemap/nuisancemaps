@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.GeometryFactory;
         @Index(name = "idx_point_data_311", columnList = "point")
 
 })
-public class Data311 implements IDataEntity {
+public class Data311 implements DataEntity {
     // TODO: status update, other fields
 
     @Id
