@@ -3,7 +3,7 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import org.locationtech.jts.geom.Point;
 
-public interface IDataEntity {
+public interface DataEntity {
 
     public Integer getId();
 

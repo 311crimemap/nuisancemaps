@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.GeometryFactory;
         @Index(name = "idx_point_data_crime", columnList = "point")
 
 })
-public class DataCrime implements IDataEntity {
+public class DataCrime implements DataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_crime_seq")
