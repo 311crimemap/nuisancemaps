@@ -942,5 +942,64 @@
                 "parsingStrategy": null
             }
         }
+    },
+    {
+        "sourceConfigId": 17,
+        "url": "https://311crimemap-data.s3.us-east-2.amazonaws.com/Crime_Reports_20240708.csv",
+        "cookie": null,
+        "category": "crime",
+        "description": "Austin Crime APD CSV Last Dump 2024-07-08",
+        "dataParserType": "CSV",
+        "dataProcessType": "FILE",
+        "dataJobConfiguratorType": "BASE",
+        "mapping": {
+            "rootPath": null,
+            "orderKey": "reportNum",
+            "reportNum": {
+                "field": "Incident Number",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "reportCategory": {
+                "field": "Highest Offense Description",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "description": {
+                "field": null,
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "address": {
+                "field": "Address",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "location": {
+                "field": "Location Type",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "latitude": {
+                "field": "Latitude",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "longitude": {
+                "field": "Longitude",
+                "pointer": null,
+                "parsingStrategy": null
+            },
+            "reportedAt": {
+                "field": "Occurred Date Time",
+                "pointer": null,
+                "parsingStrategy": "REPORTED_AT_CSV_AUSTIN"
+            },
+            "reportedAt2": {
+                "field": "Report Date Time",
+                "pointer": null,
+                "parsingStrategy": "REPORTED_AT2_CSV_AUSTIN"
+            }
+        }
     }
 ]
