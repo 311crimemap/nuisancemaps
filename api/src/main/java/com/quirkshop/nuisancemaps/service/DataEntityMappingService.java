@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
@@ -41,13 +42,19 @@ public class DataEntityMappingService {
         String lng = extractor.extract(Mapping::getLongitude, source, item);
 
         String reported_at1 = extractor.extract(Mapping::getReportedAt, source, item);
+        if (reported_at1 == null || reported_at1.isEmpty())
+            reported_at1 = null;
+
         String reported_at2 = extractor.extract(Mapping::getReportedAt2, source, item);
+        if (reported_at2 == null || reported_at2.isEmpty())
+            reported_at2 = null;
 
         Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
         Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
 
         // format
         reportCategory = formatString(reportCategory);
+        address = formatString(address);
         location = formatString(location);
 
         // validate
@@ -55,16 +62,17 @@ public class DataEntityMappingService {
 
         Point point = buildValidPoint(source, geometryFactory, latitude, longitude);
 
-        Category orgCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
-        validateCategory(source, orgCategory, reportCategory);
+        Category textCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
+        validateCategory(source, textCategory, reportCategory);
 
-        LocalDateTime reported_at = reported_at1.isEmpty() ? LocalDateTime.parse(reported_at2)
+        LocalDateTime reported_at = reported_at1 == null
+                ? (reported_at2 == null ? null : LocalDateTime.parse(reported_at2))
                 : LocalDateTime.parse(reported_at1);
 
         IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
         setDataEntityFields(dataEntity, report_num, reportCategory, description, address, location,
-                orgCategory, latitude, longitude, point, reported_at);
+                textCategory, latitude, longitude, point, reported_at);
 
         return dataEntity;
 
