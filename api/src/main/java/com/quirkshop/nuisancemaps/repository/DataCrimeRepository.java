@@ -19,7 +19,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DataCrimeRepository extends IDataEntityRepository<DataCrime>, CrudRepository<DataCrime, Integer> {
+public interface DataCrimeRepository extends DataEntityRepository<DataCrime>, CrudRepository<DataCrime, Integer> {
 
     Page<DataCrime> findAll(Pageable pageRequest); // NB: pagination can issue an additional COUNT query - slow
 

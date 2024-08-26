@@ -1,14 +1,14 @@
 package com.quirkshop.nuisancemaps.repository;
 
 import java.util.List;
-import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.DataEntity;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface IDataEntityRepository<T extends IDataEntity> {
+public interface DataEntityRepository<T extends DataEntity> {
     // wrap default CrudRepository method for saveAll
-    default Iterable<IDataEntity> saveAllEntities(Iterable<IDataEntity> entities) {
-        return ((CrudRepository<IDataEntity, Integer>) this).saveAll(entities);
+    default Iterable<DataEntity> saveAllEntities(Iterable<DataEntity> entities) {
+        return ((CrudRepository<DataEntity, Integer>) this).saveAll(entities);
     }
 
     List<T> findAllBySource_Locale_IdAndReportNumIn(Integer localeId, List<String> reportNums);

@@ -13,7 +13,7 @@ import com.opencsv.exceptions.CsvException;
 import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
-import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
@@ -94,7 +94,7 @@ public class CSVDataParser extends DataParser {
 
                 try {
 
-                    IDataEntity dataEntity = dataEntityMappingService
+                    DataEntity dataEntity = dataEntityMappingService
                             .buildDataEntity(dataEntityClass, source, trimmedRow, geometryFactory, mapFieldExtractor);
 
                     addDataEntity(dataEntity, parseCounter);

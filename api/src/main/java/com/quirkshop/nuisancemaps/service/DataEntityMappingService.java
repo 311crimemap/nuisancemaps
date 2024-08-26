@@ -2,14 +2,13 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.Category;
-import com.quirkshop.nuisancemaps.model.IDataEntity;
+import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.service.dataparser.FieldExtractor;
@@ -26,7 +25,7 @@ public class DataEntityMappingService {
     @Autowired
     private TextCategoryService textCategoryService;
 
-    public <T> IDataEntity buildDataEntity(Class<? extends IDataEntity> dataEntityClass, Source source,
+    public <T> DataEntity buildDataEntity(Class<? extends DataEntity> dataEntityClass, Source source,
             T item,
             GeometryFactory geometryFactory,
             FieldExtractor<T> extractor)
@@ -71,7 +70,7 @@ public class DataEntityMappingService {
                 ? (reported_at2 == null ? null : LocalDateTime.parse(reported_at2))
                 : LocalDateTime.parse(reported_at1);
 
-        IDataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
+        DataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
         setDataEntityFields(dataEntity, report_num, reportCategory, description, address, location,
                 textCategory, latitude, longitude, point, reported_at);
@@ -100,7 +99,7 @@ public class DataEntityMappingService {
                 .replaceAll("\\s+", " ");
     }
 
-    private void setDataEntityFields(IDataEntity dataEntity, String report_num, String reportCategory,
+    private void setDataEntityFields(DataEntity dataEntity, String report_num, String reportCategory,
             String description, String address, String location, Category orgCategory,
             Double latitude, Double longitude, Point point, LocalDateTime reported_at) {
         dataEntity.setReportNum(report_num);
