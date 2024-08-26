@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
@@ -146,7 +147,7 @@ public class DataEntityMappingServiceTest {
     public void BuildDataEntityParseEntityTest()
             throws IOException, NoSuchMethodException, IllegalAccessException, InstantiationException,
             InvocationTargetException, MissingReportCategoryException, MissingCategoryException,
-            MissingCoordinateException {
+            InvalidCoordinateException, MissingCoordinateException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-dallas.json");
         Source s = sourceRepository.findOneBySourceConfigId(4);

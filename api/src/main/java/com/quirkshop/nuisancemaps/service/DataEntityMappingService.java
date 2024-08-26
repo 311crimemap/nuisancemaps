@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
@@ -30,7 +31,8 @@ public class DataEntityMappingService {
             GeometryFactory geometryFactory,
             FieldExtractor<T> extractor)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
-            MissingCategoryException, MissingReportCategoryException, MissingCoordinateException {
+            MissingCategoryException, MissingReportCategoryException,
+            InvalidCoordinateException, MissingCoordinateException {
 
         String report_num = extractor.extract(Mapping::getReportNum, source, item);
         String reportCategory = extractor.extract(Mapping::getReportCategory, source, item);
@@ -125,10 +127,24 @@ public class DataEntityMappingService {
     }
 
     private Point buildValidPoint(Source source, GeometryFactory geometryFactory, Double latitude, Double longitude)
-            throws MissingCoordinateException {
+            throws InvalidCoordinateException, MissingCoordinateException {
         Point point = null;
 
         if (latitude != null && longitude != null) {
+
+            // Add sanity check for bad coordinate data - USA extent
+            // Latitude: 18.91° N to 71.39° N
+            // Longitude: (-) 172.90° W to (-) 66.95° W
+            if (latitude < 18 || latitude > 72 ||
+                    longitude < -173 || longitude > -65) {
+                String errString = String
+                        .format("Invalid coordinates: (lat: %s, lng: %s) | dataType: %s | id: %s | %s | sourceURL: %s",
+                                latitude, longitude, source.getCategory(), source.getSourceConfigId(),
+                                source.getDescription(),
+                                source.getUrl());
+                throw new InvalidCoordinateException(errString);
+            }
+
             // GeoJSON/WKT is long, lat (order is "reversed").
             Coordinate coordinate = new Coordinate(longitude, latitude);
             point = geometryFactory.createPoint(coordinate);
