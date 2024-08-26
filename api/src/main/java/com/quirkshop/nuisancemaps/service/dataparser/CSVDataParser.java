@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvException;
+import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.IDataEntity;
@@ -98,7 +99,7 @@ public class CSVDataParser extends DataParser {
 
                     addDataEntity(dataEntity, parseCounter);
 
-                } catch (MissingCoordinateException | MissingReportCategoryException e) {
+                } catch (InvalidCoordinateException | MissingCoordinateException | MissingReportCategoryException e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
                     logMissingException(source, content, e);
                     parseCounter.numMissingIncrement();
