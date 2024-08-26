@@ -240,6 +240,7 @@ public class FileDataProcessingStrategyTest {
         InputStream inputStream = csvResource.getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(14);
+        Locale locale = source.getLocale();
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
 
         String filename = "test-" + dataJob.buildFilename();
@@ -266,7 +267,7 @@ public class FileDataProcessingStrategyTest {
         reportIds.add("16236266");
         reportIds.add("16236267");
         List<Data311> data311s = data311Repository
-            .findAllBySourceIdAndReportNumIn(source.getId(), reportIds);
+            .findAllBySource_Locale_IdAndReportNumIn(locale.getId(), reportIds);
 
         assertThat(file.exists()).isTrue();
 
