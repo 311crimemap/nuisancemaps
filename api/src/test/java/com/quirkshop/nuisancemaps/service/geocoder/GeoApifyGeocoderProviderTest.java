@@ -188,7 +188,7 @@ public class GeoApifyGeocoderProviderTest {
         when(call.execute()).thenReturn(response);
 
         String url = "https://thisisastub.geoapify.com?apiKey=123";
-        Response r = geoApifyGeocoderProvider.makePollRequest(url, 5000, 3);
+        Response r = geoApifyGeocoderProvider.makePollRequest(url, 10, 3);
         assert (r).equals(response);
     }
 

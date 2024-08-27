@@ -1,4 +1,3 @@
-
 package com.quirkshop.nuisancemaps.service.geocoder;
 
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.WorkerApplication;
@@ -38,7 +38,9 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
     // private static final int GEOAPIFY_API_BATCH_SIZE = 1000;
     private static final int GEOAPIFY_API_BATCH_SIZE = 50;
     private static final double GEOAPIFY_API_RELEVANCE_SCORE = .75;
-    private static final long GEOAPIFY_API_POLL_DELAY = 5000;
+
+    // ~ batch is slow: takes almost 20-30 seconds total for 50 entries.
+    private static final long GEOAPIFY_API_POLL_DELAY = 7500;
     private static final int GEOAPIFY_API_MAX_RETRY = 20;
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
@@ -97,6 +99,50 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
         return coordinates;
     }
 
+    private String fetchJobURL(Source source, List<String> batchAddresses)
+            throws UnsupportedEncodingException, JsonProcessingException {
+        String jobURL = null;
+
+        String url = buildAPIURL(source, batchAddresses, GEOAPIFY_API_KEY);
+        String jsonPayload = objectMapper.writeValueAsString(batchAddresses);
+        RequestBody body = RequestBody.create(jsonPayload,
+                MediaType.get("application/json; charset=utf-8"));
+
+        Builder requestBuilder = new Request.Builder().url(url);
+        Request request = requestBuilder
+                .header("Content-Type", "application/json")
+                .post(body)
+                .build();
+
+        try (Response initResponse = client.newCall(request).execute()) {
+
+            if (!initResponse.isSuccessful()) {
+                throw new IOException("Unexpected status code: " + initResponse);
+            }
+
+            // initResponse: gives worker job info
+            String response = initResponse.body().string();
+            JsonNode jsonResponse = objectMapper.readTree(response);
+
+            jobURL = jsonResponse.at("/url").asText();
+            // String status = jsonResponse.at("/status").asText();
+
+            String _jobURL = UriComponentsBuilder.fromUriString(jobURL)
+                    .replaceQueryParam("apiKey", "<redacted>")
+                    .build()
+                    .toUriString();
+
+            log.info("[GeoApifyGeocoderProvider] jobURL: " + _jobURL);
+
+        } catch (Exception e) {
+            log.error("[GeoApifyGeocoderProvider] fetchJobURL: " + e.getMessage());
+            return null;
+        }
+
+        return jobURL;
+
+    }
+
     public List<double[]> fetchBatch(Source source, List<String> addresses) {
         int numFetch = 1;
         log.info("[GeoApifyGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
@@ -116,56 +162,49 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
                     i + 1 < addresses.size())
                 continue;
 
-            // request
+            // requests
+            // we need to keep inputStreams open for parsing
+            Response jobResponse = null;
+
             try {
 
                 /*
                  * Submit Init Batch Job
                  */
 
-                String url = buildAPIURL(source, batchAddresses, GEOAPIFY_API_KEY);
-                String jsonPayload = objectMapper.writeValueAsString(batchAddresses);
-                RequestBody body = RequestBody.create(jsonPayload,
-                        MediaType.get("application/json; charset=utf-8"));
-
-                Builder requestBuilder = new Request.Builder().url(url);
-                Request request = requestBuilder
-                        .header("Content-Type", "application/json")
-                        .post(body)
-                        .build();
-                Response initResponse = client.newCall(request).execute();
-
-                if (!initResponse.isSuccessful()) {
-                    throw new IOException("Unexpected code " + initResponse);
-                }
-
-                // initResponse: gives worker job info
-                String response = initResponse.body().string();
-                JsonNode jsonResponse = objectMapper.readTree(response);
-
-                String jobURL = jsonResponse.at("/url").asText();
-                // String status = jsonResponse.at("/status").asText();
+                String jobURL = fetchJobURL(source, batchAddresses);
+                if (jobURL == null)
+                    throw new Error("fetchJobURL error");
 
                 /*
                  * Poll Job
                  */
-                Response jobResponse = makePollRequest(jobURL, GEOAPIFY_API_POLL_DELAY, GEOAPIFY_API_MAX_RETRY);
+
+                String fetchStatus = String.format("[GeoApifyGeocoderProvider] fetching batch: [%d / %d]",
+                        numFetch, (int) Math.ceil(addresses.size() / GEOAPIFY_API_BATCH_SIZE));
+                log.info(fetchStatus);
+
+                jobResponse = makePollRequest(jobURL, GEOAPIFY_API_POLL_DELAY, GEOAPIFY_API_MAX_RETRY);
 
                 if (jobResponse == null) {
                     return new ArrayList<double[]>(addresses.size());
                 }
 
-                String fetchStatus = String.format("[GeoApifyGeocoderProvider] fetching batch: [%d / %d]",
-                        numFetch, (int) Math.ceil(addresses.size() / batchAddresses.size()));
-                log.info(fetchStatus);
-
+                // parse response
                 InputStream inputStream = jobResponse.body().byteStream();
                 List<double[]> coordinates = parseResponse(inputStream);
                 results.addAll(coordinates);
 
             } catch (Exception e) {
-                log.info("[GeoApifyGeocoderProvider] geocode: ERR" + e.getMessage());
+                log.info("[GeoApifyGeocoderProvider] fetchBatch: ERR" + e.getMessage());
                 e.printStackTrace();
+            } finally {
+
+                log.info("[GeoApifyGeocoderProvider] closing responses");
+
+                if (jobResponse != null) {
+                    jobResponse.close();
+                }
             }
 
             batchAddresses.clear();
@@ -209,29 +248,47 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
 
         int retryCount = 0;
 
+        // initial wait because job actually takes time to propogate on server
+        TimeUnit.MILLISECONDS.sleep(sleepMS);
+
         while (retryCount < maxRetries) {
+
             Request request = new Request.Builder()
                     .url(url)
                     .build();
 
-            try (Response response = client.newCall(request).execute()) {
+            Response response = null;
+
+            try {
+
+                response = client.newCall(request).execute();
+
                 if (response.code() == 200) {
                     log.info("[makePollRequest] 200 OK");
                     return response;
 
                 } else if (response.code() == 202) {
-                    String logStr = String.format("[makePollRequest] 202 Accepted: retry in %d seconds: attempt %d",
-                            sleepMS, retryCount);
+                    String logStr = String.format("[makePollRequest] 202 Accepted: retry in %d ms: attempt %d",
+                            sleepMS, retryCount + 1);
                     log.info(logStr);
                     retryCount++;
                     TimeUnit.MILLISECONDS.sleep(sleepMS);
                 } else {
+                    // NB: 404 means job hasn't propogated on server side
                     log.error("[makePollRequest] status code: " + response.code());
+                    log.error(request.url().toString());
                     break;
                 }
             } catch (IOException e) {
                 log.error("[makePollRequest] Request failed: " + e.getMessage());
                 break;
+            } finally {
+
+                if (response != null && response.code() != 200) {
+                    // log.info("[makePollRequest] closing response");
+                    response.close();
+                }
+
             }
         }
 
@@ -258,6 +315,7 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
             }
 
             String formattedAddress = address
+                    .replaceAll("UNKNOWN", "")
                     .replaceAll("BLOCK", "");
 
             formattedAddresses.add(formattedAddress);
