@@ -214,8 +214,11 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
         List<String> formattedAddresses = new ArrayList<String>();
 
         for (String address : addresses) {
-            if (address == null)
+            // maintain alignment
+            if (address == null) {
+                formattedAddresses.add(null);
                 continue;
+            }
 
             String formattedAddress = address
                     .replaceAll("BLOCK", "")
