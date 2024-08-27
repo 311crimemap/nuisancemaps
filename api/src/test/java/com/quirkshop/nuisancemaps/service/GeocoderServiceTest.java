@@ -132,7 +132,7 @@ public class GeocoderServiceTest {
                 "2921 E 12TH ST AUSTIN 78702",
                 "7918 WEST GATE BLVD, AUSTIN 78745");
 
-        List<double[]> coordinates = geocoderService.geocodeBatchRequest(source, addresses);
+        List<double[]> coordinates = geocoderService.geocode(source, addresses);
 
         List<double[]> manual_coordinates = Arrays.asList(new double[] { 30.325383, -97.726415 },
                 new double[] { 30.275579, -97.706212 },
@@ -201,7 +201,7 @@ public class GeocoderServiceTest {
             addresses.add(String.valueOf(i));
         }
 
-        List<double[]> coordinates = geocoderService.geocodeBatchRequest(source, addresses);
+        List<double[]> coordinates = geocoderService.geocode(source, addresses);
 
         assertThat(coordinates.size()).isEqualTo(num);
         assertThat(geocodeRepository.count()).isEqualTo(num);

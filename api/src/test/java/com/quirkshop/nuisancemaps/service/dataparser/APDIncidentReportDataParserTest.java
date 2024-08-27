@@ -206,7 +206,7 @@ public class APDIncidentReportDataParserTest {
         List<Map<String, String>> mockRowMaps = Arrays.asList(map, map2, map3);
 
         // coordinates should get applied to rowMap's above in buildRowMap()
-        when(geocoderService.geocodeBatchRequest(any(Source.class), any(List.class))).thenReturn(mockCoordinates);
+        when(geocoderService.geocode(any(Source.class), any(List.class))).thenReturn(mockCoordinates);
 
         APDIncidentReportDataParser spyParser = spy(apdIncidentReportDataParser);
         doReturn(mockRowMaps).when(spyParser).parseToRowMaps(any(List.class));

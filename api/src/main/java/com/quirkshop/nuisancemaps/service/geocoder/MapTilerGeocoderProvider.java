@@ -48,7 +48,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode items = objectMapper.readTree(inputStream);
 
-        log.info("[GeocoderService] parsing items: " + items.size());
+        log.info("[MapTilerGeocoderProvider] parsing items: " + items.size());
         for (JsonNode item : items) {
 
             try {
@@ -96,7 +96,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                 }
 
             } catch (Exception e) {
-                log.info("[GeocoderServce] parseResponse ERR: " + e.getMessage());
+                log.info("[MapTilerGeocoderProvider] parseResponse ERR: " + e.getMessage());
             }
 
             // need a placeholder to maintain alignment with batch; if
@@ -109,7 +109,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
 
     public List<double[]> fetchBatch(Source source, List<String> addresses) {
         int numFetch = 1;
-        log.info("[GeocoderService] fetchBatch: total num fetch: " + addresses.size());
+        log.info("[MapTilerGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
 
         List<double[]> results = new ArrayList<double[]>();
 
@@ -138,7 +138,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                     throw new IOException("Unexpected code " + response);
                 }
 
-                String fetchStatus = String.format("[GeocoderService] fetching batch: [%d / %d]",
+                String fetchStatus = String.format("[MapTilerGeocoderProvider] fetching batch: [%d / %d]",
                         numFetch, (int) Math.ceil(addresses.size() / batchURLs.size()));
                 log.info(fetchStatus);
 
@@ -148,7 +148,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                 results.addAll(coordinates);
 
             } catch (Exception e) {
-                log.info("[GeocoderServce] geocodeBatchRequest: ERR" + e.getMessage());
+                log.info("[MapTilerGeocoderProvider] geocode: ERR" + e.getMessage());
                 e.printStackTrace();
             }
 
