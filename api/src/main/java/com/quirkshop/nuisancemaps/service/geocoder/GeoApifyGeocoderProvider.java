@@ -1,0 +1,262 @@
+
+package com.quirkshop.nuisancemaps.service.geocoder;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.Source;
+
+import org.locationtech.jts.geom.Point;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Request.Builder;
+import okhttp3.Response;
+
+@Component
+public class GeoApifyGeocoderProvider implements GeocoderProvider {
+
+    @Autowired
+    private OkHttpClient client;
+
+    private static final String GEOAPIFY_API_KEY = System.getenv("VITE_GEOAPIFY_API_KEY");
+    private static final int GEOAPIFY_API_BATCH_SIZE = 1000;
+    private static final double GEOAPIFY_API_RELEVANCE_SCORE = .75;
+
+    private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public List<double[]> fetch(Source source, List<String> addresses) {
+        return fetchBatch(source, addresses);
+    }
+
+    @Override
+    public List<double[]> parseResponse(InputStream inputStream) throws IOException {
+        List<double[]> coordinates = new ArrayList<double[]>();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode items = objectMapper.readTree(inputStream);
+
+        log.info("[GeoApifyGeocoderProvider] parsing items: " + items.size());
+        for (JsonNode item : items) {
+
+            try {
+
+                JsonNode feature = item;
+                double relevance = feature.at("/rank/confidence").asDouble();
+
+                // Criteria
+                //
+                // 1. if lacks lon/lat - no value
+                //
+                // 2. relevance (rank/confidence) seems indicative, should be pretty high
+                // geoapify will return .25 value results
+                //
+
+                if (!feature.has("lat") || !feature.has("lon")) {
+                    coordinates.add(null);
+                    continue;
+                }
+
+                if (relevance > GEOAPIFY_API_RELEVANCE_SCORE) {
+                    Double lat = feature.at("/lat").asDouble();
+                    Double lng = feature.at("/lon").asDouble();
+                    coordinates.add(new double[] { lat, lng });
+                    continue;
+                }
+
+            } catch (Exception e) {
+                log.info("[GeoApifyGeocoderProvider] parseResponse ERR: " + e.getMessage());
+            }
+
+            // need a placeholder to maintain alignment with batch; if
+            // coordinates trip some criteria; don't exist, parsing error
+            coordinates.add(null);
+        }
+
+        return coordinates;
+    }
+
+    public List<double[]> fetchBatch(Source source, List<String> addresses) {
+        int numFetch = 1;
+        log.info("[GeoApifyGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
+
+        List<double[]> results = new ArrayList<double[]>();
+
+        // TODO: optimize iteration by batch size
+        List<String> batchAddresses = new ArrayList<String>();
+        for (int i = 0; i < addresses.size(); i++) {
+
+            String address = addresses.get(i);
+            batchAddresses.add(address);
+
+            // build batch
+            // until less than batch_size && less than total size
+            if (batchAddresses.size() < GEOAPIFY_API_BATCH_SIZE &&
+                    i + 1 < addresses.size())
+                continue;
+
+            // request
+            try {
+
+                String url = buildAPIURL(source, batchAddresses, GEOAPIFY_API_KEY);
+
+                Builder requestBuilder = new Request.Builder().url(url);
+                Request request = requestBuilder.build();
+                Response initResponse = client.newCall(request).execute();
+
+                if (!initResponse.isSuccessful()) {
+                    throw new IOException("Unexpected code " + initResponse);
+                }
+
+                // initResponse: gives worker job info
+                String response = initResponse.body().string();
+                JsonNode jsonResponse = objectMapper.readTree(response);
+
+                String jobURL = jsonResponse.at("/url").asText();
+                String status = jsonResponse.at("/status").asText();
+
+                // request worker url on repeat timeout basis
+                Response jobResponse = makePollRequest(jobURL);
+
+                if (jobResponse == null) {
+                    return new ArrayList<double[]>(addresses.size());
+                }
+
+                String fetchStatus = String.format("[GeoApifyGeocoderProvider] fetching batch: [%d / %d]",
+                        numFetch, (int) Math.ceil(addresses.size() / batchAddresses.size()));
+                log.info(fetchStatus);
+
+                InputStream inputStream = jobResponse.body().byteStream();
+                List<double[]> coordinates = parseResponse(inputStream);
+                results.addAll(coordinates);
+
+            } catch (Exception e) {
+                log.info("[GeoApifyGeocoderProvider] geocode: ERR" + e.getMessage());
+                e.printStackTrace();
+            }
+
+            batchAddresses.clear();
+            numFetch++;
+        }
+
+        return results;
+    }
+
+    @Override
+    public String buildAPIURL(Source source, List<String> addresses, String GEOAPIFY_API_KEY)
+            throws UnsupportedEncodingException {
+
+        if (addresses.size() > GEOAPIFY_API_BATCH_SIZE) {
+            throw new Error("Exceed API Batch Size");
+        }
+
+        // NB: both locale and proximity param is lng,lat
+        Point location = source.getLocale().getLocation();
+        final String centerLngLat = String.format("%f,%f", location.getX(), location.getY());
+
+        // https://apidocs.geoapify.com/docs/geocoding/batch/#api
+        String baseURL = "https://api.geoapify.com/v1/batch/geocode/search";
+
+        String url = UriComponentsBuilder.fromUriString(baseURL)
+                .queryParam("apiKey", GEOAPIFY_API_KEY) // yes there is an "&"
+                .queryParam("lang", "en")
+                .queryParam("bias", "proximity:" + centerLngLat)
+                .build()
+                .encode()
+                .toUriString();
+
+        return url;
+    }
+
+    /*
+     * GeoApify Specific Helpers
+     */
+    public Response makePollRequest(String url) throws InterruptedException {
+        int retryCount = 0;
+        final int maxRetries = 10;
+
+        while (retryCount < maxRetries) {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.code() == 200) {
+                    System.out.println("Received 200 OK - stopping retries.");
+                    return response;
+
+                } else if (response.code() == 202) {
+                    System.out.println("Received 202 Accepted - retrying in 5 seconds...");
+                    retryCount++;
+                    TimeUnit.SECONDS.sleep(5);
+                } else {
+                    System.out.println("Received unexpected status code: " + response.code());
+                    break;
+                }
+            } catch (IOException e) {
+                System.out.println("Request failed: " + e.getMessage());
+                break;
+            }
+        }
+
+        if (retryCount == maxRetries) {
+            System.out.println("Max retries reached - stopping.");
+        }
+
+        return null;
+    }
+
+    // result is almost always better when coordinates are less precise;
+    // implies entity wasn't calculated / averaged
+    private boolean validPrecision(String coord) {
+        final int MAX_PRECISION = 8;
+        int precision = 0;
+        int decimalIndex = coord.indexOf(".");
+
+        if (decimalIndex > 0) {
+            precision = coord.length() - decimalIndex - 1;
+        }
+
+        return precision <= MAX_PRECISION;
+    }
+
+    // to help geocoder
+    // remove "BLOCK" - much more accurate to just use address
+    // remove forward-slash: these are interpreted as a subpath route in api
+    //
+    private List<String> formatAddresses(List<String> addresses) {
+        List<String> formattedAddresses = new ArrayList<String>();
+
+        for (String address : addresses) {
+            if (address == null)
+                continue;
+
+            String formattedAddress = address
+                    .replaceAll("BLOCK", "")
+                    .replaceAll("/", "");
+
+            formattedAddresses.add(formattedAddress);
+        }
+
+        return formattedAddresses;
+    }
+
+    public int getBatchSize() {
+        return GEOAPIFY_API_BATCH_SIZE;
+    }
+}
