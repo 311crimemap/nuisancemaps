@@ -2,6 +2,8 @@ package com.quirkshop.nuisancemaps.service.geocoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +29,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -36,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -173,6 +177,35 @@ public class GeoApifyGeocoderProviderTest {
 
         List<double[]> manual_coordinates = Arrays.asList(null, null);
         assertThat(coordinates).usingRecursiveComparison().isEqualTo(manual_coordinates);
+    }
+
+    @Test
+    @Transactional
+    public void makePollRequestTest() throws IOException, InterruptedException {
+
+        when(response.code()).thenReturn(200);
+        when(client.newCall(Mockito.any(Request.class))).thenReturn(call);
+        when(call.execute()).thenReturn(response);
+
+        String url = "https://thisisastub.geoapify.com?apiKey=123";
+        Response r = geoApifyGeocoderProvider.makePollRequest(url, 5000, 3);
+        assert (r).equals(response);
+    }
+
+    @Test
+    @Transactional
+    public void makePollRequestTestLoop() throws IOException, InterruptedException {
+
+        when(response.code()).thenReturn(202);
+        when(client.newCall(Mockito.any(Request.class))).thenReturn(call);
+        when(call.execute()).thenReturn(response);
+
+        String url = "https://thisisastub.geoapify.com?apiKey=123";
+        Response r = geoApifyGeocoderProvider.makePollRequest(url, 10, 3);
+
+        // mock number of times request is retried
+        Mockito.verify(client, times(3)).newCall(Mockito.any(Request.class));
+        assertThat(r).isNull();
     }
 
 }

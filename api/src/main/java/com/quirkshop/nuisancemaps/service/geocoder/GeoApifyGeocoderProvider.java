@@ -20,9 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Component
@@ -32,8 +34,12 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
     private OkHttpClient client;
 
     private static final String GEOAPIFY_API_KEY = System.getenv("VITE_GEOAPIFY_API_KEY");
-    private static final int GEOAPIFY_API_BATCH_SIZE = 1000;
+
+    // private static final int GEOAPIFY_API_BATCH_SIZE = 1000;
+    private static final int GEOAPIFY_API_BATCH_SIZE = 50;
     private static final double GEOAPIFY_API_RELEVANCE_SCORE = .75;
+    private static final long GEOAPIFY_API_POLL_DELAY = 5000;
+    private static final int GEOAPIFY_API_MAX_RETRY = 20;
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
@@ -41,7 +47,7 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
 
     @Override
     public List<double[]> fetch(Source source, List<String> addresses) {
-        return fetchBatch(source, addresses);
+        return fetchBatch(source, formatAddresses(addresses));
     }
 
     @Override
@@ -113,10 +119,20 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
             // request
             try {
 
+                /*
+                 * Submit Init Batch Job
+                 */
+
                 String url = buildAPIURL(source, batchAddresses, GEOAPIFY_API_KEY);
+                String jsonPayload = objectMapper.writeValueAsString(batchAddresses);
+                RequestBody body = RequestBody.create(jsonPayload,
+                        MediaType.get("application/json; charset=utf-8"));
 
                 Builder requestBuilder = new Request.Builder().url(url);
-                Request request = requestBuilder.build();
+                Request request = requestBuilder
+                        .header("Content-Type", "application/json")
+                        .post(body)
+                        .build();
                 Response initResponse = client.newCall(request).execute();
 
                 if (!initResponse.isSuccessful()) {
@@ -128,10 +144,12 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
                 JsonNode jsonResponse = objectMapper.readTree(response);
 
                 String jobURL = jsonResponse.at("/url").asText();
-                String status = jsonResponse.at("/status").asText();
+                // String status = jsonResponse.at("/status").asText();
 
-                // request worker url on repeat timeout basis
-                Response jobResponse = makePollRequest(jobURL);
+                /*
+                 * Poll Job
+                 */
+                Response jobResponse = makePollRequest(jobURL, GEOAPIFY_API_POLL_DELAY, GEOAPIFY_API_MAX_RETRY);
 
                 if (jobResponse == null) {
                     return new ArrayList<double[]>(addresses.size());
@@ -170,10 +188,11 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
         final String centerLngLat = String.format("%f,%f", location.getX(), location.getY());
 
         // https://apidocs.geoapify.com/docs/geocoding/batch/#api
+
         String baseURL = "https://api.geoapify.com/v1/batch/geocode/search";
 
         String url = UriComponentsBuilder.fromUriString(baseURL)
-                .queryParam("apiKey", GEOAPIFY_API_KEY) // yes there is an "&"
+                .queryParam("apiKey", GEOAPIFY_API_KEY)
                 .queryParam("lang", "en")
                 .queryParam("bias", "proximity:" + centerLngLat)
                 .build()
@@ -186,9 +205,9 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
     /*
      * GeoApify Specific Helpers
      */
-    public Response makePollRequest(String url) throws InterruptedException {
+    public Response makePollRequest(String url, long sleepMS, int maxRetries) throws InterruptedException {
+
         int retryCount = 0;
-        final int maxRetries = 10;
 
         while (retryCount < maxRetries) {
             Request request = new Request.Builder()
@@ -197,42 +216,30 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
 
             try (Response response = client.newCall(request).execute()) {
                 if (response.code() == 200) {
-                    System.out.println("Received 200 OK - stopping retries.");
+                    log.info("[makePollRequest] 200 OK");
                     return response;
 
                 } else if (response.code() == 202) {
-                    System.out.println("Received 202 Accepted - retrying in 5 seconds...");
+                    String logStr = String.format("[makePollRequest] 202 Accepted: retry in %d seconds: attempt %d",
+                            sleepMS, retryCount);
+                    log.info(logStr);
                     retryCount++;
-                    TimeUnit.SECONDS.sleep(5);
+                    TimeUnit.MILLISECONDS.sleep(sleepMS);
                 } else {
-                    System.out.println("Received unexpected status code: " + response.code());
+                    log.error("[makePollRequest] status code: " + response.code());
                     break;
                 }
             } catch (IOException e) {
-                System.out.println("Request failed: " + e.getMessage());
+                log.error("[makePollRequest] Request failed: " + e.getMessage());
                 break;
             }
         }
 
-        if (retryCount == maxRetries) {
-            System.out.println("Max retries reached - stopping.");
+        if (retryCount >= maxRetries) {
+            log.info("[makePollRequest] Exceeded max retries");
         }
 
         return null;
-    }
-
-    // result is almost always better when coordinates are less precise;
-    // implies entity wasn't calculated / averaged
-    private boolean validPrecision(String coord) {
-        final int MAX_PRECISION = 8;
-        int precision = 0;
-        int decimalIndex = coord.indexOf(".");
-
-        if (decimalIndex > 0) {
-            precision = coord.length() - decimalIndex - 1;
-        }
-
-        return precision <= MAX_PRECISION;
     }
 
     // to help geocoder
@@ -243,12 +250,15 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
         List<String> formattedAddresses = new ArrayList<String>();
 
         for (String address : addresses) {
-            if (address == null)
+
+            // maintain alignment
+            if (address == null) {
+                formattedAddresses.add(null);
                 continue;
+            }
 
             String formattedAddress = address
-                    .replaceAll("BLOCK", "")
-                    .replaceAll("/", "");
+                    .replaceAll("BLOCK", "");
 
             formattedAddresses.add(formattedAddress);
         }
