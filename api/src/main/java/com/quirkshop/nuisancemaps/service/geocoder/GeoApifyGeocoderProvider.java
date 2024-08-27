@@ -181,7 +181,7 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
                  */
 
                 String fetchStatus = String.format("[GeoApifyGeocoderProvider] fetching batch: [%d / %d]",
-                        numFetch, (int) Math.ceil(addresses.size() / GEOAPIFY_API_BATCH_SIZE));
+                        numFetch, (int) Math.ceil((double) addresses.size() / GEOAPIFY_API_BATCH_SIZE));
                 log.info(fetchStatus);
 
                 jobResponse = makePollRequest(jobURL, GEOAPIFY_API_POLL_DELAY, GEOAPIFY_API_MAX_RETRY);
@@ -315,7 +315,7 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
             }
 
             String formattedAddress = address
-                    .replaceAll("UNKNOWN", "")
+                    .replaceAll("UNKNOWN,", "")
                     .replaceAll("BLOCK", "");
 
             formattedAddresses.add(formattedAddress);

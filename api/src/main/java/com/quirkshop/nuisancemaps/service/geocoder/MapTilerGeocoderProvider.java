@@ -139,7 +139,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                 }
 
                 String fetchStatus = String.format("[MapTilerGeocoderProvider] fetching batch: [%d / %d]",
-                        numFetch, (int) Math.ceil(addresses.size() / batchURLs.size()));
+                        numFetch, (int) Math.ceil((double) addresses.size() / MAPTILER_API_BATCH_SIZE));
                 log.info(fetchStatus);
 
                 // response
@@ -221,6 +221,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
             }
 
             String formattedAddress = address
+                    .replaceAll("UNKNOWN,", "")
                     .replaceAll("BLOCK", "")
                     .replaceAll("/", "");
 
