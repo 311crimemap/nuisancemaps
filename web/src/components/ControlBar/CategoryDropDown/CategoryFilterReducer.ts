@@ -8,6 +8,11 @@ export default function categoryCheckBoxReducer(categories, action) {
         //param id
         case "toggleCheckBoxById": {
 
+            // basically a "top down" match for clicked category
+            //
+            // e.g. loop through all categories - if category's parent matches
+            // the clicked category toggle that node
+
             const _categories = categories.map(category => {
 
                 //toggle immediate clicked label
@@ -23,6 +28,7 @@ export default function categoryCheckBoxReducer(categories, action) {
                         hasCommonParent = true;
                         break;
                     }
+
                     parent = parent.parent;
                 }
 
@@ -31,6 +37,38 @@ export default function categoryCheckBoxReducer(categories, action) {
 
                 return category;
             });
+
+
+            // Consistent top level behavior: control bar checkbox needs to
+            // reflect some checked (on) or all off (off)
+
+            // Find master checkBox
+            const masterCheckCategory = _categories.find(category => {
+                return action.category.dataType == category.dataType &&
+                    category.label === null && category.parent === null;
+            });
+
+
+            if (masterCheckCategory != null) {
+                // filter for proper dataType (311 or crime and exclude the
+                // masterCheckCategory)
+                const cats = _categories.filter(category => {
+                    return category != masterCheckCategory &&
+                        category.dataType == action.category.dataType;
+                });
+
+                //if all children are off, check master off
+                if (cats.every(cat => !cat.checked)) {
+                    masterCheckCategory.checked = false;
+                }
+
+                //if any child is toggled on, toggle master on
+                if (cats.some(cat => cat.checked)) {
+                    masterCheckCategory.checked = true
+                }
+
+            }
+
 
             return _categories;;
         }
