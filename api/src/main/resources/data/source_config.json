@@ -912,7 +912,7 @@
                 "parsingStrategy": null
             },
             "address": {
-                "field": "location",
+                "field": "address",
                 "pointer": "tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)",
                 "parsingStrategy": null
             },
