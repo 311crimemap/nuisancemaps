@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -23,6 +24,8 @@ import com.quirkshop.nuisancemaps.repository.GeocodeRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
+import com.quirkshop.nuisancemaps.service.geocoder.GeoApifyGeocoderProvider;
+import com.quirkshop.nuisancemaps.service.geocoder.MapTilerGeocoderProvider;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -80,6 +83,12 @@ public class GeocoderServiceTest {
     GeocodeRepository geocodeRepository;
 
     @Autowired
+    MapTilerGeocoderProvider mapTilerGeocoderProvider;
+
+    @Autowired
+    GeoApifyGeocoderProvider geoApifyGeocoderProvider;
+
+    @Autowired
     GeocoderService geocoderService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -116,7 +125,7 @@ public class GeocoderServiceTest {
 
     @Test
     @Transactional
-    public void geocodeBatchRequestTest() throws IOException {
+    public void geocodeBatchRequestMapTilerTest() throws IOException {
         Resource jsonResource = resourceLoader.getResource("classpath:data/maptiler-response.json");
 
         InputStream mockInputStream = jsonResource.getInputStream();
@@ -132,7 +141,8 @@ public class GeocoderServiceTest {
                 "2921 E 12TH ST AUSTIN 78702",
                 "7918 WEST GATE BLVD, AUSTIN 78745");
 
-        List<double[]> coordinates = geocoderService.geocode(source, addresses);
+        List<double[]> coordinates = geocoderService
+            .geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
 
         List<double[]> manual_coordinates = Arrays.asList(new double[] { 30.325383, -97.726415 },
                 new double[] { 30.275579, -97.706212 },
@@ -140,6 +150,8 @@ public class GeocoderServiceTest {
         assertThat(coordinates).usingRecursiveComparison().isEqualTo(manual_coordinates);
 
     }
+
+
 
     @Test
     @Transactional
@@ -201,7 +213,8 @@ public class GeocoderServiceTest {
             addresses.add(String.valueOf(i));
         }
 
-        List<double[]> coordinates = geocoderService.geocode(source, addresses);
+        List<double[]> coordinates = geocoderService
+            .geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
 
         assertThat(coordinates.size()).isEqualTo(num);
         assertThat(geocodeRepository.count()).isEqualTo(num);

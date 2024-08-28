@@ -10,6 +10,7 @@ import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.Geocode;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.GeocodeRepository;
+import com.quirkshop.nuisancemaps.service.geocoder.GeoApifyGeocoderProvider;
 import com.quirkshop.nuisancemaps.service.geocoder.GeocoderProvider;
 import com.quirkshop.nuisancemaps.service.geocoder.MapTilerGeocoderProvider;
 
@@ -26,13 +27,16 @@ public class GeocoderService {
     private GeocodeRepository geocodeRepository;
 
     @Autowired
+    GeoApifyGeocoderProvider geoApifyGeocoderProvider;
+
+    @Autowired
     private MapTilerGeocoderProvider mapTilerGeocoderProvider;
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     public List<double[]> geocode(Source source, List<String> addresses) {
         List<double[]> results = geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
-        results = geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
+        results = geocodeBatchRequest(geoApifyGeocoderProvider, source, addresses);
         return results;
     }
 
