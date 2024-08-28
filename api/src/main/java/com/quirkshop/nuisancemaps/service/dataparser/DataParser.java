@@ -3,6 +3,7 @@ package com.quirkshop.nuisancemaps.service.dataparser;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -166,6 +167,28 @@ public class DataParser {
             int id = dataEntityDB.getId();
             String reportNum = dataEntityDB.getReportNum();
             DataEntity dNew = parseNewDataMap.getOrDefault(reportNum, null);
+
+            //info preservation
+
+            //For each attribute, preserve and use old value if new value
+            //becomes null
+            Field[] fields = DataEntity.class.getDeclaredFields();
+            for (Field field: fields) {
+                field.setAccessible(true);
+                try {
+                    Object newValue = field.get(dNew);
+                    Object oldValue = field.get(dataEntityDB);
+
+                    if (newValue == null && oldValue != null) {
+                        field.set(dNew, oldValue);
+                    }
+
+                } catch (Exception e) {
+                    log.info("[DataParser] field err: " + e.getMessage());
+                }
+            }
+
+
             if (dNew != null) {
                 dNew.setId(id); // set id to overwrite
                 numReplaced++;
