@@ -22,6 +22,13 @@ export default function useMap(props) {
 
     if (!props.isDataLoaded) return; //NB: wait until data fetched before creating map
 
+    const attribution = [
+      '<a href="https://openstreetmap.org">&copy; OpenStreetMap</a>',
+      '<a href="https://protomaps.com/">Protomaps</a>',
+      '<a href= "https://www.maptiler.com/copyright/" target="_blank" >&copy; MapTiler</a>',
+      'Powered by <a href="https://www.geoapify.com/">Geoapify</a>'
+    ].join(" | ");
+
     const style = {
       glyphs:
         "https://alanverga.com/basemaps-assets/fonts/{fontstack}/{range}.pbf",
@@ -30,8 +37,7 @@ export default function useMap(props) {
         protomaps: {
           type: "vector",
           url: "https://api.protomaps.com/tiles/v3.json?key=a8e24b8d978e4df3",
-          attribution:
-            '© <a href="https://openstreetmap.org">OpenStreetMap</a> | <a href="https://protomaps.com/">Protomaps',
+          attribution,
           minzoom: 2,
           maxzoom: 12,
         },
