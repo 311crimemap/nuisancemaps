@@ -128,8 +128,7 @@ public class APDIncidentReportDataParser extends DataParser {
             addresses.add(row.get("address"));
         }
 
-        List<double[]> coordinates = geocoderService
-                .geocodeBatchRequest(source, addresses);
+        List<double[]> coordinates = geocoderService.geocode(source, addresses);
 
         if (data.size() != coordinates.size()) {
             String err = String.format("Address count: %d does not match coordinate counts: %d",

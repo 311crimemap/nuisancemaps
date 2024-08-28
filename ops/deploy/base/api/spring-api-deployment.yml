@@ -44,6 +44,16 @@ spec:
               secretKeyRef:
                 name: api-secrets
                 key: ADMIN_API_KEY
+          - name: VITE_MAPTILER_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: api-secrets
+                key: VITE_MAPTILER_API_KEY
+          - name: GEOAPIFY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: api-secrets
+                key: GEOAPIFY_API_KEY
           - name: FETCH_DATA_DIR
             value: "/data"
           - name: DATA_DIR_MIN_FREE

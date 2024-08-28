@@ -1,7 +1,6 @@
 package com.quirkshop.nuisancemaps.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
@@ -14,16 +13,19 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.Locale;
+import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.GeocodeRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
-import com.quirkshop.nuisancemaps.model.Locale;
-import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.service.geocoder.GeoApifyGeocoderProvider;
+import com.quirkshop.nuisancemaps.service.geocoder.MapTilerGeocoderProvider;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -81,6 +83,12 @@ public class GeocoderServiceTest {
     GeocodeRepository geocodeRepository;
 
     @Autowired
+    MapTilerGeocoderProvider mapTilerGeocoderProvider;
+
+    @Autowired
+    GeoApifyGeocoderProvider geoApifyGeocoderProvider;
+
+    @Autowired
     GeocoderService geocoderService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -117,67 +125,7 @@ public class GeocoderServiceTest {
 
     @Test
     @Transactional
-    public void buildMapTilerURLTest() throws IOException {
-        final String MAPTILER_API_KEY = "abc123";
-        List<String> addresses = Arrays.asList("5629 N LAMAR BLVD, AUSTIN 78751",
-                "2921 E 12TH ST AUSTIN 78702",
-                "7918 WEST GATE BLVD, AUSTIN 78745");
-
-        Source source = sourceRepository.findOneBySourceConfigId(16);
-        String url = geocoderService.buildMapTilerURL(source, addresses, MAPTILER_API_KEY);
-
-        String manualURL = "https://api.maptiler.com/geocoding/5629%20N%20LAMAR%20BLVD,%20AUSTIN%2078751;2921%20E%2012TH%20ST%20AUSTIN%2078702;7918%20WEST%20GATE%20BLVD,%20AUSTIN%2078745.json?language=en&country=us&proximity=-97.733330,30.266666&key="
-                + MAPTILER_API_KEY;
-
-        assertThat(url).isEqualTo(manualURL);
-    }
-
-    @Test
-    @Transactional
-    public void buildMapTilerURLSizeTest() throws IOException {
-        final String MAPTILER_API_KEY = "abc123";
-        List<String> addressesValid = Arrays.asList(new String[50]);
-        List<String> addressesErr = Arrays.asList(new String[51]);
-
-        Source source = sourceRepository.findOneBySourceConfigId(16);
-        geocoderService.buildMapTilerURL(source, addressesValid, MAPTILER_API_KEY);
-
-        assertThatThrownBy(() -> {
-            geocoderService.buildMapTilerURL(source, addressesErr, MAPTILER_API_KEY);
-        }).isInstanceOf(Error.class)
-                .hasMessage("Exceed API Batch Size");
-    }
-
-    @Test
-    @Transactional
-    public void parseResponseTest() throws IOException {
-        Resource jsonResource = resourceLoader.getResource("classpath:data/maptiler-response.json");
-        InputStream inputStream = jsonResource.getInputStream();
-
-        List<double[]> coordinates = geocoderService.parseResponse(inputStream);
-
-        List<double[]> manual_coordinates = Arrays.asList(new double[] { 30.325383, -97.726415 },
-                new double[] { 30.275579, -97.706212 },
-                null);
-        assertThat(coordinates).usingRecursiveComparison().isEqualTo(manual_coordinates);
-
-    }
-
-    @Test
-    @Transactional
-    public void parseResponseEmptyTest() throws IOException {
-        Resource jsonResource = resourceLoader.getResource("classpath:data/maptiler-empty-response.json");
-        InputStream inputStream = jsonResource.getInputStream();
-
-        List<double[]> coordinates = geocoderService.parseResponse(inputStream);
-
-        List<double[]> manual_coordinates = Arrays.asList(null, null);
-        assertThat(coordinates).usingRecursiveComparison().isEqualTo(manual_coordinates);
-    }
-
-    @Test
-    @Transactional
-    public void geocodeBatchRequestTest() throws IOException {
+    public void geocodeBatchRequestMapTilerTest() throws IOException {
         Resource jsonResource = resourceLoader.getResource("classpath:data/maptiler-response.json");
 
         InputStream mockInputStream = jsonResource.getInputStream();
@@ -193,7 +141,8 @@ public class GeocoderServiceTest {
                 "2921 E 12TH ST AUSTIN 78702",
                 "7918 WEST GATE BLVD, AUSTIN 78745");
 
-        List<double[]> coordinates = geocoderService.geocodeBatchRequest(source, addresses);
+        List<double[]> coordinates = geocoderService
+            .geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
 
         List<double[]> manual_coordinates = Arrays.asList(new double[] { 30.325383, -97.726415 },
                 new double[] { 30.275579, -97.706212 },
@@ -201,6 +150,8 @@ public class GeocoderServiceTest {
         assertThat(coordinates).usingRecursiveComparison().isEqualTo(manual_coordinates);
 
     }
+
+
 
     @Test
     @Transactional
@@ -262,7 +213,8 @@ public class GeocoderServiceTest {
             addresses.add(String.valueOf(i));
         }
 
-        List<double[]> coordinates = geocoderService.geocodeBatchRequest(source, addresses);
+        List<double[]> coordinates = geocoderService
+            .geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
 
         assertThat(coordinates.size()).isEqualTo(num);
         assertThat(geocodeRepository.count()).isEqualTo(num);
