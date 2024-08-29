@@ -1,6 +1,10 @@
 [
     {
         "name": "Austin, TX",
+        "city": "Austin",
+        "state": "Texas",
+        "attribution": "https://www.austintexas.gov/page/legal-notice",
+        "enabled": true,
         "description": "",
         "location": [
             -97.73996,
@@ -11,7 +15,11 @@
     },
     {
         "name": "Dallas, TX",
-        "description": "",
+        "city": "Dallas",
+        "state": "Texas",
+        "attribution": null,
+        "enabled": true,
+        "description": "https://opendatacommons.org/licenses/by/1-0/",
         "location": [
             -96.808891,
             32.779167
@@ -21,6 +29,10 @@
     },
     {
         "name": "Chicago, IL",
+        "city": "Chicago",
+        "state": "Illinois",
+        "attribution": "https://portal.chicagopolice.org/portal/page/portal/ClearPath",
+        "enabled": false,
         "description": "",
         "location": [
             -87.623177,
@@ -31,6 +43,10 @@
     },
     {
         "name": "New York, NY",
+        "city": "New York",
+        "state": "New York",
+        "attribution": "https://opendata.cityofnewyork.us/faq/",
+        "enabled": true,
         "description": "",
         "location": [
             -73.985428,
@@ -41,6 +57,10 @@
     },
     {
         "name": "San Francisco, CA",
+        "city": "San Francisco",
+        "state": "California",
+        "attribution": "https://opendatacommons.org/licenses/pddl/1-0/",
+        "enabled": true,
         "description": "",
         "location": [
             -122.432884,
@@ -48,5 +68,20 @@
         ],
         "iconName": "building",
         "iconUnicode": "\uf1ad"
+    },
+    {
+        "name": "Boston, MA",
+        "city": "Boston",
+        "state": "MA",
+        "attribution": "https://opendatacommons.org/licenses/pddl/",
+        "enabled": true,
+        "description": "",
+        "location": [
+            -71.057083,
+            42.361145
+        ],
+        "iconName": "building",
+        "iconUnicode": ""
     }
+
 ]
