@@ -123,6 +123,7 @@ public class APDIncidentReportDataParserTest {
         localeRepository.deleteAll();
         textCategoryRepository.deleteAll();
         categoryRepository.deleteAll();
+        pendingTextCategoryRepository.deleteAll();
     }
 
     @Test

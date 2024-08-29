@@ -26,6 +26,7 @@ import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
+import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.junit.jupiter.api.AfterAll;
@@ -68,6 +69,9 @@ public class JSONDataParserTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    protected TextCategoryService textCategoryService;
 
     @Autowired
     private JSONDataParser jsonDataParser;
@@ -118,6 +122,7 @@ public class JSONDataParserTest {
         mappingRepository.deleteAll();
         localeRepository.deleteAll();
         textCategoryRepository.deleteAll();
+        pendingTextCategoryRepository.deleteAll();
         categoryRepository.deleteAll();
     }
 
@@ -173,6 +178,7 @@ public class JSONDataParserTest {
 
         TextCategory tc = textCategoryRepository.findByDataTypeAndText("crime", "DWI 2ND");
         textCategoryRepository.delete(tc);
+        textCategoryService.initMaps();
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
