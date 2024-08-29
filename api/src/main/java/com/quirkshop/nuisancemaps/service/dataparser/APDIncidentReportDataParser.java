@@ -6,10 +6,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.DataEntity;
@@ -59,6 +60,8 @@ public class APDIncidentReportDataParser extends DataParser {
 
         textCategoryService.refreshTextCategoryIdMap();
 
+        HashSet<String> pendingReportCategories = new HashSet<String>();
+
         List<Element> elements = buildElements(dataJob, inputStream);
 
         List<Map<String, String>> rows = parseToRowMaps(elements);
@@ -75,6 +78,11 @@ public class APDIncidentReportDataParser extends DataParser {
                         .buildDataEntity(dataEntityClass, source, row, geometryFactory, mapFieldExtractor);
 
                 addDataEntity(dataEntity, parseCounter);
+
+            } catch (MissingCategoryException e) {
+
+                pendingReportCategories.add(e.getReportCategory());
+                parseCounter.numMissingIncrement();
 
             } catch (MissingCoordinateException | MissingReportCategoryException e) {
                 String content = StringUtils.substring(row.toString(), 0, 4096);
@@ -98,6 +106,8 @@ public class APDIncidentReportDataParser extends DataParser {
 
         numBatch++;
         logSaveBatch(dataJob, parseCounter, numBatch, numRows);
+
+        savePendingTextCategories(dataJob, source, pendingReportCategories);
     }
 
     public List<Map<String, String>> parseToRowMaps(List<Element> elements) {
