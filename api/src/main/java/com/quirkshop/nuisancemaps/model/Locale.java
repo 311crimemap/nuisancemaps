@@ -3,17 +3,16 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.quirkshop.nuisancemaps.config.PointDeserializer;
 import com.quirkshop.nuisancemaps.dto.LocaleDTO;
-import com.quirkshop.nuisancemaps.dto.SourceDTO;
 
 import org.locationtech.jts.geom.Point;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,8 +31,15 @@ public class Locale {
     @SequenceGenerator(name = "locale_seq", allocationSize = 1)
     private Integer id;
 
-    private String name; // city, state
+    private String name; // display name (city, state)
     private String description; // full description
+    private String city; // city name
+    private String state; // state name
+
+    @Column(length = 4096)
+    private String attribution; // text for attribution
+
+    private boolean enabled = false; // activates locale for display (allows for prep sources, data)
 
     @JsonDeserialize(using = PointDeserializer.class)
     private Point location;
@@ -55,6 +61,24 @@ public class Locale {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
+    }
+
+    public LocaleDTO toDTO() {
+
+        Double[] location = { this.getLocation().getX(), this.getLocation().getY() };
+
+        LocaleDTO localeDTO = new LocaleDTO(this.getId(),
+                this.getName(),
+                this.getDescription(),
+                this.getCity(),
+                this.getState(),
+                this.getAttribution(),
+                this.isEnabled(),
+                location,
+                this.getIconName(),
+                this.getIconUnicode());
+
+        return localeDTO;
     }
 
     public Integer getId() {
@@ -129,17 +153,35 @@ public class Locale {
         this.updatedAt = updatedAt;
     }
 
-    public LocaleDTO toDTO() {
+    public String getCity() {
+        return city;
+    }
 
-        Double[] location = { this.getLocation().getX(), this.getLocation().getY() };
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-        LocaleDTO localeDTO = new LocaleDTO(this.getId(),
-                this.getName(),
-                this.getDescription(),
-                location,
-                this.getIconName(),
-                this.getIconUnicode());
+    public String getState() {
+        return state;
+    }
 
-        return localeDTO;
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getAttribution() {
+        return attribution;
+    }
+
+    public void setAttribution(String attribution) {
+        this.attribution = attribution;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
