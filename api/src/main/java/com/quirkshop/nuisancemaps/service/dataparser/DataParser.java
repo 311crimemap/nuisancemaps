@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import com.google.common.collect.Iterables;
@@ -16,10 +17,12 @@ import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.Locale;
+import com.quirkshop.nuisancemaps.model.PendingTextCategory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
+import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
 import com.quirkshop.nuisancemaps.repository.DataEntityRepository;
 import com.quirkshop.nuisancemaps.service.DataEntityMappingService;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
@@ -44,6 +47,9 @@ public class DataParser {
 
     @Autowired
     protected TextCategoryService textCategoryService;
+
+    @Autowired
+    protected PendingTextCategoryRepository pendingTextCategoryRepository;
 
     @Autowired
     protected DataEntityMappingService dataEntityMappingService;
@@ -168,12 +174,12 @@ public class DataParser {
             String reportNum = dataEntityDB.getReportNum();
             DataEntity dNew = parseNewDataMap.getOrDefault(reportNum, null);
 
-            //info preservation
+            // info preservation
 
-            //For each attribute, preserve and use old value if new value
-            //becomes null
+            // For each attribute, preserve and use old value if new value
+            // becomes null
             Field[] fields = DataEntity.class.getDeclaredFields();
-            for (Field field: fields) {
+            for (Field field : fields) {
                 field.setAccessible(true);
                 try {
                     Object newValue = field.get(dNew);
@@ -187,7 +193,6 @@ public class DataParser {
                     log.info("[DataParser] field err: " + e.getMessage());
                 }
             }
-
 
             if (dNew != null) {
                 dNew.setId(id); // set id to overwrite
@@ -205,6 +210,27 @@ public class DataParser {
 
         int numProcessed = Iterables.size(i);
         parseCounter.setNumProcessed(parseCounter.getNumProcessed() + numProcessed);
+    }
+
+    protected void savePendingTextCategories(DataJob dataJob, Source source, HashSet<String> pendingReportCategories) {
+
+        List<PendingTextCategory> pendingTextCategories = new ArrayList<PendingTextCategory>();
+
+        for (String reportCategory : pendingReportCategories) {
+            PendingTextCategory ptc = new PendingTextCategory(dataJob, source.getCategory(), reportCategory);
+            pendingTextCategories.add(ptc);
+        }
+
+        try {
+
+            if (pendingTextCategories.size() > 0) {
+                log.info("[DataParser] savePendingTextCategories() num: " + pendingTextCategories.size());
+                pendingTextCategoryRepository.saveAll(pendingTextCategories);
+            }
+
+        } catch (Exception e) {
+            log.error("[DataParser] " + e.getMessage());
+        }
     }
 
 }

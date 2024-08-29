@@ -172,7 +172,7 @@ public class DataEntityMappingService {
                     .format("Missing category: %s | dataType: %s | id: %s | %s | sourceURL: %s",
                             reportCategory,
                             source.getCategory(), source.getSourceConfigId(), source.getDescription(), source.getUrl());
-            throw new MissingCategoryException(errString);
+            throw new MissingCategoryException(reportCategory, errString);
         }
         return null;
     }

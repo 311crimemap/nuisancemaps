@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Locale;
+import com.quirkshop.nuisancemaps.model.PendingTextCategory;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
@@ -30,6 +31,7 @@ import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
+import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.GeocoderService;
@@ -70,6 +72,9 @@ public class APDIncidentReportDataParserTest {
 
     @Autowired
     private TextCategoryRepository textCategoryRepository;
+
+    @Autowired
+    private PendingTextCategoryRepository pendingTextCategoryRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -221,5 +226,62 @@ public class APDIncidentReportDataParserTest {
 
         // last rowMap is missing coordinates - not saved
         assertThat(dataCrimeRepository.count()).isEqualTo(2);
+    }
+
+    @Test
+    @Transactional
+    public void parsePendingTextCategoryTest() throws IOException {
+
+        Resource htmlResource = resourceLoader.getResource("classpath:data/crime-atx.html");
+        InputStream inputStream = htmlResource.getInputStream();
+        ParseCounter parseCounter = new ParseCounter();
+
+        Source s = sourceRepository.findOneBySourceConfigId(16);
+        DataJob d = new DataJob(LocalDateTime.now(), s, "reportNum");
+        dataJobRepository.save(d);
+
+        List<String> mockAddresses = Arrays.asList("7918 WEST GATE BLVD, Apt # B ,    AUSTIN  78745");
+
+        List<double[]> mockCoordinates = Arrays.asList(new double[] { 30.123456789, -90.987654321 });
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, MMM-dd-yyyy HH:mm");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        Map<String, String> map = new HashMap<String, String>() {
+            {
+                put("reportNum", "123");
+                put("reportCategory", "TEST CRIME THAT DOES NOT EXIST!");
+                put("address", "7918 WEST GATE BLVD, AUSTIN 78745");
+                put("reportedAt", LocalDateTime.parse("Thu, Aug-01-2024 02:10", formatter)
+                        .format(outputFormatter));
+                put("reportedAt2", LocalDateTime.parse("Thu, Aug-01-2024 02:10", formatter)
+                        .format(outputFormatter));
+                put("latitude", null);
+                put("longitude", null);
+            }
+        };
+
+        List<Map<String, String>> mockRowMaps = Arrays.asList(map);
+
+        // coordinates should get applied to rowMap's above in buildRowMap()
+        when(geocoderService.geocode(any(Source.class), any(List.class))).thenReturn(mockCoordinates);
+
+        APDIncidentReportDataParser spyParser = spy(apdIncidentReportDataParser);
+        doReturn(mockRowMaps).when(spyParser).parseToRowMaps(any(List.class));
+
+        assertThat(dataCrimeRepository.count()).isEqualTo(0);
+
+        // saving
+        spyParser.parse(d, inputStream, parseCounter);
+
+        // last rowMap is missing coordinates - nothing saved
+        assertThat(dataCrimeRepository.count()).isEqualTo(0);
+
+        // check PendingTextCategory - doesn't save 1 because of missing TC
+        Iterable<PendingTextCategory> ptcIter = pendingTextCategoryRepository.findAll();
+        List<PendingTextCategory> ptcs = new ArrayList<PendingTextCategory>();
+        ptcIter.forEach(ptcs::add);
+
+        assertThat(ptcs.size()).isEqualTo(1);
+        assertThat(ptcs.get(0).getText()).isEqualTo("TEST CRIME THAT DOES NOT EXIST!");
     }
 }

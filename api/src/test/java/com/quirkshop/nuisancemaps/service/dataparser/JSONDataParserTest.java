@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Locale;
+import com.quirkshop.nuisancemaps.model.PendingTextCategory;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
@@ -21,13 +23,13 @@ import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
+import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,9 @@ public class JSONDataParserTest {
 
     @Autowired
     private TextCategoryRepository textCategoryRepository;
+
+    @Autowired
+    private PendingTextCategoryRepository pendingTextCategoryRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -118,7 +123,7 @@ public class JSONDataParserTest {
 
     @Test
     @Transactional
-    public void parse() throws IOException {
+    public void parseTest() throws IOException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/crime-atx.json");
         InputStream inputstream = jsonResource.getInputStream();
@@ -137,7 +142,7 @@ public class JSONDataParserTest {
 
     @Test
     @Transactional
-    public void parseERSI() throws IOException {
+    public void parseERSITest() throws IOException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/ersi-2024-07-01-2024-08-15-atx.json");
         InputStream inputstream = jsonResource.getInputStream();
@@ -153,4 +158,36 @@ public class JSONDataParserTest {
 
         assertThat(dataCrimeRepository.count()).isEqualTo(5);
     }
+
+    @Test
+    @Transactional
+    public void parsePendingTextCategoryTest() throws IOException {
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/crime-atx.json");
+        InputStream inputstream = jsonResource.getInputStream();
+        ParseCounter parseCounter = new ParseCounter();
+
+        Source s = sourceRepository.findOneBySourceConfigId(1);
+        DataJob d = new DataJob(LocalDateTime.now(), s, "incident_report_number");
+        dataJobRepository.save(d);
+
+        TextCategory tc = textCategoryRepository.findByDataTypeAndText("crime", "DWI 2ND");
+        textCategoryRepository.delete(tc);
+
+        assertThat(dataCrimeRepository.count()).isEqualTo(0);
+
+        jsonDataParser.parse(d, inputstream, parseCounter);
+
+        // missing a TextCategory, no longer saves the parsed dataEntity
+        assertThat(dataCrimeRepository.count()).isEqualTo(1);
+
+        // check PendingTextCategory - doesn't save 1 because of missing TC
+        Iterable<PendingTextCategory> ptcIter = pendingTextCategoryRepository.findAll();
+        List<PendingTextCategory> ptcs = new ArrayList<PendingTextCategory>();
+        ptcIter.forEach(ptcs::add);
+
+        assertThat(ptcs.size()).isEqualTo(1);
+        assertThat(ptcs.get(0).getText()).isEqualTo("DWI 2ND");
+    }
+
 }

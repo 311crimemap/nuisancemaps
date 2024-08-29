@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Locale;
+import com.quirkshop.nuisancemaps.model.PendingTextCategory;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
@@ -22,13 +23,14 @@ import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
+import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
+import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +65,13 @@ public class CSVDataParserTest {
     private TextCategoryRepository textCategoryRepository;
 
     @Autowired
+    private PendingTextCategoryRepository pendingTextCategoryRepository;
+
+    @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    TextCategoryService textCategoryService;
 
     @Autowired
     private CSVDataParser csvDataParser;
@@ -84,19 +92,7 @@ public class CSVDataParserTest {
             mappingRepository.save(s.getMapping());
             sourceRepository.save(s);
         }
-    }
 
-    @AfterAll
-    public void tearDown() throws IOException {
-        sourceRepository.deleteAll();
-        mappingRepository.deleteAll();
-        localeRepository.deleteAll();
-        textCategoryRepository.deleteAll();
-        categoryRepository.deleteAll();
-    }
-
-    @BeforeEach
-    public void setUp() throws IOException {
         // require textCategory mapping to exist before successful save
         // otherwise will throw MissingCategoryException and skip
         Category cat = new Category("crime", "Public Order", 0, null);
@@ -106,19 +102,32 @@ public class CSVDataParserTest {
         textCategories.add(new TextCategory("crime", "SEX CRIMES", cat));
         textCategories.add(new TextCategory("crime", "HARRASSMENT 2", cat));
         textCategories.add(new TextCategory("crime", "PETIT LARCENY", cat));
-        textCategories.add(new TextCategory("crime", "GRAND LARCENY", cat));
+        textCategories.add(new TextCategory("crime", "GRAND LARCENY", cat)); // 2
         textCategories.add(new TextCategory("crime", "MURDER & NON-NEGL. MANSLAUGHTER", cat));
         textCategories.add(new TextCategory("crime", "CRIMINAL MISCHIEF & RELATED OF", cat));
         textCategories.add(new TextCategory("crime", "GRAND LARCENY OF MOTOR VEHICLE", cat));
         textCategories.add(new TextCategory("crime", "OFF. AGNST PUB ORD SENSBLTY &", cat));
 
         textCategoryRepository.saveAll(textCategories);
+
+        textCategoryService.initMaps();
+    }
+
+    @AfterAll
+    public void tearDown() throws IOException {
+        sourceRepository.deleteAll();
+        mappingRepository.deleteAll();
+        localeRepository.deleteAll();
+        textCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
+        pendingTextCategoryRepository.deleteAll();
     }
 
     @Test
     @Transactional
-    public void parse() throws IOException {
+    public void parseTest() throws IOException {
 
+        // csv has 10 records total, missing 1 text category
         Resource csvResource = resourceLoader.getResource("classpath:data/crime-nyc.csv");
         InputStream inputstream = csvResource.getInputStream();
         ParseCounter parseCounter = new ParseCounter();
@@ -132,5 +141,14 @@ public class CSVDataParserTest {
         csvDataParser.parse(d, inputstream, parseCounter);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(9);
+
+        // check PendingTextCategory - doesn't save 1 because of missing TC
+        Iterable<PendingTextCategory> ptcIter = pendingTextCategoryRepository.findAll();
+        List<PendingTextCategory> ptcs = new ArrayList<PendingTextCategory>();
+        ptcIter.forEach(ptcs::add);
+
+        assertThat(ptcs.size()).isEqualTo(1);
+        assertThat(ptcs.get(0).getText()).isEqualTo("RAPE");
     }
+
 }

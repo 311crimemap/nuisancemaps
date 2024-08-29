@@ -1,8 +1,10 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
 import java.io.InputStream;
+import java.util.HashSet;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.DataEntity;
@@ -31,20 +33,27 @@ public class JSONDataParser extends DataParser {
 
         textCategoryService.refreshTextCategoryIdMap();
 
+        HashSet<String> pendingReportCategories = new HashSet<String>();
+
         String rootPath = source.getMapping().getRootPath();
 
         JsonSurfer surfer = JsonSurferJackson.INSTANCE;
 
         surfer.configBuilder()
-            .bind(rootPath, (item, context) -> {
+                .bind(rootPath, (item, context) -> {
 
                     try {
 
                         DataEntity dataEntity = dataEntityMappingService
-                            .buildDataEntity(dataEntityClass, source, (JsonNode) item,
-                                             geometryFactory, jsonNodeFieldExtractor);
+                                .buildDataEntity(dataEntityClass, source, (JsonNode) item,
+                                        geometryFactory, jsonNodeFieldExtractor);
 
                         addDataEntity(dataEntity, parseCounter);
+
+                    } catch (MissingCategoryException e) {
+
+                        pendingReportCategories.add(e.getReportCategory());
+                        parseCounter.numMissingIncrement();
 
                     } catch (MissingCoordinateException | MissingReportCategoryException e) {
 
@@ -65,10 +74,12 @@ public class JSONDataParser extends DataParser {
                     }
 
                 })
-            .buildAndSurf(inputStream);
+                .buildAndSurf(inputStream);
 
         // flush remaining
         batchSave(source, parseCounter);
+
+        savePendingTextCategories(dataJob, source, pendingReportCategories);
     }
 
 }
