@@ -6,11 +6,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvException;
 import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.DataEntity;
@@ -18,6 +20,7 @@ import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +48,8 @@ public class CSVDataParser extends DataParser {
         setTypes(source);
 
         textCategoryService.refreshTextCategoryIdMap();
+
+        HashSet<String> pendingReportCategories = new HashSet<String>();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
@@ -99,6 +104,11 @@ public class CSVDataParser extends DataParser {
 
                     addDataEntity(dataEntity, parseCounter);
 
+                } catch (MissingCategoryException e) {
+
+                    pendingReportCategories.add(e.getReportCategory());
+                    parseCounter.numMissingIncrement();
+
                 } catch (InvalidCoordinateException | MissingCoordinateException | MissingReportCategoryException e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
                     logMissingException(source, content, e);
@@ -130,6 +140,7 @@ public class CSVDataParser extends DataParser {
             dataJobRepository.save(dataJob);
         }
 
+        savePendingTextCategories(dataJob, source, pendingReportCategories);
     }
 
     private void logSaveBatch(DataJob dataJob, ParseCounter parseCounter, CSVReaderHeaderAware csvReader,
