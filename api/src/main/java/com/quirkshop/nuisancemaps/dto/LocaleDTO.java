@@ -7,14 +7,24 @@ public class LocaleDTO {
     private Integer id;
     private String name;
     private String description;
+    private String city; // city name
+    private String state; // state name
+    private String attribution; // text for attribution
+    private boolean enabled;; // activates locale for display (allows for prep sources, data)
+
     private Double[] location;
     private String iconName;
     private String iconUnicode;
     private List<SourceDTO> sourceDTOs;
 
-    public LocaleDTO(Integer id, String name, String description, Double[] location, String iconName, String iconUnicode) {
+    public LocaleDTO(Integer id, String name, String description, String city, String state, String attribution,
+            boolean enabled, Double[] location, String iconName, String iconUnicode) {
         this.id = id;
         this.name = name;
+        this.city = city;
+        this.state = state;
+        this.attribution = attribution;
+        this.enabled = enabled;
         this.description = description;
         this.location = location;
         this.iconName = iconName;
@@ -35,6 +45,38 @@ public class LocaleDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getAttribution() {
+        return attribution;
+    }
+
+    public void setAttribution(String attribution) {
+        this.attribution = attribution;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getDescription() {
@@ -68,5 +110,4 @@ public class LocaleDTO {
     public void setIconUnicode(String iconUnicode) {
         this.iconUnicode = iconUnicode;
     }
-
 }
