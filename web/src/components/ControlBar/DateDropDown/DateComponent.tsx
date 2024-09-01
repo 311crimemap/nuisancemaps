@@ -75,6 +75,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
             id="presetDate"
             name="presetDate"
             className="select select-bordered w-full"
+            defaultValue=""
             onChange={(e) =>
               debounceFilterDateDispatcher({
                 type: "calcDate",
@@ -82,7 +83,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
               })
             }
           >
-            <option disabled selected>
+            <option disabled value="">
               Select timeframe from today
             </option>
             <option value="1"> 1 day</option>
