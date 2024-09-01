@@ -19,9 +19,7 @@ function App() {
         type: "FeatureCollection",
         features: [{
             type: "Feature",
-            properties: {
-                visible: false
-            },
+            properties: {},
             geometry: {
                 type: "Point",
                 coordinates: []
