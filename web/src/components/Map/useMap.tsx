@@ -250,8 +250,8 @@ export default function useMap(props) {
       // need functional update as props.position is a stale closure
       props.setPosition((prevPosition) => {
         const refresh = !(
-          prevPosition.maxBounds?.contains(bounds.getSouthWest()) &&
-          prevPosition.maxBounds?.contains(bounds.getNorthEast())
+          prevPosition.fetchBounds?.contains(bounds.getSouthWest()) &&
+          prevPosition.fetchBounds?.contains(bounds.getNorthEast())
         );
 
         const newPosition = {
@@ -259,7 +259,7 @@ export default function useMap(props) {
           zoom: _map.getZoom(),
           center: _map.getCenter(),
           bounds,
-          maxBounds: refresh ? newMaxBounds : prevPosition.maxBounds,
+          fetchBounds: refresh ? newMaxBounds : prevPosition.fetchBounds,
           refresh,
         };
         console.log("[useMap] onMove", refresh, prevPosition, newPosition);

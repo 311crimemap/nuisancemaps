@@ -44,7 +44,7 @@ function App() {
             lng: -97.7171,
         },
         bounds: null,
-        maxBounds: null,
+        fetchBounds: null,
         refresh: false,
     });
 
@@ -140,8 +140,8 @@ function App() {
         const { lat, lng } = { ...position.center };
 
         const bounds = map.getBounds();
-        const maxBounds =
-            position.maxBounds ||
+        const fetchBounds =
+            position.fetchBounds ||
             new LngLatBounds(
                 new LngLat(
                     Math.floor(bounds.getSouthWest().lng),
@@ -153,11 +153,11 @@ function App() {
                 )
             );
 
-        // setting position maxBounds here avoids a duplicate fetch
-        // (useMap onMove sets refresh true if no maxBounds)
+        // setting position fetchBounds here avoids a duplicate fetch
+        // (useMap onMove sets refresh true if no fetchBounds)
         setPosition({
             ...position,
-            maxBounds,
+            fetchBounds,
         });
 
         const params = new URLSearchParams({
@@ -165,13 +165,13 @@ function App() {
             endDate: filterDate.date.endDate,
             lat,
             lng,
-            sw_lat: maxBounds.getSouthWest().lat,
-            sw_lng: maxBounds.getSouthWest().lng,
-            ne_lat: maxBounds.getNorthEast().lat,
-            ne_lng: maxBounds.getNorthEast().lng,
+            sw_lat: fetchBounds.getSouthWest().lat,
+            sw_lng: fetchBounds.getSouthWest().lng,
+            ne_lat: fetchBounds.getNorthEast().lat,
+            ne_lng: fetchBounds.getNorthEast().lng,
             limit,
         });
-        console.log("onMove useEffect", maxBounds, position);
+        console.log("onMove useEffect", fetchBounds, position);
 
         const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?${params.toString()}`;
         const data311sURL = `http://localhost:8080/data311s.geojson?${params.toString()}`;
