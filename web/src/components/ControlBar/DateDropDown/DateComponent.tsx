@@ -118,7 +118,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
         <div className="flex flex-col gap-4">
           <strong>Custom Date Range</strong>
           <div className="flex flex-col gap-2">
-            <label for="start">Start</label>
+            <label htmlFor="start">Start</label>
             <InputDate
               id="startDate"
               name="startDate"
@@ -130,7 +130,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label for="end">End</label>
+            <label htmlFor="end">End</label>
             <InputDate
               id="endDate"
               name="endDate"
