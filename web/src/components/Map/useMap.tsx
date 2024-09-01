@@ -20,13 +20,11 @@ export default function useMap(props) {
   useEffect(() => {
     console.log("[useMap] Hook Init");
 
-    if (!props.isDataLoaded) return; //NB: wait until data fetched before creating map
-
     const attribution = [
       '<a href="https://openstreetmap.org">&copy; OpenStreetMap</a>',
       '<a href="https://protomaps.com/">Protomaps</a>',
       '<a href= "https://www.maptiler.com/copyright/" target="_blank" >&copy; MapTiler</a>',
-      'Powered by <a href="https://www.geoapify.com/">Geoapify</a>'
+      'Powered by <a href="https://www.geoapify.com/">Geoapify</a>',
     ].join(" | ");
 
     const style = {
@@ -286,7 +284,7 @@ export default function useMap(props) {
         //maplibregl.removeProtocol("pmtiles");
       }
     };
-  }, [props.isDataLoaded]);
+  }, []);
 
   return { map, mapController };
 }
