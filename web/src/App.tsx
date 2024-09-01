@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer } from "react";
-import { LngLat } from "maplibre-gl";
+import { LngLat, LngLatBounds } from "maplibre-gl";
 import "./App.css";
 import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
@@ -12,19 +12,18 @@ import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterRe
 function App() {
     const featureZoomLevel = 17;
 
-    const sw = new LngLat(-97.77095608156225, 30.259261190163073);
-    const ne = new LngLat(-97.68701127709589, 30.30730791957427);
-
     const defaultData = {
         type: "FeatureCollection",
-        features: [{
-            type: "Feature",
-            properties: {},
-            geometry: {
-                type: "Point",
-                coordinates: []
-            }
-        }]
+        features: [
+            {
+                type: "Feature",
+                properties: {},
+                geometry: {
+                    type: "Point",
+                    coordinates: [],
+                },
+            },
+        ],
     };
 
     const endDate = new Date();
@@ -38,19 +37,14 @@ function App() {
         isBusy: false,
     };
 
+    // default position
     const [position, setPosition] = useState({
         center: {
             lat: 30.2944,
             lng: -97.7171,
         },
-        bounds: {
-            sw,
-            ne,
-        },
-        maxBounds: {
-            sw: new LngLat(Math.floor(sw.lng), Math.floor(sw.lat)),
-            ne: new LngLat(Math.ceil(ne.lng), Math.ceil(ne.lat)),
-        },
+        bounds: null,
+        maxBounds: null,
         refresh: false,
     });
 
@@ -133,9 +127,7 @@ function App() {
         isDataLoaded,
     });
 
-
     useEffect(() => {
-
         if (!map) return;
 
         filterDateDispatcher({
@@ -146,19 +138,40 @@ function App() {
         const limit = 10000;
 
         const { lat, lng } = { ...position.center };
-        const { sw, ne } = { ...position.maxBounds };
+
+        const bounds = map.getBounds();
+        const maxBounds =
+            position.maxBounds ||
+            new LngLatBounds(
+                new LngLat(
+                    Math.floor(bounds.getSouthWest().lng),
+                    Math.floor(bounds.getSouthWest().lat)
+                ),
+                new LngLat(
+                    Math.ceil(bounds.getNorthEast().lng),
+                    Math.ceil(bounds.getNorthEast().lat)
+                )
+            );
+
+        // setting position maxBounds here avoids a duplicate fetch
+        // (useMap onMove sets refresh true if no maxBounds)
+        setPosition({
+            ...position,
+            maxBounds,
+        });
 
         const params = new URLSearchParams({
             startDate: filterDate.date.startDate,
             endDate: filterDate.date.endDate,
             lat,
             lng,
-            sw_lat: sw.lat,
-            sw_lng: sw.lng,
-            ne_lat: ne.lat,
-            ne_lng: ne.lng,
+            sw_lat: maxBounds.getSouthWest().lat,
+            sw_lng: maxBounds.getSouthWest().lng,
+            ne_lat: maxBounds.getNorthEast().lat,
+            ne_lng: maxBounds.getNorthEast().lng,
             limit,
         });
+        console.log("onMove useEffect", maxBounds, position);
 
         const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?${params.toString()}`;
         const data311sURL = `http://localhost:8080/data311s.geojson?${params.toString()}`;
@@ -191,12 +204,16 @@ function App() {
                 type: "isBusy",
                 value: false,
             });
-
         });
 
         //to make new request
         //position.center - too sensitive, even zoom will trigger
-    }, [map, position.refresh, filterDate.date.startDate, filterDate.date.endDate]);
+    }, [
+        map,
+        position.refresh,
+        filterDate.date.startDate,
+        filterDate.date.endDate,
+    ]);
 
     console.log("[App] Render", position, activeReportNum);
     console.log(

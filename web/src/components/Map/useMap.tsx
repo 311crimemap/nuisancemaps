@@ -235,40 +235,37 @@ export default function useMap(props) {
 
     _map.on("moveend", async (e) => {
       const bounds = _map.getBounds();
-      const maxBounds = new LngLatBounds(
-        props.position.maxBounds.sw,
-        props.position.maxBounds.ne
+
+      const newMaxBounds = new LngLatBounds(
+        new LngLat(
+          Math.floor(bounds.getSouthWest().lng),
+          Math.floor(bounds.getSouthWest().lat)
+        ),
+        new LngLat(
+          Math.ceil(bounds.getNorthEast().lng),
+          Math.ceil(bounds.getNorthEast().lat)
+        )
       );
 
-      //test if exceeds, set new maxBounds
-      const refresh = !(
-        maxBounds.contains(bounds.getSouthWest()) &&
-        maxBounds.contains(bounds.getNorthEast())
-      );
+      // need functional update as props.position is a stale closure
+      props.setPosition((prevPosition) => {
+        const refresh = !(
+          prevPosition.maxBounds?.contains(bounds.getSouthWest()) &&
+          prevPosition.maxBounds?.contains(bounds.getNorthEast())
+        );
 
-      console.log("onMove position fetch refresh:", refresh);
+        const newPosition = {
+          ...prevPosition,
+          zoom: _map.getZoom(),
+          center: _map.getCenter(),
+          bounds,
+          maxBounds: refresh ? newMaxBounds : prevPosition.maxBounds,
+          refresh,
+        };
+        console.log("[useMap] onMove", refresh, prevPosition, newPosition);
 
-      const _position = {
-        ...props.position,
-        zoom: _map.getZoom(),
-        center: _map.getCenter(),
-        bounds,
-        maxBounds: refresh
-          ? {
-              sw: new LngLat(
-                Math.floor(bounds.getSouthWest().lng),
-                Math.floor(bounds.getSouthWest().lat)
-              ),
-              ne: new LngLat(
-                Math.ceil(bounds.getNorthEast().lng),
-                Math.ceil(bounds.getNorthEast().lat)
-              ),
-            }
-          : props.position.maxBounds,
-        refresh,
-      };
-
-      props.setPosition(_position);
+        return newPosition;
+      });
     });
 
     _map.addControl(new maplibregl.NavigationControl(), "bottom-right");
