@@ -24,7 +24,7 @@ export default function CheckBoxGroup({
     );
 
     return (
-      <li>
+      <li key={`li-${category.id}`}>
         {/*
          * Parent: category with subcategories has details toggle
          *

@@ -40,8 +40,8 @@ export default function CheckBoxLabel({
             onChange={checkHandler}
             className="hidden"
           />
-          <div class="fa-stack" style={circleStyle}>
-            <span class="fa-regular fa-circle fa-stack-2x"></span>
+          <div className="fa-stack" style={circleStyle}>
+            <span className="fa-regular fa-circle fa-stack-2x"></span>
             <span style={iconStyle}>{category.iconUnicode}</span>
           </div>
           <span className="label-text pl-2">{`${category.text}`}</span>
