@@ -39,13 +39,14 @@ function App() {
 
     // default position
     const [position, setPosition] = useState({
+        zoom: 3.25,
         center: {
-            lat: 30.2944,
-            lng: -97.7171,
+            lat: 38.345,
+            lng: -95.0173,
         },
         bounds: null,
         fetchBounds: null,
-        refresh: false,
+        refresh: 0,
     });
 
     const [dataCrimes, setDataCrimes] = useState(defaultData);
@@ -171,7 +172,6 @@ function App() {
             ne_lng: fetchBounds.getNorthEast().lng,
             limit,
         });
-        console.log("onMove useEffect", fetchBounds, position);
 
         const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?${params.toString()}`;
         const data311sURL = `http://localhost:8080/data311s.geojson?${params.toString()}`;
@@ -204,8 +204,9 @@ function App() {
                 type: "isBusy",
                 value: false,
             });
-        });
 
+            setIsDataLoaded(true);
+        });
         //to make new request
         //position.center - too sensitive, even zoom will trigger
     }, [
@@ -241,6 +242,7 @@ function App() {
 
             <div id="container">
                 <MapComponent
+                    isDataLoaded={isDataLoaded}
                     map={map}
                     position={position}
                     setPosition={setPosition}
