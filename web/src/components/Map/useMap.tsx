@@ -50,16 +50,13 @@ export default function useMap(props) {
       ],
     };
 
-    console.log("NEW MAP");
+    console.log("NEW MAP", style);
     const _map = new maplibregl.Map({
       container: "map",
-      //center: [-97.7171, 30.2944], // starting position [lng, lat]
       center: props.position.center,
-      zoom: 12, // starting zoom
+      zoom: props.position.zoom, // starting zoom
       style,
     });
-
-    //_map.showTileBoundaries = true;
 
     _map.on("load", async () => {
       console.log("Load");
@@ -247,22 +244,72 @@ export default function useMap(props) {
         )
       );
 
-      // need functional update as props.position is a stale closure
+      // NB: need functional update as props.position is a stale closure
       props.setPosition((prevPosition) => {
-        const refresh = !(
+        const SOURCE_LAYER_ZOOM = 10; //TODO: set some source layer constant
+        const zoom = _map.getZoom();
+
+        //current location exceeds fetch bounds, need to refetch with new position
+        const exceedBounds = !(
           prevPosition.fetchBounds?.contains(bounds.getSouthWest()) &&
           prevPosition.fetchBounds?.contains(bounds.getNorthEast())
         );
+
+        // zoomInToggle: true when zooming in and layer transitions from
+        // sources layer to data
+        const zoomInToggle =
+          zoom > SOURCE_LAYER_ZOOM && prevPosition.zoom <= SOURCE_LAYER_ZOOM;
+
+        // indicates a zoom out behavior
+        const zoomOut = prevPosition.zoom > zoom;
+
+        // isRefresh criteria
+        //
+        // 1. exceedBounds, except when zooming out and displaying source layer
+        // * on zoom out, bounds by definition expand, so exceedBounds will
+        //   always be true.
+        //
+        // * This is wasteful when in source layer zoom and data is not visible
+        //
+        // * so refresh when exceed bounds, except to avoid excess fetches:
+        //   (exceedBounds && !zoomOut and zoom >= SOURCE_LAYER_ZOOM)
+        //
+        // 2.zoomInToggle: from source to data layer, refetch
+        //
+        const isRefresh =
+          (exceedBounds && !zoomOut && zoom >= SOURCE_LAYER_ZOOM) ||
+          zoomInToggle;
 
         const newPosition = {
           ...prevPosition,
           zoom: _map.getZoom(),
           center: _map.getCenter(),
           bounds,
-          fetchBounds: refresh ? newMaxBounds : prevPosition.fetchBounds,
-          refresh,
+          fetchBounds: isRefresh ? newMaxBounds : prevPosition.fetchBounds,
+          refresh: prevPosition.refresh + isRefresh,
         };
-        console.log("[useMap] onMove", refresh, prevPosition, newPosition);
+
+        console.log(
+          "[useMap] onMove isRefresh: ",
+          isRefresh,
+          "| ",
+          "exceed but not zoomOut and zoom >= 10:",
+          exceedBounds && !zoomOut && zoom >= 10,
+          " || ",
+          exceedBounds,
+          !zoomOut,
+          zoom >= 10,
+          "||",
+          "zoomInToggle: ",
+          zoomInToggle
+        );
+
+        console.log(
+          "[useMap] onMove isRefresh: ",
+          isRefresh,
+          prevPosition,
+          newPosition
+        );
 
         return newPosition;
       });
@@ -281,7 +328,7 @@ export default function useMap(props) {
         //maplibregl.removeProtocol("pmtiles");
       }
     };
-  }, []);
+  }, [props.isDataLoaded]);
 
   return { map, mapController };
 }
