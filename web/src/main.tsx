@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page";
 import Navbar from "./Navbar.tsx";
 import App from "./App.tsx";
-import Cities from "./Cities.tsx";
+import Cities from "./pages/cities/index.tsx";
 import About from "./pages/about/index.tsx";
 import "./index.css";
 
