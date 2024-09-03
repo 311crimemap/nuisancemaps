@@ -20,6 +20,17 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: "/:city",
+    element: (
+      <>
+        <Navbar />
+        <App />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+  },
+
+  {
     path: "/cities",
     element: (
       <>
