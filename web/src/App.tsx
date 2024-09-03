@@ -51,6 +51,7 @@ function App() {
 
     const [dataCrimes, setDataCrimes] = useState(defaultData);
     const [data311s, setData311s] = useState(defaultData);
+    const [isInitLoaded, setIsInitLoaded] = useState(false);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [activeReportNum, setActiveReportNum] = useState(null);
     const [activeFeatureList, setActiveFeatureList] = useState([]);
@@ -111,6 +112,40 @@ function App() {
         return fetch(url).then((res) => res.json());
     };
 
+    /*
+     * FETCH
+     */
+
+    useEffect(() => {
+        const initURL = `http://localhost:8080/init`;
+
+        console.log("FETCH INIT", initURL);
+
+        Promise.all([
+            categories.length == 0 ? getData(initURL) : Promise.resolve(categories),
+        ]).then(([dataSourceCategories]) => {
+            //preserve any checked filters
+            if (categories.length == 0) {
+                setCategories(dataSourceCategories.data.categories);
+                setSources(dataSourceCategories.data.sources);
+
+                activeCategoriesDispatcher({
+                    type: "init",
+                    categories: Categories.buildHierarchy(
+                        dataSourceCategories.data.categories
+                    ),
+                });
+            }
+
+            filterDateDispatcher({
+                type: "isBusy",
+                value: false,
+            });
+
+            setIsInitLoaded(true);
+        });
+    }, []);
+
     // want to initalize map first
     // to populate position obj
     const { map, mapController } = useMap({
@@ -125,11 +160,14 @@ function App() {
         categories,
         setActiveFeatureList,
         featureZoomLevel,
-        isDataLoaded,
+        //isDataLoaded,
+        isInitLoaded,
     });
 
     useEffect(() => {
+        if (!isInitLoaded) return;
         if (!map) return;
+        if (map.getZoom() < 10) return;
 
         filterDateDispatcher({
             type: "isBusy",
@@ -156,10 +194,6 @@ function App() {
 
         // setting position fetchBounds here avoids a duplicate fetch
         // (useMap onMove sets refresh true if no fetchBounds)
-        setPosition({
-            ...position,
-            fetchBounds,
-        });
 
         const params = new URLSearchParams({
             startDate: filterDate.date.startDate,
@@ -175,42 +209,27 @@ function App() {
 
         const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?${params.toString()}`;
         const data311sURL = `http://localhost:8080/data311s.geojson?${params.toString()}`;
-        const initURL = `http://localhost:8080/init`;
 
-        console.log("FETCH", dataCrimesURL, data311sURL, initURL);
+        console.log("FETCH DATA", dataCrimesURL, data311sURL);
 
-        Promise.all([
-            getData(dataCrimesURL),
-            getData(data311sURL),
-            categories.length == 0 ? getData(initURL) : Promise.resolve(categories),
-        ]).then(([dataCrimes, data311s, dataSourceCategories]) => {
-            setDataCrimes(dataCrimes);
-            setData311s(data311s);
+        Promise.all([getData(dataCrimesURL), getData(data311sURL)]).then(
+            ([dataCrimes, data311s]) => {
+                setDataCrimes(dataCrimes);
+                setData311s(data311s);
 
-            //preserve any checked filters
-            if (categories.length == 0) {
-                setCategories(dataSourceCategories.data.categories);
-                setSources(dataSourceCategories.data.sources);
-
-                activeCategoriesDispatcher({
-                    type: "init",
-                    categories: Categories.buildHierarchy(
-                        dataSourceCategories.data.categories
-                    ),
+                filterDateDispatcher({
+                    type: "isBusy",
+                    value: false,
                 });
+
+                setIsDataLoaded(true);
             }
-
-            filterDateDispatcher({
-                type: "isBusy",
-                value: false,
-            });
-
-            setIsDataLoaded(true);
-        });
+        );
         //to make new request
         //position.center - too sensitive, even zoom will trigger
     }, [
         map,
+        isInitLoaded,
         position.refresh,
         filterDate.date.startDate,
         filterDate.date.endDate,
