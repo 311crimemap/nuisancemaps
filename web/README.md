@@ -10,13 +10,37 @@ npm run preview
 
 ---
 
-## Install Notes
+## Web Install Notes
 
-* created basic Node lts Dockerfile w/ typescript template
-  * `npm init`
-  * `npm create vite@latest app -- --template react-ts`
+* Bootstrap container from `Dockerfile` needs to have vite installed
+* create basic node lts Dockerfile w/ typescript template
+
+```
+FROM node:20.11.0
+
+COPY . /web
+WORKDIR /web
+
+RUN npm install
+
+RUN chown -R node /web
+USER node
+CMD ["npm", "run", "dev"]
+
+```
+
+* Build container
+  * `docker build -t <name/web>`
+  * `docker run -v $(pwd):/web -it <name/web>`
+
+* Install vite to generate project configuration and preserve on bind mount
+  * `npm create vite@latest <web> --template react-ts`
+  * `cd <web>`
+  * `npm install`
   * adjust `vite.config.ts` server param to bind to '0.0.0.0'
-* Added service /web to `docker-compose.yml`.
+* Added service `<web>` to `docker-compose.yml`.
+
+
 
 ---
 
