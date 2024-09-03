@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { slugify } from "../../Util";
 
-export default function StateCities({ states }) {
-  return Object.keys(states)
+export default function StateCities({ stateCityMap }) {
+  return Object.keys(stateCityMap)
     .sort()
     .map((state) => {
       return (
         <article key={state} className="prose">
           <h4>{state}</h4>
           <ul>
-            {Object.values(states[state])
+            {Object.values(stateCityMap[state])
               .sort()
               .map((val) => {
                 return (
