@@ -1,5 +1,6 @@
 import debounce from "lodash/debounce";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import maplibregl from "maplibre-gl";
 import { LngLat, LngLatBounds } from "maplibre-gl";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
@@ -14,10 +15,15 @@ import DuplicatePointNudge from "./DuplicatePointNudge";
 
 export default function useMap(props) {
   //const mapRef = useRef<maplibregl.Map>();
+  const { city } = useParams();
   const [map, setMap] = useState(null);
   const [mapController, setMapController] = useState(null);
 
   useEffect(() => {
+    if (!props.isInitLoaded) {
+      return;
+    }
+
     console.log("[useMap] Hook Init");
 
     const attribution = [
@@ -51,12 +57,26 @@ export default function useMap(props) {
     };
 
     console.log("NEW MAP", style);
+
     const _map = new maplibregl.Map({
       container: "map",
       center: props.position.center,
       zoom: props.position.zoom, // starting zoom
       style,
     });
+
+    // if city parameter initially exists, center to that city
+    if (city) {
+      const _position = cityPosition(
+        props.position,
+        props.dataSources.sources.data.features,
+        city
+      );
+      if (!_position) return;
+
+      _map.setCenter(_position.center);
+      _map.setZoom(12);
+    }
 
     _map.on("load", async () => {
       console.log("Load");
@@ -328,7 +348,30 @@ export default function useMap(props) {
         //maplibregl.removeProtocol("pmtiles");
       }
     };
-  }, [props.isDataLoaded]);
+  }, [props.isInitLoaded]);
 
   return { map, mapController };
+}
+
+function slugify(text: string): string {
+  return text.replaceAll(/\s+/g, "-").toLowerCase();
+}
+
+function cityPosition(position: any, features: any, city: any) {
+  if (!city) return null;
+  for (const feature of features) {
+    if (slugify(feature.properties.city) == slugify(city)) {
+      position = {
+        ...position,
+        //TODO: bounds?
+        center: {
+          lat: feature.properties.location[1],
+          lng: feature.properties.location[0],
+        },
+      };
+      return position;
+    }
+  }
+
+  return null;
 }

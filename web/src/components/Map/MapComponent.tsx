@@ -24,19 +24,19 @@ export default function MapComponent(props: any) {
             const dataCrimes = {
                 type: "FeatureCollection",
                 features: props.dataCrimes.features
-                    .filter(feature => activeCategoriesIds.includes(feature.properties.category.id))
+                    .filter(feature => activeCategoriesIds.includes(feature.properties.category?.id))
             }
 
             const data311s = {
                 type: "FeatureCollection",
                 features: props.data311s.features
-                    .filter(feature => activeCategoriesIds.includes(feature.properties.category.id))
+                    .filter(feature => activeCategoriesIds.includes(feature.properties.category?.id))
             }
 
-            dataCrimesSource.setData(dataCrimes);
-            data311sSource.setData(data311s);
-            heatMapDataCrimesSource.setData(dataCrimes);
-            heatMapData311sSource.setData(data311s);
+            dataCrimesSource?.setData(dataCrimes);
+            data311sSource?.setData(data311s);
+            heatMapDataCrimesSource?.setData(dataCrimes);
+            heatMapData311sSource?.setData(data311s);
 
         } catch (e) {
             console.error(e)
