@@ -50,14 +50,15 @@ export default function Cities() {
         </div>
 
         <div id="content" className="sm:ml-60 px-4 mt-6 sm:-mt-2">
-          <article className="prose w-[65ch]">
+          {/* spacer */}
+          <article className="prose sm:w-[39ch] md:w-[53ch] lg:w-[65ch]">
             <a
               id="311CrimeMap"
               className="block relative invisible -top-64"
             ></a>
             <h2>States</h2>
+            <div className="divider"></div>
           </article>
-          <div className="divider"></div>
 
           <StateCities stateCityMap={stateCityMap} />
         </div>
