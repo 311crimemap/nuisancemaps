@@ -19,7 +19,8 @@
         "state": "Texas",
         "attribution": null,
         "enabled": true,
-        "description": "https://opendatacommons.org/licenses/by/1-0/",
+        "description": "Contains information from <a href=\"https: //www.dallasopendata.com/Public-Safety/Police-Incidents/qv6i-rri7/\">Dallas Police Incidents</a> which is made available
+under the <a href=\"https://opendatacommons.org/licenses/by/1-0/\">ODC Attribution License.</a>",
         "location": [
             -96.808891,
             32.779167
@@ -31,7 +32,7 @@
         "name": "Chicago, IL",
         "city": "Chicago",
         "state": "Illinois",
-        "attribution": "https://portal.chicagopolice.org/portal/page/portal/ClearPath",
+        "attribution": "This site provides applications using data that has been modified for use from its original source, www.cityofchicago.org, the official website of the City of Chicago.  The City of Chicago makes no claims as to the content, accuracy, timeliness, or completeness of any of the data provided at this site.  The data provided at this site is subject to change at any time.  It is understood that the data provided at this site is being used at one’s own risk. <a href=\"https: //www.chicago.gov/city/en/narr/foia/data_disclaimer.html\">https://www.chicago.gov/city/en/narr/foia/data_disclaimer.html</a>",
         "enabled": false,
         "description": "",
         "location": [
@@ -45,7 +46,7 @@
         "name": "New York, NY",
         "city": "New York",
         "state": "New York",
-        "attribution": "https://opendata.cityofnewyork.us/faq/",
+        "attribution": "https://opendata.cityofnewyork.us/overview/#termsofuse",
         "enabled": true,
         "description": "",
         "location": [
@@ -59,7 +60,7 @@
         "name": "San Francisco, CA",
         "city": "San Francisco",
         "state": "California",
-        "attribution": "https://opendatacommons.org/licenses/pddl/1-0/",
+        "attribution": "This data is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: <a href=\"https: //opendatacommons.org/licenses/pddl/1.0/\">http://opendatacommons.org/licenses/pddl/1.0/</a>",
         "enabled": true,
         "description": "",
         "location": [
@@ -73,7 +74,7 @@
         "name": "Boston, MA",
         "city": "Boston",
         "state": "MA",
-        "attribution": "https://opendatacommons.org/licenses/pddl/",
+        "attribution": "This data is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: <a href=\"https: //opendatacommons.org/licenses/pddl/1.0/\">http://opendatacommons.org/licenses/pddl/1.0/</a>",
         "enabled": true,
         "description": "",
         "location": [
