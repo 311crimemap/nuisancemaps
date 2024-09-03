@@ -1,8 +1,28 @@
+import { useState, useEffect } from "react";
+import Attribution from "./_attribution";
 import Description from "./_description";
 import Terms from "./_terms";
 import Privacy from "./_privacy";
 
 export default function About() {
+  const [sources, setSources] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const getData = async (url: string) => {
+    return fetch(url).then((res) => res.json());
+  };
+
+  useEffect(() => {
+    const initURL = `http://localhost:8080/init`;
+
+    Promise.all([getData(initURL)]).then(([dataSourceCategories]) => {
+      setSources(dataSourceCategories.data.sources);
+      setIsLoaded(true);
+    });
+  }, []);
+
+  if (!isLoaded) return;
+
   return (
     <div className="container mx-auto mt-16">
       <div className="flex flex-col sm:flex-row py-1 justify-center">
@@ -17,6 +37,9 @@ export default function About() {
             <li>
               <a href="#privacy">Privacy Policy</a>
             </li>
+            <li>
+              <a href="#attribution">Attribution</a>
+            </li>
           </ul>
         </div>
 
@@ -28,6 +51,9 @@ export default function About() {
           <div className="divider"></div>
 
           <Privacy />
+          <div className="divider"></div>
+
+          <Attribution sources={sources} />
         </div>
       </div>
     </div>
