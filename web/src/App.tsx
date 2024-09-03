@@ -167,6 +167,7 @@ function App() {
     useEffect(() => {
         if (!isInitLoaded) return;
         if (!map) return;
+        if (map.getZoom() < 10) return;
 
         filterDateDispatcher({
             type: "isBusy",
