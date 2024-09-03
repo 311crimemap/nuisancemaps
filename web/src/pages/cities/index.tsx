@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import States from "./_states";
+import StatesMenu from "./_states_menu";
 import StateCities from "./_state_cities";
 
 export default function Cities() {
@@ -46,7 +46,7 @@ export default function Cities() {
     <div className="container mx-auto mt-16">
       <div className="flex flex-col sm:flex-row py-1 justify-center">
         <div id="menu" className="sm:mt-8 pr-4">
-          <States states={Object.keys(stateCityMap)} />
+          <StatesMenu states={Object.keys(stateCityMap)} />
         </div>
 
         <div id="content" className="sm:ml-60 px-4 mt-6 sm:-mt-2">
