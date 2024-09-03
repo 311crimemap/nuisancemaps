@@ -18,6 +18,10 @@ export default function useMap(props) {
   const [mapController, setMapController] = useState(null);
 
   useEffect(() => {
+    if (!props.isInitLoaded) {
+      return;
+    }
+
     console.log("[useMap] Hook Init");
 
     const attribution = [
@@ -328,7 +332,7 @@ export default function useMap(props) {
         //maplibregl.removeProtocol("pmtiles");
       }
     };
-  }, [props.isDataLoaded]);
+  }, [props.isInitLoaded]);
 
   return { map, mapController };
 }
