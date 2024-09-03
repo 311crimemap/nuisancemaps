@@ -5,6 +5,7 @@ import maplibregl from "maplibre-gl";
 import { LngLat, LngLatBounds } from "maplibre-gl";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
+import {slugify} from "../../Util";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataSourcesStyleJSON from "../../assets/sources_style.json";
@@ -351,10 +352,6 @@ export default function useMap(props) {
   }, [props.isInitLoaded]);
 
   return { map, mapController };
-}
-
-function slugify(text: string): string {
-  return text.replaceAll(/\s+/g, "-").toLowerCase();
 }
 
 function cityPosition(position: any, features: any, city: any) {
