@@ -195,8 +195,9 @@ function App() {
         const params = new URLSearchParams({
             startDate: filterDate.date.startDate,
             endDate: filterDate.date.endDate,
-            lat,
-            lng,
+            //mute lat/lng to make uri more cacheable
+            //lat,
+            //lng,
             sw_lat: fetchBounds.getSouthWest().lat,
             sw_lng: fetchBounds.getSouthWest().lng,
             ne_lat: fetchBounds.getNorthEast().lat,
