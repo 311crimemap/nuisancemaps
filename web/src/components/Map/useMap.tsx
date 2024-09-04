@@ -36,12 +36,12 @@ export default function useMap(props) {
 
     const style = {
       glyphs:
-        "https://alanverga.com/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+        "https://basemaps.311crimemap.com/fonts/{fontstack}/{range}.pbf",
       version: 8,
       sources: {
         protomaps: {
           type: "vector",
-          url: "https://api.protomaps.com/tiles/v3.json?key=a8e24b8d978e4df3",
+          url: `https://api.protomaps.com/tiles/v3.json?key=${import.meta.env.VITE_PROTOMAPS_API_KEY}`,
           attribution,
           minzoom: 2,
           maxzoom: 12,
