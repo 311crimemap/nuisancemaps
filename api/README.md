@@ -483,6 +483,45 @@ public class WorkerApplication {
   (`@EnableScheduling`) discussion.
 
 
+### Caching
+
+* leverage spring framework cache interface to plug-n-play via annotation
+* Caffeine is an in-memory cache manager. Not the backing store.
+  * `CaffeineConfiguration.java`: build and set the `CacheConfig` and the `CacheManager` set to use Caffeine.
+  * `@EnableCaching`: on main run class (NuisanceApps) and also the config file
+
+We can annotate just about anything that returns a value; database repository
+methods, service methods, and even controller responses.
+
+Currently just caching the dataX controller responses. Takes it from 2 secs to
+100 ms just in dev. Fantastic.
+
+Example annotation shows the cache name as "dataCrimeControllerCache", and the
+cache key as a combination of the controller parameters (prefixed with '#').
+Note that this is SpEl? expression language, so the concatenation happens within
+the single expression string.
+
+```
+@Cacheable(value = "dataCrimeControllerCache", key = "#startDate + '-' + #endDate + '-' + #sw_lat + '-' + #sw_lng + '-' + #ne_lat + '-' + #ne_lng + '-' + #limit")
+```
+
+Basic cacheManager ops:
+
+```
+String id = "test";
+Cache cache = cacheManager.getCache("dataCrimeControllerCache2");
+String test = cache.get(id, String.class);
+
+System.out.println("TEST " + test);
+
+if (test == null) {
+    cache.put(id, "Content");
+}
+
+return test;
+```
+
+
 
 ### Maven Commands
 
