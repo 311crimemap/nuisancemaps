@@ -52,7 +52,7 @@ function App() {
     const [dataCrimes, setDataCrimes] = useState(defaultData);
     const [data311s, setData311s] = useState(defaultData);
     const [isInitLoaded, setIsInitLoaded] = useState(false);
-    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const [isDataLoading, setIsDataLoading] = useState(false);
     const [activeReportNum, setActiveReportNum] = useState(null);
     const [activeFeatureList, setActiveFeatureList] = useState([]);
     const [sources, setSources] = useState(defaultData);
@@ -117,7 +117,6 @@ function App() {
      */
 
     useEffect(() => {
-
         const initURL = `${import.meta.env.VITE_API_SERVER_URL}/init`;
 
         Promise.all([
@@ -159,7 +158,6 @@ function App() {
         categories,
         setActiveFeatureList,
         featureZoomLevel,
-        //isDataLoaded,
         isInitLoaded,
     });
 
@@ -209,6 +207,8 @@ function App() {
         const dataCrimesURL = `${import.meta.env.VITE_API_SERVER_URL}/datacrimes.geojson?${params.toString()}`;
         const data311sURL = `${import.meta.env.VITE_API_SERVER_URL}/data311s.geojson?${params.toString()}`;
 
+        setIsDataLoading(true);
+
         console.log("FETCH DATA", dataCrimesURL, data311sURL);
 
         Promise.all([getData(dataCrimesURL), getData(data311sURL)]).then(
@@ -221,7 +221,7 @@ function App() {
                     value: false,
                 });
 
-                setIsDataLoaded(true);
+                setIsDataLoading(false);
             }
         );
         //to make new request
@@ -255,12 +255,22 @@ function App() {
                     activeCategoriesDispatcher={activeCategoriesDispatcher}
                     filterDate={filterDate}
                     filterDateDispatcher={filterDateDispatcher}
+                    isDataLoading={isDataLoading}
                 />
             </div>
 
-            <div id="container">
+            {isDataLoading && (
+                <div id="spinner" className="flex flex-col items-center z-10">
+                    <span className="loading loading-spinner text-error loading-lg mb-4"></span>
+                    <span>Loading</span>
+                </div>
+            )}
+
+            <div
+                id="container"
+                className={`${isDataLoading ? "opacity-50" : "opacity-100"}`}
+            >
                 <MapComponent
-                    isDataLoaded={isDataLoaded}
                     map={map}
                     position={position}
                     setPosition={setPosition}
