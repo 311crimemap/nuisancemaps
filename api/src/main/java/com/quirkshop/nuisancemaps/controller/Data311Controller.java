@@ -3,13 +3,18 @@ package com.quirkshop.nuisancemaps.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Data311Controller {
+
+    @Autowired
+    CacheManager cacheManager;
 
     @Autowired
     Data311Repository data311Repository;
@@ -45,6 +53,7 @@ public class Data311Controller {
 
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/data311s.geojson")
+    @Cacheable(value = "data311ControllerCache", key = "#startDate + '-' + #endDate + '-' + #sw_lat + '-' + #sw_lng + '-' + #ne_lat + '-' + #ne_lng + '-' + #limit")
     public FeatureCollectionDTO getIndexGeoJSON(
             @RequestParam(name = "startDate", required = false) Optional<String> startDate,
             @RequestParam(name = "endDate", required = false) Optional<String> endDate,

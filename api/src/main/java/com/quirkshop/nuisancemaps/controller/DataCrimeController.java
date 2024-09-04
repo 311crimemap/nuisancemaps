@@ -10,6 +10,7 @@ import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class DataCrimeController {
 
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datacrimes.geojson")
+    @Cacheable(value = "dataCrimeControllerCache", key = "#startDate + '-' + #endDate + '-' + #sw_lat + '-' + #sw_lng + '-' + #ne_lat + '-' + #ne_lng + '-' + #limit")
     public FeatureCollectionDTO getIndexGeoJSON(
             @RequestParam(name = "startDate", required = false) Optional<String> startDate,
             @RequestParam(name = "endDate", required = false) Optional<String> endDate,
