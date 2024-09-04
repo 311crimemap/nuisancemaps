@@ -117,9 +117,8 @@ function App() {
      */
 
     useEffect(() => {
-        const initURL = `http://localhost:8080/init`;
 
-        console.log("FETCH INIT", initURL);
+        const initURL = `${import.meta.env.VITE_API_SERVER_URL}/init`;
 
         Promise.all([
             categories.length == 0 ? getData(initURL) : Promise.resolve(categories),
@@ -207,8 +206,8 @@ function App() {
             limit,
         });
 
-        const dataCrimesURL = `http://localhost:8080/datacrimes.geojson?${params.toString()}`;
-        const data311sURL = `http://localhost:8080/data311s.geojson?${params.toString()}`;
+        const dataCrimesURL = `${import.meta.env.VITE_API_SERVER_URL}/datacrimes.geojson?${params.toString()}`;
+        const data311sURL = `${import.meta.env.VITE_API_SERVER_URL}/data311s.geojson?${params.toString()}`;
 
         console.log("FETCH DATA", dataCrimesURL, data311sURL);
 

@@ -27,7 +27,7 @@ export default function Cities() {
   };
 
   useEffect(() => {
-    const initURL = `http://localhost:8080/init`;
+    const initURL = `${import.meta.env.VITE_API_SERVER_URL}/init`;
 
     Promise.all([getData(initURL)]).then(([dataSourceCategories]) => {
       setSources(dataSourceCategories.data.sources);
