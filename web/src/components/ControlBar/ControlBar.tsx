@@ -3,7 +3,7 @@ import { Search } from "./Search";
 import { DateComponent } from "./DateDropDown/DateComponent";
 import { DropDownFilter } from "./CategoryDropDown/CategoryDropDownComponent";
 import { ToggleComponent } from "./Toggle/ToggleComponent";
-import ResultOutput from "./ResultOutput";
+import MapInfo from "./MapInfo";
 export default function ControlBar({
   map,
   mapController,
@@ -51,7 +51,7 @@ export default function ControlBar({
             />
           </div>
 
-          <ResultOutput map={map} dataCrimes={dataCrimes} data311s={data311s} />
+          <MapInfo map={map} dataCrimes={dataCrimes} data311s={data311s} />
         </div>
       </div>
     </div>

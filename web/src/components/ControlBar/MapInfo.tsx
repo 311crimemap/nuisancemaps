@@ -1,4 +1,4 @@
-export default function ResultOutput({ map, dataCrimes, data311s }) {
+export default function MapInfo({ map, dataCrimes, data311s }) {
   if (!map) return;
 
   return (
