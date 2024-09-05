@@ -13,6 +13,8 @@ export default function ControlBar({
   activeCategoriesDispatcher,
   filterDate,
   filterDateDispatcher,
+  dataCrimes,
+  data311s,
 }) {
   if (activeCategories.length == 0) return null;
 
@@ -49,7 +51,7 @@ export default function ControlBar({
             />
           </div>
 
-          <ResultOutput map={map} DATASOURCES={DATASOURCES} />
+          <ResultOutput map={map} dataCrimes={dataCrimes} data311s={data311s} />
         </div>
       </div>
     </div>

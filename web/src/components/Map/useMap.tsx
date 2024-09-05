@@ -255,7 +255,13 @@ export default function useMap(props) {
     _map.on("moveend", async (e) => {
       const bounds = _map.getBounds();
 
-      const newMaxBounds = calcMaxLatLngBounds(bounds, 1);
+      const dataCrimesSource = _map.getSource(props.DATASOURCES.DataCrimes);
+      const data311sSource = _map.getSource(props.DATASOURCES.Data311s);
+      const numDataCrimesSource =
+        dataCrimesSource?._data?.features?.length || 0;
+      const numData311sSource = data311sSource?._data?.features?.length || 0;
+
+      const newMaxBounds = calcMaxLatLngBounds(bounds, _map.getZoom());
 
       // NB: need functional update as props.position is a stale closure
       props.setPosition((prevPosition) => {
@@ -273,8 +279,14 @@ export default function useMap(props) {
         const zoomInToggle =
           zoom > SOURCE_LAYER_ZOOM && prevPosition.zoom <= SOURCE_LAYER_ZOOM;
 
+        // indicates a zoom in behavior
+        const zoomIn = prevPosition.zoom < zoom;
+
         // indicates a zoom out behavior
         const zoomOut = prevPosition.zoom > zoom;
+
+        const isMax =
+          numData311sSource >= 20000 || numDataCrimesSource >= 20000;
 
         // isRefresh criteria
         //
@@ -291,6 +303,7 @@ export default function useMap(props) {
         //
         const isRefresh =
           (exceedBounds && !zoomOut && zoom >= SOURCE_LAYER_ZOOM) ||
+          (zoomIn && isMax) ||
           zoomInToggle;
 
         const newPosition = {
@@ -312,6 +325,9 @@ export default function useMap(props) {
           exceedBounds,
           !zoomOut,
           zoom >= 10,
+          "||",
+          "zoomIn Max",
+          zoomIn && isMax,
           "||",
           "zoomInToggle: ",
           zoomInToggle

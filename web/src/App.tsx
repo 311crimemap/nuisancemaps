@@ -8,7 +8,7 @@ import { MapComponent } from "./components/Map";
 import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
-import {calcMaxLatLngBounds} from "./Util";
+import { calcMaxLatLngBounds } from "./Util";
 
 function App() {
     const featureZoomLevel = 17;
@@ -177,7 +177,7 @@ function App() {
         const bounds = map.getBounds();
         const fetchBounds =
             position.fetchBounds ||
-            calcMaxLatLngBounds(bounds, 1);
+            calcMaxLatLngBounds(bounds, map.getZoom());
 
         // setting position fetchBounds here avoids a duplicate fetch
         // (useMap onMove sets refresh true if no fetchBounds)
@@ -246,7 +246,8 @@ function App() {
                     activeCategoriesDispatcher={activeCategoriesDispatcher}
                     filterDate={filterDate}
                     filterDateDispatcher={filterDateDispatcher}
-                    isDataLoading={isDataLoading}
+                    dataCrimes={dataCrimes}
+                    data311s={data311s}
                 />
             </div>
 
