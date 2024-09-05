@@ -286,7 +286,8 @@ export default function useMap(props) {
         const zoomOut = prevPosition.zoom > zoom;
 
         const isMax =
-          numData311sSource >= 20000 || numDataCrimesSource >= 20000;
+          numData311sSource >= import.meta.env.VITE_MAX_DATA_RECORDS ||
+          numDataCrimesSource >= import.meta.env.VITE_MAX_DATA_RECORDS;
 
         // isRefresh criteria
         //
