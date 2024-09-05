@@ -5,7 +5,7 @@ import maplibregl from "maplibre-gl";
 import { LngLat, LngLatBounds } from "maplibre-gl";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
-import {slugify} from "../../Util";
+import { slugify, calcMaxLatLngBounds } from "../../Util";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataSourcesStyleJSON from "../../assets/sources_style.json";
@@ -35,13 +35,14 @@ export default function useMap(props) {
     ].join(" | ");
 
     const style = {
-      glyphs:
-        "https://basemaps.311crimemap.com/fonts/{fontstack}/{range}.pbf",
+      glyphs: "https://basemaps.311crimemap.com/fonts/{fontstack}/{range}.pbf",
       version: 8,
       sources: {
         protomaps: {
           type: "vector",
-          url: `https://api.protomaps.com/tiles/v3.json?key=${import.meta.env.VITE_PROTOMAPS_API_KEY}`,
+          url: `https://api.protomaps.com/tiles/v3.json?key=${
+            import.meta.env.VITE_PROTOMAPS_API_KEY
+          }`,
           attribution,
           minzoom: 2,
           maxzoom: 12,
@@ -254,16 +255,7 @@ export default function useMap(props) {
     _map.on("moveend", async (e) => {
       const bounds = _map.getBounds();
 
-      const newMaxBounds = new LngLatBounds(
-        new LngLat(
-          Math.floor(bounds.getSouthWest().lng),
-          Math.floor(bounds.getSouthWest().lat)
-        ),
-        new LngLat(
-          Math.ceil(bounds.getNorthEast().lng),
-          Math.ceil(bounds.getNorthEast().lat)
-        )
-      );
+      const newMaxBounds = calcMaxLatLngBounds(bounds, 1);
 
       // NB: need functional update as props.position is a stale closure
       props.setPosition((prevPosition) => {
