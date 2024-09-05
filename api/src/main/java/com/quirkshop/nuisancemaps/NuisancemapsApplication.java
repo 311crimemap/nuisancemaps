@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
@@ -13,6 +14,7 @@ import com.quirkshop.nuisancemaps.service.WorkerScheduleService;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 
 @SpringBootApplication
+@EnableCaching
 @ComponentScan(
         // Excludes worker, @EnableScheduling annotation (api and related backend only)
         excludeFilters = {
