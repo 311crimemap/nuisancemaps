@@ -171,8 +171,6 @@ function App() {
             value: true,
         });
 
-        const limit = 10000;
-
         const { lat, lng } = { ...position.center };
 
         const bounds = map.getBounds();
@@ -202,7 +200,6 @@ function App() {
             sw_lng: fetchBounds.getSouthWest().lng,
             ne_lat: fetchBounds.getNorthEast().lat,
             ne_lng: fetchBounds.getNorthEast().lng,
-            limit,
         });
 
         const dataCrimesURL = `${import.meta.env.VITE_API_SERVER_URL}/datacrimes.geojson?${params.toString()}`;
@@ -243,6 +240,7 @@ function App() {
         position.zoom,
         position.bounds
     );
+    console.log("Map", map);
 
     return (
         <>
