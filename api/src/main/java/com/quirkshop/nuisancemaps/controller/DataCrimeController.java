@@ -46,7 +46,7 @@ public class DataCrimeController {
 
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datacrimes.geojson")
-    @Cacheable(value = "dataCrimeControllerCache", key = "#startDate + '-' + #endDate + '-' + #sw_lat + '-' + #sw_lng + '-' + #ne_lat + '-' + #ne_lng + '-' + #limit")
+    @Cacheable(value = "dataCrimeControllerCache", key = "#startDate + '-' + #endDate + '-' + #sw_lat + '-' + #sw_lng + '-' + #ne_lat + '-' + #ne_lng")
     public FeatureCollectionDTO getIndexGeoJSON(
             @RequestParam(name = "startDate", required = false) Optional<String> startDate,
             @RequestParam(name = "endDate", required = false) Optional<String> endDate,
@@ -55,8 +55,7 @@ public class DataCrimeController {
             @RequestParam(name = "sw_lat", required = false) Optional<String> sw_lat,
             @RequestParam(name = "sw_lng", required = false) Optional<String> sw_lng,
             @RequestParam(name = "ne_lat", required = false) Optional<String> ne_lat,
-            @RequestParam(name = "ne_lng", required = false) Optional<String> ne_lng,
-            @RequestParam(name = "limit", required = false) Optional<Integer> limit) {
+            @RequestParam(name = "ne_lng", required = false) Optional<String> ne_lng) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm");
 
@@ -76,10 +75,8 @@ public class DataCrimeController {
         double _ne_lat = ne_lat.map(Double::parseDouble).orElse(_lat);
         double _ne_lng = ne_lng.map(Double::parseDouble).orElse(_lng);
 
-        int _limit = limit.map(Integer::valueOf).orElse(MAX_LIMIT);
-
         return dataCrimeRepository.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
-                startDateTime, endDateTime, Math.min(_limit, MAX_LIMIT));
+                startDateTime, endDateTime, MAX_LIMIT);
     }
 
 }
