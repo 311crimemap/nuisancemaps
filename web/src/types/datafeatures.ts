@@ -20,7 +20,6 @@ export interface DataFeatureProperties {
     reportCategory: string;
     reportNum: string;
     reportedAt: string | null;
-
 }
 
 export interface DataFeature {
@@ -32,4 +31,5 @@ export interface DataFeature {
 export interface DataFeatureCollection {
     type: "FeatureCollection";
     features: DataFeature[]
+    isDefaultData?: boolean;
 }

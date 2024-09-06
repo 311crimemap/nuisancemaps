@@ -1,10 +1,10 @@
-import { FeatureCollection } from "../../types/features";
+import { DataFeatureCollection } from "../../types/datafeatures";
 import { Map } from "maplibre-gl";
 
 interface MapInfoProps {
   map: Map;
-  dataCrimes: FeatureCollection;
-  data311s: FeatureCollection;
+  dataCrimes: DataFeatureCollection;
+  data311s: DataFeatureCollection;
   isDataLoading: boolean;
 }
 
