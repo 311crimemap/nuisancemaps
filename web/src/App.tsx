@@ -59,7 +59,7 @@ function App() {
   const [isInitLoaded, setIsInitLoaded] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [activeReportNum, setActiveReportNum] = useState(null);
-  const [activeFeatureList, setActiveFeatureList] = useState([]);
+  const [activeFeatures, setActiveFeatures] = useState({});
   const [sources, setSources] = useState(defaultData);
   const [categories, setCategories] = useState([]);
   const [activeCategories, activeCategoriesDispatcher] = useReducer(
@@ -149,7 +149,7 @@ function App() {
     dataCrimes,
     data311s,
     categories,
-    setActiveFeatureList,
+    setActiveFeatures,
     featureZoomLevel,
     isInitLoaded,
   });
@@ -236,7 +236,7 @@ function App() {
           map={map}
           mapController={mapController}
           DATASOURCES={DATASOURCES}
-          setActiveFeatureList={setActiveFeatureList}
+          setActiveFeatures={setActiveFeatures}
           activeCategories={activeCategories}
           activeCategoriesDispatcher={activeCategoriesDispatcher}
           filterDate={filterDate}
@@ -264,20 +264,13 @@ function App() {
           setPosition={setPosition}
           activeReportNum={activeReportNum}
           setActiveReportNum={setActiveReportNum}
-          setActiveFeatureList={setActiveFeatureList}
           activeCategories={activeCategories}
           DATASOURCES={DATASOURCES}
           dataCrimes={dataCrimes}
           data311s={data311s}
         />
 
-        <FeatureListComponent
-          map={map}
-          featureZoomLevel={featureZoomLevel}
-          activeFeatureList={activeFeatureList}
-          activeReportNum={activeReportNum}
-          setActiveReportNum={setActiveReportNum}
-        />
+        <FeatureListComponent activeFeatures={activeFeatures} />
       </div>
     </>
   );

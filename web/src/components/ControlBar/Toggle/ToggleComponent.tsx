@@ -4,12 +4,12 @@ import { DATASOURCES } from "../../../types/datasources";
 
 interface ToggleComponentProps {
   map: Map;
-  setActiveFeatureList: Dispatch<SetStateAction<[]>>;
+  setActiveFeatures: Dispatch<SetStateAction<{}>>;
 }
 
 export function ToggleComponent({
   map,
-  setActiveFeatureList,
+  setActiveFeatures,
 }: ToggleComponentProps) {
   const [isActive, setIsActive] = useState(false);
 
@@ -53,7 +53,7 @@ export function ToggleComponent({
       }
     }
 
-    setActiveFeatureList([]); //clear any active display
+    setActiveFeatures({}); //clear any active display
     setIsActive(!isActive);
   };
 

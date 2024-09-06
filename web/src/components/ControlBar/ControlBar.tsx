@@ -8,7 +8,7 @@ export default function ControlBar({
   map,
   mapController,
   DATASOURCES,
-  setActiveFeatureList,
+  setActiveFeatures,
   activeCategories,
   activeCategoriesDispatcher,
   filterDate,
@@ -47,7 +47,7 @@ export default function ControlBar({
           <div className="flex flex-col justify-center items-center">
             <ToggleComponent
               map={map}
-              setActiveFeatureList={setActiveFeatureList}
+              setActiveFeatures={setActiveFeatures}
             />
           </div>
         </div>

@@ -125,13 +125,13 @@ export default function useMap(props) {
           16, //default
         ]);
 
-        const featureList = {
+        const activeFeatures = {
           source,
           features,
         };
 
         props.setActiveReportNum(reportNum);
-        props.setActiveFeatureList(featureList);
+        props.setActiveFeatures(activeFeatures);
       });
 
       //click on a clustered point
@@ -173,14 +173,14 @@ export default function useMap(props) {
           });
         }
 
-        const featureList = {
+        const activeFeatures = {
           source,
           features,
           clusterExpansionZoom,
           clusterMaxZoom,
         };
 
-        props.setActiveFeatureList(featureList);
+        props.setActiveFeatures(activeFeatures);
       });
     }
 
@@ -218,7 +218,7 @@ export default function useMap(props) {
         _map.setPaintProperty("point-circle-dataCrimes", "circle-radius", 16);
         _map.setPaintProperty("point-circle-data311s", "circle-radius", 16);
 
-        props.setActiveFeatureList({});
+        props.setActiveFeatures({});
       }
     });
 
