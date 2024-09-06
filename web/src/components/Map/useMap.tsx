@@ -5,7 +5,7 @@ import maplibregl from "maplibre-gl";
 import { LngLat, LngLatBounds } from "maplibre-gl";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
-import {slugify} from "../../Util";
+import { slugify, calcMaxLatLngBounds } from "../../Util";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataSourcesStyleJSON from "../../assets/sources_style.json";
@@ -13,6 +13,8 @@ import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
 import DuplicatePointNudge from "./DuplicatePointNudge";
+
+const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
 
 export default function useMap(props) {
   //const mapRef = useRef<maplibregl.Map>();
@@ -35,13 +37,14 @@ export default function useMap(props) {
     ].join(" | ");
 
     const style = {
-      glyphs:
-        "https://basemaps.311crimemap.com/fonts/{fontstack}/{range}.pbf",
+      glyphs: "https://basemaps.311crimemap.com/fonts/{fontstack}/{range}.pbf",
       version: 8,
       sources: {
         protomaps: {
           type: "vector",
-          url: `https://api.protomaps.com/tiles/v3.json?key=${import.meta.env.VITE_PROTOMAPS_API_KEY}`,
+          url: `https://api.protomaps.com/tiles/v3.json?key=${
+            import.meta.env.VITE_PROTOMAPS_API_KEY
+          }`,
           attribution,
           minzoom: 2,
           maxzoom: 12,
@@ -254,16 +257,13 @@ export default function useMap(props) {
     _map.on("moveend", async (e) => {
       const bounds = _map.getBounds();
 
-      const newMaxBounds = new LngLatBounds(
-        new LngLat(
-          Math.floor(bounds.getSouthWest().lng),
-          Math.floor(bounds.getSouthWest().lat)
-        ),
-        new LngLat(
-          Math.ceil(bounds.getNorthEast().lng),
-          Math.ceil(bounds.getNorthEast().lat)
-        )
-      );
+      const dataCrimesSource = _map.getSource(props.DATASOURCES.DataCrimes);
+      const data311sSource = _map.getSource(props.DATASOURCES.Data311s);
+      const numDataCrimesSource =
+        dataCrimesSource?._data?.features?.length || 0;
+      const numData311sSource = data311sSource?._data?.features?.length || 0;
+
+      const newMaxBounds = calcMaxLatLngBounds(bounds, _map.getZoom());
 
       // NB: need functional update as props.position is a stale closure
       props.setPosition((prevPosition) => {
@@ -281,8 +281,15 @@ export default function useMap(props) {
         const zoomInToggle =
           zoom > SOURCE_LAYER_ZOOM && prevPosition.zoom <= SOURCE_LAYER_ZOOM;
 
+        // indicates a zoom in behavior
+        const zoomIn = prevPosition.zoom < zoom;
+
         // indicates a zoom out behavior
         const zoomOut = prevPosition.zoom > zoom;
+
+        const isMax =
+          numData311sSource >= MAX_DATA_RECORDS ||
+          numDataCrimesSource >= MAX_DATA_RECORDS;
 
         // isRefresh criteria
         //
@@ -299,6 +306,7 @@ export default function useMap(props) {
         //
         const isRefresh =
           (exceedBounds && !zoomOut && zoom >= SOURCE_LAYER_ZOOM) ||
+          (zoomIn && isMax) ||
           zoomInToggle;
 
         const newPosition = {
@@ -320,6 +328,9 @@ export default function useMap(props) {
           exceedBounds,
           !zoomOut,
           zoom >= 10,
+          "||",
+          "zoomIn Max",
+          zoomIn && isMax,
           "||",
           "zoomInToggle: ",
           zoomInToggle

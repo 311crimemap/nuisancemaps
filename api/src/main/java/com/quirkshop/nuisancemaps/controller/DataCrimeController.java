@@ -23,7 +23,7 @@ public class DataCrimeController {
     @Autowired
     DataCrimeRepository dataCrimeRepository;
 
-    private static final int MAX_LIMIT = Integer.parseInt(System.getenv("MAX_DATA_RECORDS"));
+    private static final int MAX_LIMIT = Integer.parseInt(System.getenv("VITE_MAX_DATA_RECORDS"));
 
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datacrimes")
