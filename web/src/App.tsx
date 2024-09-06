@@ -8,6 +8,7 @@ import { MapComponent } from "./components/Map";
 import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
+import { calcMaxLatLngBounds } from "./Util";
 
 function App() {
     const featureZoomLevel = 17;
@@ -171,23 +172,12 @@ function App() {
             value: true,
         });
 
-        const limit = 10000;
-
         const { lat, lng } = { ...position.center };
 
         const bounds = map.getBounds();
         const fetchBounds =
             position.fetchBounds ||
-            new LngLatBounds(
-                new LngLat(
-                    Math.floor(bounds.getSouthWest().lng),
-                    Math.floor(bounds.getSouthWest().lat)
-                ),
-                new LngLat(
-                    Math.ceil(bounds.getNorthEast().lng),
-                    Math.ceil(bounds.getNorthEast().lat)
-                )
-            );
+            calcMaxLatLngBounds(bounds, map.getZoom());
 
         // setting position fetchBounds here avoids a duplicate fetch
         // (useMap onMove sets refresh true if no fetchBounds)
@@ -202,7 +192,6 @@ function App() {
             sw_lng: fetchBounds.getSouthWest().lng,
             ne_lat: fetchBounds.getNorthEast().lat,
             ne_lng: fetchBounds.getNorthEast().lng,
-            limit,
         });
 
         const dataCrimesURL = `${import.meta.env.VITE_API_SERVER_URL}/datacrimes.geojson?${params.toString()}`;
@@ -243,6 +232,7 @@ function App() {
         position.zoom,
         position.bounds
     );
+    console.log("Map", map);
 
     return (
         <>
@@ -256,6 +246,8 @@ function App() {
                     activeCategoriesDispatcher={activeCategoriesDispatcher}
                     filterDate={filterDate}
                     filterDateDispatcher={filterDateDispatcher}
+                    dataCrimes={dataCrimes}
+                    data311s={data311s}
                     isDataLoading={isDataLoading}
                 />
             </div>
