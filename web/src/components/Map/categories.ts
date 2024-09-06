@@ -1,38 +1,43 @@
+import { Category } from "../../types/category";
 
 export default class Categories {
 
     constructor() {}
 
-    static buildHierarchy(categories: []) {
-        console.log("CATS", categories)
+    static buildHierarchy(categories: Category[]) {
+
         //set default checkbox status true
-        const _categories = categories.map((category) => {
+        const _categories = categories.map((category: Category) => {
             category.checked = true;
             return category;
         });
 
         //build Hierarchy
-        const parentCrime = {
+        const parentCrime: Category = {
             dataType: "crime",
             id: "crime",
             text: "Crime",
             label: null,
+            iconName: null,
+            iconUnicode: null,
             parent: null,
             checked: true
         }
 
-        const parent311 = {
+        const parent311: Category = {
             dataType: "311",
             id: "311",
             text: "311",
             label: null,
+            iconName: null,
+            iconUnicode: null,
             parent: null,
             checked: true
         }
 
         //assign parent
         for (let category of _categories) {
-            let c = category;
+            let c: Category | null = category;
 
             while (c) {
 
