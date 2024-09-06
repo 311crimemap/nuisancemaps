@@ -8,6 +8,8 @@ import { MapComponent } from "./components/Map";
 import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
+import {DATASOURCES, DataSourcesMap} from "./types/datasources.ts";
+
 import { calcMaxLatLngBounds } from "./Util";
 import { getData } from "./Util";
 
@@ -69,15 +71,7 @@ function App() {
     defaultDateRange
   );
 
-  enum DATASOURCES {
-    Sources = "sources",
-    Data311s = "data311s",
-    DataCrimes = "dataCrimes",
-    HeatMapDataCrimes = "heatMapDataCrimes",
-    HeatMapData311s = "heatMapData311s",
-  }
-
-  const dataSources = {
+  const dataSources: DataSourcesMap = {
     [DATASOURCES.Sources]: {
       type: "geojson",
       data: sources, // zoomed out city points
