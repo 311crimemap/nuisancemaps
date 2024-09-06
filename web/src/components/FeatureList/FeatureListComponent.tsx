@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from "react";
 import FeatureView from "./FeatureView";
-import ActiveFeatures from "../../types/activefeatures.ts";
+import { ActiveFeatures } from "../../types/activefeatures.ts";
 import { DataFeature } from "../../types/datafeatures.ts";
 
 interface FeatureListComponentProps {
@@ -34,12 +34,16 @@ export default function FeatureListComponent({
   }, [features]);
 
   const sorted_features = (features || []).sort(
-    (a: DataFeature, b: DataFeature) =>
-      new Date(b.properties.reportedAt).getTime() -
-      new Date(a.properties.reportedAt).getTime()
+    (a: DataFeature, b: DataFeature) => {
+      const dateA = a.properties.reportedAt
+        ? new Date(a.properties.reportedAt).getTime()
+        : -Infinity;
+      const dateB = b.properties.reportedAt
+        ? new Date(b.properties.reportedAt).getTime()
+        : -Infinity;
+      return dateB - dateA;
+    }
   );
-
-  const featuresLen = (features || []).length;
 
   const style = {
     display: isVisible ? "block" : "none",
@@ -53,9 +57,8 @@ export default function FeatureListComponent({
             <FeatureView
               key={`view-${feature.properties.reportNum}-${i}`}
               feature={feature}
-              featuresLen={featuresLen}
               isLast={i + 1 == features.length}
-              initListMode={featuresLen > LIST_VIEW_COUNT}
+              initListMode={(features || []).length > LIST_VIEW_COUNT}
             />
           );
         })}
