@@ -4,13 +4,14 @@ import Description from "./_description";
 import Terms from "./_terms";
 import Privacy from "./_privacy";
 import { getData } from "../../Util";
+import { FeatureCollection } from "../../types/features";
 
 export default function About() {
-  const [sources, setSources] = useState([]);
+  const [sources, setSources] = useState<FeatureCollection>({type: "FeatureCollection", features: []});
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const initURL = `${import.meta.env.VITE_API_SERVER_URL}/init`;
+    const initURL: string = `${import.meta.env.VITE_API_SERVER_URL}/init`;
 
     Promise.all([getData(initURL)]).then(([dataSourceCategories]) => {
       setSources(dataSourceCategories.data.sources);
