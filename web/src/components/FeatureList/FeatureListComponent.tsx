@@ -6,18 +6,21 @@
 
 import { useState, useEffect } from "react";
 import FeatureView from "./FeatureView";
+import ActiveFeatures from "../../types/activefeatures.ts";
+import { DataFeature } from "../../types/datafeatures.ts";
+
+interface FeatureListComponentProps {
+  activeFeatures: ActiveFeatures;
+}
 
 export default function FeatureListComponent({
-  map,
-  activeFeatureList,
-  featureZoomLevel,
-}) {
+  activeFeatures,
+}: FeatureListComponentProps) {
   const LIST_VIEW_COUNT = 3;
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const { source, features, clusterExpansionZoom, clusterMaxZoom } =
-    activeFeatureList;
+  const { features, clusterExpansionZoom, clusterMaxZoom } = activeFeatures;
 
   useEffect(() => {
     //no features, or we can continue to zoom and break upt he cluster
@@ -31,8 +34,9 @@ export default function FeatureListComponent({
   }, [features]);
 
   const sorted_features = (features || []).sort(
-    (a, b) =>
-      new Date(b.properties.reportedAt) - new Date(a.properties.reportedAt)
+    (a: DataFeature, b: DataFeature) =>
+      new Date(b.properties.reportedAt).getTime() -
+      new Date(a.properties.reportedAt).getTime()
   );
 
   const featuresLen = (features || []).length;
@@ -44,7 +48,7 @@ export default function FeatureListComponent({
   return (
     <div id="feature-list-component" className="shadow-md" style={style}>
       <ul>
-        {(sorted_features || []).map((feature, i) => {
+        {(sorted_features || []).map((feature: DataFeature, i: number) => {
           return (
             <FeatureView
               key={`view-${feature.properties.reportNum}-${i}`}
