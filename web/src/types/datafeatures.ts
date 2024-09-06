@@ -15,17 +15,16 @@ export interface DataCategory {
 
 export interface DataFeatureProperties {
     address: string | null;
-    category: DataCategory;
+    category: DataCategory | string;  //this sometimes needs to be parsed (maplibre issue)
     location: string | null,
     reportCategory: string;
     reportNum: string;
     reportedAt: string | null;
 
 }
+
 export interface DataFeature {
     type: "Feature";
     properties: DataFeatureProperties;
     geometry: DataGeometry
-
-
 }
