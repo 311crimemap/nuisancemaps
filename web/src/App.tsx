@@ -9,6 +9,7 @@ import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
 import { calcMaxLatLngBounds } from "./Util";
+import { getData } from "./Util";
 
 function App() {
   const featureZoomLevel = 17;
@@ -108,10 +109,6 @@ function App() {
       data: data311s,
       cluster: false,
     },
-  };
-
-  const getData = async (url: string) => {
-    return fetch(url).then((res) => res.json());
   };
 
   /*

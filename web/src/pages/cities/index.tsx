@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import StatesMenu from "./_states_menu";
 import StateCities from "./_state_cities";
+import { getData } from "../../Util";
 
 export default function Cities() {
   const [sources, setSources] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const getData = async (url: string) => {
-    return fetch(url).then((res) => res.json());
-  };
 
   const buildStateCityMap = (sources) => {
     const states = {};

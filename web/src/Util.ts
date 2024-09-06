@@ -1,5 +1,10 @@
 import { LngLat, LngLatBounds } from "maplibre-gl";
 
+export async function getData(url: string): Promise<any> {
+    return fetch(url).then((res) => res.json());
+}
+
+
 export function slugify(text: string): string {
     return text.replaceAll(/\s+/g, "-").toLowerCase();
 }

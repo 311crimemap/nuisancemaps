@@ -3,14 +3,11 @@ import Attribution from "./_attribution";
 import Description from "./_description";
 import Terms from "./_terms";
 import Privacy from "./_privacy";
+import { getData } from "../../Util";
 
 export default function About() {
   const [sources, setSources] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const getData = async (url: string) => {
-    return fetch(url).then((res) => res.json());
-  };
 
   useEffect(() => {
     const initURL = `${import.meta.env.VITE_API_SERVER_URL}/init`;
