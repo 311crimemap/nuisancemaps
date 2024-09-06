@@ -47,7 +47,7 @@ export default function FeatureListComponent({
         {(sorted_features || []).map((feature, i) => {
           return (
             <FeatureView
-              key={`view-${feature.properties.reportNum}`}
+              key={`view-${feature.properties.reportNum}-${i}`}
               feature={feature}
               featuresLen={featuresLen}
               isLast={i + 1 == features.length}
