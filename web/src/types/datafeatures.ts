@@ -28,3 +28,8 @@ export interface DataFeature {
     properties: DataFeatureProperties;
     geometry: DataGeometry
 }
+
+export interface DataFeatureCollection {
+    type: "FeatureCollection";
+    features: DataFeature[]
+}
