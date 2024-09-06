@@ -10,7 +10,7 @@ export function slugify(text: string): string {
 }
 
 // precision: number of decimal places to floor/ciel
-export function calcMaxLatLngBounds(bounds, zoom) {
+export function calcMaxLatLngBounds(bounds: LngLatBounds, zoom: number): LngLatBounds {
     let precision = 0;
     if (zoom >= 12) {
         precision = 1
@@ -19,10 +19,10 @@ export function calcMaxLatLngBounds(bounds, zoom) {
         precision = 2
     }
 
-    const factor = 10 ** precision;
+    const factor: number = 10 ** precision;
 
 
-    const newMaxBounds = new LngLatBounds(
+    const newMaxBounds: LngLatBounds = new LngLatBounds(
         new LngLat(
             Math.floor(factor * bounds.getSouthWest().lng) / factor,
             Math.floor(factor * bounds.getSouthWest().lat) / factor
