@@ -248,6 +248,7 @@ function App() {
                     filterDateDispatcher={filterDateDispatcher}
                     dataCrimes={dataCrimes}
                     data311s={data311s}
+                    isDataLoading={isDataLoading}
                 />
             </div>
 
