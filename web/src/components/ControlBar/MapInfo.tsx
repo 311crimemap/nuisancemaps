@@ -1,7 +1,7 @@
 export default function MapInfo({ map, dataCrimes, data311s, isDataLoading }) {
   if (!map) return;
 
-  const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
+  const MAX_DATA_RECORDS = parseInt(import.meta.env.VITE_MAX_DATA_RECORDS);
 
   const isMax =
     (dataCrimes?.features?.length || 0) >= MAX_DATA_RECORDS ||
