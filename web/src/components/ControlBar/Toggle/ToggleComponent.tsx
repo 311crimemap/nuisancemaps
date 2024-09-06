@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
+import { Map, LayerSpecification } from "maplibre-gl";
+import { DATASOURCES } from "../../../types/datasources";
 
-export function ToggleComponent({ map, DATASOURCES, setActiveFeatureList }) {
+interface ToggleComponentProps {
+  map: Map;
+  setActiveFeatureList: Dispatch<SetStateAction<[]>>;
+}
+
+export function ToggleComponent({
+  map,
+  setActiveFeatureList,
+}: ToggleComponentProps) {
   const [isActive, setIsActive] = useState(false);
 
-  const toggleHandler = (e) => {
-    const layers = map.getStyle().layers;
+  const toggleHandler = () => {
+    const layers: LayerSpecification[] = map.getStyle().layers;
 
     const sources = [DATASOURCES.DataCrimes, DATASOURCES.Data311s];
     const heatMapSources = [
@@ -14,9 +24,10 @@ export function ToggleComponent({ map, DATASOURCES, setActiveFeatureList }) {
 
     //heatmap toggle on
     for (const heatMapSource of heatMapSources) {
-      const sourceLayers = layers.filter(
-        (layer) => layer.source == heatMapSource
-      );
+      const sourceLayers = layers.filter((layer) => {
+        const layerWithSource = layer as { source: string };
+        return layerWithSource.source === heatMapSource;
+      });
       for (const sl of sourceLayers) {
         map.setLayoutProperty(
           sl.id,
@@ -28,7 +39,11 @@ export function ToggleComponent({ map, DATASOURCES, setActiveFeatureList }) {
 
     //counter cluster and point sources toggle off
     for (const source of sources) {
-      const sourceLayers = layers.filter((layer) => layer.source == source);
+      const sourceLayers = layers.filter((layer) => {
+        const layerWithSource = layer as { source: string };
+        return layerWithSource.source === source;
+      });
+
       for (const sl of sourceLayers) {
         map.setLayoutProperty(
           sl.id,
@@ -38,7 +53,7 @@ export function ToggleComponent({ map, DATASOURCES, setActiveFeatureList }) {
       }
     }
 
-    setActiveFeatureList({}); //clear any active display
+    setActiveFeatureList([]); //clear any active display
     setIsActive(!isActive);
   };
 

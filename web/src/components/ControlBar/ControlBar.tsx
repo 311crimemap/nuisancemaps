@@ -47,7 +47,6 @@ export default function ControlBar({
           <div className="flex flex-col justify-center items-center">
             <ToggleComponent
               map={map}
-              DATASOURCES={DATASOURCES}
               setActiveFeatureList={setActiveFeatureList}
             />
           </div>
