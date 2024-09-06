@@ -14,6 +14,8 @@ import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
 import DuplicatePointNudge from "./DuplicatePointNudge";
 
+const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
+
 export default function useMap(props) {
   //const mapRef = useRef<maplibregl.Map>();
   const { city } = useParams();
@@ -286,8 +288,8 @@ export default function useMap(props) {
         const zoomOut = prevPosition.zoom > zoom;
 
         const isMax =
-          numData311sSource >= import.meta.env.VITE_MAX_DATA_RECORDS ||
-          numDataCrimesSource >= import.meta.env.VITE_MAX_DATA_RECORDS;
+          numData311sSource >= MAX_DATA_RECORDS ||
+          numDataCrimesSource >= MAX_DATA_RECORDS;
 
         // isRefresh criteria
         //
