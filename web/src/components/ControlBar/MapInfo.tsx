@@ -8,7 +8,7 @@ export default function MapInfo({ map, dataCrimes, data311s, isDataLoading }) {
     (data311s?.features?.length || 0) >= MAX_DATA_RECORDS;
 
   const numCrime = isDataLoading ? "-" : dataCrimes?.features?.length;
-  const num311 = isDataLoading ? "-" : dataCrimes?.features?.length;
+  const num311 = isDataLoading ? "-" : data311s?.features?.length;
 
   const dataTip = `Warning: maximum result count set to ${MAX_DATA_RECORDS.toLocaleString()}. Zoom in, and/or adjust dates to shorten time frame and reduce number of results.`;
 
