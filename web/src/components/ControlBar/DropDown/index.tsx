@@ -1,12 +1,15 @@
-import react from "react";
-import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import React from "react";
+import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
-export default function DropDown({ children }) {
-  const buttonRef = useRef(null);
+interface DropDownProps {
+    children: React.ReactNode
+}
+export default function DropDown({ children }: DropDownProps) {
+  const buttonRef = useRef<number>(0);
 
-  const childArray = react.Children.toArray(children);
+  const childArray = React.Children.toArray(children);
   const [icon, setIcon] = useState(faChevronUp);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -17,34 +20,50 @@ export default function DropDown({ children }) {
   };
 
   //"closed"
-  const onBlurHandler = (e) => {
+  const onBlurHandler = () => {
     setIcon(faChevronUp);
     setIsOpen(false);
     clearRefTimeout();
   };
 
+  /* To enable a natural "click-to-close" behavior on these daisyUI dropdowns,
+     we need to modify onFocus and onClick event handlers to prevent flash
+     open/close onClick behavior.
+
+   * onFocusHandler: used to "open" dropdown - this is how daisyUI naturally
+     opens the dropdowns. Add a setTimeout delay so that to open, the click
+     event bypasses the focus event without triggering a close. The delay
+     lets SetIsOpen fire after the click event has completed.
+
+   * onClickHandler: used only to "close" dropdown when state is open.
+
+     Essentially a click fires first a focus, and then immediately a click
+     event.
+
+     We use focus to open, since that's how daisyUI natively opens a
+     dropdown.
+
+     Add a delay for setIsOpen so onClick fires as a no op, as there is
+     nothign to close.
+
+     When later click-to-close, dropdown is already in focus so "open" event
+     never fires, so onClick simply blurs close.
+   */
+
   //"open"
-  const onFocusHandler = (e) => {
+  const onFocusHandler = () => {
     setIcon(faChevronDown);
 
-    //delay setIsOpen with timeout so onClick actually closes.
-    //when dropdown closed is clicked,
-    //
-    //onFocus fires setting isOpen to true, and then onClick fires, so the
-    //dropdown immediately flash closes.
-    //
-    //adding a delay makes the onClick be able to open and close.
-    //
     //TODO: small bug where click twice to close after
     //toggling checkboxes.
-
     buttonRef.current = setTimeout(() => {
       setIsOpen(true);
     }, 125);
   };
 
-  // want to add 'close on click' behavior not found in daisyUI dropdowns.
-  const onClickHandler = (e) => {
+  // handling in partnershipw ith onFocusHandler to add 'close on click'
+  // behavior not found in daisyUI dropdowns.
+  const onClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (isOpen) {
       e.currentTarget.blur();
       setIsOpen(false);
@@ -59,13 +78,14 @@ export default function DropDown({ children }) {
   return (
     <div className="flex dropdown dropdown-bottom dropdown-responsive">
       <div
-        ref={buttonRef}
         tabIndex={0}
         role="button"
         className="btn m-2 p-2 sm:px-4 capitalize bg-base-100 hover:bg-secondary-content focus:border-indigo-300"
-        onClick={(e) => onClickHandler(e)}
-        onFocus={(e) => onFocusHandler(e)}
-        onBlur={(e) => onBlurHandler(e)}
+        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+          onClickHandler(e)
+        }
+        onFocus={() => onFocusHandler()}
+        onBlur={() => onBlurHandler()}
       >
         {childArray[0]}
         <FontAwesomeIcon icon={icon} />
@@ -74,8 +94,8 @@ export default function DropDown({ children }) {
       <ul
         tabIndex={0}
         className="dropdown-content z-[1] menu menu-xs shadow p-4 bg-base-100 rounded w-80 max-h-[70vh] overflow-y-auto overflow-x-hidden"
-        onFocus={(e) => onFocusHandler(e)}
-        onBlur={(e) => onBlurHandler(e)}
+        onFocus={() => onFocusHandler()}
+        onBlur={() => onBlurHandler()}
       >
         {childArray[1]}
       </ul>
