@@ -8,7 +8,7 @@ interface InputDateProps {
   minDate: string;
   maxDate: string;
   inputDate: InputDateRange;
-  setInputDate: Dispatch<SetStateAction<{}>>;
+  setInputDate: Dispatch<SetStateAction<InputDateRange>>;
 }
 
 export default function InputDate({
