@@ -10,3 +10,14 @@ export interface DateRange {
   };
   isBusy: boolean;
 }
+
+export interface InputDateRange {
+    startDate: {
+        date: string;
+        isValid: boolean;
+    };
+    endDate: {
+        date: string;
+        isValid: boolean;
+    };
+}
