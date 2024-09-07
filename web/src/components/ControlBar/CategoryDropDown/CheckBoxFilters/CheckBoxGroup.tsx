@@ -6,7 +6,7 @@ interface CheckBoxGroupProps {
     parent: Category;
     categories: Category[];
     activeCategoriesDispatcher: ActiveCategoriesDispatcher;
-    depth: number;
+    depth?: number;
 }
 
 export default function CheckBoxGroup({

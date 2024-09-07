@@ -20,12 +20,15 @@ export function DropDownFilter({
   activeCategories,
   activeCategoriesDispatcher,
 }: DropDownFilterProps) {
+
   const parent = activeCategories.find((cat) => cat.id == type);
+
+  if (!parent) return;
 
   return (
     <DropDown>
       <CheckBoxLabel
-        key={`checkboxlabel-${parent ? parent.id : type}`}
+        key={`checkboxlabel-${parent.id}`}
         category={parent}
         categories={[]}
         activeCategoriesDispatcher={activeCategoriesDispatcher}
@@ -33,7 +36,7 @@ export function DropDownFilter({
       />
 
       <CheckBoxGroup
-        key={`group-${parent ? parent.id : type}`}
+        key={`group-${parent.id}`}
         parent={parent}
         categories={activeCategories}
         activeCategoriesDispatcher={activeCategoriesDispatcher}
