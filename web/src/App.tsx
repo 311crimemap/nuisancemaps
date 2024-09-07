@@ -11,21 +11,29 @@ import { DATASOURCES, DataSourcesMap } from "./types/datasources.ts";
 import { LngLat } from "maplibre-gl";
 import { calcMaxLatLngBounds } from "./Util";
 import { getData } from "./Util";
+import { DataFeatureCollection } from "./types/datafeatures.ts";
 import { DateRange } from "./types/daterange";
 import { MapPosition } from "./types/position";
 
 function App() {
   const featureZoomLevel = 17;
 
-  const defaultData = {
+  const defaultData: DataFeatureCollection = {
     type: "FeatureCollection",
     features: [
       {
         type: "Feature",
-        properties: {},
+        properties: {
+          address: null,
+          category: "",
+          location: null,
+          reportCategory: "",
+          reportNum: "",
+          reportedAt: null,
+        },
         geometry: {
           type: "Point",
-          coordinates: [],
+          coordinates: [0, 0, 0],
         },
       },
     ],
