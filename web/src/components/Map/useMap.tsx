@@ -16,7 +16,6 @@ import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
 import DuplicatePointNudge from "./DuplicatePointNudge";
 import { DataFeatureCollection } from "../../types/datafeatures";
-import { Category } from "../../types/category";
 import { MapPosition } from "../../types/position.ts";
 import { DATASOURCES, DataSourcesMap } from "../../types/datasources";
 
