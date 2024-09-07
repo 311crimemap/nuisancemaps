@@ -8,10 +8,11 @@ import { MapComponent } from "./components/Map";
 import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
-import {DATASOURCES, DataSourcesMap} from "./types/datasources.ts";
+import { DATASOURCES, DataSourcesMap } from "./types/datasources.ts";
 
 import { calcMaxLatLngBounds } from "./Util";
 import { getData } from "./Util";
+import { DateRange } from "./types/daterange";
 
 function App() {
   const featureZoomLevel = 17;
@@ -34,7 +35,7 @@ function App() {
   const endDate = new Date();
   endDate.setDate(endDate.getDate() - 1);
 
-  const defaultDateRange = {
+  const defaultDateRange: DateRange = {
     date: {
       startDate: new Date("01-01-2024").toLocaleDateString("en-CA"),
       endDate: endDate.toLocaleDateString("en-CA"),
@@ -235,7 +236,6 @@ function App() {
         <ControlBar
           map={map}
           mapController={mapController}
-          DATASOURCES={DATASOURCES}
           setActiveFeatures={setActiveFeatures}
           activeCategories={activeCategories}
           activeCategoriesDispatcher={activeCategoriesDispatcher}

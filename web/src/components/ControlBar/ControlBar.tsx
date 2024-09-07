@@ -1,13 +1,30 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Search } from "./Search";
 import { DateComponent } from "./DateDropDown/DateComponent";
 import { DropDownFilter } from "./CategoryDropDown/CategoryDropDownComponent";
 import { ToggleComponent } from "./Toggle/ToggleComponent";
+import { Map } from "maplibre-gl";
+import { MapController } from "@maptiler/geocoding-control/types";
+import { DataFeatureCollection } from "../../types/datafeatures";
 import MapInfo from "./MapInfo";
+import { DateRange, DateFilterReducer } from "../../types/daterange.ts";
+
+interface ControlBarProps {
+  map: Map;
+  mapController: MapController;
+  setActiveFeatures: Dispatch<SetStateAction<{}>>;
+  activeCategories: any;
+  activeCategoriesDispatcher: any;
+  filterDate: DateRange;
+  filterDateDispatcher: DateFilterReducer;
+  dataCrimes: DataFeatureCollection;
+  data311s: DataFeatureCollection;
+  isDataLoading: boolean;
+}
+
 export default function ControlBar({
   map,
   mapController,
-  DATASOURCES,
   setActiveFeatures,
   activeCategories,
   activeCategoriesDispatcher,
@@ -16,7 +33,7 @@ export default function ControlBar({
   dataCrimes,
   data311s,
   isDataLoading,
-}) {
+}: ControlBarProps) {
   if (activeCategories.length == 0) return null;
 
   return (
@@ -45,10 +62,7 @@ export default function ControlBar({
           />
 
           <div className="flex flex-col justify-center items-center">
-            <ToggleComponent
-              map={map}
-              setActiveFeatures={setActiveFeatures}
-            />
+            <ToggleComponent map={map} setActiveFeatures={setActiveFeatures} />
           </div>
         </div>
       </div>

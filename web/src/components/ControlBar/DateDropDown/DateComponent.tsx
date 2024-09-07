@@ -37,7 +37,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     if (inputDate.startDate.isValid && inputDate.endDate.isValid) {
       debounceFilterDateDispatcher({
         type: "setDate",
-        date: {
+        value: {
           startDate: inputDate.startDate.date,
           endDate: inputDate.endDate.date,
         },
