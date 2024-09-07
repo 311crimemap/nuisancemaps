@@ -1,9 +1,12 @@
 import { debounce } from "lodash";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { useParams } from "react-router-dom";
 import maplibregl from "maplibre-gl";
+import { Map, GeoJSONSource, MapGeoJSONFeature } from "maplibre-gl";
+import { MapController } from "@maptiler/geocoding-control/types";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
+
 import { slugify, calcMaxLatLngBounds } from "../../Util";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
@@ -12,18 +15,45 @@ import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
 import DuplicatePointNudge from "./DuplicatePointNudge";
-import { MapLibreEvent } from "../../../node_modules/maplibre-gl/dist/maplibre-gl";
+import { DataFeatureCollection } from "../../types/datafeatures";
+import { Category } from "../../types/category";
+import { DATASOURCES, DataSourcesMap } from "../../types/datasources";
 
 const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
 
-export default function useMap(props) {
-  //const mapRef = useRef<maplibregl.Map>();
+interface useMapsProps {
+  position: any;
+  setPosition: any;
+  activeReportNum: string | null;
+  setActiveReportNum: Dispatch<SetStateAction<null>>;
+  dataSources: DataSourcesMap;
+  dataCrimes: DataFeatureCollection;
+  data311s: DataFeatureCollection;
+  categories: Category[];
+  setActiveFeatures: Dispatch<SetStateAction<{}>>;
+  featureZoomLevel: number;
+  isInitLoaded: boolean;
+}
+
+export default function useMap({
+  position,
+  setPosition,
+  activeReportNum,
+  setActiveReportNum,
+  dataSources,
+  dataCrimes,
+  data311s,
+  categories,
+  setActiveFeatures,
+  featureZoomLevel,
+  isInitLoaded,
+}: useMapsProps) {
   const { city } = useParams();
-  const [map, setMap] = useState(null);
-  const [mapController, setMapController] = useState(null);
+  const [map, setMap] = useState<Map>();
+  const [mapController, setMapController] = useState<MapController>();
 
   useEffect(() => {
-    if (!props.isInitLoaded) {
+    if (!isInitLoaded) {
       return;
     }
 
@@ -49,7 +79,7 @@ export default function useMap(props) {
           minzoom: 2,
           maxzoom: 12,
         },
-        ...props.dataSources,
+        ...dataSources,
       },
       layers: [
         ...baseMapStyleJSON,
@@ -64,16 +94,16 @@ export default function useMap(props) {
 
     const _map = new maplibregl.Map({
       container: "map",
-      center: props.position.center,
-      zoom: props.position.zoom, // starting zoom
+      center: position.center,
+      zoom: position.zoom, // starting zoom
       style,
     });
 
     // if city parameter initially exists, center to that city
     if (city) {
       const _position = cityPosition(
-        props.position,
-        props.dataSources.sources.data.features,
+        position,
+        dataSources.sources.data.features,
         city
       );
       if (!_position) return;
@@ -86,97 +116,111 @@ export default function useMap(props) {
       console.log("Load");
     });
 
-    for (const dataset of [
-      props.DATASOURCES.Data311s,
-      props.DATASOURCES.DataCrimes,
-    ]) {
+    for (const dataset of [DATASOURCES.Data311s, DATASOURCES.DataCrimes]) {
       // When a click event occurs on a feature in
       // the unclustered-point layer, open a popup at
       // the location of the feature, with
       // description HTML from its properties.
 
-      _map.on("click", `point-${dataset}`, (e: MapLibreEvent<MouseEvent>) => {
-        console.log("CLICK unclustered");
+      _map.on(
+        "click",
+        `point-${dataset}`,
+        (e: maplibregl.MapLayerMouseEvent) => {
+          console.log("CLICK unclustered", e.features);
+          if (!e.features) return;
+          const features: MapGeoJSONFeature[] = e.features;
+          const feature = e.features[0];
+          const source = feature.source;
+          const layer = feature.layer;
+          const circleLayerID = `point-circle-${dataset}`;
 
-        const source = e.features[0].source;
-        const layer = e.features[0].layer;
-        const circleLayerID = `point-circle-${dataset}`;
+          const reportNum = feature.properties.reportNum;
 
-        const reportNum = e.features[0].properties.reportNum;
-        const features = e.features;
+          //increae icon size
+          _map.setLayoutProperty(layer.id, "text-size", [
+            "match",
+            ["get", "reportNum"],
+            reportNum, // get the feature id
+            30, //new text-size
+            18, //default - needs to be constant not layer reference (since it will change here)
+          ]);
 
-        //increae icon size
-        _map.setLayoutProperty(layer.id, "text-size", [
-          "match",
-          ["get", "reportNum"],
-          reportNum, // get the feature id
-          30, //new text-size
-          18, //default - needs to be constant not layer reference (since it will change here)
-        ]);
+          //increase background circle radius
+          _map.setPaintProperty(circleLayerID, "circle-radius", [
+            "match",
+            ["get", "reportNum"],
+            reportNum,
+            24, //new radius
+            16, //default
+          ]);
 
-        //increase background circle radius
-        _map.setPaintProperty(circleLayerID, "circle-radius", [
-          "match",
-          ["get", "reportNum"],
-          reportNum,
-          24, //new radius
-          16, //default
-        ]);
+          const activeFeatures = {
+            source,
+            features,
+          };
 
-        const activeFeatures = {
-          source,
-          features,
-        };
-
-        props.setActiveReportNum(reportNum);
-        props.setActiveFeatures(activeFeatures);
-      });
+          setActiveReportNum(reportNum);
+          setActiveFeatures(activeFeatures);
+        }
+      );
 
       //click on a clustered point
-      _map.on("click", `clusters-${dataset}`, async (e) => {
-        console.log("CLICK Cluster", e);
+      _map.on(
+        "click",
+        `clusters-${dataset}`,
+        async (e: maplibregl.MapLayerMouseEvent) => {
+          console.log("CLICK Cluster", e);
+          if (!e.features) return;
+          //const features: MapGeoJSONFeature[] = e.features;
+          const feature: MapGeoJSONFeature = e.features[0];
+          const source = feature.source;
 
-        const source = e.features[0].source;
-        const cluster_id = e.features[0].properties.cluster_id;
-        const coordinates = e.features[0].geometry.coordinates;
-        const point_count = e.features[0].properties.point_count;
+          const cluster_id = feature.properties.cluster_id;
+          const geometry = feature.geometry as GeoJSON.Point;
+          const coordinates = geometry.coordinates;
+          const point_count = feature.properties.point_count;
 
-        const clusterSource = _map.getSource(source);
-        const clusterMaxZoom = props.dataSources[dataset].clusterMaxZoom;
+          const clusterSource = _map.getSource(source) as GeoJSONSource;
+          const clusterMaxZoom = dataSources[dataset].clusterMaxZoom || featureZoomLevel;
 
-        //getClusterExpansionZoom returns (clusterMaxZoom + 1) when
-        //the cluster is "terminal". Meaning any deeper zoom will not
-        //break up the cluster.
-        const clusterExpansionZoom = await _map
-          .getSource(dataset)
-          .getClusterExpansionZoom(cluster_id);
+          //getClusterExpansionZoom returns (clusterMaxZoom + 1) when
+          //the cluster is "terminal". Meaning any deeper zoom will not
+          //break up the cluster.
+          let clusterExpansionZoom = clusterMaxZoom;
+          const dataSetSource = await _map.getSource(dataset) as GeoJSONSource;
+          if (dataSetSource) {
+            clusterExpansionZoom = await dataSetSource.getClusterExpansionZoom(
+              cluster_id
+            );
+          }
 
-        //1. get list of individual elements in cluster (ids)
-        //2. set open
-        const features = await clusterSource.getClusterLeaves(
-          cluster_id,
-          point_count,
-          0
-        );
+          //1. get list of individual elements in cluster (ids)
+          //2. set open
+          const features = await clusterSource.getClusterLeaves(
+            cluster_id,
+            point_count,
+            0
+          );
 
-        //if the next cluster zoom is less than max, zoom in.
-        //otherwise we're at "terminal" cluster, no need to zoom any further
-        if (clusterExpansionZoom < clusterMaxZoom) {
-          _map.easeTo({
-            center: coordinates,
-            zoom: clusterExpansionZoom,
-          });
+          //if the next cluster zoom is less than max, zoom in.
+          //otherwise we're at "terminal" cluster, no need to zoom any further
+          if (clusterExpansionZoom < clusterMaxZoom) {
+            _map.easeTo({
+              center: coordinates,
+              zoom: clusterExpansionZoom,
+            });
+          }
+
+          const activeFeatures = {
+            source,
+            features,
+            clusterExpansionZoom,
+            clusterMaxZoom,
+          };
+
+          setActiveFeatures(activeFeatures);
         }
-
-        const activeFeatures = {
-          source,
-          features,
-          clusterExpansionZoom,
-          clusterMaxZoom,
-        };
-
-        props.setActiveFeatures(activeFeatures);
-      });
+      );
     }
 
     /*
@@ -185,10 +229,10 @@ export default function useMap(props) {
      * so anywhere that's not base source protomaps
      * used to clear displays like feature list
      */
-    _map.on("click", (e) => {
+    _map.on("click", (e: maplibregl.MapLayerMouseEvent) => {
       const features = _map
         .queryRenderedFeatures(e.point)
-        .filter((f) => f.source != "protomaps");
+        .filter((f: MapGeoJSONFeature) => f.source != "protomaps");
 
       console.log("GEN CLICK", features);
 
@@ -213,29 +257,33 @@ export default function useMap(props) {
         _map.setPaintProperty("point-circle-dataCrimes", "circle-radius", 16);
         _map.setPaintProperty("point-circle-data311s", "circle-radius", 16);
 
-        props.setActiveFeatures({});
+        setActiveFeatures({});
       }
     });
 
-    const debouncedZoomNudgeHandler = debounce((e) => {
-      console.log("debouncedZoom", e);
+    const debouncedZoomNudgeHandler = debounce(() => {
 
-      const sourceData311s = _map.getSource("data311s");
-      const sourceDataCrimes = _map.getSource("dataCrimes");
+        const sourceData311s = _map.getSource("data311s") as GeoJSONSource | undefined;
+        const sourceDataCrimes = _map.getSource("dataCrimes") as GeoJSONSource | undefined;
 
-      let sd311 = sourceData311s._data;
-      let sdCrime = sourceDataCrimes._data;
+        if (!sourceData311s || !sourceDataCrimes) {
+            console.error("[debouncedZoomNudgeHandler] sources are undefined");
+            return;
+        }
 
-      const layers = [
-        "clusters-dataCrimes",
-        "clusters-data311s",
-        "point-data311s",
-        "point-dataCrimes",
-      ];
+        let sd311 = sourceData311s._data as DataFeatureCollection;
+        let sdCrime = sourceDataCrimes._data as DataFeatureCollection;
 
-      const features = _map
-        .queryRenderedFeatures({ layers })
-        .filter((f) => f.source != "protomaps");
+        const layers = [
+            "clusters-dataCrimes",
+            "clusters-data311s",
+            "point-data311s",
+            "point-dataCrimes",
+        ];
+
+        const features = _map
+            .queryRenderedFeatures({ layers })
+        .filter((f: MapGeoJSONFeature) => f.source != "protomaps");
 
       const duplicatePoint = new DuplicatePointNudge(features);
       duplicatePoint.init();
@@ -243,25 +291,33 @@ export default function useMap(props) {
       duplicatePoint.nudge(sd311, "311");
       duplicatePoint.nudge(sdCrime, "crime");
 
-      sourceData311s.setData(sd311);
-      sourceDataCrimes.setData(sdCrime);
+      if (sd311) sourceData311s.setData(sd311);
+      if (sdCrime) sourceDataCrimes.setData(sdCrime);
     }, 300);
 
     _map.on("zoom", debouncedZoomNudgeHandler);
 
-    _map.on("moveend", async (e) => {
+    _map.on("moveend", async () => {
       const bounds = _map.getBounds();
 
-      const dataCrimesSource = _map.getSource(props.DATASOURCES.DataCrimes);
-      const data311sSource = _map.getSource(props.DATASOURCES.Data311s);
-      const numDataCrimesSource =
-        dataCrimesSource?._data?.features?.length || 0;
-      const numData311sSource = data311sSource?._data?.features?.length || 0;
+        const dataCrimesSource = _map.getSource(DATASOURCES.DataCrimes) as GeoJSONSource | undefined;
+        const data311sSource = _map.getSource(DATASOURCES.Data311s) as GeoJSONSource | undefined;
+
+        if (!dataCrimesSource || !data311sSource ) {
+            console.error("[moveend] sources are undefined");
+            return;
+        }
+
+        let sdCrime = dataCrimesSource._data as DataFeatureCollection;
+        let sd311 = data311sSource._data as DataFeatureCollection;
+
+        const numDataCrimesSource = sdCrime.features.length;
+        const numData311sSource = sd311.features.length;
 
       const newMaxBounds = calcMaxLatLngBounds(bounds, _map.getZoom());
 
       // NB: need functional update as props.position is a stale closure
-      props.setPosition((prevPosition) => {
+      setPosition((prevPosition) => {
         const SOURCE_LAYER_ZOOM = 10; //TODO: set some source layer constant
         const zoom = _map.getZoom();
 
@@ -355,7 +411,7 @@ export default function useMap(props) {
         //maplibregl.removeProtocol("pmtiles");
       }
     };
-  }, [props.isInitLoaded]);
+  }, [isInitLoaded]);
 
   return { map, mapController };
 }

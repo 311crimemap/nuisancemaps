@@ -1,5 +1,4 @@
 import { useState, useEffect, useReducer } from "react";
-import { LngLat, LngLatBounds } from "maplibre-gl";
 import "./App.css";
 import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
@@ -145,7 +144,6 @@ function App() {
     setPosition,
     activeReportNum,
     setActiveReportNum,
-    DATASOURCES,
     dataSources,
     dataCrimes,
     data311s,
@@ -164,8 +162,6 @@ function App() {
       type: "isBusy",
       value: true,
     });
-
-    const { lat, lng } = { ...position.center };
 
     const bounds = map.getBounds();
     const fetchBounds =
