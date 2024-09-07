@@ -8,13 +8,15 @@ import { MapController } from "@maptiler/geocoding-control/types";
 import { DataFeatureCollection } from "../../types/datafeatures";
 import MapInfo from "./MapInfo";
 import { DateRange, DateFilterReducer } from "../../types/daterange.ts";
+import { Category } from "../../types/category";
+import { activeCategoriesReducer } from "../ControlBar/CategoryDropDown/CategoryFilterReducer";
 
 interface ControlBarProps {
   map: Map;
   mapController: MapController;
   setActiveFeatures: Dispatch<SetStateAction<{}>>;
-  activeCategories: any;
-  activeCategoriesDispatcher: any;
+  activeCategories: Category[];
+  activeCategoriesDispatcher: activeCategoriesReducer;
   filterDate: DateRange;
   filterDateDispatcher: DateFilterReducer;
   dataCrimes: DataFeatureCollection;
