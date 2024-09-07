@@ -8,10 +8,11 @@ import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
 import { DATASOURCES, DataSourcesMap } from "./types/datasources.ts";
-
+import { LngLat } from "maplibre-gl";
 import { calcMaxLatLngBounds } from "./Util";
 import { getData } from "./Util";
 import { DateRange } from "./types/daterange";
+import { MapPosition } from "./types/position";
 
 function App() {
   const featureZoomLevel = 17;
@@ -43,12 +44,9 @@ function App() {
   };
 
   // default position
-  const [position, setPosition] = useState({
+  const [position, setPosition] = useState<MapPosition>({
     zoom: 3.25,
-    center: {
-      lat: 38.345,
-      lng: -95.0173,
-    },
+    center: new LngLat(-95.0173, 38.345),
     bounds: null,
     fetchBounds: null,
     refresh: 0,
@@ -142,12 +140,8 @@ function App() {
   const { map, mapController } = useMap({
     position,
     setPosition,
-    activeReportNum,
     setActiveReportNum,
     dataSources,
-    dataCrimes,
-    data311s,
-    categories,
     setActiveFeatures,
     featureZoomLevel,
     isInitLoaded,
@@ -229,18 +223,20 @@ function App() {
   return (
     <>
       <div className="mt-16">
-        <ControlBar
-          map={map}
-          mapController={mapController}
-          setActiveFeatures={setActiveFeatures}
-          activeCategories={activeCategories}
-          activeCategoriesDispatcher={activeCategoriesDispatcher}
-          filterDate={filterDate}
-          filterDateDispatcher={filterDateDispatcher}
-          dataCrimes={dataCrimes}
-          data311s={data311s}
-          isDataLoading={isDataLoading}
-        />
+        {map && mapController && (
+          <ControlBar
+            map={map}
+            mapController={mapController}
+            setActiveFeatures={setActiveFeatures}
+            activeCategories={activeCategories}
+            activeCategoriesDispatcher={activeCategoriesDispatcher}
+            filterDate={filterDate}
+            filterDateDispatcher={filterDateDispatcher}
+            dataCrimes={dataCrimes}
+            data311s={data311s}
+            isDataLoading={isDataLoading}
+          />
+        )}
       </div>
 
       {isDataLoading && (

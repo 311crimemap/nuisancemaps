@@ -2,7 +2,7 @@ import { debounce } from "lodash";
 import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { useParams } from "react-router-dom";
 import maplibregl from "maplibre-gl";
-import { Map, GeoJSONSource, MapGeoJSONFeature } from "maplibre-gl";
+import { LngLat, Map, GeoJSONSource, MapGeoJSONFeature } from "maplibre-gl";
 import { MapController } from "@maptiler/geocoding-control/types";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
@@ -17,19 +17,16 @@ import heatMapStyleJSON from "../../assets/heatmap_style.json";
 import DuplicatePointNudge from "./DuplicatePointNudge";
 import { DataFeatureCollection } from "../../types/datafeatures";
 import { Category } from "../../types/category";
+import { MapPosition } from "../../types/position.ts";
 import { DATASOURCES, DataSourcesMap } from "../../types/datasources";
 
 const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
 
 interface useMapsProps {
-  position: any;
-  setPosition: any;
-  activeReportNum: string | null;
+  position: MapPosition;
+  setPosition: Dispatch<SetStateAction<MapPosition>>;
   setActiveReportNum: Dispatch<SetStateAction<null>>;
   dataSources: DataSourcesMap;
-  dataCrimes: DataFeatureCollection;
-  data311s: DataFeatureCollection;
-  categories: Category[];
   setActiveFeatures: Dispatch<SetStateAction<{}>>;
   featureZoomLevel: number;
   isInitLoaded: boolean;
@@ -38,12 +35,8 @@ interface useMapsProps {
 export default function useMap({
   position,
   setPosition,
-  activeReportNum,
   setActiveReportNum,
   dataSources,
-  dataCrimes,
-  data311s,
-  categories,
   setActiveFeatures,
   featureZoomLevel,
   isInitLoaded,
@@ -181,13 +174,16 @@ export default function useMap({
           const point_count = feature.properties.point_count;
 
           const clusterSource = _map.getSource(source) as GeoJSONSource;
-          const clusterMaxZoom = dataSources[dataset].clusterMaxZoom || featureZoomLevel;
+          const clusterMaxZoom =
+            dataSources[dataset].clusterMaxZoom || featureZoomLevel;
 
           //getClusterExpansionZoom returns (clusterMaxZoom + 1) when
           //the cluster is "terminal". Meaning any deeper zoom will not
           //break up the cluster.
           let clusterExpansionZoom = clusterMaxZoom;
-          const dataSetSource = await _map.getSource(dataset) as GeoJSONSource;
+          const dataSetSource = (await _map.getSource(
+            dataset
+          )) as GeoJSONSource;
           if (dataSetSource) {
             clusterExpansionZoom = await dataSetSource.getClusterExpansionZoom(
               cluster_id
@@ -206,7 +202,7 @@ export default function useMap({
           //otherwise we're at "terminal" cluster, no need to zoom any further
           if (clusterExpansionZoom < clusterMaxZoom) {
             _map.easeTo({
-              center: coordinates,
+              center: new LngLat(coordinates[0], coordinates[1]),
               zoom: clusterExpansionZoom,
             });
           }
@@ -262,27 +258,30 @@ export default function useMap({
     });
 
     const debouncedZoomNudgeHandler = debounce(() => {
+      const sourceData311s = _map.getSource("data311s") as
+        | GeoJSONSource
+        | undefined;
+      const sourceDataCrimes = _map.getSource("dataCrimes") as
+        | GeoJSONSource
+        | undefined;
 
-        const sourceData311s = _map.getSource("data311s") as GeoJSONSource | undefined;
-        const sourceDataCrimes = _map.getSource("dataCrimes") as GeoJSONSource | undefined;
+      if (!sourceData311s || !sourceDataCrimes) {
+        console.error("[debouncedZoomNudgeHandler] sources are undefined");
+        return;
+      }
 
-        if (!sourceData311s || !sourceDataCrimes) {
-            console.error("[debouncedZoomNudgeHandler] sources are undefined");
-            return;
-        }
+      let sd311 = sourceData311s._data as DataFeatureCollection;
+      let sdCrime = sourceDataCrimes._data as DataFeatureCollection;
 
-        let sd311 = sourceData311s._data as DataFeatureCollection;
-        let sdCrime = sourceDataCrimes._data as DataFeatureCollection;
+      const layers = [
+        "clusters-dataCrimes",
+        "clusters-data311s",
+        "point-data311s",
+        "point-dataCrimes",
+      ];
 
-        const layers = [
-            "clusters-dataCrimes",
-            "clusters-data311s",
-            "point-data311s",
-            "point-dataCrimes",
-        ];
-
-        const features = _map
-            .queryRenderedFeatures({ layers })
+      const features = _map
+        .queryRenderedFeatures({ layers })
         .filter((f: MapGeoJSONFeature) => f.source != "protomaps");
 
       const duplicatePoint = new DuplicatePointNudge(features);
@@ -300,24 +299,28 @@ export default function useMap({
     _map.on("moveend", async () => {
       const bounds = _map.getBounds();
 
-        const dataCrimesSource = _map.getSource(DATASOURCES.DataCrimes) as GeoJSONSource | undefined;
-        const data311sSource = _map.getSource(DATASOURCES.Data311s) as GeoJSONSource | undefined;
+      const dataCrimesSource = _map.getSource(DATASOURCES.DataCrimes) as
+        | GeoJSONSource
+        | undefined;
+      const data311sSource = _map.getSource(DATASOURCES.Data311s) as
+        | GeoJSONSource
+        | undefined;
 
-        if (!dataCrimesSource || !data311sSource ) {
-            console.error("[moveend] sources are undefined");
-            return;
-        }
+      if (!dataCrimesSource || !data311sSource) {
+        console.error("[moveend] sources are undefined");
+        return;
+      }
 
-        let sdCrime = dataCrimesSource._data as DataFeatureCollection;
-        let sd311 = data311sSource._data as DataFeatureCollection;
+      let sdCrime = dataCrimesSource._data as DataFeatureCollection;
+      let sd311 = data311sSource._data as DataFeatureCollection;
 
-        const numDataCrimesSource = sdCrime.features.length;
-        const numData311sSource = sd311.features.length;
+      const numDataCrimesSource = sdCrime.features.length;
+      const numData311sSource = sd311.features.length;
 
       const newMaxBounds = calcMaxLatLngBounds(bounds, _map.getZoom());
 
       // NB: need functional update as props.position is a stale closure
-      setPosition((prevPosition) => {
+      setPosition((prevPosition: MapPosition) => {
         const SOURCE_LAYER_ZOOM = 10; //TODO: set some source layer constant
         const zoom = _map.getZoom();
 
@@ -366,7 +369,7 @@ export default function useMap({
           center: _map.getCenter(),
           bounds,
           fetchBounds: isRefresh ? newMaxBounds : prevPosition.fetchBounds,
-          refresh: prevPosition.refresh + isRefresh,
+          refresh: prevPosition.refresh + Number(isRefresh),
         };
 
         console.log(
@@ -423,10 +426,10 @@ function cityPosition(position: any, features: any, city: any) {
       position = {
         ...position,
         //TODO: bounds?
-        center: {
-          lat: feature.properties.location[1],
-          lng: feature.properties.location[0],
-        },
+        center: new LngLat(
+          feature.properties.location[0],
+          feature.properties.location[1]
+        ),
       };
       return position;
     }
