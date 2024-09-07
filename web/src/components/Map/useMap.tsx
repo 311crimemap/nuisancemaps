@@ -1,8 +1,7 @@
-import debounce from "lodash/debounce";
+import { debounce } from "lodash";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import maplibregl from "maplibre-gl";
-import { LngLat, LngLatBounds } from "maplibre-gl";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
 import { slugify, calcMaxLatLngBounds } from "../../Util";
@@ -13,6 +12,7 @@ import dataCrimesStyleJSON from "../../assets/datacrimes_style.json";
 import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
 import DuplicatePointNudge from "./DuplicatePointNudge";
+import { MapLibreEvent } from "../../../node_modules/maplibre-gl/dist/maplibre-gl";
 
 const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
 
@@ -95,10 +95,8 @@ export default function useMap(props) {
       // the location of the feature, with
       // description HTML from its properties.
 
-      _map.on("click", `point-${dataset}`, (e) => {
+      _map.on("click", `point-${dataset}`, (e: MapLibreEvent<MouseEvent>) => {
         console.log("CLICK unclustered");
-        if (e.clickOnLayer) return;
-        e.clickOnLayer = true;
 
         const source = e.features[0].source;
         const layer = e.features[0].layer;
@@ -137,9 +135,6 @@ export default function useMap(props) {
       //click on a clustered point
       _map.on("click", `clusters-${dataset}`, async (e) => {
         console.log("CLICK Cluster", e);
-
-        if (e.clickOnLayer) return;
-        e.clickOnLayer = true;
 
         const source = e.features[0].source;
         const cluster_id = e.features[0].properties.cluster_id;
