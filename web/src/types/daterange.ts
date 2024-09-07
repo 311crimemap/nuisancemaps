@@ -1,4 +1,4 @@
-export type DateFilterReducer = (
+export type FilterDateDispatcher = (
   filterDate: DateRange,
   action: { type: string; value: any }
 ) => DateRange;

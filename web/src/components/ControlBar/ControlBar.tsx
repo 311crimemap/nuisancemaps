@@ -7,18 +7,18 @@ import { Map } from "maplibre-gl";
 import { MapController } from "@maptiler/geocoding-control/types";
 import { DataFeatureCollection } from "../../types/datafeatures";
 import MapInfo from "./MapInfo";
-import { DateRange, DateFilterReducer } from "../../types/daterange.ts";
+import { DateRange, FilterDateDispatcher } from "../../types/daterange.ts";
 import { Category } from "../../types/category";
-import { activeCategoriesReducer } from "../ControlBar/CategoryDropDown/CategoryFilterReducer";
+import { ActiveCategoriesDispatcher } from "../ControlBar/CategoryDropDown/CategoryFilterReducer";
 
 interface ControlBarProps {
   map: Map;
   mapController: MapController;
   setActiveFeatures: Dispatch<SetStateAction<{}>>;
   activeCategories: Category[];
-  activeCategoriesDispatcher: activeCategoriesReducer;
+  activeCategoriesDispatcher: ActiveCategoriesDispatcher;
   filterDate: DateRange;
-  filterDateDispatcher: DateFilterReducer;
+  filterDateDispatcher: FilterDateDispatcher;
   dataCrimes: DataFeatureCollection;
   data311s: DataFeatureCollection;
   isDataLoading: boolean;

@@ -1,20 +1,23 @@
 import { Category } from "../../../types/category";
 
-type action = {
-  type: string;
-  category: any;
-  categories?: Category[];
-};
-
-export type activeCategoriesReducer = {
-  categories: Category[];
-  action: action;
-};
+export type ActiveCategoriesDispatcher = (
+    action: {
+        type: string;
+        category?: any;
+        categories?: Category[]
+    }
+) => void;
 
 export default function categoryCheckBoxReducer(
   categories: Category[],
-  action: action
+    action: {
+        type: string;
+        category?: any;
+        categories?: Category[]
+    }
 ): Category[] {
+
+    console.log("ACTION", action, categories);
   switch (action.type) {
     //set default available here as delayed by async request
     case "init": {

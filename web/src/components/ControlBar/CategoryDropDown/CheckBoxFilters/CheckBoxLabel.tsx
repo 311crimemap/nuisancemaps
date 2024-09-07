@@ -1,13 +1,20 @@
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Category } from "../../../../types/category";
+import { ActiveCategoriesDispatcher } from "../CategoryFilterReducer";
+
+interface CheckBoxLabelProps {
+  category: Category;
+  activeCategoriesDispatcher: ActiveCategoriesDispatcher;
+  categories: Category[];
+  inclusiveCheck?: boolean;
+}
 
 export default function CheckBoxLabel({
   category,
-  categories,
   activeCategoriesDispatcher,
   inclusiveCheck = true, //whether checkbox ste to trigger inclusive of clicking on text
-}) {
-  const checkHandler = (e) => {
+}: CheckBoxLabelProps) {
+  const checkHandler = () => {
+
     activeCategoriesDispatcher({
       type: "toggleCheckBoxById",
       category,
