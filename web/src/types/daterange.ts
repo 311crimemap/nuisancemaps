@@ -1,7 +1,6 @@
 export type FilterDateDispatcher = (
-  filterDate: DateRange,
-  action: { type: string; value: any }
-) => DateRange;
+    action: { type: string; value: any }
+) => void;
 
 export interface DateRange {
   date: {
