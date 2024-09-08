@@ -1,3 +1,4 @@
+import { MapController } from "@maptiler/geocoding-control/types";
 import { GeocodingControl } from "@maptiler/geocoding-control/react";
 
 /*
@@ -8,7 +9,11 @@ import { GeocodingControl } from "@maptiler/geocoding-control/react";
  *   set params above in useMap call of createMapLibreGlMapController(...params)
  *
  */
-export function Search({ mapController }) {
+interface SearchProps {
+    mapController: MapController
+}
+
+export function Search({ mapController } : SearchProps) {
   const API_KEY = import.meta.env.VITE_MAPTILER_API_KEY;
   return (
     <div className="map-wrap">
@@ -18,7 +23,6 @@ export function Search({ mapController }) {
           mapController={mapController}
           country="us"
           showFullGeometry={false}
-          flyTo={{ speed: 30, duration: 2 }}
           markerOnSelected={false}
         />
       </div>

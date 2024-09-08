@@ -1,17 +1,19 @@
 import { slugify } from "../../Util";
 
-export default function StatesMenu({ states }) {
+interface StatesMenuProps {
+  states: string[];
+}
+
+export default function StatesMenu({ states }: StatesMenuProps) {
   // reduce to most populous states
-  const mobileStatesMap = {
-    "California": true,
-    "Florida": true,
-    "Illinois": true,
+  const mobileStatesMap: {[string:string]: boolean} = {
+    California: true,
+    Florida: true,
+    Illinois: true,
     "New York": true,
-    "Pennsylvania": true,
-    "Texas": true,
+    Pennsylvania: true,
+    Texas: true,
   };
-
-
 
   return (
     <ul className="fixed menu menu-xs menu-horizontal sm:menu-sm sm:menu-vertical bg-base-200 w-full sm:w-56">

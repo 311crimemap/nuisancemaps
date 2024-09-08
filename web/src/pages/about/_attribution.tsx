@@ -1,7 +1,17 @@
-export default function Attribution({ sources }) {
-  if (!sources || sources.length == 0) return;
+import { FeatureCollection, Feature } from "../../types/features";
 
-  sources.features.sort((a, b) => a.properties.city > b.properties.city);
+interface AttributionProps {
+  sources: FeatureCollection;
+}
+
+export default function Attribution({ sources }: AttributionProps) {
+  if (!sources || sources?.features?.length == 0) return;
+
+  sources.features.sort((a:Feature, b:Feature) => {
+    if (a.properties.city > b.properties.city) return 1;
+    if (a.properties.city < b.properties.city) return -1;
+    return 0;
+  });
 
   return (
     <article className="prose">

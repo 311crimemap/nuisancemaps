@@ -1,10 +1,17 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect } from "react";
 
-import debounce from "lodash/debounce";
+import {debounce} from "lodash";
 import DropDown from "../DropDown/index.tsx";
 import InputDate from "./InputDate";
+import { DateRange, FilterDateDispatcher } from "../../../types/daterange";
 
-export function DateComponent({ filterDate, filterDateDispatcher }) {
+interface DateComponentProps {
+    filterDate: DateRange;
+    filterDateDispatcher: FilterDateDispatcher;
+}
+
+export function DateComponent({ filterDate, filterDateDispatcher }: DateComponentProps) {
+
   //intermediate date state to avoid re-renders from top
   const [inputDate, setInputDate] = useState({
     startDate: {
@@ -37,7 +44,7 @@ export function DateComponent({ filterDate, filterDateDispatcher }) {
     if (inputDate.startDate.isValid && inputDate.endDate.isValid) {
       debounceFilterDateDispatcher({
         type: "setDate",
-        date: {
+        value: {
           startDate: inputDate.startDate.date,
           endDate: inputDate.endDate.date,
         },

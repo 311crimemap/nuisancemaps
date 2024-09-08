@@ -1,29 +1,31 @@
 import { useState, useEffect } from "react";
 import StatesMenu from "./_states_menu";
 import StateCities from "./_state_cities";
+import { getData } from "../../Util";
+import { FeatureCollection } from "../../types/features";
+import { StateCityMap } from "./statecitymap";
 
 export default function Cities() {
-  const [sources, setSources] = useState([]);
+  const [sources, setSources] = useState<FeatureCollection>({
+    type: "FeatureCollection",
+    features: [],
+  });
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const getData = async (url: string) => {
-    return fetch(url).then((res) => res.json());
-  };
+  const buildStateCityMap = (sources: FeatureCollection): StateCityMap => {
+    const stateCityMap: StateCityMap = {};
 
-  const buildStateCityMap = (sources) => {
-    const states = {};
     for (const feature of sources.features) {
-      const properties = feature.properties;
-      const { name, city, state } = { ...properties };
-
-      states[state] = states[state] || [];
-      states[state].push({
+      const { name, city, state } = { ...feature.properties };
+      stateCityMap[state] = stateCityMap[state] || [];
+      stateCityMap[state].push({
         name,
         city,
         state,
       });
     }
-    return states;
+
+    return stateCityMap;
   };
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function Cities() {
    */
   if (!isLoaded) return;
 
-  const stateCityMap = buildStateCityMap(sources);
+  const stateCityMap: StateCityMap = buildStateCityMap(sources);
 
   return (
     <div className="container mx-auto mt-16">

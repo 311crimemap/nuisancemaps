@@ -1,24 +1,41 @@
-export default function MapInfo({ map, dataCrimes, data311s, isDataLoading }) {
+import { DataFeatureCollection } from "../../types/datafeatures";
+import { Map } from "maplibre-gl";
+
+interface MapInfoProps {
+  map: Map;
+  dataCrimes: DataFeatureCollection;
+  data311s: DataFeatureCollection;
+  isDataLoading: boolean;
+}
+
+export default function MapInfo({
+  map,
+  dataCrimes,
+  data311s,
+  isDataLoading,
+}: MapInfoProps) {
   if (!map) return;
 
-  const MAX_DATA_RECORDS = parseInt(import.meta.env.VITE_MAX_DATA_RECORDS);
+  const MAX_DATA_RECORDS: number = parseInt(
+    import.meta.env.VITE_MAX_DATA_RECORDS
+  );
 
-  const isMax =
+  const isMax: boolean =
     (dataCrimes?.features?.length || 0) >= MAX_DATA_RECORDS ||
     (data311s?.features?.length || 0) >= MAX_DATA_RECORDS;
 
-  const numCrime = isDataLoading
+  const numCrime: string | number = isDataLoading
     ? "-"
     : dataCrimes.isDefaultData
     ? 0
     : dataCrimes?.features?.length;
-  const num311 = isDataLoading
+  const num311: string | number = isDataLoading
     ? "-"
     : data311s.isDefaultData
     ? 0
     : data311s?.features?.length;
 
-  const dataTip = `Warning: maximum result count set to ${MAX_DATA_RECORDS.toLocaleString()}. Zoom in, and/or adjust dates to shorten time frame and reduce number of results.`;
+  const dataTip: string = `Warning: maximum result count set to ${MAX_DATA_RECORDS.toLocaleString()}. Zoom in, and/or adjust dates to shorten time frame and reduce number of results.`;
 
   return (
     <div className="flex flex-row justify-center">

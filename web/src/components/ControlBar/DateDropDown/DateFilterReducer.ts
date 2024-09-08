@@ -1,11 +1,14 @@
-export default function dateFilterReducer(filterDate, action) {
-  //console.log("INIT", filterDate);
-  // {
-  //     type: "init",
-  //     date: {
-  //         startDate, endDate
-  //     }
-  // }
+import { DateRange } from "../../../types/daterange";
+
+type action = {
+  type: string;
+  value: any;
+};
+
+export default function dateFilterReducer(
+  filterDate: DateRange,
+  action: action
+): DateRange {
   switch (action.type) {
     case "calcDate": {
       const calcDate = new Date();
@@ -42,7 +45,7 @@ export default function dateFilterReducer(filterDate, action) {
         ...filterDate,
         date: {
           ...filterDate.date,
-          ...action.date,
+          ...action.value,
         },
       };
     }
@@ -53,7 +56,8 @@ export default function dateFilterReducer(filterDate, action) {
       };
     }
     default: {
-      throw new Error("action doesn't exist", action);
+      throw new Error("action doesn't exist: " + action.type);
     }
   }
+  return filterDate;
 }
