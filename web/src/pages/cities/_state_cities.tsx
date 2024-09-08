@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import { slugify } from "../../Util";
+import { StateCityMap } from "./statecitymap";
 
-export default function StateCities({ stateCityMap }) {
+interface StateCitiesProps {
+  stateCityMap: StateCityMap;
+}
+
+export default function StateCities({ stateCityMap }: StateCitiesProps) {
   return Object.keys(stateCityMap)
     .sort()
-    .map((state, i) => {
+    .map((state: string, i: number) => {
       const offset = i == 0 ? "-top-64" : "-top-28";
 
       return (

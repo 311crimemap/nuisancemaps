@@ -1,14 +1,34 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Search } from "./Search";
 import { DateComponent } from "./DateDropDown/DateComponent";
 import { DropDownFilter } from "./CategoryDropDown/CategoryDropDownComponent";
 import { ToggleComponent } from "./Toggle/ToggleComponent";
+import { Map } from "maplibre-gl";
+import { MapController } from "@maptiler/geocoding-control/types";
+import { DataFeatureCollection } from "../../types/datafeatures";
 import MapInfo from "./MapInfo";
+import { DateRange, FilterDateDispatcher } from "../../types/daterange.ts";
+import { Category } from "../../types/category";
+import { ActiveCategoriesDispatcher } from "../ControlBar/CategoryDropDown/CategoryFilterReducer";
+import { ActiveFeatures } from "../../types/activefeatures";
+
+interface ControlBarProps {
+  map: Map;
+  mapController: MapController;
+  setActiveFeatures: Dispatch<SetStateAction<ActiveFeatures>>;
+  activeCategories: Category[];
+  activeCategoriesDispatcher: ActiveCategoriesDispatcher;
+  filterDate: DateRange;
+  filterDateDispatcher: FilterDateDispatcher;
+  dataCrimes: DataFeatureCollection;
+  data311s: DataFeatureCollection;
+  isDataLoading: boolean;
+}
+
 export default function ControlBar({
   map,
   mapController,
-  DATASOURCES,
-  setActiveFeatureList,
+  setActiveFeatures,
   activeCategories,
   activeCategoriesDispatcher,
   filterDate,
@@ -16,7 +36,7 @@ export default function ControlBar({
   dataCrimes,
   data311s,
   isDataLoading,
-}) {
+}: ControlBarProps) {
   if (activeCategories.length == 0) return null;
 
   return (
@@ -45,11 +65,7 @@ export default function ControlBar({
           />
 
           <div className="flex flex-col justify-center items-center">
-            <ToggleComponent
-              map={map}
-              DATASOURCES={DATASOURCES}
-              setActiveFeatureList={setActiveFeatureList}
-            />
+            <ToggleComponent map={map} setActiveFeatures={setActiveFeatures} />
           </div>
         </div>
       </div>

@@ -69,9 +69,7 @@
             width: calc(100vw - 2px);
             left: 1px;
             border-radius: 0;
-            //outline: 1px solid #000;
             border: 1px solid #000;
-
 
         }
         /* align end */

@@ -1,5 +1,4 @@
 import { useState, useEffect, useReducer } from "react";
-import { LngLat, LngLatBounds } from "maplibre-gl";
 import "./App.css";
 import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
@@ -8,20 +7,34 @@ import { MapComponent } from "./components/Map";
 import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
+import { DATASOURCES, DataSourcesMap } from "./types/datasources.ts";
+import { LngLat } from "maplibre-gl";
 import { calcMaxLatLngBounds } from "./Util";
+import { getData } from "./Util";
+import { DataFeatureCollection } from "./types/datafeatures.ts";
+import { DateRange } from "./types/daterange";
+import { MapPosition } from "./types/position";
+import { defaultActiveFeatures } from "./types/activefeatures.ts";
 
 function App() {
   const featureZoomLevel = 17;
 
-  const defaultData = {
+  const defaultData: DataFeatureCollection = {
     type: "FeatureCollection",
     features: [
       {
         type: "Feature",
-        properties: {},
+        properties: {
+          address: null,
+          category: "",
+          location: null,
+          reportCategory: "",
+          reportNum: "",
+          reportedAt: null,
+        },
         geometry: {
           type: "Point",
-          coordinates: [],
+          coordinates: [0, 0, 0],
         },
       },
     ],
@@ -31,7 +44,7 @@ function App() {
   const endDate = new Date();
   endDate.setDate(endDate.getDate() - 1);
 
-  const defaultDateRange = {
+  const defaultDateRange: DateRange = {
     date: {
       startDate: new Date("01-01-2024").toLocaleDateString("en-CA"),
       endDate: endDate.toLocaleDateString("en-CA"),
@@ -40,12 +53,9 @@ function App() {
   };
 
   // default position
-  const [position, setPosition] = useState({
+  const [position, setPosition] = useState<MapPosition>({
     zoom: 3.25,
-    center: {
-      lat: 38.345,
-      lng: -95.0173,
-    },
+    center: new LngLat(-95.0173, 38.345),
     bounds: null,
     fetchBounds: null,
     refresh: 0,
@@ -56,7 +66,7 @@ function App() {
   const [isInitLoaded, setIsInitLoaded] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [activeReportNum, setActiveReportNum] = useState(null);
-  const [activeFeatureList, setActiveFeatureList] = useState([]);
+  const [activeFeatures, setActiveFeatures] = useState(defaultActiveFeatures);
   const [sources, setSources] = useState(defaultData);
   const [categories, setCategories] = useState([]);
   const [activeCategories, activeCategoriesDispatcher] = useReducer(
@@ -68,15 +78,7 @@ function App() {
     defaultDateRange
   );
 
-  enum DATASOURCES {
-    Sources = "sources",
-    Data311s = "data311s",
-    DataCrimes = "dataCrimes",
-    HeatMapDataCrimes = "heatMapDataCrimes",
-    HeatMapData311s = "heatMapData311s",
-  }
-
-  const dataSources = {
+  const dataSources: DataSourcesMap = {
     [DATASOURCES.Sources]: {
       type: "geojson",
       data: sources, // zoomed out city points
@@ -108,10 +110,6 @@ function App() {
       data: data311s,
       cluster: false,
     },
-  };
-
-  const getData = async (url: string) => {
-    return fetch(url).then((res) => res.json());
   };
 
   /*
@@ -151,14 +149,9 @@ function App() {
   const { map, mapController } = useMap({
     position,
     setPosition,
-    activeReportNum,
     setActiveReportNum,
-    DATASOURCES,
     dataSources,
-    dataCrimes,
-    data311s,
-    categories,
-    setActiveFeatureList,
+    setActiveFeatures,
     featureZoomLevel,
     isInitLoaded,
   });
@@ -173,8 +166,6 @@ function App() {
       value: true,
     });
 
-    const { lat, lng } = { ...position.center };
-
     const bounds = map.getBounds();
     const fetchBounds =
       position.fetchBounds || calcMaxLatLngBounds(bounds, map.getZoom());
@@ -188,10 +179,10 @@ function App() {
       //mute lat/lng to make uri more cacheable
       //lat,
       //lng,
-      sw_lat: fetchBounds.getSouthWest().lat,
-      sw_lng: fetchBounds.getSouthWest().lng,
-      ne_lat: fetchBounds.getNorthEast().lat,
-      ne_lng: fetchBounds.getNorthEast().lng,
+      sw_lat: fetchBounds.getSouthWest().lat.toString(),
+      sw_lng: fetchBounds.getSouthWest().lng.toString(),
+      ne_lat: fetchBounds.getNorthEast().lat.toString(),
+      ne_lng: fetchBounds.getNorthEast().lng.toString(),
     });
 
     const dataCrimesURL = `${
@@ -241,19 +232,20 @@ function App() {
   return (
     <>
       <div className="mt-16">
-        <ControlBar
-          map={map}
-          mapController={mapController}
-          DATASOURCES={DATASOURCES}
-          setActiveFeatureList={setActiveFeatureList}
-          activeCategories={activeCategories}
-          activeCategoriesDispatcher={activeCategoriesDispatcher}
-          filterDate={filterDate}
-          filterDateDispatcher={filterDateDispatcher}
-          dataCrimes={dataCrimes}
-          data311s={data311s}
-          isDataLoading={isDataLoading}
-        />
+        {map && mapController && (
+          <ControlBar
+            map={map}
+            mapController={mapController}
+            setActiveFeatures={setActiveFeatures}
+            activeCategories={activeCategories}
+            activeCategoriesDispatcher={activeCategoriesDispatcher}
+            filterDate={filterDate}
+            filterDateDispatcher={filterDateDispatcher}
+            dataCrimes={dataCrimes}
+            data311s={data311s}
+            isDataLoading={isDataLoading}
+          />
+        )}
       </div>
 
       {isDataLoading && (
@@ -273,20 +265,13 @@ function App() {
           setPosition={setPosition}
           activeReportNum={activeReportNum}
           setActiveReportNum={setActiveReportNum}
-          setActiveFeatureList={setActiveFeatureList}
           activeCategories={activeCategories}
           DATASOURCES={DATASOURCES}
           dataCrimes={dataCrimes}
           data311s={data311s}
         />
 
-        <FeatureListComponent
-          map={map}
-          featureZoomLevel={featureZoomLevel}
-          activeFeatureList={activeFeatureList}
-          activeReportNum={activeReportNum}
-          setActiveReportNum={setActiveReportNum}
-        />
+        <FeatureListComponent activeFeatures={activeFeatures} />
       </div>
     </>
   );

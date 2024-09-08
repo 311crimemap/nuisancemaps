@@ -1,12 +1,20 @@
-import { useState, useEffect, useReducer } from "react";
+import { Category } from "../../../../types/category";
+import { ActiveCategoriesDispatcher } from "../CategoryFilterReducer";
 import CheckBoxLabel from "./CheckBoxLabel";
+
+interface CheckBoxGroupProps {
+    parent: Category;
+    categories: Category[];
+    activeCategoriesDispatcher: ActiveCategoriesDispatcher;
+    depth?: number;
+}
 
 export default function CheckBoxGroup({
   parent,
   categories,
   activeCategoriesDispatcher,
   depth = 0,
-}) {
+}: CheckBoxGroupProps) {
   //parent, and then its filtered children
   //we decide if children are group or label
 

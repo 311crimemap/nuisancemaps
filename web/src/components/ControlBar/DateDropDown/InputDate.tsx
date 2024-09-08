@@ -1,6 +1,15 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
-import debounce from "lodash/debounce";
+import { useState, Dispatch, useEffect, SetStateAction } from "react";
+import { InputDateRange } from "../../../types/daterange.ts";
 import validator from "validator";
+
+interface InputDateProps {
+  id: keyof InputDateRange;
+  name: string;
+  minDate: string;
+  maxDate: string;
+  inputDate: InputDateRange;
+  setInputDate: Dispatch<SetStateAction<InputDateRange>>;
+}
 
 export default function InputDate({
   id,
@@ -9,7 +18,7 @@ export default function InputDate({
   maxDate,
   inputDate,
   setInputDate,
-}) {
+}: InputDateProps) {
   const [isDateError, setIsDateError] = useState("");
 
   /*
@@ -21,7 +30,7 @@ export default function InputDate({
    */
   const [inputDateValue, setInputDateValue] = useState(inputDate[id].date);
 
-  const setDateHandler = (e, name) => {
+  const setDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const controlDate = e.target.value;
 
     const isValid =
@@ -62,7 +71,7 @@ export default function InputDate({
       value={inputDateValue}
       min={minDate}
       max={maxDate}
-      onChange={(e) => setDateHandler(e, name)}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDateHandler(e)}
       className={`w-full input input-bordered ${isDateError}`}
     />
   );
