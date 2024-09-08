@@ -2,7 +2,7 @@ import { debounce } from "lodash";
 import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { useParams } from "react-router-dom";
 import maplibregl from "maplibre-gl";
-import { LngLat, Map, GeoJSONSource, MapGeoJSONFeature } from "maplibre-gl";
+import { LngLat, Map, GeoJSONSource, MapGeoJSONFeature, StyleSpecification } from "maplibre-gl";
 import { MapController } from "@maptiler/geocoding-control/types";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
@@ -58,7 +58,8 @@ export default function useMap({
       'Powered by <a href="https://www.geoapify.com/">Geoapify</a>',
     ].join(" | ");
 
-    const style = {
+    // typing the baseMap is too much of mess
+    const style: any | StyleSpecification = {
       glyphs: "https://basemaps.311crimemap.com/fonts/{fontstack}/{range}.pbf",
       version: 8,
       sources: {
