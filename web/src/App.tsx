@@ -8,59 +8,17 @@ import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
 import { DATASOURCES, DataSourcesMap } from "./types/datasources.ts";
-import { LngLat } from "maplibre-gl";
 import { calcMaxLatLngBounds } from "./Util";
 import { getData } from "./Util";
-import { DataFeatureCollection } from "./types/datafeatures.ts";
-import { DateRange } from "./types/daterange";
-import { MapPosition } from "./types/position";
+import { defaultData } from "./types/datafeatures.ts";
+import { defaultDateRange } from "./types/daterange";
+import { MapPosition, defaultMapPosition } from "./types/mapposition";
 import { defaultActiveFeatures } from "./types/activefeatures.ts";
 
 function App() {
   const featureZoomLevel = 17;
 
-  const defaultData: DataFeatureCollection = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        properties: {
-          address: null,
-          category: "",
-          location: null,
-          reportCategory: "",
-          reportNum: "",
-          reportedAt: null,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [0, 0, 0],
-        },
-      },
-    ],
-    isDefaultData: true,
-  };
-
-  const endDate = new Date();
-  endDate.setDate(endDate.getDate() - 1);
-
-  const defaultDateRange: DateRange = {
-    date: {
-      startDate: new Date("01-01-2024").toLocaleDateString("en-CA"),
-      endDate: endDate.toLocaleDateString("en-CA"),
-    },
-    isBusy: false,
-  };
-
-  // default position
-  const [position, setPosition] = useState<MapPosition>({
-    zoom: 3.25,
-    center: new LngLat(-95.0173, 38.345),
-    bounds: null,
-    fetchBounds: null,
-    refresh: 0,
-  });
-
+  const [position, setPosition] = useState<MapPosition>(defaultMapPosition);
   const [dataCrimes, setDataCrimes] = useState(defaultData);
   const [data311s, setData311s] = useState(defaultData);
   const [isInitLoaded, setIsInitLoaded] = useState(false);
