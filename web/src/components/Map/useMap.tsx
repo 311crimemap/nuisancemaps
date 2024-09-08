@@ -13,6 +13,7 @@ import { MapController } from "@maptiler/geocoding-control/types";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
 import { slugify, calcMaxLatLngBounds } from "../../Util";
+import { Log } from "../../Logger";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
 import dataSourcesStyleJSON from "../../assets/sources_style.json";
@@ -55,7 +56,7 @@ export default function useMap({
       return;
     }
 
-    console.log("[useMap] Hook Init");
+    Log.log({ msg: "Hook Init", ...Log.data });
 
     const attribution = [
       '<a href="https://openstreetmap.org">&copy; OpenStreetMap</a>',
@@ -89,7 +90,7 @@ export default function useMap({
       ],
     };
 
-    console.log("NEW MAP", style);
+    Log.log({ msg: "New Map", params: { style }, ...Log.data });
 
     const _map = new maplibregl.Map({
       container: "map",
@@ -112,7 +113,7 @@ export default function useMap({
     }
 
     _map.on("load", async () => {
-      console.log("Load");
+      Log.log({ msg: "onLoad", ...Log.data });
     });
 
     for (const dataset of [DATASOURCES.Data311s, DATASOURCES.DataCrimes]) {
@@ -125,7 +126,8 @@ export default function useMap({
         "click",
         `point-${dataset}`,
         (e: maplibregl.MapLayerMouseEvent) => {
-          console.log("CLICK unclustered", e.features);
+          Log.log({ msg: "click unclustered", params: { e }, ...Log.data });
+
           if (!e.features) return;
           const features: MapGeoJSONFeature[] = e.features;
           const feature = e.features[0];
@@ -168,7 +170,8 @@ export default function useMap({
         "click",
         `clusters-${dataset}`,
         async (e: maplibregl.MapLayerMouseEvent) => {
-          console.log("CLICK Cluster", e);
+          Log.log({ msg: "click clustered", params: { e }, ...Log.data });
+
           if (!e.features) return;
           //const features: MapGeoJSONFeature[] = e.features;
           const feature: MapGeoJSONFeature = e.features[0];
@@ -236,7 +239,7 @@ export default function useMap({
         .queryRenderedFeatures(e.point)
         .filter((f: MapGeoJSONFeature) => f.source != "protomaps");
 
-      console.log("GEN CLICK", features);
+      Log.log({ msg: "click", params: { features }, ...Log.data });
 
       //TODO: refactor this once default values figured out
 
@@ -272,7 +275,10 @@ export default function useMap({
         | undefined;
 
       if (!sourceData311s || !sourceDataCrimes) {
-        console.error("[debouncedZoomNudgeHandler] sources are undefined");
+        Log.error({
+          msg: "[debouncedZoomNudgeHandler] sources are undefined",
+          ...Log.data,
+        });
         return;
       }
 
@@ -313,7 +319,7 @@ export default function useMap({
         | undefined;
 
       if (!dataCrimesSource || !data311sSource) {
-        console.error("[moveend] sources are undefined");
+        Log.error({ msg: "[moveend] sources are undefined", ...Log.data });
         return;
       }
 
@@ -378,10 +384,8 @@ export default function useMap({
           refresh: prevPosition.refresh + Number(isRefresh),
         };
 
-        console.log(
-          "[useMap] onMove isRefresh: ",
-          isRefresh,
-          "| ",
+        const logStr = [
+          `[useMap] onMove isRefresh: ${isRefresh} |`,
           "exceed but not zoomOut and zoom >= 10:",
           exceedBounds && !zoomOut && zoom >= 10,
           " || ",
@@ -393,15 +397,20 @@ export default function useMap({
           zoomIn && isMax,
           "||",
           "zoomInToggle: ",
-          zoomInToggle
-        );
+          zoomInToggle,
+        ].join(" ");
 
-        console.log(
-          "[useMap] onMove isRefresh: ",
-          isRefresh,
-          prevPosition,
-          newPosition
-        );
+        Log.log({ msg: logStr, ...Log.data });
+
+        Log.log({
+          msg: "[useMap] onMove isRefresh: ",
+          params: {
+            isRefresh,
+            prevPosition,
+            newPosition,
+          },
+          ...Log.data,
+        });
 
         return newPosition;
       });
@@ -409,15 +418,13 @@ export default function useMap({
 
     _map.addControl(new maplibregl.NavigationControl(), "bottom-right");
 
-    //mapRef.current = _map;
     setMap(_map);
     setMapController(createMapLibreGlMapController(_map, maplibregl, false));
 
     return () => {
       if (_map) {
-        console.log("[useMap] Remove");
+        Log.log({ msg: "[useMap] Remove", ...Log.data });
         _map.remove();
-        //maplibregl.removeProtocol("pmtiles");
       }
     };
   }, [isInitLoaded]);

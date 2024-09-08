@@ -1,23 +1,22 @@
 import { Category } from "../../../types/category";
+import { Log } from "../../../Logger";
 
-export type ActiveCategoriesDispatcher = (
-    action: {
-        type: string;
-        category?: any;
-        categories?: Category[]
-    }
-) => void;
+export type ActiveCategoriesDispatcher = (action: {
+  type: string;
+  category?: any;
+  categories?: Category[];
+}) => void;
 
 export default function categoryCheckBoxReducer(
   categories: Category[],
-    action: {
-        type: string;
-        category?: any;
-        categories?: Category[]
-    }
+  action: {
+    type: string;
+    category?: any;
+    categories?: Category[];
+  }
 ): Category[] {
+  Log.log({ msg: "action", params: { action, categories }, ...Log.data });
 
-    console.log("ACTION", action, categories);
   switch (action.type) {
     //set default available here as delayed by async request
     case "init": {

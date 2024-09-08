@@ -74,7 +74,6 @@ export default function DropDown({ children }: DropDownProps) {
     return () => clearRefTimeout();
   }, []);
 
-  console.log("Render", isOpen);
   return (
     <div className="flex dropdown dropdown-bottom dropdown-responsive">
       <div

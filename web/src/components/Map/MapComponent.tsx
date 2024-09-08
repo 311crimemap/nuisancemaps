@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { DataFeature } from "../../types/datafeatures.ts";
 import { Category } from "../../types/category.ts";
+import { Log } from "../../Logger";
 
 export default function MapComponent(props: any) {
   //given filter checkbox, filter at data level
@@ -24,7 +25,6 @@ export default function MapComponent(props: any) {
         props.DATASOURCES.HeatMapData311s
       );
 
-      console.log("PROPS", props.activeCategories, props.dataCrimes);
       const activeCategoriesIds = props.activeCategories
         .filter((c: Category) => c.checked)
         .map((c: Category) => c.id);
@@ -56,7 +56,7 @@ export default function MapComponent(props: any) {
       heatMapDataCrimesSource?.setData(dataCrimes);
       heatMapData311sSource?.setData(data311s);
     } catch (e) {
-      console.error(e);
+      Log.error({ msg: e, ...Log.data });
     }
   }, [props.activeCategories, props.dataCrimes, props.data311s]);
 
