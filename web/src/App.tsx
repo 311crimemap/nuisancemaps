@@ -178,10 +178,10 @@ function App() {
       //mute lat/lng to make uri more cacheable
       //lat,
       //lng,
-      sw_lat: fetchBounds.getSouthWest().lat,
-      sw_lng: fetchBounds.getSouthWest().lng,
-      ne_lat: fetchBounds.getNorthEast().lat,
-      ne_lng: fetchBounds.getNorthEast().lng,
+      sw_lat: fetchBounds.getSouthWest().lat.toString(),
+      sw_lng: fetchBounds.getSouthWest().lng.toString(),
+      ne_lat: fetchBounds.getNorthEast().lat.toString(),
+      ne_lng: fetchBounds.getNorthEast().lng.toString(),
     });
 
     const dataCrimesURL = `${
