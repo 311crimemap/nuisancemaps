@@ -33,3 +33,25 @@ export interface DataFeatureCollection {
     features: DataFeature[]
     isDefaultData?: boolean;
 }
+
+export const defaultData: DataFeatureCollection = {
+    type: "FeatureCollection",
+    features: [
+        {
+            type: "Feature",
+            properties: {
+                address: null,
+                category: "",
+                location: null,
+                reportCategory: "",
+                reportNum: "",
+                reportedAt: null,
+            },
+            geometry: {
+                type: "Point",
+                coordinates: [0, 0, 0],
+            },
+        },
+    ],
+    isDefaultData: true,
+};

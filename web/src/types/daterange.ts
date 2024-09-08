@@ -20,3 +20,15 @@ export interface InputDateRange {
         isValid: boolean;
     };
 }
+
+
+const endDate = new Date();
+endDate.setDate(endDate.getDate() - 1);
+
+export const defaultDateRange: DateRange = {
+    date: {
+        startDate: new Date("01-01-2024").toLocaleDateString("en-CA"),
+        endDate: endDate.toLocaleDateString("en-CA"),
+    },
+    isBusy: false,
+};

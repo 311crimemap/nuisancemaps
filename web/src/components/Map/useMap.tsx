@@ -12,7 +12,6 @@ import {
 import { MapController } from "@maptiler/geocoding-control/types";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
-
 import { slugify, calcMaxLatLngBounds } from "../../Util";
 
 import baseMapStyleJSON from "../../assets/baseMapStyle.json";
@@ -22,7 +21,7 @@ import data311sStyleJSON from "../../assets/data311s_style.json";
 import heatMapStyleJSON from "../../assets/heatmap_style.json";
 import DuplicatePointNudge from "./DuplicatePointNudge";
 import { DataFeatureCollection } from "../../types/datafeatures";
-import { MapPosition } from "../../types/position.ts";
+import { MapPosition } from "../../types/mapposition.ts";
 import { DATASOURCES, DataSourcesMap } from "../../types/datasources";
 import { ActiveFeatures } from "../../types/activefeatures";
 
