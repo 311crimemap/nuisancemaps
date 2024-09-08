@@ -1,10 +1,11 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { Map, LayerSpecification } from "maplibre-gl";
 import { DATASOURCES } from "../../../types/datasources";
+import { ActiveFeatures } from "../../../types/activefeatures";
 
 interface ToggleComponentProps {
   map: Map;
-  setActiveFeatures: Dispatch<SetStateAction<{}>>;
+  setActiveFeatures: Dispatch<SetStateAction<ActiveFeatures>>;
 }
 
 export function ToggleComponent({
@@ -53,7 +54,7 @@ export function ToggleComponent({
       }
     }
 
-    setActiveFeatures({}); //clear any active display
+    setActiveFeatures({source: "", features: []}); //clear any active display
     setIsActive(!isActive);
   };
 

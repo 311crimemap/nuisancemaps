@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import FeatureView from "./FeatureView";
 import { ActiveFeatures } from "../../types/activefeatures.ts";
 import { DataFeature } from "../../types/datafeatures.ts";
+import { MapGeoJSONFeature } from "maplibre-gl";
 
 interface FeatureListComponentProps {
   activeFeatures: ActiveFeatures;
@@ -25,7 +26,13 @@ export default function FeatureListComponent({
   useEffect(() => {
     //no features, or we can continue to zoom and break upt he cluster
     //in this case, don't show the featureList
-    if (!features || clusterExpansionZoom < clusterMaxZoom) {
+    if (
+      !features ||
+      features.length == 0 ||
+      (clusterExpansionZoom && clusterMaxZoom
+        ? clusterExpansionZoom < clusterMaxZoom
+        : false)
+    ) {
       setIsVisible(false);
     } else {
       //arrived at some terminal cluster or individual point, show the panel
@@ -34,7 +41,10 @@ export default function FeatureListComponent({
   }, [features]);
 
   const sorted_features = (features || []).sort(
-    (a: DataFeature, b: DataFeature) => {
+    (
+      a: DataFeature | MapGeoJSONFeature,
+      b: DataFeature | MapGeoJSONFeature
+    ) => {
       const dateA = a.properties.reportedAt
         ? new Date(a.properties.reportedAt).getTime()
         : -Infinity;
@@ -52,16 +62,18 @@ export default function FeatureListComponent({
   return (
     <div id="feature-list-component" className="shadow-md" style={style}>
       <ul>
-        {(sorted_features || []).map((feature: DataFeature, i: number) => {
-          return (
-            <FeatureView
-              key={`view-${feature.properties.reportNum}-${i}`}
-              feature={feature}
-              isLast={i + 1 == features.length}
-              initListMode={(features || []).length > LIST_VIEW_COUNT}
-            />
-          );
-        })}
+        {(sorted_features || []).map(
+          (feature: DataFeature | MapGeoJSONFeature, i: number) => {
+            return (
+              <FeatureView
+                key={`view-${feature.properties.reportNum}-${i}`}
+                feature={feature}
+                isLast={i + 1 == features.length}
+                initListMode={(features || []).length > LIST_VIEW_COUNT}
+              />
+            );
+          }
+        )}
       </ul>
     </div>
   );

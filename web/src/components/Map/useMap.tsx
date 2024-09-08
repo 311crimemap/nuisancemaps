@@ -2,7 +2,13 @@ import { debounce } from "lodash";
 import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { useParams } from "react-router-dom";
 import maplibregl from "maplibre-gl";
-import { LngLat, Map, GeoJSONSource, MapGeoJSONFeature, StyleSpecification } from "maplibre-gl";
+import {
+  LngLat,
+  Map,
+  GeoJSONSource,
+  MapGeoJSONFeature,
+  StyleSpecification,
+} from "maplibre-gl";
 import { MapController } from "@maptiler/geocoding-control/types";
 import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl-controller";
 import "@maptiler/geocoding-control/style.css";
@@ -18,6 +24,7 @@ import DuplicatePointNudge from "./DuplicatePointNudge";
 import { DataFeatureCollection } from "../../types/datafeatures";
 import { MapPosition } from "../../types/position.ts";
 import { DATASOURCES, DataSourcesMap } from "../../types/datasources";
+import { ActiveFeatures } from "../../types/activefeatures";
 
 const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
 
@@ -26,7 +33,7 @@ interface useMapsProps {
   setPosition: Dispatch<SetStateAction<MapPosition>>;
   setActiveReportNum: Dispatch<SetStateAction<null>>;
   dataSources: DataSourcesMap;
-  setActiveFeatures: Dispatch<SetStateAction<{}>>;
+  setActiveFeatures: Dispatch<SetStateAction<ActiveFeatures>>;
   featureZoomLevel: number;
   isInitLoaded: boolean;
 }
@@ -150,7 +157,7 @@ export default function useMap({
           const activeFeatures = {
             source,
             features,
-          };
+          } as ActiveFeatures;
 
           setActiveReportNum(reportNum);
           setActiveFeatures(activeFeatures);
@@ -212,7 +219,7 @@ export default function useMap({
             features,
             clusterExpansionZoom,
             clusterMaxZoom,
-          };
+          } as ActiveFeatures;
 
           setActiveFeatures(activeFeatures);
         }
@@ -253,7 +260,7 @@ export default function useMap({
         _map.setPaintProperty("point-circle-dataCrimes", "circle-radius", 16);
         _map.setPaintProperty("point-circle-data311s", "circle-radius", 16);
 
-        setActiveFeatures({});
+        setActiveFeatures({ source: "", features: [] });
       }
     });
 

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { DataCategory, DataFeature } from "../../types/datafeatures.ts";
+import { MapGeoJSONFeature } from "maplibre-gl";
 
 interface FeatureViewProps {
-  feature: DataFeature;
+  feature: DataFeature | MapGeoJSONFeature;
   isLast: boolean;
   initListMode: boolean;
 }

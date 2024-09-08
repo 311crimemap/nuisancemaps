@@ -14,6 +14,7 @@ import { getData } from "./Util";
 import { DataFeatureCollection } from "./types/datafeatures.ts";
 import { DateRange } from "./types/daterange";
 import { MapPosition } from "./types/position";
+import { defaultActiveFeatures } from "./types/activefeatures.ts";
 
 function App() {
   const featureZoomLevel = 17;
@@ -65,7 +66,7 @@ function App() {
   const [isInitLoaded, setIsInitLoaded] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [activeReportNum, setActiveReportNum] = useState(null);
-  const [activeFeatures, setActiveFeatures] = useState({});
+  const [activeFeatures, setActiveFeatures] = useState(defaultActiveFeatures);
   const [sources, setSources] = useState(defaultData);
   const [categories, setCategories] = useState([]);
   const [activeCategories, activeCategoriesDispatcher] = useReducer(

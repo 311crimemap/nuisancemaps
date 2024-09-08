@@ -10,11 +10,12 @@ import MapInfo from "./MapInfo";
 import { DateRange, FilterDateDispatcher } from "../../types/daterange.ts";
 import { Category } from "../../types/category";
 import { ActiveCategoriesDispatcher } from "../ControlBar/CategoryDropDown/CategoryFilterReducer";
+import { ActiveFeatures } from "../../types/activefeatures";
 
 interface ControlBarProps {
   map: Map;
   mapController: MapController;
-  setActiveFeatures: Dispatch<SetStateAction<{}>>;
+  setActiveFeatures: Dispatch<SetStateAction<ActiveFeatures>>;
   activeCategories: Category[];
   activeCategoriesDispatcher: ActiveCategoriesDispatcher;
   filterDate: DateRange;
