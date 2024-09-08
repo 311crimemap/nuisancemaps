@@ -14,6 +14,7 @@ import { defaultData } from "./types/datafeatures.ts";
 import { defaultDateRange } from "./types/daterange";
 import { MapPosition, defaultMapPosition } from "./types/mapposition";
 import { defaultActiveFeatures } from "./types/activefeatures.ts";
+import { Log } from "./Logger";
 
 function App() {
   const featureZoomLevel = 17;
@@ -152,7 +153,11 @@ function App() {
 
     setIsDataLoading(true);
 
-    console.log("FETCH DATA", dataCrimesURL, data311sURL);
+    Log.log({
+      msg: "Fetch Data",
+      params: { dataCrimesURL, data311sURL },
+      ...Log.data,
+    });
 
     Promise.all([getData(dataCrimesURL), getData(data311sURL)]).then(
       ([dataCrimes, data311s]) => {
@@ -177,15 +182,11 @@ function App() {
     filterDate.date.endDate,
   ]);
 
-  console.log("[App] Render", position, activeReportNum);
-  console.log(
-    "MapController",
-    mapController,
-    position.center,
-    position.zoom,
-    position.bounds
-  );
-  console.log("Map", map);
+  Log.log({
+    msg: "Render",
+    params: { position, activeReportNum, map, mapController },
+    ...Log.data,
+  });
 
   return (
     <>
