@@ -5,12 +5,15 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "traefik"
     cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
+    traefik.ingress.kubernetes.io/router.middlewares: default-compress-middleware@kubernetescrd
+
 spec:
   ingressClassName: traefik
   tls:
   - hosts:
     - 311crimemap.com
     - staging.311crimemap.com
+    - api.311crimemap.com
     # NB: tls secret standalone persists without cert manager, issuer containers.
     # once validated secret will be updated and is good.
     #
