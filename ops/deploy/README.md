@@ -30,10 +30,10 @@ configmap files (pgbackrest)
 
 * `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
   * wait until webhook error resolves (~ 1min)
-  * Verify: `kubectl get pods`
+  * Verify: `kubectl get pods -A`
 * `kubectl apply -f production/cert-manager-issuer.yml`  # PRODUCTION
-  * `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
-    * Verify: `kubectl describe clusterissuer`
+* `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
+  * Verify: `kubectl describe clusterissuer`
 * `kubectl apply -f base/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
     * Intermediate steps:
