@@ -45,7 +45,7 @@ services:
       - "traefik.http.routers.traefik-dashboard.rule=Host(`localhost`)"  # Rule for accessing the dashboard
       - "traefik.http.routers.traefik-dashboard.entrypoints=dashboard"   # Use the "dashboard entry point
       - "traefik.http.routers.traefik-dashboard.service=api@internal"    # Service name for Traefik's internal API
-
+      - "traefik.http.middlewares.api-compression.compress=true"         # Gzip middleware
 
   api:
     #NB: deploy image is configured in pom.xml, built via spring boot.
@@ -64,9 +64,10 @@ services:
       - .env.dev
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=PathPrefix(`/`)"            # Routes all traffic to this service
-      - "traefik.http.routers.api.entrypoints=apiEntryPoint"       # rRequests only of entry point "apiEntryPoint"
-      - "traefik.http.services.api.loadbalancer.server.port=8080"  # container port of the API service (tomcat)
+      - "traefik.http.routers.api.rule=PathPrefix(`/`)"               # Routes all traffic to this service
+      - "traefik.http.routers.api.entrypoints=apiEntryPoint"          # rRequests only of entry point "apiEntryPoint"
+      - "traefik.http.services.api.loadbalancer.server.port=8080"     # container port of the API service (tomcat)
+      - "traefik.http.routers.api.middlewares=api-compression@docker"  # Attach compression middleware
 
   worker:
     image: eclipse-temurin:17-jdk-alpine
