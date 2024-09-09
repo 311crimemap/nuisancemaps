@@ -32,6 +32,6 @@ kubectl create secret generic pgbackrest-secrets \
 kubectl delete secret api-secrets --ignore-not-found=true
 kubectl create secret generic api-secrets \
         --from-literal=ADMIN_API_KEY=$ADMIN_API_KEY \
-        --from-literal=VITE_MAPTILER_API_KEY=$VITE_MAPTILER_API_KEY
+        --from-literal=VITE_MAPTILER_API_KEY=$VITE_MAPTILER_API_KEY \
         --from-literal=GEOAPIFY_API_KEY=$GEOAPIFY_API_KEY
 
