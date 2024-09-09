@@ -1,5 +1,26 @@
 # Ops
 
+## k3s
+
+1. Add compression middleware resources:
+
+```
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: compress-middleware
+spec:
+  compress: {}
+```
+
+2. add annotation to ingress controller:
+
+`traefik.ingress.kubernetes.io/router.middlewares: default-compress-middleware@kubernetescrd`
+
+Note the name of the middleware here is `compress-middleware`, but because its
+an annotation we need to combine the `default` namespace to its identifier, to
+make `default-compress-middleware`
+
 
 ## Docker Compose
 
