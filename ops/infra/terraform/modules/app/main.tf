@@ -54,6 +54,7 @@ resource "hcloud_server" "app" {
       "class_instance": "${var.class_id}-${count.index}"
 
       # deploy k3s
+      # label creates ansible group: label_node_server / label_node_agent
       "node" :  var.k3s_server && count.index == 0 ? "server" : "agent"
     })
 
