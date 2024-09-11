@@ -5,6 +5,7 @@ module "globals" {
 
   # ENV variables available only at root (executing) level
   hcloud_token = var.HCLOUD_TOKEN
+  cloudflare_api_token = var.CLOUDFLARE_API_TOKEN
 }
 
 module "firewall" {

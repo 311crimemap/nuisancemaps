@@ -7,6 +7,11 @@ variable HCLOUD_TOKEN {
   description = "hetzner token set by env variable prefix (in .env file) - TF_VAR_HCLOUD_TOKEN"
 }
 
+variable CLOUDFLARE_API_TOKEN {
+  type = string
+  description = "cloudflare token set by env variable prefix (in .env file) - TF_VAR_CLOUDFLARE_API_TOKEN"
+}
+
 variable ssh_key_name {
   type = string
   description = "name of ssh key on hetzner"
