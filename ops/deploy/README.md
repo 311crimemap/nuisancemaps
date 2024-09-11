@@ -75,6 +75,25 @@ configmap files (pgbackrest)
 
 
 ---
+## Spin Down
+
+```
+kubectl delete -f <manifest>
+
+#
+# clean up and disables from further scheduling
+#
+kubectl drain <node-name> --ignore-daemonsets --delete-local-data
+
+
+kubectl delete node <node-name>
+
+#
+# ansible
+#
+ansible-playbook -e env_id=staging_live -i hcloud.yml playbooks/uninstall-workers.yml
+
+```
 
 ## Uninstall
 
