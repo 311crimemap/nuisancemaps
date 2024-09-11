@@ -1,6 +1,8 @@
 # Ops
 
-## k3s
+---
+
+## Traefik: docker-compose / k3s
 
 1. Add compression middleware resources:
 
@@ -44,7 +46,7 @@ Service
 Service no longer needs any exposed ports, as traffic hits Traefik, and is
 routed internally with command/label configuration.
 
-* Service: labeled with `traefik.http.routers.api.entrypoints=apiEntryPoint` (name) 
+* Service: labeled with `traefik.http.routers.api.entrypoints=apiEntryPoint` (name)
 
 
 ### Traefik Notes

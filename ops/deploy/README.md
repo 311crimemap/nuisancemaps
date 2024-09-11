@@ -217,6 +217,67 @@ always running.
 
 ---
 
+#### K3s Traefik
+
+* Traefik is default ingress provider `-n=kube-system`, initial job installs
+  traefik via helm chart.
+
+`svclb-traefik-**`: Traefik's DaemonSet ServiceLB load balancer pods that receive external
+traffic.
+  * By default these are run on all nodes.
+  * When label nodes with `enablelb=true`, this sets `svclb-traefik` pods to run
+    only on nodes explicitly labeled with the label.
+
+`kubectl get service/traefik -o wide -n kube-system`: show what nodes
+loadbalancer is running on.
+
+`kubectl label nodes NODENAME svccontroller.k3s.cattle.io/enablelb=true`:
+enables run ServiceLB (svclb) only on labeled enabled nodes.
+* There are 2/2 pods for svclb, to handle port 80, and port 443.
+  (Not "duplicate" pods).
+
+Typically want to exclude database machine or others from also taking in
+traffic.
+
+`traefik`: pod that applies routing logic. Separate from load balancer pods.
+
+Default tolerations to avoid control-plane / master node.
+
+#### Modifying default helm chart
+
+* default found in k3s install: `/var/lib/rancher/k3s/server/manifests/traefik.yaml`.
+* Modify via instructions: https://docs.k3s.io/helm#customizing-packaged-components-with-helmchartconfig
+  * typically place as an add on manifest in /var/lib/rancher....
+  * also kubectl apply -f the manifest. Just need to make sure namespace is set to `kube-system`.
+
+```
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    nodeSelector:
+      node.kubernetes.io/class_id: app
+    tolerations:
+      - key: "node.kubernetes.io/class_id"
+        operator: "Equal"
+        value: "db"
+        effect: "NoSchedule"
+
+```
+
+Note: "The nodeselector / tolerations control where traefik rules pod is deployed. The
+ServiceLB (svclb) is controlled by the labeling nodes:
+`svccontroller.k3s.cattle.io/enablelb=true`.
+
+Not sure but it might be better to just leave svclb on all nodes, but don't
+point traffic to the db node.
+
+
+---
+
 ### DB Recovery
 
 * location on host-0 and in container: `/backup_db/pgbackrest`
