@@ -1,3 +1,6 @@
+
+data "cloudflare_ip_ranges" "cloudflare" {}
+
 resource "hcloud_firewall" "firewall-311crimemap" {
   name = "firewall-${var.product}-${var.env}-${var.env_group}-${var.org_id}-${var.location_zone.location}-${var.location_zone.network_zone}"
 
@@ -90,7 +93,10 @@ resource "hcloud_firewall" "firewall-311crimemap" {
     direction = "in"
     protocol  = "tcp"
     port      = "80"
-    source_ips = var.http_source_ips
+    source_ips = concat(var.http_source_ips,
+      data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks,
+      data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks)
+
   }
 
   rule {
@@ -98,10 +104,9 @@ resource "hcloud_firewall" "firewall-311crimemap" {
     direction = "in"
     protocol  = "tcp"
     port      = "443"
-    source_ips = var.https_source_ips
+    source_ips = concat(var.https_source_ips,
+      data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks,
+      data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks)
   }
 
-
-
 }
-

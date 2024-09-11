@@ -9,7 +9,7 @@ variable HCLOUD_TOKEN {
 
 variable CLOUDFLARE_API_TOKEN {
   type = string
-  description = "cloudflare token set by env variable prefix (in .env file) - TF_VAR_CLOUDFLARE_API_TOKEN"
+  description = "Cloudflare token set by env variable prefix (in .env file) - TF_VAR_CLOUDFLARE_API_TOKEN"
 }
 
 variable ssh_key_name {

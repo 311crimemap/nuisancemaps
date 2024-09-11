@@ -3,8 +3,18 @@
 `HCLOUD_TOKEN`: hetzner token created on a per-project level. Same with API
 tokens.
 
+`CLOUDFLARE_API_TOKEN`: cloudflare token used to populate CF ip ranges for
+whitelist between CF and origin servers.
+
+`TF_VAR_`: prefix env equivalents allow env variables to be used directly in
+terraform files (think environment/staging-live/main.tf, etc). However, still
+need env variables without prefix to enable provider.
+
+
 ## Notes
 
+' Adding a provider: when adding a provider to module, make sure to add to
+versions.tf required_providers, in addition to "globals"
 
 ### Project Strucure
 
