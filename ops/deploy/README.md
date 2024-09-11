@@ -26,6 +26,10 @@ configmap files (pgbackrest)
   * Make sure s3 bucket is created prior to backup (pgbackrest does not do this)
 * `liquibase`: for migration; db schema
 
+##### Traefik
+
+* `kubectl apply -f base/traefik`: add k3s nodeSelector and tolerances for traefik placement; enable gzip compression
+
 ##### Certs
 
 * `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
