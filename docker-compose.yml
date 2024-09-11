@@ -23,6 +23,30 @@ services:
     env_file:
       - .env.dev
 
+  traefik:
+    image: "traefik:v2.11.8"
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.dashboard.address=:8081"
+      - "--entrypoints.apiEntryPoint.address=:8000"
+      - "--entrypoints.traefik.address=:9999"  # internal
+
+    ports:
+      - 8081:8081  # dashboard port
+      - 8080:8000  # map traefik to api (apiEntryPoint address port)
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    labels:
+      # need to enable dashboard on custom port
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`localhost`)"  # Rule for accessing the dashboard
+      - "traefik.http.routers.traefik-dashboard.entrypoints=dashboard"   # Use the "dashboard entry point
+      - "traefik.http.routers.traefik-dashboard.service=api@internal"    # Service name for Traefik's internal API
+      - "traefik.http.middlewares.api-compression.compress=true"         # Gzip middleware
+
   api:
     #NB: deploy image is configured in pom.xml, built via spring boot.
     image: eclipse-temurin:17-jdk-alpine
@@ -35,10 +59,15 @@ services:
     # enable debugger via dap-mode / dap-breakpoint-toggle
     command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'"
     ports:
-      - 8080:8080
       - 5005:5005 # enable remote debug port
     env_file:
       - .env.dev
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=PathPrefix(`/`)"               # Routes all traffic to this service
+      - "traefik.http.routers.api.entrypoints=apiEntryPoint"          # rRequests only of entry point "apiEntryPoint"
+      - "traefik.http.services.api.loadbalancer.server.port=8080"     # container port of the API service (tomcat)
+      - "traefik.http.routers.api.middlewares=api-compression@docker"  # Attach compression middleware
 
   worker:
     image: eclipse-temurin:17-jdk-alpine
