@@ -3,14 +3,13 @@
 resource "hcloud_server" "app" {
   count       = var.server_count
   name        = format(
-    "%s-%s-%s-%s-%s-%s-%s-%s",
+    "%s-%s-%s-%s-%s-%s-%s",
     var.product,
     "${var.env}-${var.env_group}",  # env_id
     var.org_id,
     var.location_zone.location,
     var.location_zone.network_zone,
     var.server_type,
-    var.class_id,
     "${var.class_id}-${count.index}"
     )
 
