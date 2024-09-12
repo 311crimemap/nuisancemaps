@@ -19,6 +19,17 @@ spec:
     spec:
       nodeSelector:
         node.kubernetes.io/class_id: app
+      affinity:
+        podAntiAffinity: # eventual placement to avoid pod with traefik on it
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: traefik  # traefik loadbalancer
+                namespaces:
+                  - kube-system
+                topologyKey: "kubernetes.io/hostname"
       imagePullSecrets:
         - name: regcred
       containers:
