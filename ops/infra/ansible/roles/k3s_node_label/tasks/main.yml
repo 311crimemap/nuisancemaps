@@ -14,7 +14,7 @@
             {{ label_prefix }}/{{ key }}={{ value }}
           {% endfor %}
         --overwrite
-      loop: "{{ groups['all'] }}"
+      loop: "{{ groups['label_env_id_' ~ env_id] }}"
       when: "'labels' in hostvars[item]"
       vars:
         label_prefix: "node.kubernetes.io"
