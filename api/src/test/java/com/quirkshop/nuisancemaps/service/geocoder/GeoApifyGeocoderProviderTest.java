@@ -85,7 +85,7 @@ public class GeoApifyGeocoderProviderTest {
         GeometryFactory geometryFactory = new GeometryFactory();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config_archive.json").getFile();
         List<Source> sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
         });
 

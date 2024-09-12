@@ -89,7 +89,7 @@ public class DataEntityMappingServiceTest {
 
         // Source
         ObjectMapper objectMapper = new ObjectMapper();
-        File sourceJSON1 = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        File sourceJSON1 = resourceLoader.getResource("classpath:data/source_config_archive.json").getFile();
 
         sources.addAll(objectMapper.readValue(sourceJSON1, new TypeReference<List<Source>>() {
         }));
