@@ -22,14 +22,10 @@ module "firewall" {
   }
 
   http_source_ips = [
-#    "0.0.0.0/0",
-#    "::/0",
     "10.0.0.0/8"
   ]
 
   https_source_ips = [
-#    "0.0.0.0/0",
-#    "::/0",
     "10.0.0.0/8"
   ]
 }
@@ -91,7 +87,7 @@ module "worker-servers" {
   }
 
   server_type = "cpx11"
-  server_count = 0
+  server_count = 1
   ssh_key_name = var.ssh_key_name
 
   image_name = "name=packer_base_311crimemap_1.0"

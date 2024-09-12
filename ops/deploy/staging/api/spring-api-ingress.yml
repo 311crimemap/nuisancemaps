@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-api-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
+    traefik.ingress.kubernetes.io/router.middlewares: default-compress-middleware@kubernetescrd
+
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - staging-api.311crimemap.com
+    #
+    # NB: tls secret persists without running cert manager / issuer containers
+    # containers only used for validation (initial, renewal) of cert.
+    #
+    # once validated cert is dumped (encoded) into secret.
+    # cert is tied to secret, not container lifecycle.
+    #
+    secretName: 311crimemap-com-tls
+  rules:
+    - host: staging-api.311crimemap.com
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: spring-api-service
+                port:
+                  number: 8080

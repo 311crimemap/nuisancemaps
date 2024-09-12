@@ -9,6 +9,43 @@ On Hetzner, Access Token is generated per project, and determines which project
 infra resides.
 
 
+## k3s spin worker up/download
+
+
+```
+
+#
+# k3s
+#
+
+kubectl drain <node-name> --ignore-daemonsets --delete-local-data
+
+kubectl delete node <node-name>
+
+
+
+#
+# remove k3s via ansible
+#
+
+ansible-playbook -e env_id=staging_live -i hcloud.yml playbooks/uninstall-workers.yml
+
+
+
+#
+# terraform change server_count
+#
+
+module "worker app-server" {
+    ...
+    server_count = 0
+    ...
+}
+
+terraform apply
+
+```
+
 ### Quirks:
 
 * The HashiCorp APT server has packages only for the amd64 architecture, so
@@ -116,11 +153,11 @@ export KUBECONFIG=~/.kube/config
 
 #### k3s - node label
 
+* Ansible loops and applies hetzner labels (set by terraform)
 
 #### ssh
 
 Hetzner ubuntu uses default `root` login.
-
 
 ##### k3s cluster run
 

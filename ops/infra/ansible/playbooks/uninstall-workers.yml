@@ -1,0 +1,21 @@
+#
+# ansible-playbook -e env_id=staging_live -i hcloud.yml playbooks/uninstall-workers.yml
+#
+- name: uninstall
+  hosts: "{{ groups['label_env_id_' ~ env_id] }}"
+  vars_files:
+    - ../vars.yml
+  gather_facts: true
+  tasks:
+    #
+    # drain & delete nodes prior
+    #
+    - name: uninstall workers
+      register: out
+      command: "/usr/local/bin/k3s-agent-uninstall.sh"
+      when: "inventory_hostname in (groups['label_env_id_' ~ env_id] | intersect(groups.label_class_id_worker))"
+
+    - name: debug k3s uninstall agent
+      debug:
+        msg: "{{ out.stderr_lines }}"
+      when: "inventory_hostname in (groups['label_env_id_' ~ env_id] | intersect(groups.label_class_id_worker))"

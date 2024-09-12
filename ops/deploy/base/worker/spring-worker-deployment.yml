@@ -17,6 +17,8 @@ spec:
       labels:
         app: spring-worker
     spec:
+      nodeSelector:
+        node.kubernetes.io/class_id: worker
       imagePullSecrets:
         - name: regcred
       containers:

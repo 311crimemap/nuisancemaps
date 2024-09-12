@@ -5,8 +5,10 @@ metadata:
   name: letsencrypt-cluster-issuer
 spec:
   acme:
-    # The ACME server URL
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # The ACME server URL - note this is now a "production" request for a cert
+    # for our staging environment
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
     email: admin@311crimemap.com
     # Name of a secret used to store the ACME account private key
