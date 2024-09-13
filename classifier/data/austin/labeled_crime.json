@@ -1,1 +1,3307 @@
-[{"dataType": "crime", "text": "ACCIDENTAL DEATH", "label": "0"}, {"dataType": "crime", "text": "ACCIDENTAL INJURY", "label": "0"}, {"dataType": "crime", "text": "ACCIDENTAL SHOOTING INJURY", "label": "0"}, {"dataType": "crime", "text": "ACCIDENTAL SHOOTING NON-INJURY", "label": "0"}, {"dataType": "crime", "text": "AGG ASLT ENHANC STRANGL/SUFFOC", "label": "0"}, {"dataType": "crime", "text": "AGG ASLT STRANGLE/SUFFOCATE", "label": "0"}, {"dataType": "crime", "text": "AGG ASLT W/MOTOR VEH FAM/DAT V", "label": "0"}, {"dataType": "crime", "text": "AGG ASSAULT", "label": "0"}, {"dataType": "crime", "text": "AGG ASSAULT FAM/DATE VIOLENCE", "label": "0"}, {"dataType": "crime", "text": "AGG ASSAULT WITH MOTOR VEH", "label": "0"}, {"dataType": "crime", "text": "AGG FORCED SODOMY", "label": "0"}, {"dataType": "crime", "text": "AGG KIDNAPPING", "label": "0"}, {"dataType": "crime", "text": "AGG ROBBERY BY ASSAULT", "label": "0"}, {"dataType": "crime", "text": "AGG ROBBERY/DEADLY WEAPON", "label": "0"}, {"dataType": "crime", "text": "AGG ROBBERY/DEADLY WEAPON (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "ANIMAL BITE", "label": "0"}, {"dataType": "crime", "text": "ANIMAL BITE - FIREARM USED", "label": "0"}, {"dataType": "crime", "text": "ASSAULT BY CONTACT", "label": "0"}, {"dataType": "crime", "text": "ASSAULT BY CONTACT FAM/DATING", "label": "0"}, {"dataType": "crime", "text": "ASSAULT BY THREAT", "label": "0"}, {"dataType": "crime", "text": "ASSAULT BY THREAT FAM/DATING", "label": "0"}, {"dataType": "crime", "text": "ASSAULT CONTACT-SEXUAL NATURE", "label": "0"}, {"dataType": "crime", "text": "ASSAULT INFO (FAMILY VIOLENCE", "label": "0"}, {"dataType": "crime", "text": "ASSAULT INFORMATION", "label": "0"}, {"dataType": "crime", "text": "ASSAULT INFORMATION (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "ASSAULT OF A PREGNANT WOMAN", "label": "0"}, {"dataType": "crime", "text": "ASSAULT OF PREGNANT WM-FAM/DAT", "label": "0"}, {"dataType": "crime", "text": "ASSAULT ON PEACE OFFICER", "label": "0"}, {"dataType": "crime", "text": "ASSAULT ON PUBLIC SERVANT", "label": "0"}, {"dataType": "crime", "text": "ASSAULT W/INJURY-FAM/DATE VIOL", "label": "0"}, {"dataType": "crime", "text": "ASSAULT WITH INJURY", "label": "0"}, {"dataType": "crime", "text": "ATTACK BY DOG", "label": "0"}, {"dataType": "crime", "text": "BOAT CRASH/ACCIDENT", "label": "0"}, {"dataType": "crime", "text": "BURG OF RES - FAM/DATING ASLT", "label": "0"}, {"dataType": "crime", "text": "BURG OF RES - SEXUAL NATURE", "label": "0"}, {"dataType": "crime", "text": "CHILD ABUSE INFORMATION", "label": "0"}, {"dataType": "crime", "text": "CHILD EXPLOITATION INFORMATION", "label": "0"}, {"dataType": "crime", "text": "CONT VIOL AGAINST FAMILY", "label": "0"}, {"dataType": "crime", "text": "CRASH", "label": "0"}, {"dataType": "crime", "text": "CRASH/CITY VEHICLE", "label": "0"}, {"dataType": "crime", "text": "CRASH/CROSSWALK VULNERABLE USER BI-MISD", "label": "0"}, {"dataType": "crime", "text": "CRASH/FAIL STOP AND RENDER AID", "label": "0"}, {"dataType": "crime", "text": "CRASH/FATALITY", "label": "0"}, {"dataType": "crime", "text": "CRASH/INTOXICATION ASSAULT", "label": "0"}, {"dataType": "crime", "text": "CRASH/INTOX MANSLAUGHTER", "label": "0"}, {"dataType": "crime", "text": "CRASH/LEAVE SCENE-NO SUSPECT", "label": "0"}, {"dataType": "crime", "text": "CRASH/LEAVING THE SCENE", "label": "0"}, {"dataType": "crime", "text": "CRASH/SERIOUS BODILY INJURY", "label": "0"}, {"dataType": "crime", "text": "CRIMES AGAINST ELDERLY", "label": "0"}, {"dataType": "crime", "text": "CRIMINAL SOLICITATION", "label": "0"}, {"dataType": "crime", "text": "CRUELTY TO ANIMALS", "label": "0"}, {"dataType": "crime", "text": "CRUELTY TO ANIMALS (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "CUSTODY ARREST TRAFFIC WARR", "label": "0"}, {"dataType": "crime", "text": "DANGEROUS ANIMAL", "label": "0"}, {"dataType": "crime", "text": "DEADLY CONDUCT", "label": "0"}, {"dataType": "crime", "text": "DEADLY CONDUCT FAM/DATE VIOL", "label": "0"}, {"dataType": "crime", "text": "DOC DISCHARGE GUN - PUB PLACE", "label": "0"}, {"dataType": "crime", "text": "DOC DISCHARGE GUN - PUB ROAD", "label": "0"}, {"dataType": "crime", "text": "DOC DISPLAY GUN/DEADLY PUB PLC", "label": "0"}, {"dataType": "crime", "text": "DRIVING WHILE INTOX / FELONY", "label": "0"}, {"dataType": "crime", "text": "DRIVING WHILE LICENSE INVALID", "label": "0"}, {"dataType": "crime", "text": "DUI - AGE 17 TO 20", "label": "0"}, {"dataType": "crime", "text": "DWI", "label": "0"}, {"dataType": "crime", "text": "DWI .15 BAC OR ABOVE", "label": "0"}, {"dataType": "crime", "text": "DWI 2ND", "label": "0"}, {"dataType": "crime", "text": "DWI - DRUG RECOGNITION EXPERT", "label": "0"}, {"dataType": "crime", "text": "ELUDING", "label": "0"}, {"dataType": "crime", "text": "ENGAGING IN ORGANIZED CRIME", "label": "0"}, {"dataType": "crime", "text": "ESCAPE FROM CUSTODY", "label": "0"}, {"dataType": "crime", "text": "ESCAPE FROM CUSTODY (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "EVADING / FOOT", "label": "0"}, {"dataType": "crime", "text": "EVADING VEHICLE", "label": "0"}, {"dataType": "crime", "text": "EVADING / VEHICLE PURSUIT", "label": "0"}, {"dataType": "crime", "text": "EXPLOITATION OF CHILD/ELDERLY", "label": "0"}, {"dataType": "crime", "text": "EXPLOSIVE ORDNANCE DISPOSAL", "label": "0"}, {"dataType": "crime", "text": "FELONY ENHANCEMENT/ASSLT W/INJ", "label": "0"}, {"dataType": "crime", "text": "HARASSMENT", "label": "0"}, {"dataType": "crime", "text": "HARASSMENT OF A PUBLIC SERVANT", "label": "0"}, {"dataType": "crime", "text": "HATE CRIME INFORMATION", "label": "0"}, {"dataType": "crime", "text": "HOMICIDE INFORMATION", "label": "0"}, {"dataType": "crime", "text": "HUMAN TRAFFICKING INFORMATION", "label": "0"}, {"dataType": "crime", "text": "IMPERSONATING PUBLIC SERVANT", "label": "0"}, {"dataType": "crime", "text": "IMPROPER CONTACT-SEX ASLT VICT", "label": "0"}, {"dataType": "crime", "text": "INDECENT ASSAULT", "label": "0"}, {"dataType": "crime", "text": "INDECENT ASSAULT (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "INDECENT EXPOSURE", "label": "0"}, {"dataType": "crime", "text": "INJ TO DISABLED FAM/DATE VIOL", "label": "0"}, {"dataType": "crime", "text": "INJ TO ELDERLY FAM/DATE VIOL", "label": "0"}, {"dataType": "crime", "text": "INJURY DISABLED INDIVIDUAL", "label": "0"}, {"dataType": "crime", "text": "INJURY TO ELDERLY PERSON", "label": "0"}, {"dataType": "crime", "text": "KIDNAPPING", "label": "0"}, {"dataType": "crime", "text": "KIDNAPPING (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "KIDNAPPING FAM VIO", "label": "0"}, {"dataType": "crime", "text": "KIDNAPPING INFORMATION", "label": "0"}, {"dataType": "crime", "text": "MURDER", "label": "0"}, {"dataType": "crime", "text": "OBSCENITY", "label": "0"}, {"dataType": "crime", "text": "ONLINE SOLICITATION OF A MINOR", "label": "0"}, {"dataType": "crime", "text": "OUT OF CITY AGG ASSAULT", "label": "0"}, {"dataType": "crime", "text": "OUT OF CITY SEXUAL ASSAULT", "label": "0"}, {"dataType": "crime", "text": "RAPE", "label": "0"}, {"dataType": "crime", "text": "RAPE (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "RECKLESS CONDUCT", "label": "0"}, {"dataType": "crime", "text": "ROAD RAGE", "label": "0"}, {"dataType": "crime", "text": "ROBBERY BY ASSAULT", "label": "0"}, {"dataType": "crime", "text": "ROBBERY BY ASSAULT (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "ROBBERY BY THREAT", "label": "0"}, {"dataType": "crime", "text": "ROBBERY BY THREAT (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "SEXTING DEPICTING A MINOR", "label": "0"}, {"dataType": "crime", "text": "SEXTING/TRANSMIT SEXUAL PHOTOS", "label": "0"}, {"dataType": "crime", "text": "SEXUAL ASSAULT INFORMATION", "label": "0"}, {"dataType": "crime", "text": "SEXUAL ASSAULT W/ OBJECT", "label": "0"}, {"dataType": "crime", "text": "SEXUAL ASSAULT W/ OBJECT (ATTEMPTED)", "label": "0"}, {"dataType": "crime", "text": "STALKING", "label": "0"}, {"dataType": "crime", "text": "STALKING INFORMATION", "label": "0"}, {"dataType": "crime", "text": "SUICIDE", "label": "0"}, {"dataType": "crime", "text": "TERRORISTIC THREAT", "label": "0"}, {"dataType": "crime", "text": "TERRORISTIC THREAT-FAM/DAT VIO", "label": "0"}, {"dataType": "crime", "text": "TERRORISTIC THREAT-MASS CASLTY", "label": "0"}, {"dataType": "crime", "text": "UNLAWFUL RESTRAINT", "label": "0"}, {"dataType": "crime", "text": "UNLAWFUL RESTRAINT FAM/DAT VIO", "label": "0"}, {"dataType": "crime", "text": "VIOLENT CRIMES TASK FORCE", "label": "0"}, {"dataType": "crime", "text": "ABANDONED PROP", "label": "1"}, {"dataType": "crime", "text": "ABANDONED VEH", "label": "1"}, {"dataType": "crime", "text": "ARSON", "label": "1"}, {"dataType": "crime", "text": "ARSON (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "ARSON-CRIMINAL MISCHIEF", "label": "1"}, {"dataType": "crime", "text": "ARSON-DEADLY CONDUCT", "label": "1"}, {"dataType": "crime", "text": "ARSON INFORMATION", "label": "1"}, {"dataType": "crime", "text": "ARSON-VIOL CITY ORDINANCE", "label": "1"}, {"dataType": "crime", "text": "ARSON WITH BODILY INJURY", "label": "1"}, {"dataType": "crime", "text": "BURGLARY NON RESIDENCE", "label": "1"}, {"dataType": "crime", "text": "BURGLARY NON RESIDENCE (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF COIN-OP MACHINE", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF NON-RESIDENCE INFORMATION", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF NON-RESIDENCE INFORMATION (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF RESIDENCE", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF RESIDENCE (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF RESIDENCE INFORMATION", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF RESIDENCE INFORMATION (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF SHED/DETACHED GARAGE/STORAGE UNIT", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF SHED/DETACHED GARAGE/STORAGE UNIT (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF VEHICLE", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF VEHICLE (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF VEH INFORMATION", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF VEH INFORMATION (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "BURGLARY OF VEH-NO SUSPECT/FU", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL MISCHIEF", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL MISCHIEF (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL MISCHIEF INFORMATION", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL MISCHIEF-NO SUSPECT", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL MISCHIEF-NO SUSPECT (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS-AUTHORIZATION", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS/HOTEL", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS/IN VEHICLE", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS/IN VEHICLE (ATTEMPTED)", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS NOTICE", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS NOTICE-COA", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS NOTICE MULTIPLE LOCATIONS", "label": "1"}, {"dataType": "crime", "text": "CRIMINAL TRESPASS/TRANSIENT", "label": "1"}, {"dataType": "crime", "text": "DAMAGE CITY PROP", "label": "1"}, {"dataType": "crime", "text": "DAMAGE CITY VEHICLE", "label": "1"}, {"dataType": "crime", "text": "DAMAGE TO CITY PROPERTY INFO", "label": "1"}, {"dataType": "crime", "text": "DAMAGE TO CITY VEHICLE INFO", "label": "1"}, {"dataType": "crime", "text": "FOUND LICENSE PLATE", "label": "1"}, {"dataType": "crime", "text": "FOUND PROPERTY", "label": "1"}, {"dataType": "crime", "text": "GRAFFITI", "label": "1"}, {"dataType": "crime", "text": "IMPOUNDED/REPOSSED VEH NON-APD", "label": "1"}, {"dataType": "crime", "text": "IMPOUNDED VEH", "label": "1"}, {"dataType": "crime", "text": "INSPECTION PROPERTY CRIMES", "label": "1"}, {"dataType": "crime", "text": "JUNKED/NUISANCE VEHICLE", "label": "1"}, {"dataType": "crime", "text": "LITTERING", "label": "1"}, {"dataType": "crime", "text": "LOST PROP", "label": "1"}, {"dataType": "crime", "text": "NUISANCE ABATEMENT", "label": "1"}, {"dataType": "crime", "text": "OUT OF CITY BURGLARY", "label": "1"}, {"dataType": "crime", "text": "RECKLESS DAMAGE", "label": "1"}, {"dataType": "crime", "text": "RENTAL CAR/FAIL TO RETURN", "label": "1"}, {"dataType": "crime", "text": "STRUCTURE FIRE", "label": "1"}, {"dataType": "crime", "text": "VEHICLE FIRE", "label": "1"}, {"dataType": "crime", "text": "AUTO THEFT", "label": "2"}, {"dataType": "crime", "text": "AUTO THEFT (ATTEMPTED)", "label": "2"}, {"dataType": "crime", "text": "AUTO THEFT INFORMATION", "label": "2"}, {"dataType": "crime", "text": "AUTO THEFT INFORMATION (ATTEMPTED)", "label": "2"}, {"dataType": "crime", "text": "JUGGING", "label": "2"}, {"dataType": "crime", "text": "MAIL THEFT", "label": "2"}, {"dataType": "crime", "text": "OUT OF CITY AUTO THEFT", "label": "2"}, {"dataType": "crime", "text": "OUT OF CITY ROBBERY", "label": "2"}, {"dataType": "crime", "text": "OUT OF CITY THEFT", "label": "2"}, {"dataType": "crime", "text": "THEFT", "label": "2"}, {"dataType": "crime", "text": "THEFT- APPROPRIATE STOLEN PROP", "label": "2"}, {"dataType": "crime", "text": "THEFT BY CHECK", "label": "2"}, {"dataType": "crime", "text": "THEFT BY EMBEZZLEMENT", "label": "2"}, {"dataType": "crime", "text": "THEFT BY EXTORTION", "label": "2"}, {"dataType": "crime", "text": "THEFT BY FALSE PRETEXT/BUNCO", "label": "2"}, {"dataType": "crime", "text": "THEFT BY SHOPLIFTING", "label": "2"}, {"dataType": "crime", "text": "THEFT CATALYTIC CONVERTER", "label": "2"}, {"dataType": "crime", "text": "THEFT FROM AUTO", "label": "2"}, {"dataType": "crime", "text": "THEFT FROM AUTO (ATTEMPTED)", "label": "2"}, {"dataType": "crime", "text": "THEFT FROM BUILDING", "label": "2"}, {"dataType": "crime", "text": "THEFT FROM PERSON", "label": "2"}, {"dataType": "crime", "text": "THEFT FROM PERSON (ATTEMPTED)", "label": "2"}, {"dataType": "crime", "text": "THEFT INFORMATION", "label": "2"}, {"dataType": "crime", "text": "THEFT OF AUTO PARTS", "label": "2"}, {"dataType": "crime", "text": "THEFT OF BICYCLE", "label": "2"}, {"dataType": "crime", "text": "THEFT OF CRYPTOCURRENCY", "label": "2"}, {"dataType": "crime", "text": "THEFT OF LICENSE PLATE", "label": "2"}, {"dataType": "crime", "text": "THEFT OF METAL", "label": "2"}, {"dataType": "crime", "text": "THEFT OF METAL (ATTEMPTED)", "label": "2"}, {"dataType": "crime", "text": "THEFT OF SERVICE", "label": "2"}, {"dataType": "crime", "text": "THEFT OF TRAILER", "label": "2"}, {"dataType": "crime", "text": "ASSET FORFEITURES", "label": "3"}, {"dataType": "crime", "text": "BREACH OF COMPUTER SECURITY", "label": "3"}, {"dataType": "crime", "text": "BRIBERY", "label": "3"}, {"dataType": "crime", "text": "COUNTERFEITING", "label": "3"}, {"dataType": "crime", "text": "COUNTERFEITING INFORMATION", "label": "3"}, {"dataType": "crime", "text": "CRED CARD ABUSE BY FORGERY", "label": "3"}, {"dataType": "crime", "text": "CRED CARD ABUSE - OTHER", "label": "3"}, {"dataType": "crime", "text": "CRED CARD ABUSE - OTHER (ATTEMPTED)", "label": "3"}, {"dataType": "crime", "text": "DEBIT CARD ABUSE", "label": "3"}, {"dataType": "crime", "text": "DEBIT CARD ABUSE (ATTEMPTED)", "label": "3"}, {"dataType": "crime", "text": "FALSE STATEMENT -OBTAIN CREDIT", "label": "3"}, {"dataType": "crime", "text": "FICTITIOUS DRIVERS LICENSE/ID", "label": "3"}, {"dataType": "crime", "text": "FICTITIOUS INSPECTION STICKER", "label": "3"}, {"dataType": "crime", "text": "FICTITIOUS LICENSE PLATE", "label": "3"}, {"dataType": "crime", "text": "FORGERY AND PASSING", "label": "3"}, {"dataType": "crime", "text": "FORGERY BY ALTERATION", "label": "3"}, {"dataType": "crime", "text": "FORGERY BY MAKING", "label": "3"}, {"dataType": "crime", "text": "FORGERY OF IDENTIFICATION", "label": "3"}, {"dataType": "crime", "text": "FORGERY - OTHER", "label": "3"}, {"dataType": "crime", "text": "FRAUD-CARD SKIMMER", "label": "3"}, {"dataType": "crime", "text": "FRAUD DESTRUCTION OF A WRITING", "label": "3"}, {"dataType": "crime", "text": "FRAUD FILING FINANCE STATEMENT", "label": "3"}, {"dataType": "crime", "text": "FRAUD - OTHER", "label": "3"}, {"dataType": "crime", "text": "FRAUD - OTHER (ATTEMPTED)", "label": "3"}, {"dataType": "crime", "text": "FRAUD-PHISHING", "label": "3"}, {"dataType": "crime", "text": "FRAUD-USE/POSSESSION OF IDENTIFYING INFORMATION", "label": "3"}, {"dataType": "crime", "text": "IDENTITY THEFT", "label": "3"}, {"dataType": "crime", "text": "IDENTITY THEFT INFORMATION", "label": "3"}, {"dataType": "crime", "text": "ONLINE IMPERSONATION", "label": "3"}, {"dataType": "crime", "text": "OUT OF CITY CREDIT CARD ABUSE", "label": "3"}, {"dataType": "crime", "text": "TAMPERING WITH CONSUMER PROD", "label": "3"}, {"dataType": "crime", "text": "TAMPERING WITH EVIDENCE", "label": "3"}, {"dataType": "crime", "text": "TAMPERING WITH GOV RECORD", "label": "3"}, {"dataType": "crime", "text": "TAMPERING WITH ID NUMBER", "label": "3"}, {"dataType": "crime", "text": "TAMPER WITH ELECTRONIC MONITORING DEVICE", "label": "3"}, {"dataType": "crime", "text": "TRADEMARK COUNTERFEITING", "label": "3"}, {"dataType": "crime", "text": "ACCIDENTAL DRUG OVERDOSE", "label": "4"}, {"dataType": "crime", "text": "AIRPORT - FOUND MARIJUANA", "label": "4"}, {"dataType": "crime", "text": "AIRPORT PLACES WEAPON PROHIBIT", "label": "4"}, {"dataType": "crime", "text": "ALCOHOL CONTROL TEAM", "label": "4"}, {"dataType": "crime", "text": "ATF TASK FORCE", "label": "4"}, {"dataType": "crime", "text": "CONTROLLED SUB VIOL - OTHER", "label": "4"}, {"dataType": "crime", "text": "DEL CONTROLLED SUB/NARCOTIC", "label": "4"}, {"dataType": "crime", "text": "DEL CONTROLLED SUB/OTHER", "label": "4"}, {"dataType": "crime", "text": "DEL CONTROLLED SUB/SYN NARC", "label": "4"}, {"dataType": "crime", "text": "DEL MARIJUANA", "label": "4"}, {"dataType": "crime", "text": "DEL OF DANG DRUG", "label": "4"}, {"dataType": "crime", "text": "DEL SYNTHETIC MARIJUANA", "label": "4"}, {"dataType": "crime", "text": "FIREARMS", "label": "4"}, {"dataType": "crime", "text": "FIREARM SURRENDER", "label": "4"}, {"dataType": "crime", "text": "FOUND CONTROLLED SUBSTANCE", "label": "4"}, {"dataType": "crime", "text": "FOUND FIREARMS", "label": "4"}, {"dataType": "crime", "text": "GAMBLING", "label": "4"}, {"dataType": "crime", "text": "GAMBLING INFORMATION", "label": "4"}, {"dataType": "crime", "text": "INHALANT ABUSE", "label": "4"}, {"dataType": "crime", "text": "INJURED ANIMAL-FIREARM USED", "label": "4"}, {"dataType": "crime", "text": "MANF CONTROLLED SUB - OTHER", "label": "4"}, {"dataType": "crime", "text": "MANF CONTROLLED SUB- SYN NARC", "label": "4"}, {"dataType": "crime", "text": "NARCAN/NALOXONE ADMINISTERED", "label": "4"}, {"dataType": "crime", "text": "OVERDOSE OPIATE", "label": "4"}, {"dataType": "crime", "text": "POSS CONTROLLED SUB/NARCOTIC", "label": "4"}, {"dataType": "crime", "text": "POSS CONTROLLED SUB/OTHER", "label": "4"}, {"dataType": "crime", "text": "POSS CONTROLLED SUB/SYN NARC", "label": "4"}, {"dataType": "crime", "text": "POSS CRIMINAL INSTRUMENT", "label": "4"}, {"dataType": "crime", "text": "POSS DANG DRUG", "label": "4"}, {"dataType": "crime", "text": "POSSESSION OF MARIJUANA", "label": "4"}, {"dataType": "crime", "text": "POSS OF ALCOHOL - AGE 17 TO 20", "label": "4"}, {"dataType": "crime", "text": "POSS OF DRUG PARAPHERNALIA", "label": "4"}, {"dataType": "crime", "text": "POSS OF FIREARM BY FELON", "label": "4"}, {"dataType": "crime", "text": "POSS OF GAMBLING EQUIPMENT", "label": "4"}, {"dataType": "crime", "text": "POSS OF PROHIBITED WEAPON", "label": "4"}, {"dataType": "crime", "text": "POSS SYNTHETIC MARIJUANA", "label": "4"}, {"dataType": "crime", "text": "PROSTITUTION", "label": "4"}, {"dataType": "crime", "text": "TAKE WEAPON FRM POLICE OFFICER", "label": "4"}, {"dataType": "crime", "text": "TOBACCO VIOL - UNDER AGE 21", "label": "4"}, {"dataType": "crime", "text": "UNLAWFUL CARRYING WEAPON", "label": "4"}, {"dataType": "crime", "text": "VOCO - ALCOHOL CONSUMPTION", "label": "4"}, {"dataType": "crime", "text": "ABUSE OF 911", "label": "5"}, {"dataType": "crime", "text": "AIRPORT - FEDERAL VIOL", "label": "5"}, {"dataType": "crime", "text": "AIRPORT-TSA ASSIST", "label": "5"}, {"dataType": "crime", "text": "BOMB THREAT", "label": "5"}, {"dataType": "crime", "text": "CAMPING IN PARK", "label": "5"}, {"dataType": "crime", "text": "CIVIL DISTURBANCE/DEMO", "label": "5"}, {"dataType": "crime", "text": "DATING DISTURBANCE", "label": "5"}, {"dataType": "crime", "text": "DISCLOSE/PROMO INTIMATE VISUAL", "label": "5"}, {"dataType": "crime", "text": "DISTURBANCE - OTHER", "label": "5"}, {"dataType": "crime", "text": "DOC ABUSE OR THREAT", "label": "5"}, {"dataType": "crime", "text": "DOC ABUSIVE LANGUAGE", "label": "5"}, {"dataType": "crime", "text": "DOC EXPOSURE", "label": "5"}, {"dataType": "crime", "text": "DOC FIGHTING", "label": "5"}, {"dataType": "crime", "text": "DOC OFFENSIVE GESTURE", "label": "5"}, {"dataType": "crime", "text": "DOC UNREASONABLE NOISE", "label": "5"}, {"dataType": "crime", "text": "DOC WINDOW PEEPING - PUB AREA", "label": "5"}, {"dataType": "crime", "text": "DOC WINDOW PEEPING-RESIDENCE", "label": "5"}, {"dataType": "crime", "text": "DUMPING REFUSE NEAR HIGHWAY", "label": "5"}, {"dataType": "crime", "text": "EMERGENCY PROTECTIVE ORDER", "label": "5"}, {"dataType": "crime", "text": "FALSE ALARM OR REPORT", "label": "5"}, {"dataType": "crime", "text": "FALSE BURGLAR ALARM", "label": "5"}, {"dataType": "crime", "text": "FALSE REPORT TO PEACE OFFICER", "label": "5"}, {"dataType": "crime", "text": "FAMILY DISTURBANCE", "label": "5"}, {"dataType": "crime", "text": "FAMILY DISTURBANCE/PARENTAL", "label": "5"}, {"dataType": "crime", "text": "HAZARDOUS TRAFFIC CITATION", "label": "5"}, {"dataType": "crime", "text": "HAZARDOUS TRAFFIC VIOL", "label": "5"}, {"dataType": "crime", "text": "HINDERING APPREHENSION", "label": "5"}, {"dataType": "crime", "text": "INTER EMERG PHONECALL FAM/DATE", "label": "5"}, {"dataType": "crime", "text": "INTERFERENCE PUBLIC DUTIES", "label": "5"}, {"dataType": "crime", "text": "INTERFERE W PO SERVICE ANIMALS", "label": "5"}, {"dataType": "crime", "text": "INTERFERING W/EMERG PHONE CALL", "label": "5"}, {"dataType": "crime", "text": "LEVEL 2 RESPONSE TO RESISTANCE", "label": "5"}, {"dataType": "crime", "text": "LEVEL 3 RESPONSE TO RESISTANCE", "label": "5"}, {"dataType": "crime", "text": "LEVEL 4 RESPONSE TO RESISTANCE", "label": "5"}, {"dataType": "crime", "text": "LIQUOR LAW VIOLATION/OTHER", "label": "5"}, {"dataType": "crime", "text": "MULTIPLE TRAFFIC VIOL", "label": "5"}, {"dataType": "crime", "text": "NO DRIVERS LICENSE", "label": "5"}, {"dataType": "crime", "text": "NO LIABILITY INSURANCE 2ND", "label": "5"}, {"dataType": "crime", "text": "NON HAZARDOUS TRAFFIC VIOL", "label": "5"}, {"dataType": "crime", "text": "NON HAZ TRAFFIC CITATION", "label": "5"}, {"dataType": "crime", "text": "OBSTRUCTION HIGHWAY/PASSAGEWA", "label": "5"}, {"dataType": "crime", "text": "PAROLE VIOL", "label": "5"}, {"dataType": "crime", "text": "PEDESTRIAN ON ROADWAY", "label": "5"}, {"dataType": "crime", "text": "PROTECTIVE ORDER", "label": "5"}, {"dataType": "crime", "text": "PROWLER", "label": "5"}, {"dataType": "crime", "text": "PUBLIC INTOXICATION", "label": "5"}, {"dataType": "crime", "text": "PUBLIC INTOX-SOBERING CENTER", "label": "5"}, {"dataType": "crime", "text": "PUBLIC LEWDNESS", "label": "5"}, {"dataType": "crime", "text": "RECKLESS DRIVING", "label": "5"}, {"dataType": "crime", "text": "RESISTING ARREST OR SEARCH", "label": "5"}, {"dataType": "crime", "text": "RESPONSE TO RESISTANCE REPORT", "label": "5"}, {"dataType": "crime", "text": "SIT AND LIE ORDINANCE VIOL", "label": "5"}, {"dataType": "crime", "text": "SOLICITATION - BEGGING", "label": "5"}, {"dataType": "crime", "text": "SWAT OPERATION", "label": "5"}, {"dataType": "crime", "text": "TEMP EX PARTE ORDER", "label": "5"}, {"dataType": "crime", "text": "TRAFFIC HAZARD/DEBRIS", "label": "5"}, {"dataType": "crime", "text": "TRAFFIC VIOL/OTHER", "label": "5"}, {"dataType": "crime", "text": "URINATING IN PUBLIC PLACE", "label": "5"}, {"dataType": "crime", "text": "VIOL CITY ORD-COVID 19 MASK", "label": "5"}, {"dataType": "crime", "text": "VIOL CITY ORDINANCE - BOOTING", "label": "5"}, {"dataType": "crime", "text": "VIOL CITY ORDINANCE - CURFEW", "label": "5"}, {"dataType": "crime", "text": "VIOL CITY ORDINANCE - DOG", "label": "5"}, {"dataType": "crime", "text": "VIOL CITY ORDINANCE - OTHER", "label": "5"}, {"dataType": "crime", "text": "VIOL CITY ORDINANCE - WRECKER", "label": "5"}, {"dataType": "crime", "text": "VIOL OF BOND CONDITIONS", "label": "5"}, {"dataType": "crime", "text": "VIOL OF CAMPING ORDINANCE", "label": "5"}, {"dataType": "crime", "text": "VIOL OF EMERG PROTECTIVE ORDER", "label": "5"}, {"dataType": "crime", "text": "VIOL OF PARK CURFEW", "label": "5"}, {"dataType": "crime", "text": "VIOL OF PROTECTIVE ORDER", "label": "5"}, {"dataType": "crime", "text": "VIOL OF PROTECTIVE ORDER (ATTEMPTED)", "label": "5"}, {"dataType": "crime", "text": "VIOL STATE LAW - OTHER", "label": "5"}, {"dataType": "crime", "text": "VIOL TEMP EX PARTE ORDER", "label": "5"}, {"dataType": "crime", "text": "VIOL VEH REGISTRATION - OTHER", "label": "5"}, {"dataType": "crime", "text": "VIOL WATER SAFETY ACT", "label": "5"}, {"dataType": "crime", "text": "VOCO SOLICITATION PROHIBIT", "label": "5"}, {"dataType": "crime", "text": "WARRANT ARREST NON TRAFFIC", "label": "5"}, {"dataType": "crime", "text": "68A INSPECTION", "label": "6"}, {"dataType": "crime", "text": "APPLIC TO REVOKE PROBATION", "label": "6"}, {"dataType": "crime", "text": "APS REFERRAL", "label": "6"}, {"dataType": "crime", "text": "ASSIST CITY DEPT/OTHER", "label": "6"}, {"dataType": "crime", "text": "ASSIST COMPLAINANT", "label": "6"}, {"dataType": "crime", "text": "ASSIST EMS", "label": "6"}, {"dataType": "crime", "text": "ASSIST FIRE DEPT", "label": "6"}, {"dataType": "crime", "text": "ASSIST OTHER POLICE AGENCY", "label": "6"}, {"dataType": "crime", "text": "AUTO SALVAGE DEALERS", "label": "6"}, {"dataType": "crime", "text": "BICYCLE REGISTRATION", "label": "6"}, {"dataType": "crime", "text": "COMMUNITY POLICE", "label": "6"}, {"dataType": "crime", "text": "CPS REFERRAL", "label": "6"}, {"dataType": "crime", "text": "DART", "label": "6"}, {"dataType": "crime", "text": "DEATH DUE TO NATURAL CAUSES", "label": "6"}, {"dataType": "crime", "text": "DECEASED PERSON", "label": "6"}, {"dataType": "crime", "text": "DIRECTED PATROL", "label": "6"}, {"dataType": "crime", "text": "DISTRICT REPRESENTATIVE", "label": "6"}, {"dataType": "crime", "text": "DNA LAB-BODE CELLMARK", "label": "6"}, {"dataType": "crime", "text": "DNA LAB-CAP LAB", "label": "6"}, {"dataType": "crime", "text": "DNA LAB-SIGNATURE SCIENCE", "label": "6"}, {"dataType": "crime", "text": "DRONE INVOLVED", "label": "6"}, {"dataType": "crime", "text": "EDP TELEHEALTH", "label": "6"}, {"dataType": "crime", "text": "FAIL TO REGISTR INFO ADULT VIC", "label": "6"}, {"dataType": "crime", "text": "FAIL TO REGISTR INFO MINOR VIC", "label": "6"}, {"dataType": "crime", "text": "FAILURE TO IDENTIFY", "label": "6"}, {"dataType": "crime", "text": "FAILURE TO REG AS SEX OFFENDER", "label": "6"}, {"dataType": "crime", "text": "FEDERAL VIOL/OTHER", "label": "6"}, {"dataType": "crime", "text": "FIELD OBSERVATION", "label": "6"}, {"dataType": "crime", "text": "FOUND ADULT", "label": "6"}, {"dataType": "crime", "text": "GANG SOURCE DOCUMENT", "label": "6"}, {"dataType": "crime", "text": "HINDER SECURED CREDITORS", "label": "6"}, {"dataType": "crime", "text": "IMPOUNDED ANIMAL", "label": "6"}, {"dataType": "crime", "text": "INJURED ANIMAL", "label": "6"}, {"dataType": "crime", "text": "METRO TAC REG 2", "label": "6"}, {"dataType": "crime", "text": "METRO TAC REG 3", "label": "6"}, {"dataType": "crime", "text": "METRO TAC REG 4", "label": "6"}, {"dataType": "crime", "text": "MISSING ADULT", "label": "6"}, {"dataType": "crime", "text": "NIBIN BALLISTIC INFO NETWORK", "label": "6"}, {"dataType": "crime", "text": "NIBIN LEAD", "label": "6"}, {"dataType": "crime", "text": "NIBIN-NOT FOR FORENSIC ANALYSIS", "label": "6"}, {"dataType": "crime", "text": "null", "label": "6"}, {"dataType": "crime", "text": "OTHER FIRE", "label": "6"}, {"dataType": "crime", "text": "OUT OF CITY MISSING PERSON", "label": "6"}, {"dataType": "crime", "text": "OUT OF CITY OFFENSE", "label": "6"}, {"dataType": "crime", "text": "PICK UP ITEM/EVIDENCE", "label": "6"}, {"dataType": "crime", "text": "RECOVERED RUNAWAY-SAFECARES/RST CONTACT", "label": "6"}, {"dataType": "crime", "text": "REGISTERED SEX OFFENDER", "label": "6"}, {"dataType": "crime", "text": "REQUEST TO APPREHEND", "label": "6"}, {"dataType": "crime", "text": "REQUEST TO LOCATE", "label": "6"}, {"dataType": "crime", "text": "ROBBERY INFORMATION", "label": "6"}, {"dataType": "crime", "text": "SEX OFFENDER COMPLIANCE CHECK", "label": "6"}, {"dataType": "crime", "text": "SUSPICIOUS PERSON", "label": "6"}, {"dataType": "crime", "text": "SUSPICIOUS PERSON (ATTEMPTED)", "label": "6"}, {"dataType": "crime", "text": "SUSPICIOUS VEH", "label": "6"}, {"dataType": "crime", "text": "TEST CODE - FOR TESTING ONLY", "label": "7"}, {"dataType": "crime", "text": "VIOL CITY ORDINANCE - GAME RM", "label": "4"}]
+[
+    {
+        "dataType": "crime",
+        "text": "ABUSE OF CORPSE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ACCIDENTAL DEATH",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ACCIDENTAL DRUG OVERDOSE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ACCIDENTAL INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ACCIDENTAL SHOOTING INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ACCIDENTAL SHOOTING NON-INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASLT ENHANC STRANGL/SUFFOC",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASLT STRANGLE/SUFFOCATE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASLT W/MOTOR VEH FAM/DAT V",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASSAULT BY PUBLIC SERVANT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASSAULT FAM/DATE VIOLENCE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASSAULT ON PEACE OFFICER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASSAULT ON PUBLIC SERVANT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ASSAULT WITH MOTOR VEH",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG FORCED SODOMY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG FORCED SODOMY OF CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG KIDNAPPING FAM VIO",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG RAPE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG RAPE OF A CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ROBBERY BY ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ROBBERY/DEADLY WEAPON",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ROBBERY/DEADLY WEAPON   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG ROBBERY/DEADLY WEAPON (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG SEXUAL ASSAULT CHILD/OBJEC",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG SEXUAL ASSAULT CHILD/OBJECT-SUPER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG SEXUAL ASSAULT W OBJECT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG SODOMY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIDING SUICIDE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANIMAL BITE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ANIMAL BITE - FIREARM USED",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT BY CONTACT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT BY CONTACT FAM/DATING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT BY THREAT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT BY THREAT FAM/DATING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT  CONTACT-SEXUAL NATURE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT CONTACT-SEXUAL NATURE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT INFO (FAMILY VIOLENCE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT INFORMATION   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT INFORMATION (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT OF A PREGNANT WOMAN",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT OF PREGNANT WM-FAM/DAT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT ON PEACE OFFICER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT ON PUBLIC SERVANT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT - SCHOOL PERSONNEL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT W/INJURY-FAM/DATE VIOL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT WITH INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATTACK BY DOG",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATTACK ON ASSISTANCE ANIMAL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "BESTIALITY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "BICYCLIST INJURED",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURG OF RES - FAM/DATING ASLT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURG OF RES - SEXUAL NATURE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CAPITAL MURDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD ABUSE INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD ENDANGERMENT- ABANDONMEN",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD EXPLOITATION INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD GROOMING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONTRIBUTE DELINQUENCY MINOR",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONT SEX ABUSE OF CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONT VIOL AGAINST FAMILY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/CRIM NEG HOMICIDE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/FATALITY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/INTOX MANSLAUGHTER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/MANSLAUGHTER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/MURDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/NEGLIGENT HOMICIDE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/SERIOUS BODILY INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMES AGAINST ELDERLY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL SOLICITATION OF MINOR",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIM NEG HOMICIDE/NON TRAFFIC",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRUELTY TO ANIMALS",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRUELTY TO ANIMALS   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEADLY CONDUCT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEADLY CONDUCT FAM/DATE VIOL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC ABUSE OR THREAT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC DISCHARGE GUN - PUB PLACE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC DISCHARGE GUN - PUB ROAD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC DISPLAY GUN/DEADLY PUB PLC",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC EXPOSURE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC FIGHTING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOMESTIC VIOLENCE/ALARM",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRIVING WHILE INTOX / FELONY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRUG/MURDER BY PROVIDING DRUG RESULTING IN DEATH",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DUI - AGE 16 AND UNDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DUI - AGE 17 TO 20",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DWI",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DWI  .15 BAC OR ABOVE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DWI .15 BAC OR ABOVE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DWI 2ND",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DWI - CHILD PASSENGER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DWI - DRUG RECOGNITION EXPERT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ELUDING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ENGAGING IN ORGANIZED CRIME",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ENTICING A CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ESCAPE FROM CUSTODY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ESCAPE FROM CUSTODY   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EVADING / FOOT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EVADING VEHICLE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EVADING / VEHICLE PURSUIT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATTAGGFORCESODOMYCHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT AGG KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT AGG ROBBERY/WEAP",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIREDATT AGG SEX ASSLT CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT AGG SEXUAL ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT CAPITAL MURDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT FORCED SODOMY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT MURDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT RAPE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT RAPE OF A CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT ROBBERY BY ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT SEXUAL ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT SEXUAL ASULT CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT/TAKE WEAP FROM OFF",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED - DEADLY ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-DO NOT USE-ASSAULT ON PEACE OFFICER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-EVADING ARREST",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-INJURY CHILD - ELDERLY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-SOLICITATION OF CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPLOITATION OF CHILD/ELDERLY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FELONY ENHANCEMENT/ASSLT W/INJ",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORCED SODOMY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORCED SODOMY OF CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HOMICIDE INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "HUMAN TRAFFICKING INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMPROPER CONTACT-SEX ASLT VICT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INCEST-PROHIBITED SEX CONDUCT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INDECENCY WITH A CHILD/CONTACT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INDECENCY WITH CHILD/EXPOSURE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INDECENT ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INDECENT ASSAULT (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INDECENT EXPOSURE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJ/CHILD FV (NO CARE/CUSTODY)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJ TO DISABLED  FAM/DATE VIOL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJ TO DISABLED FAM/DATE VIOL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJ TO ELDERLY   FAM/DATE VIOL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJ TO ELDERLY FAM/DATE VIOL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURED ANIMAL-FIREARM USED",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURY DISABLED INDIVIDUAL",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURY TO CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURY TO CHILD (CARE/CUSTODY)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURY TO ELDERLY PERSON",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURY TO ELDERLY PERSON - SBI",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "JUSTIFIED HOMICIDE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING FAM VIO",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "KIDNAPPING INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "MANSLAUGHTER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "MURDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY AGG ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY SEXUAL ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "RAPE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "RAPE   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "RAPE (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "RAPE OF A CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "RETALIATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY BY ASSAULT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY BY ASSAULT (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY BY THREAT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY BY THREAT   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SALE OR PURCHASE OF CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SERIOUS INJURY TO A CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL ASSAULT INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL ASSAULT INFORMATION (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL ASSAULT OF CHILD/OBJECT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL ASSAULT W/ OBJECT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL ASSAULT W/ OBJECT   (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL ASSAULT W/ OBJECT (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL COERCION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXUAL PERFORMANCE BY CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "STALKING",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "STALKING INFORMATION",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "STATUTORY RAPE OF CHILD",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "TERRORISTIC THREAT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "TERRORISTIC THREAT-FAM/DAT VIO",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "TERRORISTIC THREAT-MASS CASLTY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRAFFICKING OF PERSONS FOR SEX",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAWFUL RESTRAINT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAWFUL RESTRAINT FAM/DAT VIO",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CIVIL RIGHTS PRISONER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOLENT CRIMES TASK FORCE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF AGGRESSIVE CONFRONT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF BOND CONDITIONS",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF COURT ORDER-NON EPO-PO",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF EMERG PROTECTIVE ORDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF PRISONERS RIGHT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF PROTECTIVE ORDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF PROTECTIVE ORDER (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL PO / SEXUAL ASLT VICTIM",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL STATE LAW - OTHER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL STAY AWAY ORDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL TEMP EX PARTE  ORDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL TEMP EX PARTE ORDER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "WARRANT ARREST NON TRAFFIC",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ABANDONED PROP",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ABANDONED REFRIGERATOR",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ABANDONED VEH",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON-CRIMINAL MISCHIEF",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON-DEADLY CONDUCT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON INFORMATION",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON-RECKLESS DAMAGE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON-VIOL CITY ORDINANCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ARSON WITH BODILY INJURY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATT ARSON",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATT BURGLARY NON RESIDENCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATT BURGLARY OF RESIDENCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO SALVAGE DEALERS",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BICYCLE REGISTRATION",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BOAT CRASH/ACCIDENT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY NON RESIDENCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY NON RESIDENCE   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY NON RESIDENCE (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF COIN-OP MACHINE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF NON-RESIDENCE INFORMATION",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF NON-RESIDENCE INFORMATION   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF RESIDENCE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF RESIDENCE   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF RESIDENCE (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF RESIDENCE INFORMATION",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF RESIDENCE INFORMATION   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF SHED/DETACHED GARAGE/STORAGE UNIT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF SHED/DETACHED GARAGE/STORAGE UNIT   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF VEHICLE   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF VEHICLE (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF VEH INFORMATION",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF VEH INFORMATION   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF VEH INFORMATION (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF VEH-NO SUSPECT/FU",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/CITY VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/CROSSWALK VULNERABLE USER BI-MISD",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL MISCHIEF",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL MISCHIEF   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL MISCHIEF INFORMATION",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL MISCHIEF-NO SUSPECT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL MISCHIEF-NO SUSPECT   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL MISCHIEF-NO SUSPECT (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS-AUTHORIZATION",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS/HOTEL",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS/IN VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS/IN VEHICLE   (ATTEMPTED)",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS NOTICE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS NOTICE-COA",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS NOTICE MULTIPLE LOCATIONS",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL TRESPASS/TRANSIENT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "DAMAGE CITY PROP",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "DAMAGE CITY VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "DAMAGE TO CITY PROPERTY INFO",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "DAMAGE TO CITY VEHICLE INFO",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISPOSAL OF SOLID WASTE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "DUMPING REFUSE NEAR HIGHWAY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-LOST LICENSE PLATE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "FOUND LICENSE PLATE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "FOUND PROPERTY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "GRAFFITI",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMPOUNDED/REPOSSED VEH NON-APD",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMPOUNDED VEH",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "INSPECTION PROPERTY CRIMES",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "JUNKED/NUISANCE VEHICLE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOST PROP",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "NUISANCE ABATEMENT",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "OPEN DOOR/WINDOW",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY BURGLARY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "RECKLESS DAMAGE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "RENTAL CAR/FAIL TO RETURN",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATT AUTO THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATT THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT   (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT INFORMATION",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT INFORMATION   (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUTO THEFT INFORMATION (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "JUGGING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "MAIL THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY AUTO THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY ROBBERY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "POCKET PICKING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "PURSE SNATCHING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY ALARM",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT- APPROPRIATE STOLEN PROP",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT BY CHECK",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT BY EMBEZZLEMENT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT BY EXTORTION",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT BY FALSE PRETEXT/BUNCO",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT BY PUBLIC SERVANT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT BY SHOPLIFTING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT CATALYTIC CONVERTER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT FROM AUTO",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT FROM AUTO   (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT FROM BUILDING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT FROM PERSON",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT FROM PERSON   (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT INFORMATION",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT-NO SUSPECT/FOLLOWUP",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF AUTO PARTS",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF BICYCLE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF CRYPTOCURRENCY",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF HEAVY EQUIPMENT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF LICENSE PLATE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF METAL",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF METAL   (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF METAL (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF SERVICE",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF TELECOMMUNICATION SRV",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF TRAILER",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT/TILL TAPPING",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG PERJURY",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSET FORFEITURES",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "BANK KITING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "BRIBERY",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "COERCION OF PUBLIC SERVANT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "COMMERCIAL BRIBERY",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "COUNTERFEITING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "COUNTERFEITING INFORMATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRED CARD ABUSE BY FORGERY",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRED CARD ABUSE - EXPIR-CANCEL",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRED CARD ABUSE - OTHER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRED CARD ABUSE - OTHER   (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRED CARD ABUSE - OTHER (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL CONSPIRACY",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL SOLICITATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEBIT CARD ABUSE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEBIT CARD ABUSE   (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "DELIVERY OF PRESCRIPTION FORM",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT OB DANG DRUG FRAUD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPIRED-ATT OBT CONT SUB FRAUD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FALSE CALLER ID DISPLAY/SPOOF",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FALSE STATEMENT -OBTAIN CREDIT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FICTITIOUS DRIVERS LICENSE/ID",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FICTITIOUS INSPECTION STICKER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FICTITIOUS LICENSE PLATE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FICTITIOUS NAME",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY AND PASSING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY BY ALTERATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY BY MAKING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY- CERTIFICATE OF TITLE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY OF IDENTIFICATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY - OTHER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY - OTHER (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD-CARD SKIMMER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD DESTRUCTION OF A WRITING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD FILING FINANCE STATEMENT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - OTHER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - OTHER   (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - OTHER (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD-PHISHING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD-USE/POSSESSION OF IDENTIFYING INFORMATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "GIFT TO PUBLIC SERVANT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "IDENTITY THEFT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "IDENTITY THEFT INFORMATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "IDENTITY THEFT-TAX RETURNS",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMPERSONATING PUBLIC SERVANT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISAPPLY FIDUCIARY PROP",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISUSE OF OFFICIAL INFO",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "MONEY LAUNDERING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBTAIN CONTROLLED SUB BY FRAUD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBTAIN DANG DRUG BY FRAUD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFICIAL MISCONDUCT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "OFFICIAL OPPRESSION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "ONLINE IMPERSONATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "ONLINE SOLICITATION OF A MINOR",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY CREDIT CARD ABUSE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "PERJURY",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "PIGEON DROP",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSSESSION OF FORGED WRITING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "PRACTICE MEDICINE W/OUT LICENS",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "SECURING EXEC-DOC BY DECEPTION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAMPERING WITH CONSUMER PROD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAMPERING WITH EVIDENCE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAMPERING WITH GOV RECORD",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAMPERING WITH ID NUMBER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAMPERING WITH WITNESS",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAMPER WITH ELECTRONIC MONITORING DEVICE",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TELECOMMUNICATION CRIMES/OTHER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRADEMARK COUNTERFEITING",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAWFUL DISCLOSURE OF RESIDENCE ADDRESS OR PHONE NUMBER",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAWFUL INTERCEPTION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "AGG PROMOTION OF PROSTITUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT - FOUND MARIJUANA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT PLACES WEAPON PROHIBIT",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "BOATING WHILE INTOXICATED",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "BWI-EXPIRED USE 2110",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "COMMUNICATING GAMBLING INFO",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "COMPELLING PROSTITUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONTROLLED SUB VIOL - OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/INTOXICATION ASSAULT",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DANG DRUG VIOL - OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEL CONTROLLED SUB/NARCOTIC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEL CONTROLLED SUB/OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEL CONTROLLED SUB/SYN NARC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEL MARIJUANA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEL OF ALCOHOL TO MINOR",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEL OF DANG DRUG",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEL SYNTHETIC MARIJUANA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISTRIB HARMFUL MATERIAL MINOR",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAIL DISPLAY HANDGUN LICENSE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARMS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARMS ON SCHOOL PROP",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIREARM SURRENDER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FOUND CONTROLLED SUBSTANCE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "FOUND FIREARMS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "GAMBLING",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "GAMBLING INFORMATION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "GAMBLING PROMOTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "ILLEGAL TRANSPORTATION OF LIQ",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "INHALANT ABUSE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "KEEPING GAMBLING PLACE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOCATION RESTRICT KNIFE CLS C",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "MANF CONTROLLED SUB - OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "MANF CONTROLLED SUB- SYN NARC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "MANF SYNTHETIC MARIJUANA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "NARCAN/NALOXONE ADMINISTERED",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBSCENE DISPLAY - DISTRIBUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBSCENITY",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OVERDOSE OPIATE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CONTROLLED SUB/NARCOTIC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CONTROLLED SUB/OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CONTROLLED SUB/SYN NARC",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CRIMINAL INSTRUMENT",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS DANG DRUG",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSSESSION OF MARIJUANA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF DRUG PARAPHERNALIA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF FIREARM BY FELON",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF GAMBLING EQUIPMENT",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF GAMBLING PARAPHERNALIA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF PRESCRIPTION FORM",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF PROHIBITED WEAPON",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS/PROMO CHILD PORNOGRAPHY",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS SYNTHETIC MARIJUANA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROMOTION OF PROSTITUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROSTITUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PURCHASING PROSTITUTION",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "SALE OF DXM TO MINOR",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "SALE OF LIQ IN PROHIB AREA",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "SALE OF LIQ WITHOUT PERMIT",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXTING DEPICTING A MINOR",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEXTING/TRANSMIT SEXUAL PHOTOS",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "SMUGGLING ILLEGAL ALIEN",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAKE WEAPON FRM POLICE OFFICER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "UCW LICENSE PREMISE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAWFUL CARRYING WEAPON",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAWFUL CARRY-LIC HOLDER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "WEAPON VIOL - OTHER",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "ABUSE OF 911",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ABUSE OF OFFICIAL CAPACITY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT - BOMB THREAT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT - BREACH OF SECURITY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT - CRIMINAL TRESPASS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT - FEDERAL VIOL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT-TSA ASSIST",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ALCOHOL CONTROL TEAM",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "AMPLIFIED MUSIC / VEHICLE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "APPLIC TO REVOKE PROBATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "BAIL JUMPING/FAIL TO APPEAR",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "BOMB THREAT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "BOMB THREAT - AIRCRAFT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "BREACH OF COMPUTER SECURITY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CAMPING IN PARK",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CHILD CUSTODY INTERFERE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CIVIL DISTURBANCE/DEMO",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "COMMUNITY POLICE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CONTEMPT OF COURT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/FAIL STOP AND RENDER AID",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/LEAVE SCENE-NO SUSPECT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRASH/LEAVING THE SCENE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "CUSTODY ARREST TRAFFIC WARR",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DATING DISTURBANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISCLOSE/PROMO INTIMATE VISUAL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISRUPTING MEETING/PROCESSION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISRUPTION OF CLASSES",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISRUPTIVE ACTS AT SCHOOLS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISTURBANCE - OTHER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC ABUSIVE LANGUAGE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC CREATING NOXIOUS ODOR",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC OFFENSIVE GESTURE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC UNREASONABLE NOISE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC WINDOW PEEPING - HOTEL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC WINDOW PEEPING - PUB AREA",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DOC WINDOW PEEPING-RESIDENCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRINKING AFTER CURFEW",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRIVING WHILE LICENSE INVALID",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "EMERGENCY PROTECTIVE ORDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXP-VIOL CITY ORDINANCE - TAXI",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAIL TO REGISTER - ADULT VIC",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAIL TO REGISTER- MINOR VIC",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAIL TO REGISTR INFO ADULT VIC",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAIL TO REGISTR INFO MINOR VIC",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAILURE TO IDENTIFY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAILURE TO REG AS SEX OFFENDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAILURE TO REPORT CHILD ABUSE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FALSE ALARM OR REPORT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FALSE BURGLAR ALARM",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FALSE ID AS A PEACE OFFICER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FALSE REPORT TO CPS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FALSE REPORT TO PEACE OFFICER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAMILY DISTURBANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAMILY DISTURBANCE/PARENTAL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARASSMENT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARASSMENT OF A PUBLIC SERVANT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARASSMENT ONLINE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HARBORING RUNAWAY CHILD",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HATE CRIME INFORMATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HAZARDOUS TRAFFIC CITATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HAZARDOUS TRAFFIC VIOL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HAZING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HINDERING APPREHENSION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HINDERING PROCEEDING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HINDER SECURED CREDITORS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ILLUMIN AIRCRAFT INTENSE LIGHT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTER EMERG PHONECALL FAM/DATE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTERFERENCE PUBLIC DUTIES",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTERFERE W PO SERVICE ANIMALS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTERFERING W/EMERG PHONE CALL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LEVEL 1 RESPONSE TO RESISTANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LEVEL 2 RESPONSE TO RESISTANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LEVEL 3 RESPONSE TO RESISTANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LEVEL 4 RESPONSE TO RESISTANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LIQUOR LAW VIOLATION/OTHER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LITTERING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOITERING IN PUBLIC PARK",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LOITERING ON SCHOOL PROP",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "MAKING TOBACCO AVAIL TO MINOR",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISREP AGE BY MINOR",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "MULTIPLE TRAFFIC VIOL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "NO DRIVERS LICENSE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "NO LIABILITY INSURANCE 2ND",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "NON HAZARDOUS TRAFFIC VIOL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "NON HAZ TRAFFIC CITATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "OBSTRUCTION HIGHWAY/PASSAGEWA",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PAROLE VIOL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PEDESTRIAN ON ROADWAY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF ALCOHOL-AGE 16 & UNDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF ALCOHOL - AGE 17 TO 20",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS OF LIQ ON SCHOOL PROP",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROBATION VIOL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROTECTIVE ORDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PROWLER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PUBLIC INTOXICATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PUBLIC INTOX-SOBERING CENTER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "PUBLIC LEWDNESS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "RECKLESS CONDUCT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "RECKLESS DRIVING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "RESISTING ARREST OR SEARCH",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "RESPONSE TO RESISTANCE REPORT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "RIOT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROAD RAGE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "SIT AND LIE ORDINANCE VIOL",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "SLEEPING IN PUBLIC PLACE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "SOLICITATION - BEGGING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "STAY AWAY ORDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "SWAT OPERATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TACTICAL INTELLIGENCE UNIT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TEMP EX PARTE  ORDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TEMP EX PARTE ORDER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TOBACCO VIOL - AGE 17",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TOBACCO VIOL - UNDER AGE 17",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TOBACCO VIOL - UNDER AGE 21",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRAFFIC HAZARD/DEBRIS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRAFFIC VIOL/OTHER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRUANCY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "URINATING IN PUBLIC PLACE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORD-COVID 19 MASK",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - AIRPORT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - BOOTING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - CURFEW",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - DOG",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE -FIREWORK",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE -  GAME RM",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - OTHER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - SMOKING",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - SOUND",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - TAXI",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - TITLE 10",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL CITY ORDINANCE - WRECKER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL GLASS CONTAINER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF CAMPING ORDINANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF OBSTRUCTION ORDINANCE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL OF PARK CURFEW",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL STATE MASSAGE REGULATIONS",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL VEH REGISTRATION - OTHER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL WATER SAFETY ACT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VOCO - ALCOHOL  CONSUMPTION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VOCO - ALCOHOL CONSUMPTION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VOCO AMPLIFIED MUSIC/VEHICLE",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VOCO SOLICITATION PROHIBIT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "68A INSPECTION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "APS REFERRAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSIST CITY DEPT/OTHER",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSIST COMPLAINANT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSIST EMS",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSIST FIRE DEPT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSIST OTHER POLICE AGENCY",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATF TASK FORCE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "AUSTIN CARES - CIT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "AWOL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "CPS REFERRAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "CRIMINAL NONSUPPORT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DANGEROUS ANIMAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DART",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEATH DUE TO NATURAL CAUSES",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DECEASED PERSON",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEPENDENT AND NEGLECTED CHILD",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DESECRATION VENERATED OBJECT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DESERTION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DIRECTED PATROL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISTRICT REPRESENTATIVE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DNA LAB-BODE CELLMARK",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DNA LAB-CAP LAB",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DNA LAB-SIGNATURE SCIENCE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRONE INVOLVED",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "EDP TELEHEALTH",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "EXPLOSIVE ORDNANCE DISPOSAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "FEDERAL CASES",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "FEDERAL VIOL/OTHER",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "FIELD OBSERVATION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "FOUND ADULT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "GANG SOURCE DOCUMENT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ILLEGAL LABELLING OF RECORDING",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMMIGRATION HOLD/ARREST",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMPOUNDED ANIMAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "INJURED ANIMAL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "INVASIVE VISUAL RECORDING",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "METRO TAC REG 2",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "METRO TAC REG 3",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "METRO TAC REG 4",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISSING ADULT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "NIBIN BALLISTIC INFO NETWORK",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "NIBIN LEAD",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "NIBIN-NOT FOR FORENSIC ANALYSIS",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER FIRE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY MISSING PERSON",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "OUT OF CITY OFFENSE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "PICK UP ITEM/EVIDENCE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "RECOVERED RUNAWAY-SAFECARES/RST CONTACT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "REGISTERED SEX OFFENDER",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "REQUEST TO APPREHEND",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "REQUEST TO LOCATE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "ROBBERY INFORMATION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SEX OFFENDER COMPLIANCE CHECK",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "STRUCTURE FIRE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SUICIDE",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SUSPICIOUS PERSON",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SUSPICIOUS PERSON   (ATTEMPTED)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "SUSPICIOUS VEH",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "TEST CODE - FOR TESTING ONLY",
+        "label": "7"
+    },
+    {
+        "dataType": "crime",
+        "text": "VEHICLE FIRE",
+        "label": "6"
+    }
+]

@@ -1,0 +1,179 @@
+[
+  {
+    "sourceConfigId": 1,
+    "url": "https://311crimemap-data.s3.us-east-2.amazonaws.com/Crime_Reports_20240708.csv",
+    "cookie": null,
+    "category": "crime",
+    "description": "Austin Crime APD CSV Last Dump 2024-07-08",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": "reportNum",
+      "reportNum": {
+        "field": "Incident Number",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "Highest Offense Description",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "Address",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "Location Type",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "Longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "Occurred Date Time",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT_CSV_AUSTIN"
+      },
+      "reportedAt2": {
+        "field": "Report Date Time",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT2_CSV_AUSTIN"
+      }
+    }
+  },
+  {
+    "sourceConfigId": 2,
+    "url": "https://services.austintexas.gov/police/reports/search2.cfm?startdate=08/01/2024&numdays=1&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit",
+    "cookie": "APD_IRSEARCH=true",
+    "category": "crime",
+    "description": "Austin Crime APD Incident Report",
+    "dataParserType": "APDINCIDENTREPORT",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "APDINCIDENTREPORT",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": "reportNum",
+      "reportNum": {
+        "field": "reportNum",
+        "pointer": "tr:nth-of-type(1) td:nth-of-type(2)",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "reportCategory",
+        "pointer": "tr:nth-of-type(5) td:nth-of-type(2) td",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "address",
+        "pointer": "tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "reportedAt",
+        "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": "reportedAt2",
+        "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 3,
+    "url": "https://data.austintexas.gov/api/views/xwdj-i9he/rows.csv?fourfour=xwdj-i9he&cacheBust=1726145694&date=20240912&accessType=DOWNLOAD",
+    "cookie": null,
+    "category": "311",
+    "description": "Austin 311",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportNum": {
+        "field": "Service Request (SR) Number",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "SR Description",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "SR Location",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Latitude Coordinate",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "Longitude Coordinate",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "Created Date",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  }
+]
