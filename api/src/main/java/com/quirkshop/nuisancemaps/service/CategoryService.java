@@ -36,6 +36,8 @@ public class CategoryService {
         for (Category categoryDTO : categories) {
             String text = categoryDTO.getText();
             Integer label = categoryDTO.getLabel();
+            String iconName= categoryDTO.getIconName();
+            String iconUnicode = categoryDTO.getIconUnicode();
 
             Category parent = null;
 
@@ -44,7 +46,7 @@ public class CategoryService {
             if (text != null) {
                 parent = categoryRepository.findByDataTypeAndTextAndLabel(dataType, text, label);
                 if (parent == null) {
-                    parent = new Category(dataType, text, label, null);
+                    parent = new Category(dataType, text, label, null, iconName, iconUnicode);
                     try {
                         parent = categoryRepository.save(parent);
                         num++;
@@ -60,7 +62,7 @@ public class CategoryService {
                 String childText = subCategoryDTO.getText();
                 Integer childLabel = subCategoryDTO.getLabel();
 
-                Category child = new Category(dataType, childText, childLabel, parent);
+                Category child = new Category(dataType, childText, childLabel, parent, iconName, iconUnicode);
 
                 try {
                     categoryRepository.save(child);
