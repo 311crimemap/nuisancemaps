@@ -175,5 +175,123 @@
         "parsingStrategy": null
       }
     }
+  },
+  {
+    "sourceConfigId": 4,
+    "url": "https://www.dallasopendata.com/api/views/qv6i-rri7/rows.csv?fourfour=qv6i-rri7&cacheBust=1726225778&date=20240913&accessType=DOWNLOAD",
+    "cookie": null,
+    "category": "crime",
+    "description": "Dallas Police",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportNum": {
+        "field": "Incident Number w/year",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "Type of Incident",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "Incident Address",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "Type Location",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Location1",
+        "pointer": null,
+        "parsingStrategy": "LATITUDE_CSV_CRIME_DALLAS"
+      },
+      "longitude": {
+        "field": "Location1",
+        "pointer": null,
+        "parsingStrategy": "LONGITUDE_CSV_CRIME_DALLAS"
+      },
+      "reportedAt": {
+        "field": "Date of Report",
+        "pointer": null,
+        "parsingStrategy": "REPORTEDAT_CSV_CRIME_DALLAS"
+      },
+      "reportedAt2": {
+        "field": "Date1 of Occurrence",
+        "pointer": null,
+        "parsingStrategy": "REPORTEDAT2_CSV_CRIME_DALLAS"
+      }
+    }
+  },
+  {
+    "sourceConfigId": 5,
+    "url": "https://www.dallasopendata.com/api/views/d7e7-envw/rows.csv?fourfour=d7e7-envw&cacheBust=1726350684&date=20240914&accessType=DOWNLOAD",
+    "cookie": null,
+    "category": "311",
+    "description": "Dallas 311",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportNum": {
+        "field": "Service Request Number",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "Service Request Type",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "Address",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "Department",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Lat_Long Location",
+        "pointer": null,
+        "parsingStrategy": "LATITUDE_311_DALLAS"
+      },
+      "longitude": {
+        "field": "Lat_Long Location",
+        "pointer": null,
+        "parsingStrategy": "LONGITUDE_311_DALLAS"
+      },
+      "reportedAt": {
+        "field": "Created Date",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
   }
 ]

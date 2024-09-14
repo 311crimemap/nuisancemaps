@@ -90,6 +90,34 @@ public class ParserStrategyConfigTest {
 
     @Test
     @Transactional
+    public void LATITUDE_CSV_311_DALLAS_TEST() {
+        assertThat(ParserStrategy.LATITUDE_CSV_311_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Lat_Long Location", "(32.71777362108976000,-96.80840102118572000)");
+
+        String value = parserStrategyConfig.LATITUDE_CSV_311_DALLAS(row);
+        assertThat(value).isEqualTo("32.71777362108976000");
+    }
+
+    @Test
+    @Transactional
+    public void LONGITUDE_CSV_311_DALLAS_TEST() {
+        assertThat(ParserStrategy.LONGITUDE_CSV_311_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Lat_Long Location", "(32.71777362108976000,-96.80840102118572000)");
+
+        String value = parserStrategyConfig.LONGITUDE_CSV_311_DALLAS(row);
+        assertThat(value).isEqualTo("-96.80840102118572000");
+    }
+
+    @Test
+    @Transactional
     public void REPORTEDAT_CSV_CRIME_DALLAS_TEST() {
         assertThat(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS).isNotNull();
 

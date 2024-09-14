@@ -55,6 +55,8 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_AUSTIN, this::REPORTED_AT2_CSV_AUSTIN);
         parsingFunctions.put(ParserStrategy.LATITUDE_CSV_CRIME_DALLAS, this::LATITUDE_CSV_CRIME_DALLAS);
         parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_CRIME_DALLAS, this::LONGITUDE_CSV_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.LATITUDE_CSV_311_DALLAS, this::LATITUDE_CSV_311_DALLAS);
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_311_DALLAS, this::LONGITUDE_CSV_311_DALLAS);
         parsingFunctions.put(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS, this::REPORTEDAT_CSV_CRIME_DALLAS);
         parsingFunctions.put(ParserStrategy.REPORTEDAT2_CSV_CRIME_DALLAS, this::REPORTEDAT2_CSV_CRIME_DALLAS);
 
@@ -166,6 +168,40 @@ public class ParserStrategyConfig {
             String text = item.at("/lat_location").asText();
             String coordinates = text.replaceAll("[()]", "");
             longitude = coordinates.split(",")[1];
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return longitude;
+    }
+
+    public String LATITUDE_CSV_311_DALLAS(Map<String, String> row) {
+        // (32.71777362108976000,-96.80840102118572000)
+        String latitude = null;
+
+        try {
+
+            String text = row.get("Lat_Long Location");
+            String coordinates = text.replaceAll("[()]", "");
+            latitude = coordinates.split(",")[0];
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return latitude;
+    }
+
+    public String LONGITUDE_CSV_311_DALLAS(Map<String, String> row) {
+        // (32.71777362108976000,-96.80840102118572000)
+        String longitude = null;
+
+        try {
+
+            String text = row.get("Lat_Long Location");
+            String coordinates = text.replaceAll("[()]", "");
+            longitude = coordinates.split(",")[1];
+
         } catch (Exception e) {
             log.info(e.getMessage());
         }
