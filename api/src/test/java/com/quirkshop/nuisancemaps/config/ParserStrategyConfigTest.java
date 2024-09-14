@@ -62,6 +62,70 @@ public class ParserStrategyConfigTest {
 
     @Test
     @Transactional
+    public void LATITUDE_CSV_CRIME_DALLAS_TEST() {
+        assertThat(ParserStrategy.LATITUDE_CSV_CRIME_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Location1", "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)");
+
+        String value = parserStrategyConfig.LATITUDE_CSV_CRIME_DALLAS(row);
+        assertThat(value).isEqualTo("32.87309");
+    }
+
+    @Test
+    @Transactional
+    public void LONGITUDE_CSV_CRIME_DALLAS_TEST() {
+        assertThat(ParserStrategy.LONGITUDE_CSV_CRIME_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Location1", "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)");
+
+        String value = parserStrategyConfig.LONGITUDE_CSV_CRIME_DALLAS(row);
+        assertThat(value).isEqualTo("-96.75785");
+    }
+
+    @Test
+    @Transactional
+    public void REPORTEDAT_CSV_CRIME_DALLAS_TEST() {
+        assertThat(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Date of Report", "2022-11-09 07:03:00.0000000");
+
+        String value = parserStrategyConfig.REPORTEDAT_CSV_CRIME_DALLAS(row);
+        assertThat(value).isEqualTo("2022-11-09T07:03:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
+    @Test
+    @Transactional
+    public void REPORTEDAT2_CSV_CRIME_DALLAS_TEST() {
+        assertThat(ParserStrategy.REPORTEDAT2_CSV_CRIME_DALLAS).isNotNull();
+
+        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
+                .parsingFunctionsMap();
+
+        Map<String, String> row = Map.of("Date1 of Occurrence", "2016-09-16 00:00:00.0000000");
+
+        String value = parserStrategyConfig.REPORTEDAT2_CSV_CRIME_DALLAS(row);
+        assertThat(value).isEqualTo("2016-09-16T00:00:00");
+
+        // ensure it's parseable downstream
+        LocalDateTime parsed = LocalDateTime.parse(value);
+        assertThat(parsed).isInstanceOf(LocalDateTime.class);
+    }
+
+    @Test
+    @Transactional
     public void REPORTEDAT_CRIME_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
         assertThat(ParserStrategy.REPORTEDAT_CRIME_DALLAS).isNotNull();
 
