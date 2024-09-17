@@ -15,8 +15,14 @@ All data is in `/data/<city>`.
 
 1. Download data
 
-* `curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`
-* `curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`
+* `curl <datasource>?$select=<column>&$group=<column>&$limit=100000 > data_<type>.json`
+
+NB: Avoid distinct queries on these json endpoints; on opendata endpoints when
+using limit no longer "distincts". "Group" is more reliable and seems faster.
+
+* ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`~~
+* ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`~~
+
 
 2. Output text categories to text file
 
@@ -98,8 +104,12 @@ General process:
 
 Download
 
+Use `group` is preferred, distinct will duplicate on large sets
+
+* `curl <url>$select=<column>&$group=<column>&$limit=100000 > data_<type>.json`
 * `curl <url>$query=SELECT distinct <reportCategory> limit 10000 > data_crime.json`
 * `curl <url>$query=SELECT distinct <reportCategory> limit 10000 > data_311.json`
+
 
 Extract via jq (Note the raw output (-r) to strip quotes.)
 
@@ -131,13 +141,12 @@ to do side-by-side in Excel.
 
 * Review labels, make sure to overwrite with any _SKIP_..
 
-`cat out_crime.json | jq -r '.[].text'`
-`cat out_crime.json | jq -r '.[].index`
+`2-convert_out_to_csv.py <type> <city>`
 
-* Paste into spreadsheet and modify/verify.
+* `classifier/config/categories_<type>.txt` contains reference labels
 
-* Extract as csv: Title columns, save as .csv -> `labeled_crime.csv`, `labeled_311.csv`.
-  * column titles: ["dataType", "text", "label"]
+* Save as csv: Title columns, save as .csv -> `labeled_crime.csv`, `labeled_311.csv`.
+  * !!! * column titles: ["dataType", "text", "label"] *
 
 NB: Data Submission Format:
 
@@ -155,7 +164,7 @@ NB: Data Submission Format:
 
 #### Submitting new Source TextCategory(ies): convert_csv_to_json.py
 
-`convert_csv_to_json.py <city>`: to take csv and convert to list of json for  `/textcategory` submission.
+`3-convert_csv_to_json.py <city>`: to take csv and convert to list of json for  `/textcategory` submission.
 
 * `data/<city>/labeled_crime.csv` -> `data/<city>/labeled_crime.json`
 * `data/<city>/labeled_311.csv` -> `data/<city>/labeled_311.json`

@@ -10,6 +10,7 @@ Animal Aggressive Behavior - DAS
 Animal Bite - DAS
 Animal Community Cat Program - DAS
 Animal Confined - DAS
+Animal Illegal Vending - DAS
 Animal Lack of Care - DAS
 Animal Loose Cat - DAS
 Animal Loose - DAS
@@ -109,6 +110,7 @@ Inlet/Storm Drain Cleaning - DWU
 Inlet/Storm Drain Stopped Up - Hazardous - DWU
 Interagency - PBW
 Landlord Retaliation After Reported Code Violation - CAO
+Landscaping Violation (Arborist) - PDV
 Library Concerns - LIB
 Lid Cover Broken/Missing - Hazardous - PBW
 Lid Cover Broken - Routine - PBW
@@ -175,6 +177,7 @@ School Crossing Guard - CDS
 School Crossing Guard - MSH
 Scooter/Bike Shared Dockless Vehicle - TRN
 Scooter Share - TRN
+Service Request Type
 Sewage Discharge - OEQS
 Sewage Discharge Urgent- OEQS
 Sewer Problems - DWU
@@ -187,6 +190,7 @@ Single Family need registration
 Single Family Need Registration-CCS
 single family needs registration
 Single Family Needs Registration
+Single Family Needs Registration - CCS
 Single Family Rental Inspection - CCS
 single family rental needs registration
 Single Family Rental Needs Registration - CCS

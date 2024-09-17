@@ -104,7 +104,7 @@ public class FileDataProcessingStrategyTest {
     public void setUpOnce() throws IOException {
         // Source
         ObjectMapper objectMapper = new ObjectMapper();
-        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config_archive.json").getFile();
         sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
         });
         for (Source s : sources) {
@@ -172,7 +172,7 @@ public class FileDataProcessingStrategyTest {
     public void writeToFileTest() throws IOException {
         // generic content
         InputStream inputStream = resourceLoader
-                .getResource("classpath:data/source_config.json").getInputStream();
+                .getResource("classpath:data/source_config_archive.json").getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(12);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");

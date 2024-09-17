@@ -1,3 +1,5 @@
+package com.quirkshop.nuisancemaps.config.cache;
+
 import java.util.concurrent.TimeUnit;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
