@@ -15,8 +15,14 @@ All data is in `/data/<city>`.
 
 1. Download data
 
-* `curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`
-* `curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`
+* `curl <datasource>?$select=<column>&$group=<column>&$limit=100000 > data_<type>.json`
+
+NB: Avoid distinct queries on these json endpoints; on opendata endpoints when
+using limit no longer "distincts". "Group" is more reliable and seems faster.
+
+* ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`~~
+* ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`~~
+
 
 2. Output text categories to text file
 
