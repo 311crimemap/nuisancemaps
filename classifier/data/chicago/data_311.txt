@@ -77,6 +77,7 @@ Smokeless Tobacco at Sports Event Complaint
 Snow - Object/Dibs Removal Request
 Snow Removal - Protected Bike Lane or Bridge Sidewalk
 Snow – Uncleared Sidewalk Complaint
+SR_TYPE
 Stray Animal Complaint
 Street Cleaning Request
 Street Light On During Day Complaint
