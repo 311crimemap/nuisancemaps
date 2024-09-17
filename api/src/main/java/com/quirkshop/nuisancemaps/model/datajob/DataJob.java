@@ -121,9 +121,12 @@ public class DataJob {
     }
 
     public String buildFilename() throws MalformedURLException {
-        String sourceURL = this.getSourceURL();
 
-        URL _url = new URL(sourceURL);
+        // want filename from DataJob URL - generated from DataJobconfigurator
+        // not initial but static source url
+        String url = this.getUrl();
+        URL _url = new URL(url);
+
         String hostName = _url.getHost().replaceAll("/", "-");
         String filePath = _url.getPath().split("\\.")[0]
                 .replaceAll("/", "-").substring(1); // skip the initial path prefix '/'
@@ -134,9 +137,9 @@ public class DataJob {
         String params = "";
         if (query != null) {
             params = "-" + query
-                .replaceAll("/", "-")   // avoid date format breaking into subdirectories
-                .replaceAll("&", "__")
-                .replaceAll("=", "_");
+                    .replaceAll("/", "-") // avoid date format breaking into subdirectories
+                    .replaceAll("&", "__")
+                    .replaceAll("=", "_");
         }
 
         String fileExtension = source.getDataParserType().toString().toLowerCase();
