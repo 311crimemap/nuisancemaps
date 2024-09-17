@@ -30,6 +30,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
     @Autowired
     private OkHttpClient client;
 
+    private static final String MAPTILER_HOST_REFERER = System.getenv("MAPTILER_HOST_REFERER");
     private static final String MAPTILER_API_KEY = System.getenv("VITE_MAPTILER_API_KEY");
     private static final int MAPTILER_API_BATCH_SIZE = 50;
     private static final double MAPTILER_API_RELEVANCE_SCORE = .75;
@@ -131,7 +132,9 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
 
                 String url = buildAPIURL(source, batchURLs, MAPTILER_API_KEY);
                 Builder requestBuilder = new Request.Builder().url(url);
-                Request request = requestBuilder.build();
+                Request request = requestBuilder
+                    .header("Referer", MAPTILER_HOST_REFERER)
+                    .build();
                 Response response = client.newCall(request).execute();
 
                 if (!response.isSuccessful()) {

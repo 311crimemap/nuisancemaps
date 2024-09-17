@@ -39,6 +39,16 @@ spec:
               configMapKeyRef:
                 name: postgresql-config
                 key: POSTGRESQL_URL
+          - name: VITE_MAPTILER_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: api-secrets
+                key: VITE_MAPTILER_API_KEY
+          - name: GEOAPIFY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: api-secrets
+                key: GEOAPIFY_API_KEY
           - name: FETCH_DATA_DIR
             value: "/data"
           - name: DATA_DIR_MIN_FREE
@@ -55,8 +65,11 @@ spec:
             value: "100000"
           - name: BATCH_SIZE
             value: "50000"
-          - name: MAX_DATA_RECORDS
-            value: "10000"
+          - name: VITE_MAX_DATA_RECORDS
+            value: "20000"
+          - name: MAPTILER_HOST_REFERER
+            value: "api.311crimemap.com"
+
           volumeMounts:
             - name: data-volume
               mountPath: /data
