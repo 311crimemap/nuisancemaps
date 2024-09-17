@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -45,17 +47,24 @@ public class ParserStrategyConfig {
 
         parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON, this::REPORTEDAT_BOSTON);
         parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET,
-                             this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
+                this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
         parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
                 this::REPORTEDAT_CRIME_NEWYORKCITY);
         parsingFunctions.put(ParserStrategy.CREATED_DATE_311_NEWYORKCITY, this::CREATED_DATE_311_NEWYORKCITY);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN, this::REPORTED_AT_CSV_AUSTIN);
         parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_AUSTIN, this::REPORTED_AT2_CSV_AUSTIN);
+        parsingFunctions.put(ParserStrategy.LATITUDE_CSV_CRIME_DALLAS, this::LATITUDE_CSV_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_CRIME_DALLAS, this::LONGITUDE_CSV_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.LATITUDE_CSV_311_DALLAS, this::LATITUDE_CSV_311_DALLAS);
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_311_DALLAS, this::LONGITUDE_CSV_311_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS, this::REPORTEDAT_CSV_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTEDAT2_CSV_CRIME_DALLAS, this::REPORTEDAT2_CSV_CRIME_DALLAS);
 
         return parsingFunctions;
     }
 
-    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr time
+    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
+    // time
     // (MM-DD-YYYY HH:mm:ss) 2020-12-31 20:30:00
     public String REPORTEDAT_BOSTON(Map<String, String> row) {
         String dateStr = null;
@@ -166,6 +175,112 @@ public class ParserStrategyConfig {
         return longitude;
     }
 
+    public String LATITUDE_CSV_311_DALLAS(Map<String, String> row) {
+        // (32.71777362108976000,-96.80840102118572000)
+        String latitude = null;
+
+        try {
+
+            String text = row.get("Lat_Long Location");
+            String coordinates = text.replaceAll("[()]", "");
+            latitude = coordinates.split(",")[0];
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return latitude;
+    }
+
+    public String LONGITUDE_CSV_311_DALLAS(Map<String, String> row) {
+        // (32.71777362108976000,-96.80840102118572000)
+        String longitude = null;
+
+        try {
+
+            String text = row.get("Lat_Long Location");
+            String coordinates = text.replaceAll("[()]", "");
+            longitude = coordinates.split(",")[1];
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return longitude;
+    }
+
+    public String LATITUDE_CSV_CRIME_DALLAS(Map<String, String> row) {
+        // "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)"
+        String latitude = null;
+
+        try {
+
+            String text = row.get("Location1");
+
+            Pattern pattern = Pattern.compile("\\(([^,]+),\\s*([^\\)]+)\\)");
+
+            Matcher matcher = pattern.matcher(text);
+
+            if (matcher.find()) {
+                latitude = matcher.group(1);
+            }
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return latitude;
+    }
+
+    public String LONGITUDE_CSV_CRIME_DALLAS(Map<String, String> row) {
+        // "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)"
+        String longitude = null;
+
+        try {
+
+            String text = row.get("Location1");
+            Pattern pattern = Pattern.compile("\\(([^,]+),\\s*([^\\)]+)\\)");
+            Matcher matcher = pattern.matcher(text);
+            if (matcher.find()) {
+                longitude = matcher.group(2);
+            }
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return longitude;
+    }
+
+    // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
+    public String REPORTEDAT_CSV_CRIME_DALLAS(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Date of Report");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
+    public String REPORTEDAT2_CSV_CRIME_DALLAS(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Date1 of Occurrence");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
     public String REPORTEDAT_CRIME_DALLAS(JsonNode item) {
         String dateStr = null;
@@ -219,11 +334,11 @@ public class ParserStrategyConfig {
             long occurrenceDate = item.at("/attributes/OCCURRENCE_DATE").asLong();
             long occurenceTime = item.at("/attributes/OCCURRENCE_TIME").asLong();
 
-            //use epoch to get GMT date (e.g midnight of that day)
-            //occurrence time for that GMT date - example: 824, 1352.
+            // use epoch to get GMT date (e.g midnight of that day)
+            // occurrence time for that GMT date - example: 824, 1352.
             LocalDateTime date = LocalDateTime.ofEpochSecond(occurrenceDate / 1000, 0, ZoneOffset.UTC)
-                .withHour((int) occurenceTime / 100)
-                .withMinute((int) occurenceTime % 100);
+                    .withHour((int) occurenceTime / 100)
+                    .withMinute((int) occurenceTime % 100);
 
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = date.format(outputFormatter);
@@ -251,7 +366,6 @@ public class ParserStrategyConfig {
 
         return dateStr;
     }
-
 
     // '09/21/2023 07:18:00 AM'
     public String REPORTED_AT2_CSV_AUSTIN(Map<String, String> row) {

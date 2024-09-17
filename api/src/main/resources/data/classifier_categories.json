@@ -7,7 +7,7 @@
       "iconUnicode": null,
       "subcategories": [
         {
-          "text": "Violent",
+          "text": "Violent / Injury",
           "label": 0,
           "iconName": "hand-fist",
           "iconUnicode": "\uf6de"
@@ -180,7 +180,7 @@
           "text": "Streets, Roads, Bridge, Sidewalk Maintenance / Repair",
           "label": 5,
           "iconName": "road",
-          "iconUnicode": "\uf0ad"
+          "iconUnicode": "\uf018"
         },
         {
           "text": "Traffic Signs, Signals, Engineering",

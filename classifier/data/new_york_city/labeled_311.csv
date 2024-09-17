@@ -79,9 +79,11 @@ dataType,text,label
 311,ATF,14
 311,bcd9&lt;!--esi--&gt;1ggp&lt...,15
 311,Beach/Pool/Sauna Complaint,4
+311,Bench,5
 311,Benefit Card Replacement,14
 311,Bereavement Support Group,14
 311,BEST/Site Safety,14
+311,Bike Rack,9
 311,Bike Rack Condition,9
 311,Bike/Roller/Skate Chronic,9
 311,Blocked Driveway,9
@@ -266,6 +268,7 @@ dataType,text,label
 311,kawn''lcgv,15
 311,LEAD,13
 311,Lead,13
+311,Leaning Bar,8
 311,Legal Services Provider Complaint,4
 311,Lifeguard,14
 311,LinkNYC,14
@@ -486,6 +489,7 @@ dataType,text,label
 311,Water Maintenance,11
 311,Water Quality,13
 311,Water System,11
+311,Wayfinding,14
 311,Weatherization,14
 311,Window Guard,11
 311,Wood Pile Remaining,14

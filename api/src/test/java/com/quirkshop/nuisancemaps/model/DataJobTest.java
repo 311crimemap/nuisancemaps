@@ -37,7 +37,7 @@ public class DataJobTest {
     public void setUp() throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        File sourceJSON = resourceLoader.getResource("classpath:data/source_config.json").getFile();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config_archive.json").getFile();
         sources = objectMapper.readValue(sourceJSON, new TypeReference<List<Source>>() {
         });
 

@@ -1,0 +1,337 @@
+dataType,text,label
+311,Animal Bite,0
+311,Animal Control - Assistance Request,0
+311,Animal In Vehicle,0
+311,Animal - Proper Care,0
+311,Animal Protection - Animal Bite,0
+311,Animal Protection - Animal In Vehicle,0
+311,Animal Protection - Animal Proper Care,0
+311,Animal Protection - Animal Roadside Sales,0
+311,Animal Protection - Animal Trapped in Storm Drain,0
+311,Animal Protection - Assistance Request,0
+311,Animal Protection - Coyote Complaints,0
+311,Animal Protection - Dangerous Dog Complaint,0
+311,Animal Protection - Dog Restraint Issues,0
+311,Animal Protection - Found Animal Assistance,0
+311,Animal Protection - Injured/Sick Animal,0
+311,Animal Protection - Loose Animal Not Dog,0
+311,Animal Protection - Loose Dog,0
+311,Animal Protection - Vicious Dog Complaint,0
+311,Animal Protection - Wildlife Exposure,0
+311,Animal Roadside Sales,0
+311,Animal Services - Contact Request,0
+311,Animal Trapped in Storm Drain,0
+311,Bat Complaint,0
+311,Coyote Complaints,0
+311,Dangerous Animal - Except Dogs,0
+311,Dangerous/Vicious Dog Investigation,0
+311,Dead Bird,0
+311,Found Animal - Pick Up,0
+311,Found Animal Report - Keep,0
+311,Injured / Sick Animal,0
+311,Loose Animal (not dog),0
+311,Loose Animal Not Dog,0
+311,Loose Dog,0
+311,Pet Resource Center - Assistance Request,0
+311,Pet Resource Center - Found Pet Report,0
+311,Wildlife Exposure,0
+311,zCoyote Complaints,0
+311,zz - Coyote Compliants,0
+311,ZZZ ARR Dead Animal Collection,0
+311,AFD - Fireworks Complaint,1
+311,APD - Non Emergency Noise/Alarm,1
+311,DSD - Outdoor Commercial Venue Music Complaint,1
+311,Loud Commercial Music,1
+311,Loud Music,1
+311,ZZ - AFD - Fireworks Complaint,1
+311,ZZ AFD - Fireworks Complaint,1
+311,ZZAFD - Fireworks Complaint,1
+311,Zz_Loud Commercial Music,1
+311,APH - Graffiti Abatement - Public Property,2
+311,Graffiti Abatement,2
+311,ACD - Construction Rest Break Complaint,3
+311,ACD - Private Hauler License Violation,3
+311,ACD - Request Code Officer,3
+311,ATD - Construction Concerns in Right of Way,3
+311,ATD - Construction Items in Right of Way,3
+311,Austin Code - Construction Ordinance SR,3
+311,Austin Code - Construction Rest Break Complaint,3
+311,Austin Code - Request Code Officer,3
+311,Austin Code - Short Term Rental Complaint SR,3
+311,Austin Code - Short Term Rental (STR) Appointment,3
+311,Austin Code - Signs/Billboards,3
+311,Austin Code - Woodridge Apt,3
+311,Code Compliance,3
+311,Code Compliance - Short Term Rental (STR) Appointment,3
+311,Code Compliance - Signs/Billboards,3
+311,Construction Ordinance SR,3
+311,DSD - Billboard Complaint,3
+311,DSD - Construction Rest Break Complaint,3
+311,DSD - Request Code Officer,3
+311,DSD - Short Term Rental Complaint,3
+311,311 CRIS - City Vehicle Report,4
+311,ACD - Billboard Complaint,4
+311,ACD - Short Term Rental Complaint,4
+311,DSD - Private Hauler License Violation,4
+311,Ordinance Single-Use Carryout Bags,4
+311,Ordinance Universal Recycling,4
+311,Parking Ticket Complaint,9
+311,Short Term Rental Complaint SR,4
+311,TARA - Telecommunication Complaint,4
+311,AE Street Light Issue - Address,5
+311,AE Street Light Issue - No Address,5
+311,Alley & Unpaved Street Maintenance,5
+311,ARR - Street Sweeping,5
+311,ARR Street Sweeping,5
+311,ATD - Lane/Road Closure Notification,5
+311,ATD - Road Markings/Striping - Maintenance,5
+311,ATD - Road Markings/Striping - New,5
+311,ATD - School Zone Beacon - Maintenance,5
+311,ATD - School Zone Sign Maintenance,5
+311,ATD - Street Name Sign Maintenance,5
+311,Barricade Request,5
+311,Bridge Repair,5
+311,Concerns in the ROW,5
+311,Construction items in ROW,5
+311,Construction Items in ROW,5
+311,Construction Items- ROW,5
+311,Construction/Permitting- ROW,5
+311,Curb/Gutter Repair,5
+311,Emergency Road Closure Report,5
+311,Fence Repair - MOPAC,5
+311,Fence/Wall Repair,5
+311,Guardrail - New,5
+311,Guardrail New/Repair,5
+311,Guardrail Repair,5
+311,Lane/Road Closure Notification,5
+311,Newspaper Rack- ROW,5
+311,Obstruction in ROW,5
+311,PW - Street & Bridge General,5
+311,Road Sanding Request,5
+311,SBO - Alley &amp; Unpaved Street Maintenance,5
+311,SBO - Alley & Unpaved Street Maintenance,5
+311,SBO - Bridge Repair,5
+311,SBO - Curb/Gutter Repair,5
+311,SBO - Guardrail New/Repair,5
+311,SBO - New Sidewalk/Curb Ramp/Route,5
+311,SBO - Sidewalk Repair,5
+311,SBO - Street and Bridge Miscellaneous,5
+311,SBO - Street Resurfacing,5
+311,SBO - Utility Cut Repair,5
+311,Sidewalk/Curb Ramp/Route - NEW,5
+311,Sidewalk Repair,5
+311,Street Light Issue- Address,5
+311,Street Light Issue- Multiple poles/multiple streets,5
+311,Street Lights New,5
+311,Street Resurfacing,5
+311,Street Resurfacing Inquiry,5
+311,ATD - Traffic Engineering - General,6
+311,ATD - Traffic Signal - Maintenance,6
+311,ATD - Traffic Signal Maintenance,6
+311,ATD - Traffic Signal - Modification,6
+311,ATD - Traffic Signal - New,6
+311,ATD - Traffic Signal - New/Modification,6
+311,ATD - Traffic Sign Emergency,6
+311,ATD - Traffic Sign Maintenance,6
+311,ATD - Traffic Sign New,6
+311,Emergency Vehicle Preemption Device,6
+311,Road Markings/Striping - Maintenance,6
+311,Road Markings/Striping - New,6
+311,Sign - New,6
+311,Sign - Parking Sign Maintenance,6
+311,Sign - School Zone Sign Maintenance,6
+311,Sign - Street Name,6
+311,Sign - Traffic Sign Emergency,6
+311,Sign - Traffic Sign Maintenance,6
+311,Speed Limit - Changes/Signs,6
+311,Speed Management,6
+311,Traffic Calming,6
+311,Traffic Engineering - General,6
+311,Traffic Engineering - Jurisdiction Issue,6
+311,Traffic Signal - Dig Tess Request,6
+311,Traffic Signal - Maintenance,6
+311,Traffic Signal - New/Change,6
+311,Zz_ATD - Concerns in Right of Way,6
+311,Zz_ATD - Construction Items in Right of Way,6
+311,Zz_Traffic Engineering - General,6
+311,Zzz_Speed Limit - Changes/Signs,6
+311,Channels/Creeks/Drainage Easement,7
+311,Ditch/Driveway Pipe Services,7
+311,Drainage - Miscellaneous,7
+311,Flooding  Current (Non-Emergency),7
+311,Flooding Current (Non-Emergency),7
+311,Flooding - Past,7
+311,Flooding - Storms After Business Hours,7
+311,Flooding - Storms During Business Hours,7
+311,Flood Report,7
+311,Lost Item in Storm Drainage System,7
+311,Standing Water,7
+311,Storm Drain Pipe Services,7
+311,Town Lake Debris Issues,7
+311,WPD - Channels/Creek/Drainage Issues,7
+311,WPD - Ditch/Driveway Pipe Services,7
+311,WPD - Drainage Pond Maintenance,7
+311,WPD - Environmental Spills,7
+311,WPD - Erosion,7
+311,WPD - Flooding Current,7
+311,WPD - Flooding Past,7
+311,WPD - Harmful Algae,7
+311,WPD - Lady Bird Lake Debris Issues,7
+311,WPD - Lost Item in Storm Drainage System,7
+311,WPD - Standing Water,7
+311,WPD - Storm Drain Services,7
+311,ZZZ - Storm Drain Pipe Services,7
+311,ATD - View Obstruction and Fencing at Intersection,8
+311,Debris in Street,8
+311,Pavement Failure,8
+311,Pothole Repair,8
+311,Roadway Spillage,8
+311,SBO - Debris in Street,8
+311,SBO - Obstruction in Right of Way,8
+311,SBO - Pavement Failure,8
+311,SBO - Pothole Repair,8
+311,SBO - Roadway Spillage,8
+311,View Obstruction at Intersection,8
+311,ATD - Bicycle &amp; Pedestrian Issues,9
+311,ATD - Bicycle & Pedestrian Issues,9
+311,ATD - Booting Complaint,9
+311,ATD - Concerns in Right of Way,9
+311,ATD - Parking Machine Issue,9
+311,ATD - Parking Sign Maintenance,9
+311,ATD - Parking Violation Enforcement,9
+311,ATD - Pay-by-Phone App,9
+311,ATD - Shared Micromobility,9
+311,ATD - Speed Management,9
+311,Bicycle Issues,9
+311,Dockless Mobility,9
+311,Parking Machine Issue,9
+311,Parking Permit- ROW,9
+311,Parking Violation Enforcement,9
+311,Residential Parking Permit Enforcement,9
+311,Shared Micromobility,9
+311,Valet Permit - ROW,9
+311,Vendor Permit - ROW,9
+311,ZZ ATD - Parking Machine Issue,9
+311,Creek & Pond Vegetation Control,10
+311,DSD - Tree and Environmental Complaint,10
+311,Mowing City Parks,10
+311,Mowing Medians,10
+311,Obstruction - Urban Forestry,10
+311,PARD - Aquatic Inquiries/Issues,10
+311,PARD - Aquatic Maintenance,10
+311,PARD - Aquatic Program Inquiries,10
+311,PARD - Commercial Use of Parkland,10
+311,Park Maintenance - Building A/C &amp; Heating Issues,10
+311,Park Maintenance - Building A/C & Heating Issues,10
+311,Park Maintenance - Building Electrical Issues,10
+311,Park Maintenance - Building Issues,10
+311,Park Maintenance - Building Plumbing Issues,10
+311,Park Maintenance - Cemeteries,10
+311,Park Maintenance - Grounds,10
+311,Park Maintenance - Grounds Electrical Issues,10
+311,Park Maintenance - Grounds Plumbing Issues,10
+311,Park Maintenance - Pool Issues,10
+311,PWD - Mowing Medians,10
+311,PWD - Tree Issue Right of Way,10
+311,PW - School Issues - Crossing Guards,10
+311,PW - School Zone - New/Review/Changes,10
+311,School Issues - Crossing Guards,10
+311,School Zone Flasher - Timing/Maintenance,10
+311,School Zone - New/Review/Changes,10
+311,Tree Issue ROW,10
+311,Tree Issue ROW/Emergency (PARD),10
+311,Tree Issue ROW/Emergency (PW),10
+311,Tree Issue ROW/Maintenance (PARD),10
+311,Tree Issue ROW/Maintenance (PW),10
+311,WPD - Watershed Grow Zone Issues,10
+311,ZZ Creek &amp; Pond Vegetation Control,10
+311,ZZ Creek & Pond Vegetation Control,10
+311,ZZ Mowing City Parks,10
+311,ZZ Mowing Medians,10
+311,ZZ Park Maintenance - Pool Issues,10
+311,ZZ - Tree Issue ROW,10
+311,AE - Electric Vehicle Station Issues,11
+311,AE - Key Accounts,11
+311,AW - Water Conservation Violation,11
+311,AW - Water Related Issues,11
+311,AW - Water Theft Report,11
+311,AW - Water Waste Report,11
+311,EV PIE Station Issues,11
+311,EV PIP Residential Rebate,11
+311,Utility Coordination - ROW,11
+311,Water Theft Report,11
+311,Water Waste Report,11
+311,ARR - Brush,12
+311,ARR Brush and Bulk,12
+311,ARR - Bulk,12
+311,ARR - Collection Truck Spillage,12
+311,ARR - Compost,12
+311,ARR - Dead Animal Collection,12
+311,ARR Dead Animal Collection,12
+311,ARR Dumpster,12
+311,ARR - Garbage,12
+311,ARR - General,12
+311,ARR - Household Hazardous Waste,12
+311,ARR Missed Recycling,12
+311,ARR Missed Yard Trimmings/Compost,12
+311,ARR Missed Yard Trimmings /Organics,12
+311,ARR - On Call Brush,12
+311,ARR - On Call Bulk,12
+311,ARR - Pet Search,12
+311,ARR - Property Damage Report,12
+311,ARR - Recycling,12
+311,ARR - Special Services,12
+311,ARR - Spillage Trash/Fluids,12
+311,ARR - Storm Debris Collection,12
+311,ZZ ARR - On Call Brush,12
+311,Zz_ARR - Storm Debris Collection,12
+311,ZZ ARR - Storm Debris Collection,12
+311,ZZZ ARR Brush and Bulk,12
+311,ZZZ ARR Missed Recycling,12
+311,ZZZ ARR Missed Yard Trimmings/Compost,12
+311,ZZZ ARR Street Sweeping,12
+311,ACD - Coronavirus,13
+311,AFD - Wildfire Concern / Presentation,13
+311,AFD - Wildfire Education,13
+311,APH - Community Connections Coronavirus,13
+311,APH - Environmental Health Services - City,13
+311,APH - Environmental Health Services - County,13
+311,APH - Health Equity Line,13
+311,DSD - Environmental Complaint,13
+311,ERM - Harmful Algae,13
+311,Heat Advisory,13
+311,HSEM - Heat Advisory,13
+311,HSEM Heat Advisory,13
+311,Public Health - Environmental Services - City,13
+311,Public Health - Environmental Services - County,13
+311,Public Health - Graffiti Abatement,13
+311,ZZ Community Connections - Coronavirus,13
+311,ZZZ - DO NOT USE - ERM - Harmful Algae,13
+311,311 CC - Other,3
+311,ACD - Case Updates/Code Connect Messages,3
+311,APD - Non Emergency Collision,14
+311,APD - Non Emergency Hands Free Violation,14
+311,APD - Vehicle Abatement Callback Request,2
+311,APD - Vehicle Abatement Report,2
+311,Aquatics Hotline Inquiry,14
+311,ATD - Dig Tess Request,14
+311,ATD - Special Event,14
+311,Austin Code - Coronavirus,13
+311,Basic Needs - Appointment,14
+311,Basic Needs - Information Referral,14
+311,Community Connections - Coronavirus,13
+311,Corridor Program - Corridor Feedback,14
+311,Corridor Program Office - Corridor Feedback,14
+311,CPIO - Community Engagement Project Feedback,14
+311,CPIO - Community Voices,14
+311,DSD - Alarm Administration,14
+311,DSD - Case Updates/Code Connect Messages,14
+311,DSD - Follow-Up,14
+311,Filming Permit - ROW,14
+311,HD - Neighborhood Home Programs,14
+311,HPD - Neighborhood Home Programs,14
+311,LeadSmart Program,14
+311,Neighborhood Home Programs,14
+311,ZZ Corridor Program - Corridor Feedback,14
+311,ZZ CRM - Configuration Test Francois,15
+311,ZZ CRM - Configuration Test Waheed,15

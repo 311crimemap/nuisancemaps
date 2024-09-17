@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-print("Step 1: Get TextCategory data: curl `<datasource>?$query=select distinct <column> > data_<type>.json`")
+print("Step 1: Get TextCategory data: curl `<datasource>?$query=select distinct <column> limit 100000 > data_<type>.json`")
+print("")
+print("Step 1: Get TextCategory data: curl `<datasource>?$select=<column>&$group=<column>&$limit=100000 > data_<type>.json`")
 print("")
 print("Step 2: Filter json to txt: `cat data_<type>.json | jq -r '.[].<col>' > data_<type>.txt`")
 print("")
