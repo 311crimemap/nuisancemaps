@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,11 +36,20 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
     private static final int MAPTILER_API_BATCH_SIZE = 50;
     private static final double MAPTILER_API_RELEVANCE_SCORE = .75;
 
+    private static final long sleepMS = 2000;
+
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     @Override
     public List<double[]> fetch(Source source, List<String> addresses) {
-        return fetchBatch(source, addresses);
+
+        try {
+            return fetchBatch(source, addresses);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<double[]>();
     }
 
     @Override
@@ -108,7 +118,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
         return coordinates;
     }
 
-    public List<double[]> fetchBatch(Source source, List<String> addresses) {
+    public List<double[]> fetchBatch(Source source, List<String> addresses) throws InterruptedException {
         int numFetch = 1;
         log.info("[MapTilerGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
 
@@ -128,31 +138,47 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                 continue;
 
             // request
-            try {
+            int numRetry = 0;
+            boolean retry = true;
+            while (retry) {
+                try {
 
-                String url = buildAPIURL(source, batchURLs, MAPTILER_API_KEY);
-                Builder requestBuilder = new Request.Builder().url(url);
-                Request request = requestBuilder
-                    .header("Referer", MAPTILER_HOST_REFERER)
-                    .build();
-                Response response = client.newCall(request).execute();
+                    String url = buildAPIURL(source, batchURLs, MAPTILER_API_KEY);
+                    Builder requestBuilder = new Request.Builder().url(url);
+                    Request request = requestBuilder
+                            .header("Referer", MAPTILER_HOST_REFERER)
+                            .build();
+                    Response response = client.newCall(request).execute();
 
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    }
+
+                    retry = false;
+
+                    String fetchStatus = String.format("[MapTilerGeocoderProvider] fetching batch: [%d / %d]",
+                            numFetch, (int) Math.ceil((double) addresses.size() / MAPTILER_API_BATCH_SIZE));
+                    log.info(fetchStatus);
+
+                    // response
+                    InputStream inputStream = response.body().byteStream();
+                    List<double[]> coordinates = parseResponse(inputStream);
+                    results.addAll(coordinates);
+
+                } catch (Exception e) {
+                    log.info("[MapTilerGeocoderProvider] numRetry: " + numRetry + " | geocode: " + e.getMessage());
+
+                    // sometimes receive a 404 response so retry job
+                    TimeUnit.MILLISECONDS.sleep(sleepMS);
+
+                    numRetry++;
+                    if (numRetry > 2) {
+                        retry = false;
+                        log.info("[MapTilerGeocoderProvider] geocode: End retries");
+                    }
+
                 }
 
-                String fetchStatus = String.format("[MapTilerGeocoderProvider] fetching batch: [%d / %d]",
-                        numFetch, (int) Math.ceil((double) addresses.size() / MAPTILER_API_BATCH_SIZE));
-                log.info(fetchStatus);
-
-                // response
-                InputStream inputStream = response.body().byteStream();
-                List<double[]> coordinates = parseResponse(inputStream);
-                results.addAll(coordinates);
-
-            } catch (Exception e) {
-                log.info("[MapTilerGeocoderProvider] geocode: ERR" + e.getMessage());
-                e.printStackTrace();
             }
 
             batchURLs.clear();
