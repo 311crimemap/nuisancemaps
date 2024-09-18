@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.Category;
@@ -213,12 +215,23 @@ public class DataParser {
     }
 
     protected void savePendingTextCategories(DataJob dataJob, Source source, HashSet<String> pendingReportCategories) {
+        List<String> pending = new ArrayList<String>(pendingReportCategories);
 
-        List<PendingTextCategory> pendingTextCategories = new ArrayList<PendingTextCategory>();
+        Set<String> existingTextCategories = pendingTextCategoryRepository
+            .findByDataTypeAndTextIn(source.getCategory(), pending)
+            .stream()
+            .map(PendingTextCategory::getText)
+            .collect(Collectors.toSet());
 
-        for (String reportCategory : pendingReportCategories) {
-            PendingTextCategory ptc = new PendingTextCategory(dataJob, source.getCategory(), reportCategory);
-            pendingTextCategories.add(ptc);
+
+        // filter out existing and save only new
+        List<PendingTextCategory> pendingTextCategories = new ArrayList<>();
+
+        for (String reportCategory: pendingReportCategories ) {
+            if (!existingTextCategories.contains(reportCategory)) {
+                PendingTextCategory ptc = new PendingTextCategory(dataJob, source.getCategory(), reportCategory);
+                pendingTextCategories.add(ptc);
+            }
         }
 
         try {

@@ -15,6 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorFactory;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 import com.quirkshop.nuisancemaps.model.datajob.OpenDataConfigurator;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -69,8 +72,14 @@ public class DataJobTest {
     @Test
     public void DataJobBuildFilenameTest() throws IOException {
 
-        Source source = sources.get(11); // id: 12, params
+        Source source = sources.get(12); // sourceConfigId: 13
+        assertThat(source.getSourceConfigId()).isEqualTo(13);
+
+        // NYC
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(source.getDataJobConfiguratorType());
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
+        dataJobConfigurator.initialize(dataJob);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-H-mm");
         String formattedDateTime = dataJob.getSessionId().format(formatter);
@@ -80,19 +89,25 @@ public class DataJobTest {
                 .replaceAll("=", "_");
 
         String result = String.format("%s-%s-%s.csv",
-                "data.cityofnewyork.us-api-views-5uac-w243-rows",
+                "data.cityofnewyork.us-api-views-qgea-i56i-rows",
                 params,
                 formattedDateTime);
 
         String filename = dataJob.buildFilename();
         assertThat(filename).isEqualTo(result);
 
+        //SF
         String url2 = "https://data.sfgov.org/resource/vw6y-z8j6.json"; // no params
         source.setDataParserType(DataParserType.JSON);
+        source.setDataJobConfiguratorType(DataJobConfiguratorType.BASE);
         source.setUrl(url2);
         String result2 = String.format("%s-%s.json",
                 "data.sfgov.org-resource-vw6y-z8j6",
                 formattedDateTime);
+
+        dataJobConfigurator = DataJobConfiguratorFactory
+                .create(source.getDataJobConfiguratorType());
+        dataJobConfigurator.initialize(dataJob);
 
         String filename2 = dataJob.buildFilename();
         assertThat(filename2).isEqualTo(result2);
@@ -100,12 +115,17 @@ public class DataJobTest {
         // params w/ date
         String url3 = "https://data.sfgov.org/resource/vw6y-z8j6.csv?test=123&date=8/1/2024&test2=abc";
         source.setDataParserType(DataParserType.CSV);
+        source.setDataJobConfiguratorType(DataJobConfiguratorType.BASE);
         source.setUrl(url3);
 
         String result3 = String.format("%s-%s-%s.csv",
                 "data.sfgov.org-resource-vw6y-z8j6",
                 "test_123__date_8-1-2024__test2_abc",
                 formattedDateTime);
+
+        dataJobConfigurator = DataJobConfiguratorFactory
+                .create(source.getDataJobConfiguratorType());
+        dataJobConfigurator.initialize(dataJob);
 
         String filename3 = dataJob.buildFilename();
         assertThat(filename3).isEqualTo(result3);
