@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.Source;
 
@@ -57,10 +59,24 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
         List<double[]> coordinates = new ArrayList<double[]>();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode arrayNode = objectMapper.createArrayNode();
+
         JsonNode items = objectMapper.readTree(inputStream);
 
-        log.info("[MapTilerGeocoderProvider] parsing items: " + items.size());
-        for (JsonNode item : items) {
+        //
+        // if query ends up only containing a single address, maptiler does not
+        // return batched format (not an array), but a single object
+        //
+
+        if (items.isArray()) {
+            arrayNode = (ArrayNode) items;
+        } else {
+            arrayNode.add(items);
+        }
+
+        log.info("[MapTilerGeocoderProvider] parsing items: " + arrayNode.size());
+
+        for (JsonNode item : arrayNode) {
 
             try {
 
@@ -156,13 +172,15 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
 
                     retry = false;
 
-                    String fetchStatus = String.format("[MapTilerGeocoderProvider] fetching batch: [%d / %d]",
-                            numFetch, (int) Math.ceil((double) addresses.size() / MAPTILER_API_BATCH_SIZE));
+                    String fetchStatus = String.format(
+                            "[MapTilerGeocoderProvider] addresses index: %d, fetching batch: [%d / %d]",
+                            i, numFetch, (int) Math.ceil((double) addresses.size() / MAPTILER_API_BATCH_SIZE));
                     log.info(fetchStatus);
 
                     // response
                     InputStream inputStream = response.body().byteStream();
                     List<double[]> coordinates = parseResponse(inputStream);
+
                     results.addAll(coordinates);
 
                 } catch (Exception e) {
