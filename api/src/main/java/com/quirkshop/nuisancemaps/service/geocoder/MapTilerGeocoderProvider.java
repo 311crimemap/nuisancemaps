@@ -38,7 +38,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
     private static final int MAPTILER_API_BATCH_SIZE = 50;
     private static final double MAPTILER_API_RELEVANCE_SCORE = .75;
 
-    private static final long sleepMS = 2000;
+    private static final long sleepMS = 7500;
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
@@ -134,7 +134,8 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
         return coordinates;
     }
 
-    public List<double[]> fetchBatch(Source source, List<String> addresses) throws InterruptedException, UnsupportedEncodingException {
+    public List<double[]> fetchBatch(Source source, List<String> addresses)
+            throws InterruptedException, UnsupportedEncodingException {
         int numFetch = 1;
         log.info("[MapTilerGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
 
@@ -156,7 +157,6 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
             // request
             int numRetry = 0;
             boolean retry = true;
-
 
             while (retry) {
 
@@ -272,6 +272,10 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
             String formattedAddress = address
                     .replaceAll("UNKNOWN,", "")
                     .replaceAll("BLOCK", "")
+                    // when building queryParam() apartment numbers (#) are
+                    // interpreted as a url fragment; moves subsequent addresses
+                    // to end of url messing up url request
+                    .replaceAll("#", "")
                     .replaceAll("/", "");
 
             formattedAddresses.add(formattedAddress);
