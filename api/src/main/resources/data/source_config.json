@@ -167,7 +167,7 @@
       "reportedAt": {
         "field": "Created Date",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "CREATED_DATE_CSV_AUSTIN"
       },
       "reportedAt2": {
         "field": null,
