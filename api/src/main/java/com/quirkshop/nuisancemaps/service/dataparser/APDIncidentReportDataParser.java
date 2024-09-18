@@ -248,6 +248,12 @@ public class APDIncidentReportDataParser extends DataParser {
 
             Elements tables = document.select("div.container > table");
 
+            // results take some time to enter system; very possible for
+            // near-term dates to return no results
+            if (tables.size() == 0) {
+                return elements;
+            }
+
             // first element nested outlier - needs additional selector
             Element firstNestedTable = tables.get(0).selectFirst("tr table");
             elements.add(firstNestedTable);
