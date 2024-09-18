@@ -47,7 +47,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
 
         try {
             return fetchBatch(source, addresses);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -134,7 +134,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
         return coordinates;
     }
 
-    public List<double[]> fetchBatch(Source source, List<String> addresses) throws InterruptedException {
+    public List<double[]> fetchBatch(Source source, List<String> addresses) throws InterruptedException, UnsupportedEncodingException {
         int numFetch = 1;
         log.info("[MapTilerGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
 
@@ -156,15 +156,17 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
             // request
             int numRetry = 0;
             boolean retry = true;
-            while (retry) {
-                try {
 
-                    String url = buildAPIURL(source, batchURLs, MAPTILER_API_KEY);
-                    Builder requestBuilder = new Request.Builder().url(url);
-                    Request request = requestBuilder
-                            .header("Referer", MAPTILER_HOST_REFERER)
-                            .build();
-                    Response response = client.newCall(request).execute();
+
+            while (retry) {
+
+                String url = buildAPIURL(source, batchURLs, MAPTILER_API_KEY);
+                Builder requestBuilder = new Request.Builder().url(url);
+                Request request = requestBuilder
+                        .header("Referer", MAPTILER_HOST_REFERER)
+                        .build();
+
+                try (Response response = client.newCall(request).execute()) {
 
                     if (!response.isSuccessful()) {
                         throw new IOException("Unexpected code " + response);
