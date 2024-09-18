@@ -64,6 +64,9 @@ public class APDIncidentReportDataParser extends DataParser {
 
         List<Element> elements = buildElements(dataJob, inputStream);
 
+        if (elements.size() == 0)
+            return;
+
         List<Map<String, String>> rows = parseToRowMaps(elements);
 
         geocode(source, rows);
@@ -247,6 +250,12 @@ public class APDIncidentReportDataParser extends DataParser {
             Document document = Jsoup.parse(inputStream, "UTF-8", "");
 
             Elements tables = document.select("div.container > table");
+
+            // results take some time to enter system; very possible for
+            // near-term dates to return no results
+            if (tables.size() == 0) {
+                return elements;
+            }
 
             // first element nested outlier - needs additional selector
             Element firstNestedTable = tables.get(0).selectFirst("tr table");

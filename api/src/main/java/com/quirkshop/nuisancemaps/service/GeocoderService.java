@@ -61,12 +61,17 @@ public class GeocoderService {
 
         List<String> newAddresses = findNewAddresses(addresses, geocodeMap, missingCoordinates);
 
-
         /*
          * FETCH
          */
 
         List<double[]> newCoordinates = geocoderProvider.fetch(source, newAddresses);
+
+        String logSizes = String.format(
+                "[GeocoderService] geocodeMap: %d | missingCoordinates: %d | newAddresses: %d | newCoordinates: %d",
+                geocodeMap.size(), missingCoordinates.size(), newAddresses.size(), newCoordinates.size());
+
+        log.info(logSizes);
 
         // update geocodeMap with fetched new coordinates
         HashMap<String, Geocode> newGeocodes = new HashMap<String, Geocode>();

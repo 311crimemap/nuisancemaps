@@ -22,6 +22,8 @@ import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorFactory;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
@@ -175,7 +177,11 @@ public class FileDataProcessingStrategyTest {
                 .getResource("classpath:data/source_config_archive.json").getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(12);
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(source.getDataJobConfiguratorType());
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
+        dataJobConfigurator.initialize(dataJob);
+
         String filename = "test-" + dataJob.buildFilename();
         String filePath = String.join("/", FETCH_DATA_DIR, filename);
         File file = new File(filePath);
@@ -202,7 +208,11 @@ public class FileDataProcessingStrategyTest {
         InputStream inputStream = csvResource.getInputStream();
 
         Source source = sourceRepository.findOneBySourceConfigId(12);
+
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+            .create(source.getDataJobConfiguratorType());
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
+        dataJobConfigurator.initialize(dataJob);
 
         String filename = "test-" + dataJob.buildFilename();
         String filePath = String.join("/", FETCH_DATA_DIR, filename);
@@ -241,7 +251,11 @@ public class FileDataProcessingStrategyTest {
 
         Source source = sourceRepository.findOneBySourceConfigId(14);
         Locale locale = source.getLocale();
+
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(source.getDataJobConfiguratorType());
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
+        dataJobConfigurator.initialize(dataJob);
 
         String filename = "test-" + dataJob.buildFilename();
         String filePath = String.join("/", FETCH_DATA_DIR, filename);
