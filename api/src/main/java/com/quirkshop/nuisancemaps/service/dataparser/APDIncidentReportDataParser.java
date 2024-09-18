@@ -64,6 +64,9 @@ public class APDIncidentReportDataParser extends DataParser {
 
         List<Element> elements = buildElements(dataJob, inputStream);
 
+        if (elements.size() == 0)
+            return;
+
         List<Map<String, String>> rows = parseToRowMaps(elements);
 
         geocode(source, rows);
