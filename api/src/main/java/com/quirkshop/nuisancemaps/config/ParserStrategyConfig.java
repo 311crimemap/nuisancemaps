@@ -65,17 +65,41 @@ public class ParserStrategyConfig {
         return parsingFunctions;
     }
 
-    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
-    // time
-    // (MM-DD-YYYY HH:mm:ss) 2020-12-31 20:30:00
-    public String REPORTEDAT_BOSTON(Map<String, String> row) {
-        String dateStr = null;
-        try {
-            String text = row.get("OCCURRED_ON_DATE");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    /*
+     * austin
+     */
 
-            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+    public String STREET_NAME_ERSI_AUSTIN(JsonNode item) {
+        String value = null;
+
+        try {
+            String addressBlock = item.at("/attributes/ADDRESS_BLOCK").asText();
+            String streetName = item.at("/attributes/STREET_NAME").asText();
+            String streetType = item.at("/attributes/STREET_TYPE").asText();
+            value = String.join(" ", addressBlock, streetName, streetType);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return value;
+    }
+
+    public String OCCURRENCE_DATE_ERSI_AUSTIN(JsonNode item) {
+        String dateStr = null;
+
+        try {
+            long occurrenceDate = item.at("/attributes/OCCURRENCE_DATE").asLong();
+            long occurenceTime = item.at("/attributes/OCCURRENCE_TIME").asLong();
+
+            // use epoch to get GMT date (e.g midnight of that day)
+            // occurrence time for that GMT date - example: 824, 1352.
+            LocalDateTime date = LocalDateTime.ofEpochSecond(occurrenceDate / 1000, 0, ZoneOffset.UTC)
+                    .withHour((int) occurenceTime / 100)
+                    .withMinute((int) occurenceTime % 100);
+
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = date.format(outputFormatter);
 
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -84,68 +108,60 @@ public class ParserStrategyConfig {
         return dateStr;
     }
 
-    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
-    // time and timezone offset: 2020-12-31 20:30:00+00
-    public String REPORTEDAT_BOSTON_TIMEZONE_OFFSET(Map<String, String> row) {
-        String dateStr = null;
-        try {
-            String text = row.get("OCCURRED_ON_DATE");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssX");
-
-            // Parse the input string to a ZonedDateTime
-            ZonedDateTime zonedDateTime = ZonedDateTime.parse(text, formatter);
-
-            // Convert ZonedDateTime to LocalDateTime
-            LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
-
-            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-            dateStr = localDateTime.format(outputFormatter);
-
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-
-        return dateStr;
-    }
-
-    // LocalDateTime.parse requires ISO format but field is a simple date
-    // (MM/DD/YYYY) - only for CSV (but not JSON)
-    public String REPORTEDAT_CRIME_NEWYORKCITY(Map<String, String> row) {
-        String dateStr = null;
-        try {
-            String text = row.get("RPT_DT");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-            dateStr = LocalDate.parse(text, formatter)
-                    .atStartOfDay()
-                    .format(outputFormatter);
-
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-
-        return dateStr;
-    }
-
-    // LocalDateTime.parse has ISO defaults that cannot handle hh:mm:ss am/pm marker
-    public String CREATED_DATE_311_NEWYORKCITY(Map<String, String> row) {
+    // '09/21/2023 07:18:00 AM'
+    public String CREATED_DATE_CSV_AUSTIN(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("Created Date");
-
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.info("CREATED_DATE_CSV_AUSTIN: " + row.get("Created Date") + " | " + e.getMessage());
         }
 
         return dateStr;
     }
+
+    // '09/21/2023 07:18:00 AM'
+    public String REPORTED_AT_CSV_AUSTIN(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Occurred Date Time");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info("REPORTED_AT_CSV_AUSTIN: " + row.get("Occurred Date Time") + " | " + e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // '09/21/2023 07:18:00 AM'
+    public String REPORTED_AT2_CSV_AUSTIN(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Report Date Time");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info("REPORTED_AT2_CSV_AUSTIN: " + row.get("Report Date Time") + " | " + e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    /*
+     * DALLAS
+     */
 
     public String LATITUDE_311_DALLAS(JsonNode item) {
         // {..., "lat_location": (32.77937339624264000,-96.85251201839743000), ...}
@@ -328,37 +344,22 @@ public class ParserStrategyConfig {
         return dateStr;
     }
 
-    public String STREET_NAME_ERSI_AUSTIN(JsonNode item) {
-        String value = null;
+    /*
+     * new york city
+     */
 
-        try {
-            String addressBlock = item.at("/attributes/ADDRESS_BLOCK").asText();
-            String streetName = item.at("/attributes/STREET_NAME").asText();
-            String streetType = item.at("/attributes/STREET_TYPE").asText();
-            value = String.join(" ", addressBlock, streetName, streetType);
-
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-
-        return value;
-    }
-
-    public String OCCURRENCE_DATE_ERSI_AUSTIN(JsonNode item) {
+    // LocalDateTime.parse requires ISO format but field is a simple date
+    // (MM/DD/YYYY) - only for CSV (but not JSON)
+    public String REPORTEDAT_CRIME_NEWYORKCITY(Map<String, String> row) {
         String dateStr = null;
-
         try {
-            long occurrenceDate = item.at("/attributes/OCCURRENCE_DATE").asLong();
-            long occurenceTime = item.at("/attributes/OCCURRENCE_TIME").asLong();
-
-            // use epoch to get GMT date (e.g midnight of that day)
-            // occurrence time for that GMT date - example: 824, 1352.
-            LocalDateTime date = LocalDateTime.ofEpochSecond(occurrenceDate / 1000, 0, ZoneOffset.UTC)
-                    .withHour((int) occurenceTime / 100)
-                    .withMinute((int) occurenceTime % 100);
-
+            String text = row.get("RPT_DT");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-            dateStr = date.format(outputFormatter);
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
 
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -367,52 +368,67 @@ public class ParserStrategyConfig {
         return dateStr;
     }
 
-    // '09/21/2023 07:18:00 AM'
-    public String CREATED_DATE_CSV_AUSTIN(Map<String, String> row) {
+    // LocalDateTime.parse has ISO defaults that cannot handle hh:mm:ss am/pm marker
+    public String CREATED_DATE_311_NEWYORKCITY(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("Created Date");
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info("CREATED_DATE_CSV_AUSTIN: " + row.get("Created Date") + " | " + e.getMessage());
+            log.info(e.getMessage());
         }
 
         return dateStr;
     }
 
-    // '09/21/2023 07:18:00 AM'
-    public String REPORTED_AT_CSV_AUSTIN(Map<String, String> row) {
+    /*
+     * BOSTON
+     */
+
+    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
+    // time
+    // (MM-DD-YYYY HH:mm:ss) 2020-12-31 20:30:00
+    public String REPORTEDAT_BOSTON(Map<String, String> row) {
         String dateStr = null;
         try {
-            String text = row.get("Occurred Date Time");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            String text = row.get("OCCURRED_ON_DATE");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info("REPORTED_AT_CSV_AUSTIN: " + row.get("Occurred Date Time") + " | " + e.getMessage());
+            log.info(e.getMessage());
         }
 
         return dateStr;
     }
 
-    // '09/21/2023 07:18:00 AM'
-    public String REPORTED_AT2_CSV_AUSTIN(Map<String, String> row) {
+    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
+    // time and timezone offset: 2020-12-31 20:30:00+00
+    public String REPORTEDAT_BOSTON_TIMEZONE_OFFSET(Map<String, String> row) {
         String dateStr = null;
         try {
-            String text = row.get("Report Date Time");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            String text = row.get("OCCURRED_ON_DATE");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssX");
+
+            // Parse the input string to a ZonedDateTime
+            ZonedDateTime zonedDateTime = ZonedDateTime.parse(text, formatter);
+
+            // Convert ZonedDateTime to LocalDateTime
+            LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+            dateStr = localDateTime.format(outputFormatter);
 
         } catch (Exception e) {
-            log.info("REPORTED_AT2_CSV_AUSTIN: " + row.get("Report Date Time") + " | " + e.getMessage());
+            log.info(e.getMessage());
         }
 
         return dateStr;
