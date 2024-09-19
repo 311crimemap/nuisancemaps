@@ -765,7 +765,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -825,7 +825,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -885,7 +885,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -945,7 +945,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1005,7 +1005,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1065,7 +1065,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1125,7 +1125,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1185,7 +1185,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1245,7 +1245,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1305,7 +1305,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1365,7 +1365,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1425,7 +1425,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1485,7 +1485,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1545,7 +1545,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1605,7 +1605,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1665,7 +1665,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1725,7 +1725,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1785,7 +1785,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1845,7 +1845,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,

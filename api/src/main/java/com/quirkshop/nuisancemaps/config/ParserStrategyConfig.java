@@ -81,9 +81,10 @@ public class ParserStrategyConfig {
                 this::REPORTED_AT_CSV_311_NEW_YORK_CITY);
 
         // boston
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON, this::REPORTEDAT_BOSTON);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET,
-                this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON,
+                this::REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_BOSTON, this::REPORTED_AT_CSV_CRIME_BOSTON);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_BOSTON, this::REPORTED_AT_CSV_311_BOSTON);
 
         return parsingFunctions;
     }
@@ -516,9 +517,34 @@ public class ParserStrategyConfig {
      */
 
     // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
-    // time
-    // (MM-DD-YYYY HH:mm:ss) 2020-12-31 20:30:00
-    public String REPORTEDAT_BOSTON(Map<String, String> row) {
+    // time and timezone offset:
+    // 2020-12-31 20:30:00+00
+    public String REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("OCCURRED_ON_DATE");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssX");
+
+            // Parse the input string to a ZonedDateTime
+            ZonedDateTime zonedDateTime = ZonedDateTime.parse(text, formatter);
+
+            // Convert ZonedDateTime to LocalDateTime
+            LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = localDateTime.format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // field is a simple date with 24 hr time
+    // 2020-12-31 20:30:00
+    public String REPORTED_AT_CSV_CRIME_BOSTON(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("OCCURRED_ON_DATE");
@@ -534,23 +560,15 @@ public class ParserStrategyConfig {
         return dateStr;
     }
 
-    // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
-    // time and timezone offset: 2020-12-31 20:30:00+00
-    public String REPORTEDAT_BOSTON_TIMEZONE_OFFSET(Map<String, String> row) {
+    // 2020-12-31 20:30:00
+    public String REPORTED_AT_CSV_311_BOSTON(Map<String, String> row) {
         String dateStr = null;
         try {
-            String text = row.get("OCCURRED_ON_DATE");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssX");
-
-            // Parse the input string to a ZonedDateTime
-            ZonedDateTime zonedDateTime = ZonedDateTime.parse(text, formatter);
-
-            // Convert ZonedDateTime to LocalDateTime
-            LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
-
+            String text = row.get("open_dt");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-            dateStr = localDateTime.format(outputFormatter);
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
             log.info(e.getMessage());
