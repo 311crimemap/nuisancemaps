@@ -698,12 +698,12 @@
             "reportedAt": {
                 "field": "RPT_DT",
                 "pointer": null,
-                "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+                "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
             },
             "reportedAt2": {
                 "field": "CMPLNT_FR_DT",
                 "pointer": null,
-                "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+                "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
             }
         }
     },
@@ -757,12 +757,12 @@
             "reportedAt": {
                 "field": "RPT_DT",
                 "pointer": null,
-                "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+                "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
             },
             "reportedAt2": {
                 "field": "CMPLNT_FR_DT",
                 "pointer": null,
-                "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+                "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
             }
         }
     },
@@ -816,7 +816,7 @@
             "reportedAt": {
                 "field": "Created Date",
                 "pointer": null,
-                "parsingStrategy": "CREATED_DATE_311_NEWYORKCITY"
+                "parsingStrategy": "REPORTED_AT_CSV_311_NEW_YORK_CITY"
             },
             "reportedAt2": {
                 "field": null,

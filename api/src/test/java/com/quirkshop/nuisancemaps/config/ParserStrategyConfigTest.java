@@ -118,7 +118,7 @@ public class ParserStrategyConfigTest {
 
     @Test
     @Transactional
-    public void REPORTEDAT_CSV_CRIME_DALLAS_TEST() {
+    public void REPORTED_AT_CSV_CRIME_DALLAS_TEST() {
         assertThat(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS).isNotNull();
 
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
@@ -189,14 +189,14 @@ public class ParserStrategyConfigTest {
     @Test
     @Transactional
     public void REPORTEDAT_CRIME_NEWYORKCITY_TEST() throws JsonMappingException, JsonProcessingException {
-        assertThat(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY).isNotNull();
+        assertThat(ParserStrategy.REPORTED_AT_CSV_CRIME_NEW_YORK_CITY).isNotNull();
 
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
                 .parsingFunctionsMap();
 
         Map<String, String> row = Map.of("RPT_DT", "05/01/2024");
 
-        String value = parserStrategyConfig.REPORTEDAT_CRIME_NEWYORKCITY(row);
+        String value = parserStrategyConfig.REPORTED_AT_CSV_CRIME_NEW_YORK_CITY(row);
         assertThat(value).isEqualTo("2024-05-01T00:00:00");
 
         // ensure it's parseable downstream
@@ -207,14 +207,14 @@ public class ParserStrategyConfigTest {
     @Test
     @Transactional
     public void CREATED_DATE_311_NEWYORKCITY_TEST() throws JsonMappingException, JsonProcessingException {
-        assertThat(ParserStrategy.CREATED_DATE_311_NEWYORKCITY).isNotNull();
+        assertThat(ParserStrategy.REPORTED_AT_CSV_311_NEW_YORK_CITY).isNotNull();
 
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
                 .parsingFunctionsMap();
 
         Map<String, String> row = Map.of("Created Date", "02/11/2024 10:39:24 PM");
 
-        String value = parserStrategyConfig.CREATED_DATE_311_NEWYORKCITY(row);
+        String value = parserStrategyConfig.REPORTED_AT_CSV_311_NEW_YORK_CITY(row);
         assertThat(value).isEqualTo("2024-02-11T22:39:24");
 
         // ensure it's parseable downstream
@@ -225,14 +225,14 @@ public class ParserStrategyConfigTest {
     @Test
     @Transactional
     public void REPORTEDAT_BOSTON_TEST() throws JsonMappingException, JsonProcessingException {
-        assertThat(ParserStrategy.REPORTEDAT_BOSTON).isNotNull();
+        assertThat(ParserStrategy.REPORTED_AT_CSV_CRIME_BOSTON).isNotNull();
 
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
                 .parsingFunctionsMap();
 
         Map<String, String> row = Map.of("OCCURRED_ON_DATE", "2020-12-31 20:30:00");
 
-        String value = parserStrategyConfig.REPORTEDAT_BOSTON(row);
+        String value = parserStrategyConfig.REPORTED_AT_CSV_CRIME_BOSTON(row);
         assertThat(value).isEqualTo("2020-12-31T20:30:00");
 
         // ensure it's parseable downstream
@@ -243,14 +243,14 @@ public class ParserStrategyConfigTest {
     @Test
     @Transactional
     public void REPORTEDAT_BOSTON_TIMEZONE_OFFSET_TEST() throws JsonMappingException, JsonProcessingException {
-        assertThat(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET).isNotNull();
+        assertThat(ParserStrategy.REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON).isNotNull();
 
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = parserStrategyConfig
                 .parsingFunctionsMap();
 
         Map<String, String> row = Map.of("OCCURRED_ON_DATE", "2020-12-31 20:30:00+00");
 
-        String value = parserStrategyConfig.REPORTEDAT_BOSTON_TIMEZONE_OFFSET(row);
+        String value = parserStrategyConfig.REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON(row);
         assertThat(value).isEqualTo("2020-12-31T20:30:00");
 
         // ensure it's parseable downstream
