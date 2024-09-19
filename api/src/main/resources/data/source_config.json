@@ -344,7 +344,7 @@
       "reportedAt": {
         "field": "Date",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_CHICAGO"
       },
       "reportedAt2": {
         "field": null,
@@ -403,7 +403,7 @@
       "reportedAt": {
         "field": "CREATED_DATE",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_311_CHICAGO"
       },
       "reportedAt2": {
         "field": null,
@@ -462,7 +462,7 @@
       "reportedAt": {
         "field": "Incident Datetime",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_SAN_FRANCISCO"
       },
       "reportedAt2": {
         "field": null,
@@ -521,7 +521,7 @@
       "reportedAt": {
         "field": "Opened",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_311_SAN_FRANCISCO"
       },
       "reportedAt2": {
         "field": null,
