@@ -224,11 +224,17 @@ public class ParserStrategyConfig {
         try {
 
             String text = row.get("Lat_Long Location");
+
+            //no coords equivalent
+            if (text.equals("(,)"))
+                return null;
+
             String coordinates = text.replaceAll("[()]", "");
             latitude = coordinates.split(",")[0];
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            String text = row.get("Lat_Long Location");
+            log.info("[LATITUDE_CSV_311_DALLAS] " + e.getMessage());
         }
 
         return latitude;
@@ -241,11 +247,16 @@ public class ParserStrategyConfig {
         try {
 
             String text = row.get("Lat_Long Location");
+
+            // no coords equivalent
+            if (text.equals("(,)"))
+                return null;
+
             String coordinates = text.replaceAll("[()]", "");
             longitude = coordinates.split(",")[1];
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.info("[LONGITUDE_CSV_311_DALLAS] " + e.getMessage());
         }
 
         return longitude;
