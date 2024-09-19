@@ -473,6 +473,10 @@ public class ParserStrategyConfig {
         String dateStr = null;
         try {
             String text = row.get("RPT_DT");
+
+            if (text.isBlank())
+                return null;
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -481,7 +485,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("[REPORTED_AT_CSV_CRIME_NEW_YORK_CITY] " + e.getMessage());
         }
 
         return dateStr;
@@ -491,6 +495,10 @@ public class ParserStrategyConfig {
         String dateStr = null;
         try {
             String text = row.get("CMPLNT_FR_DT");
+
+            if (text.isBlank())
+                return null;
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -499,7 +507,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("[REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY] " + e.getMessage());
         }
 
         return dateStr;
@@ -511,13 +519,16 @@ public class ParserStrategyConfig {
         try {
             String text = row.get("Created Date");
 
+            if (text.isBlank())
+                return null;
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("[REPORTED_AT_CSV_311_NEW_YORK_CITY] " + e.getMessage());
         }
 
         return dateStr;

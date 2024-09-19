@@ -530,7 +530,6 @@
       }
     }
   },
-
   {
     "sourceConfigId": 10,
     "url": "https://data.cityofnewyork.us/api/views/qgea-i56i/rows.csv?fourfour=qgea-i56i&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
@@ -539,7 +538,7 @@
     "description": "New York City Crime Complaint Historic",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 891000000,
     "mapping": {
       "rootPath": null,
@@ -554,15 +553,13 @@
         "pointer": null,
         "parsingStrategy": null
       },
-
-      "address": {
-        "field": null,
+      "description": {
+        "field": "PD_DESC",
         "pointer": null,
         "parsingStrategy": null
       },
-
-      "description": {
-        "field": "PD_DESC",
+      "address": {
+        "field": null,
         "pointer": null,
         "parsingStrategy": null
       },
@@ -602,7 +599,7 @@
     "description": "New York City Crime YTD",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 282069,
     "mapping": {
       "rootPath": null,
@@ -662,7 +659,7 @@
     "description": "New York City 311 2010 - Present",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 37023044,
     "mapping": {
       "rootPath": null,
@@ -722,7 +719,7 @@
     "description": "Boston Crime Incident Reports - 2023 to Present",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 124524,
     "mapping": {
       "rootPath": null,
@@ -782,7 +779,7 @@
     "description": "Boston Crime Incident Reports - 2022",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 73852,
     "mapping": {
       "rootPath": null,
@@ -842,7 +839,7 @@
     "description": "Boston Crime Incident Reports - 2021",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 71721,
     "mapping": {
       "rootPath": null,
@@ -902,7 +899,7 @@
     "description": "Boston Crime Incident Reports - 2020",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 70894,
     "mapping": {
       "rootPath": null,
@@ -962,7 +959,7 @@
     "description": "Boston Crime Incident Reports - 2019",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 87184,
     "mapping": {
       "rootPath": null,
@@ -1022,7 +1019,7 @@
     "description": "Boston Crime Incident Reports - 2018",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 98888,
     "mapping": {
       "rootPath": null,
@@ -1082,7 +1079,7 @@
     "description": "Boston Crime Incident Reports - 2017",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 101338,
     "mapping": {
       "rootPath": null,
@@ -1142,7 +1139,7 @@
     "description": "Boston Crime Incident Reports - 2016",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 99430,
     "mapping": {
       "rootPath": null,
@@ -1202,7 +1199,7 @@
     "description": "Boston Crime Incident Reports - 2015",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 53597,
     "mapping": {
       "rootPath": null,
@@ -1262,7 +1259,7 @@
     "description": "Boston 311 Service Requests - 2024",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 184665,
     "mapping": {
       "rootPath": null,
@@ -1322,7 +1319,7 @@
     "description": "Boston 311 Service Requests - 2023",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 313226,
     "mapping": {
       "rootPath": null,
@@ -1382,7 +1379,7 @@
     "description": "Boston 311 Service Requests - 2022",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 276599,
     "mapping": {
       "rootPath": null,
@@ -1442,7 +1439,7 @@
     "description": "Boston 311 Service Requests - 2021",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 273784,
     "mapping": {
       "rootPath": null,
@@ -1502,7 +1499,7 @@
     "description": "Boston 311 Service Requests - 2020",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 251222,
     "mapping": {
       "rootPath": null,
@@ -1562,7 +1559,7 @@
     "description": "Boston 311 Service Requests - 2019",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 259022,
     "mapping": {
       "rootPath": null,
@@ -1622,7 +1619,7 @@
     "description": "Boston 311 Service Requests - 2018",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 262748,
     "mapping": {
       "rootPath": null,
@@ -1682,7 +1679,7 @@
     "description": "Boston 311 Service Requests - 2017",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 251269,
     "mapping": {
       "rootPath": null,
@@ -1742,7 +1739,7 @@
     "description": "Boston 311 Service Requests - 2016",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 216535,
     "mapping": {
       "rootPath": null,
@@ -1802,7 +1799,7 @@
     "description": "Boston 311 Service Requests - 2015",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
+    "dataJobConfiguratorType": "BASE",
     "numRecords": 210083,
     "mapping": {
       "rootPath": null,
