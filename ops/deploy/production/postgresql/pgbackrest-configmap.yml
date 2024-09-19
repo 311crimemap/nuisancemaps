@@ -35,6 +35,10 @@ data:
     archive_mode = on
     archive_command = 'pgbackrest --stanza=311crimemap archive-push %p'
 
+  custom_postgresql.conf: |
+    # custom_postgresql.conf
+    max_wal_size = 2GB
+
   run.sh: |
     #!/bin/bash
     # override docker container run.sh
