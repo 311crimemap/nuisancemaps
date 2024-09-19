@@ -103,7 +103,7 @@ public class ParserStrategyConfig {
             value = String.join(" ", addressBlock, streetName, streetType);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return value;
@@ -126,7 +126,7 @@ public class ParserStrategyConfig {
             dateStr = date.format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -143,7 +143,7 @@ public class ParserStrategyConfig {
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info("CREATED_DATE_CSV_AUSTIN: " + row.get("Created Date") + " | " + e.getMessage());
+            log.error("CREATED_DATE_CSV_AUSTIN: " + row.get("Created Date") + " | " + e.getMessage());
         }
 
         return dateStr;
@@ -160,7 +160,7 @@ public class ParserStrategyConfig {
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info("REPORTED_AT_CSV_AUSTIN: " + row.get("Occurred Date Time") + " | " + e.getMessage());
+            log.error("REPORTED_AT_CSV_AUSTIN: " + row.get("Occurred Date Time") + " | " + e.getMessage());
         }
 
         return dateStr;
@@ -177,7 +177,7 @@ public class ParserStrategyConfig {
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info("REPORTED_AT2_CSV_AUSTIN: " + row.get("Report Date Time") + " | " + e.getMessage());
+            log.error("REPORTED_AT2_CSV_AUSTIN: " + row.get("Report Date Time") + " | " + e.getMessage());
         }
 
         return dateStr;
@@ -196,7 +196,7 @@ public class ParserStrategyConfig {
             String coordinates = text.replaceAll("[()]", "");
             latitude = coordinates.split(",")[0];
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return latitude;
@@ -211,7 +211,7 @@ public class ParserStrategyConfig {
             String coordinates = text.replaceAll("[()]", "");
             longitude = coordinates.split(",")[1];
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return longitude;
@@ -234,7 +234,7 @@ public class ParserStrategyConfig {
 
         } catch (Exception e) {
             String text = row.get("Lat_Long Location");
-            log.info("[LATITUDE_CSV_311_DALLAS] " + e.getMessage());
+            log.error("[LATITUDE_CSV_311_DALLAS] " + e.getMessage());
         }
 
         return latitude;
@@ -256,7 +256,7 @@ public class ParserStrategyConfig {
             longitude = coordinates.split(",")[1];
 
         } catch (Exception e) {
-            log.info("[LONGITUDE_CSV_311_DALLAS] " + e.getMessage());
+            log.error("[LONGITUDE_CSV_311_DALLAS] " + e.getMessage());
         }
 
         return longitude;
@@ -271,7 +271,7 @@ public class ParserStrategyConfig {
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -294,7 +294,7 @@ public class ParserStrategyConfig {
             }
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return latitude;
@@ -313,7 +313,7 @@ public class ParserStrategyConfig {
                 longitude = matcher.group(2);
             }
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return longitude;
@@ -328,7 +328,7 @@ public class ParserStrategyConfig {
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -343,7 +343,7 @@ public class ParserStrategyConfig {
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -358,7 +358,7 @@ public class ParserStrategyConfig {
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -373,7 +373,7 @@ public class ParserStrategyConfig {
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -396,7 +396,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -415,7 +415,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -429,7 +429,7 @@ public class ParserStrategyConfig {
     public String REPORTED_AT_CSV_CRIME_SAN_FRANCISCO(Map<String, String> row) {
         String dateStr = null;
         try {
-            String text = row.get("Incident datetime");
+            String text = row.get("Incident Datetime");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss a");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -438,7 +438,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error("[REPORTED_AT_CSV_CRIME_SAN_FRANCISCO] " + e.getMessage());
         }
 
         return dateStr;
@@ -457,7 +457,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error("[REPORTED_AT_CSV_311_SAN_FRANCISCO] " + e.getMessage());
         }
 
         return dateStr;
@@ -481,7 +481,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -499,7 +499,7 @@ public class ParserStrategyConfig {
                     .format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -517,7 +517,7 @@ public class ParserStrategyConfig {
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -547,7 +547,7 @@ public class ParserStrategyConfig {
             dateStr = localDateTime.format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -565,7 +565,7 @@ public class ParserStrategyConfig {
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
@@ -582,7 +582,7 @@ public class ParserStrategyConfig {
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return dateStr;
