@@ -275,17 +275,17 @@
       "latitude": {
         "field": "Lat_Long Location",
         "pointer": null,
-        "parsingStrategy": "LATITUDE_311_DALLAS"
+        "parsingStrategy": "LATITUDE_CSV_311_DALLAS"
       },
       "longitude": {
         "field": "Lat_Long Location",
         "pointer": null,
-        "parsingStrategy": "LONGITUDE_311_DALLAS"
+        "parsingStrategy": "LONGITUDE_CSV_311_DALLAS"
       },
       "reportedAt": {
         "field": "Created Date",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_311_DALLAS"
       },
       "reportedAt2": {
         "field": null,
