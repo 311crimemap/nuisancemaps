@@ -72,9 +72,13 @@ public class ParserStrategyConfig {
                 this::REPORTED_AT_CSV_311_SAN_FRANCISCO);
 
         // new york city
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
-                this::REPORTEDAT_CRIME_NEWYORKCITY);
-        parsingFunctions.put(ParserStrategy.CREATED_DATE_311_NEWYORKCITY, this::CREATED_DATE_311_NEWYORKCITY);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_NEW_YORK_CITY,
+                this::REPORTED_AT_CSV_CRIME_NEW_YORK_CITY);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY,
+                this::REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY);
+
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_NEW_YORK_CITY,
+                this::REPORTED_AT_CSV_311_NEW_YORK_CITY);
 
         // boston
         parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON, this::REPORTEDAT_BOSTON);
@@ -363,7 +367,6 @@ public class ParserStrategyConfig {
         return dateStr;
     }
 
-
     /*
      * chicago
      */
@@ -429,7 +432,6 @@ public class ParserStrategyConfig {
         return dateStr;
     }
 
-
     // 06/09/2021 08:36:00 AM
     public String REPORTED_AT_CSV_311_SAN_FRANCISCO(Map<String, String> row) {
         String dateStr = null;
@@ -455,7 +457,7 @@ public class ParserStrategyConfig {
 
     // LocalDateTime.parse requires ISO format but field is a simple date
     // (MM/DD/YYYY) - only for CSV (but not JSON)
-    public String REPORTEDAT_CRIME_NEWYORKCITY(Map<String, String> row) {
+    public String REPORTED_AT_CSV_CRIME_NEW_YORK_CITY(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("RPT_DT");
@@ -473,8 +475,26 @@ public class ParserStrategyConfig {
         return dateStr;
     }
 
-    // LocalDateTime.parse has ISO defaults that cannot handle hh:mm:ss am/pm marker
-    public String CREATED_DATE_311_NEWYORKCITY(Map<String, String> row) {
+    public String REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("CMPLNT_FR_DT");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 09/18/2024 02:24:09 AM
+    public String REPORTED_AT_CSV_311_NEW_YORK_CITY(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("Created Date");
