@@ -460,7 +460,7 @@
         "parsingStrategy": null
       },
       "reportedAt": {
-        "field": "Incident Date",
+        "field": "Incident Datetime",
         "pointer": null,
         "parsingStrategy": null
       },

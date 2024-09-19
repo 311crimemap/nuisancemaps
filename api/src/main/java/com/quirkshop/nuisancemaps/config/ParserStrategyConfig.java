@@ -45,15 +45,12 @@ public class ParserStrategyConfig {
 
         Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = new HashMap<>();
 
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON, this::REPORTEDAT_BOSTON);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET,
-                this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
-                this::REPORTEDAT_CRIME_NEWYORKCITY);
-        parsingFunctions.put(ParserStrategy.CREATED_DATE_311_NEWYORKCITY, this::CREATED_DATE_311_NEWYORKCITY);
+        // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN, this::REPORTED_AT_CSV_AUSTIN);
         parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_AUSTIN, this::REPORTED_AT2_CSV_AUSTIN);
         parsingFunctions.put(ParserStrategy.CREATED_DATE_CSV_AUSTIN, this::CREATED_DATE_CSV_AUSTIN);
+
+        // dallas
         parsingFunctions.put(ParserStrategy.LATITUDE_CSV_CRIME_DALLAS, this::LATITUDE_CSV_CRIME_DALLAS);
         parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_CRIME_DALLAS, this::LONGITUDE_CSV_CRIME_DALLAS);
         parsingFunctions.put(ParserStrategy.LATITUDE_CSV_311_DALLAS, this::LATITUDE_CSV_311_DALLAS);
@@ -61,6 +58,28 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_DALLAS, this::REPORTED_AT_CSV_311_DALLAS);
         parsingFunctions.put(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS, this::REPORTEDAT_CSV_CRIME_DALLAS);
         parsingFunctions.put(ParserStrategy.REPORTEDAT2_CSV_CRIME_DALLAS, this::REPORTEDAT2_CSV_CRIME_DALLAS);
+
+        // chicago
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_CHICAGO,
+                this::REPORTED_AT_CSV_CRIME_CHICAGO);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_CHICAGO,
+                this::REPORTED_AT_CSV_311_CHICAGO);
+
+        // san francisco
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_SAN_FRANCISCO,
+                this::REPORTED_AT_CSV_CRIME_SAN_FRANCISCO);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_SAN_FRANCISCO,
+                this::REPORTED_AT_CSV_311_SAN_FRANCISCO);
+
+        // new york city
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_NEWYORKCITY,
+                this::REPORTEDAT_CRIME_NEWYORKCITY);
+        parsingFunctions.put(ParserStrategy.CREATED_DATE_311_NEWYORKCITY, this::CREATED_DATE_311_NEWYORKCITY);
+
+        // boston
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON, this::REPORTEDAT_BOSTON);
+        parsingFunctions.put(ParserStrategy.REPORTEDAT_BOSTON_TIMEZONE_OFFSET,
+                this::REPORTEDAT_BOSTON_TIMEZONE_OFFSET);
 
         return parsingFunctions;
     }
@@ -337,6 +356,92 @@ public class ParserStrategyConfig {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+
+    /*
+     * chicago
+     */
+
+    // 09/11/2024 12:00:00 AM
+    public String REPORTED_AT_CSV_CRIME_CHICAGO(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Date");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 09/19/2024 08:14:37 AM
+    public String REPORTED_AT_CSV_311_CHICAGO(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("CREATED_DATE");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    /*
+     * san francisco
+     */
+
+    // 2023/03/16 10:15:00 PM
+    public String REPORTED_AT_CSV_CRIME_SAN_FRANCISCO(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Incident datetime");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+
+    // 06/09/2021 08:36:00 AM
+    public String REPORTED_AT_CSV_311_SAN_FRANCISCO(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Opened");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
         } catch (Exception e) {
             log.info(e.getMessage());
         }
