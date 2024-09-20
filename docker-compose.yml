@@ -96,6 +96,7 @@ services:
       - ./db/pgbackrest:/mnt/pgbackrest
       - ./db/pgbackrest.conf:/etc/pgbackrest.conf
       - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
+      - ./db/custom_postgresql.conf:/opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
       # pgbackrest recovery override
       # - ./db/run.sh:/opt/bitnami/scripts/postgresql/run.sh
 

@@ -94,6 +94,9 @@ spec:
         - name: pgbackrest-archive-conf
           mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
           subPath: archive.conf
+        - name: pgbackrest-custom-postgresql-conf
+          mountPath: /opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
+          subPath: custom_postgresql.conf
 
       volumes:
 
@@ -112,6 +115,9 @@ spec:
         configMap:
           name: pgbackrest-config
       - name: pgbackrest-archive-conf
+        configMap:
+          name: pgbackrest-config
+      - name: pgbackrest-custom-postgresql-conf
         configMap:
           name: pgbackrest-config
 
