@@ -73,7 +73,7 @@ under the <a href=\"https://opendatacommons.org/licenses/by/1-0/\">ODC Attributi
     {
         "name": "Boston, MA",
         "city": "Boston",
-        "state": "MA",
+        "state": "Massachusetts",
         "attribution": "This data is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: <a href=\"https: //opendatacommons.org/licenses/pddl/1.0/\">http://opendatacommons.org/licenses/pddl/1.0/</a>",
         "enabled": true,
         "description": "",
