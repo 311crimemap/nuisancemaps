@@ -29,6 +29,7 @@ public class MapFieldExtractor implements FieldExtractor<Map<String, String>> {
         Method method = mapper.getClass().getMethod("apply", Object.class);
         Class<?> returnType = method.getReturnType();
 
+        // could be single key/value (String) in source_config, or a MappingField object
         Object mappedValue = mapper.apply(source.getMapping());
 
         // Vanilla String (e.g. orderKey: ":id")
@@ -36,7 +37,11 @@ public class MapFieldExtractor implements FieldExtractor<Map<String, String>> {
             return (String) mappedValue;
         }
 
-        // Parsing Strategy method if exists, otherwise use Pointer expression
+        // NB: MappingField represents the {field, pointer, parsingStrategy}
+        // object in source_config
+        //
+        // hierarchy: use Parsing Strategy method if exists, otherwise use field
+        // no pointer in MapFieldExtractor
         MappingField result = (MappingField) mappedValue;
 
         if (result == null)
