@@ -17,6 +17,9 @@ import { defaultActiveFeatures } from "./types/activefeatures.ts";
 import { Log } from "./Logger";
 
 function App() {
+  const {DEV, MODE, PROD} = {...import.meta.env};
+  console.log("[311CrimeMap]", {env: {DEV, MODE, PROD}});
+
   const featureZoomLevel = 17;
 
   const [position, setPosition] = useState<MapPosition>(defaultMapPosition);
