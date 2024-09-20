@@ -275,17 +275,17 @@
       "latitude": {
         "field": "Lat_Long Location",
         "pointer": null,
-        "parsingStrategy": "LATITUDE_311_DALLAS"
+        "parsingStrategy": "LATITUDE_CSV_311_DALLAS"
       },
       "longitude": {
         "field": "Lat_Long Location",
         "pointer": null,
-        "parsingStrategy": "LONGITUDE_311_DALLAS"
+        "parsingStrategy": "LONGITUDE_CSV_311_DALLAS"
       },
       "reportedAt": {
         "field": "Created Date",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_311_DALLAS"
       },
       "reportedAt2": {
         "field": null,
@@ -344,7 +344,7 @@
       "reportedAt": {
         "field": "Date",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_CHICAGO"
       },
       "reportedAt2": {
         "field": null,
@@ -403,7 +403,7 @@
       "reportedAt": {
         "field": "CREATED_DATE",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_311_CHICAGO"
       },
       "reportedAt2": {
         "field": null,
@@ -460,9 +460,9 @@
         "parsingStrategy": null
       },
       "reportedAt": {
-        "field": "Incident Date",
+        "field": "Incident Datetime",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_SAN_FRANCISCO"
       },
       "reportedAt2": {
         "field": null,
@@ -521,7 +521,7 @@
       "reportedAt": {
         "field": "Opened",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_CSV_311_SAN_FRANCISCO"
       },
       "reportedAt2": {
         "field": null,
@@ -530,7 +530,6 @@
       }
     }
   },
-
   {
     "sourceConfigId": 10,
     "url": "https://data.cityofnewyork.us/api/views/qgea-i56i/rows.csv?fourfour=qgea-i56i&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
@@ -539,8 +538,7 @@
     "description": "New York City Crime Complaint Historic",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 891000000,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
@@ -554,15 +552,13 @@
         "pointer": null,
         "parsingStrategy": null
       },
-
-      "address": {
-        "field": null,
+      "description": {
+        "field": "PD_DESC",
         "pointer": null,
         "parsingStrategy": null
       },
-
-      "description": {
-        "field": "PD_DESC",
+      "address": {
+        "field": null,
         "pointer": null,
         "parsingStrategy": null
       },
@@ -584,12 +580,12 @@
       "reportedAt": {
         "field": "RPT_DT",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
       },
       "reportedAt2": {
         "field": "CMPLNT_FR_DT",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+        "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
       }
     }
   },
@@ -602,8 +598,7 @@
     "description": "New York City Crime YTD",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 282069,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
@@ -645,12 +640,12 @@
       "reportedAt": {
         "field": "RPT_DT",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
       },
       "reportedAt2": {
         "field": "CMPLNT_FR_DT",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_CRIME_NEWYORKCITY"
+        "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
       }
     }
   },
@@ -662,8 +657,7 @@
     "description": "New York City 311 2010 - Present",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 37023044,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
@@ -705,7 +699,7 @@
       "reportedAt": {
         "field": "Created Date",
         "pointer": null,
-        "parsingStrategy": "CREATED_DATE_311_NEWYORKCITY"
+        "parsingStrategy": "REPORTED_AT_CSV_311_NEW_YORK_CITY"
       },
       "reportedAt2": {
         "field": null,
@@ -722,8 +716,7 @@
     "description": "Boston Crime Incident Reports - 2023 to Present",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 124524,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -765,7 +758,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -782,8 +775,7 @@
     "description": "Boston Crime Incident Reports - 2022",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 73852,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -825,7 +817,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -842,8 +834,7 @@
     "description": "Boston Crime Incident Reports - 2021",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 71721,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -885,7 +876,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -902,8 +893,7 @@
     "description": "Boston Crime Incident Reports - 2020",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 70894,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -945,7 +935,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -962,8 +952,7 @@
     "description": "Boston Crime Incident Reports - 2019",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 87184,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1005,7 +994,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1022,8 +1011,7 @@
     "description": "Boston Crime Incident Reports - 2018",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 98888,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1065,7 +1053,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1082,8 +1070,7 @@
     "description": "Boston Crime Incident Reports - 2017",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 101338,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1125,7 +1112,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1142,8 +1129,7 @@
     "description": "Boston Crime Incident Reports - 2016",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 99430,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1185,7 +1171,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1202,8 +1188,7 @@
     "description": "Boston Crime Incident Reports - 2015",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 53597,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1245,7 +1230,7 @@
       "reportedAt": {
         "field": "OCCURRED_ON_DATE",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1262,8 +1247,7 @@
     "description": "Boston 311 Service Requests - 2024",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 184665,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1305,7 +1289,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1322,8 +1306,7 @@
     "description": "Boston 311 Service Requests - 2023",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 313226,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1365,7 +1348,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1382,8 +1365,7 @@
     "description": "Boston 311 Service Requests - 2022",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 276599,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1425,7 +1407,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1442,8 +1424,7 @@
     "description": "Boston 311 Service Requests - 2021",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 273784,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1485,7 +1466,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1502,8 +1483,7 @@
     "description": "Boston 311 Service Requests - 2020",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 251222,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1545,7 +1525,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1562,8 +1542,7 @@
     "description": "Boston 311 Service Requests - 2019",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 259022,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1605,7 +1584,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1622,8 +1601,7 @@
     "description": "Boston 311 Service Requests - 2018",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 262748,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1665,7 +1643,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1682,8 +1660,7 @@
     "description": "Boston 311 Service Requests - 2017",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 251269,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1725,7 +1702,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1742,8 +1719,7 @@
     "description": "Boston 311 Service Requests - 2016",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 216535,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1785,7 +1761,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
@@ -1802,8 +1778,7 @@
     "description": "Boston 311 Service Requests - 2015",
     "dataParserType": "CSV",
     "dataProcessType": "FILE",
-    "dataJobURLType": "BASE",
-    "numRecords": 210083,
+    "dataJobConfiguratorType": "BASE",
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
@@ -1845,7 +1820,7 @@
       "reportedAt": {
         "field": "open_dt",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_BOSTON"
+        "parsingStrategy": "REPORTED_AT_CSV_311_BOSTON"
       },
       "reportedAt2": {
         "field": null,
