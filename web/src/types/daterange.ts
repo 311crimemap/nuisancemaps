@@ -21,13 +21,20 @@ export interface InputDateRange {
     };
 }
 
-
+// T - 1
 const endDate = new Date();
 endDate.setDate(endDate.getDate() - 1);
 
+// T - 3 months
+// nyc publishes quarterly - want some data available on default
+// request
+const startDate = new Date();
+startDate.setMonth(endDate.getMonth() - 3)
+
+
 export const defaultDateRange: DateRange = {
     date: {
-        startDate: new Date("01-01-2024").toLocaleDateString("en-CA"),
+        startDate: startDate.toLocaleDateString("en-CA"),
         endDate: endDate.toLocaleDateString("en-CA"),
     },
     isBusy: false,

@@ -84,7 +84,7 @@ spec:
           - name: BATCH_SIZE
             value: "50000"
           - name: VITE_MAX_DATA_RECORDS
-            value: "20000"
+            value: "10000"
           ## probes
           # livenessProbe:
           #   httpGet:

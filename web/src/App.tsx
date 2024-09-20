@@ -17,6 +17,9 @@ import { defaultActiveFeatures } from "./types/activefeatures.ts";
 import { Log } from "./Logger";
 
 function App() {
+  const {DEV, MODE, PROD} = {...import.meta.env};
+  console.log("[311CrimeMap]", {env: {DEV, MODE, PROD}});
+
   const featureZoomLevel = 17;
 
   const [position, setPosition] = useState<MapPosition>(defaultMapPosition);
@@ -156,6 +159,12 @@ function App() {
     Log.log({
       msg: "Fetch Data",
       params: { dataCrimesURL, data311sURL },
+      useEffect: {
+        isInitLoaded,
+        refresh: position.refresh,
+        date: filterDate.date,
+        map,
+      },
       ...Log.data,
     });
 
@@ -172,12 +181,21 @@ function App() {
         setIsDataLoading(false);
       }
     );
-    //to make new request
-    //position.center - too sensitive, even zoom will trigger
+
+    //
+    // trigger new fetch primarily watch position.refresh
+    // (NB: change on viewport's position.center is too sensitive/disruptive, even a zoom will trigger)
+    //
+    // Math.max(position.refresh, 1) - to avoid double fetch
+    // position.refresh initial value: 0; increments to 1 on useMap load (onMove fires)
+    //
+    // so both "init" phases won't exceed ceil (max) of 1, and avoids triggering
+    // a fetch, but subsequent valid refreshes will.
+    //
   }, [
     map,
     isInitLoaded,
-    position.refresh,
+    Math.max(position.refresh, 1),
     filterDate.date.startDate,
     filterDate.date.endDate,
   ]);
