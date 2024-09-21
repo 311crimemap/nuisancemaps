@@ -1,5 +1,5 @@
 
-package com.quirkshop.nuisancemaps.config;
+package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 public enum ParserStrategy {
     /* austin */

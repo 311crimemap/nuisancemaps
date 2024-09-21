@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.quirkshop.nuisancemaps.config.ParserStrategy;
+import com.quirkshop.nuisancemaps.service.parserstrategy.ParserStrategy;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.model.Source;
