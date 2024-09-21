@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 
 import jakarta.persistence.Entity;
@@ -23,6 +24,7 @@ public class PendingTextCategory {
     @SequenceGenerator(name = "pending_text_category_seq", allocationSize = 1)
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "data_job_id", nullable = false)
     private DataJob dataJob;

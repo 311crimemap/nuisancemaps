@@ -10,4 +10,8 @@ import com.quirkshop.nuisancemaps.model.PendingTextCategory;
 @Repository
 public interface PendingTextCategoryRepository extends CrudRepository<PendingTextCategory, Integer> {
     List<PendingTextCategory> findByDataTypeAndTextIn(String dataType, List<String> texts);
+
+    List<PendingTextCategory> findAllByOrderByIdDesc();
+
+    List<PendingTextCategory> findAllByDataTypeOrderByIdDesc(String dataType);
 }
