@@ -93,11 +93,11 @@ public class ParserStrategyConfigDallasTest {
     @Test
     @Transactional
     public void REPORTED_AT_CSV_CRIME_DALLAS_TEST() {
-        assertThat(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS).isNotNull();
+        assertThat(ParserStrategy.REPORTED_AT_CSV_CRIME_DALLAS).isNotNull();
 
         Map<String, String> row = Map.of("Date of Report", "2022-11-09 07:03:00.0000000");
 
-        String value = ParserStrategyConfigDallas.REPORTEDAT_CSV_CRIME_DALLAS(row);
+        String value = ParserStrategyConfigDallas.REPORTED_AT_CSV_CRIME_DALLAS(row);
         assertThat(value).isEqualTo("2022-11-09T07:03:00");
 
         // ensure it's parseable downstream
@@ -107,12 +107,12 @@ public class ParserStrategyConfigDallasTest {
 
     @Test
     @Transactional
-    public void REPORTEDAT2_CSV_CRIME_DALLAS_TEST() {
-        assertThat(ParserStrategy.REPORTEDAT2_CSV_CRIME_DALLAS).isNotNull();
+    public void REPORTED_AT2_CSV_CRIME_DALLAS_TEST() {
+        assertThat(ParserStrategy.REPORTED_AT2_CSV_CRIME_DALLAS).isNotNull();
 
         Map<String, String> row = Map.of("Date1 of Occurrence", "2016-09-16 00:00:00.0000000");
 
-        String value = ParserStrategyConfigDallas.REPORTEDAT2_CSV_CRIME_DALLAS(row);
+        String value = ParserStrategyConfigDallas.REPORTED_AT2_CSV_CRIME_DALLAS(row);
         assertThat(value).isEqualTo("2016-09-16T00:00:00");
 
         // ensure it's parseable downstream
@@ -122,13 +122,13 @@ public class ParserStrategyConfigDallasTest {
 
     @Test
     @Transactional
-    public void REPORTEDAT_CRIME_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
-        assertThat(ParserStrategy.REPORTEDAT_CRIME_DALLAS).isNotNull();
+    public void REPORTED_AT_CRIME_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CRIME_DALLAS).isNotNull();
 
         String jsonStr = "{\"reporteddate\":\"2016-07-19 17:22:00.0000000\",\"date1\":\"2016-07-19 00:00:00.0000000\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
 
-        String value = ParserStrategyConfigDallas.REPORTEDAT_CRIME_DALLAS(item);
+        String value = ParserStrategyConfigDallas.REPORTED_AT_CRIME_DALLAS(item);
         assertThat(value).isEqualTo("2016-07-19T17:22:00");
 
         // ensure it's parseable downstream
@@ -138,12 +138,12 @@ public class ParserStrategyConfigDallasTest {
 
     @Test
     @Transactional
-    public void REPORTEDAT2_CRIME_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
-        assertThat(ParserStrategy.REPORTEDAT2_CRIME_DALLAS).isNotNull();
+    public void REPORTED_AT2_CRIME_DALLAS_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT2_CRIME_DALLAS).isNotNull();
         String jsonStr = "{\"reporteddate\":\"2016-07-19 17:22:00.0000000\",\"date1\":\"2016-07-19 00:00:00.0000000\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
 
-        String value = ParserStrategyConfigDallas.REPORTEDAT2_CRIME_DALLAS(item);
+        String value = ParserStrategyConfigDallas.REPORTED_AT2_CRIME_DALLAS(item);
         assertThat(value).isEqualTo("2016-07-19T00:00:00");
 
         // ensure it's parseable downstream

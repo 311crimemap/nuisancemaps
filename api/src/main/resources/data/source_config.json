@@ -226,12 +226,12 @@
       "reportedAt": {
         "field": "Date of Report",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT_CSV_CRIME_DALLAS"
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_DALLAS"
       },
       "reportedAt2": {
         "field": "Date1 of Occurrence",
         "pointer": null,
-        "parsingStrategy": "REPORTEDAT2_CSV_CRIME_DALLAS"
+        "parsingStrategy": "REPORTED_AT2_CSV_CRIME_DALLAS"
       }
     }
   },

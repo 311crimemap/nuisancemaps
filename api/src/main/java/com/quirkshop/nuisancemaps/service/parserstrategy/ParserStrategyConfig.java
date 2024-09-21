@@ -26,10 +26,10 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigDallas::LATITUDE_311_DALLAS);
         parsingFunctions.put(ParserStrategy.LONGITUDE_311_DALLAS,
                 ParserStrategyConfigDallas::LONGITUDE_311_DALLAS);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_CRIME_DALLAS,
-                ParserStrategyConfigDallas::REPORTEDAT_CRIME_DALLAS);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT2_CRIME_DALLAS,
-                ParserStrategyConfigDallas::REPORTEDAT2_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CRIME_DALLAS,
+                ParserStrategyConfigDallas::REPORTED_AT_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT2_CRIME_DALLAS,
+                ParserStrategyConfigDallas::REPORTED_AT2_CRIME_DALLAS);
         parsingFunctions.put(ParserStrategy.STREET_NAME_ERSI_AUSTIN,
                 ParserStrategyConfigAustin::STREET_NAME_ERSI_AUSTIN);
         parsingFunctions.put(ParserStrategy.OCCURRENCE_DATE_ERSI_AUSTIN,

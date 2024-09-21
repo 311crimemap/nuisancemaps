@@ -1,7 +1,6 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -154,7 +153,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTEDAT_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_DALLAS(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("Date of Report");
@@ -169,7 +168,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTEDAT2_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String REPORTED_AT2_CSV_CRIME_DALLAS(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("Date1 of Occurrence");
@@ -184,7 +183,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTEDAT_CRIME_DALLAS(JsonNode item) {
+    public static String REPORTED_AT_CRIME_DALLAS(JsonNode item) {
         String dateStr = null;
         try {
             String text = item.at("/reporteddate").asText();
@@ -199,7 +198,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTEDAT2_CRIME_DALLAS(JsonNode item) {
+    public static String REPORTED_AT2_CRIME_DALLAS(JsonNode item) {
         String dateStr = null;
         try {
             String text = item.at("/date1").asText();
@@ -212,6 +211,5 @@ public class ParserStrategyConfigDallas {
 
         return dateStr;
     }
-
 
 }
