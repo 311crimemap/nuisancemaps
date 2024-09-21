@@ -11,7 +11,6 @@ import com.quirkshop.nuisancemaps.WorkerApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ParserStrategyConfigAustin {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);

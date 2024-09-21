@@ -2,11 +2,9 @@ package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 
 import org.slf4j.Logger;
@@ -19,7 +17,6 @@ import org.slf4j.LoggerFactory;
 public class ParserStrategyConfigNewYorkCity {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
-
 
     // LocalDateTime.parse requires ISO format but field is a simple date
     // (MM/DD/YYYY) - only for CSV (but not JSON)

@@ -1,12 +1,9 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 
 import org.slf4j.Logger;
@@ -20,7 +17,7 @@ public class ParserStrategyConfigSanFrancisco {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
-        // 2023/03/16 10:15:00 PM
+    // 2023/03/16 10:15:00 PM
     public static String REPORTED_AT_CSV_CRIME_SAN_FRANCISCO(Map<String, String> row) {
         String dateStr = null;
         try {

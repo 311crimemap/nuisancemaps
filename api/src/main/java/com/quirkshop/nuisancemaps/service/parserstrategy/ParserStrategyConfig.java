@@ -1,23 +1,16 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.quirkshop.nuisancemaps.WorkerApplication;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
-import com.quirkshop.nuisancemaps.WorkerApplication;
 
 @Component
 public class ParserStrategyConfig {
@@ -69,10 +62,10 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigDallas::LONGITUDE_CSV_311_DALLAS);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_DALLAS,
                 ParserStrategyConfigDallas::REPORTED_AT_CSV_311_DALLAS);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT_CSV_CRIME_DALLAS,
-                ParserStrategyConfigDallas::REPORTEDAT_CSV_CRIME_DALLAS);
-        parsingFunctions.put(ParserStrategy.REPORTEDAT2_CSV_CRIME_DALLAS,
-                ParserStrategyConfigDallas::REPORTEDAT2_CSV_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_DALLAS,
+                ParserStrategyConfigDallas::REPORTED_AT_CSV_CRIME_DALLAS);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_CRIME_DALLAS,
+                ParserStrategyConfigDallas::REPORTED_AT2_CSV_CRIME_DALLAS);
 
         // chicago
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_CHICAGO,

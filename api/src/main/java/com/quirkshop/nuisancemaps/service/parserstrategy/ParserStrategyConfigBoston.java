@@ -1,13 +1,10 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 
 import org.slf4j.Logger;
@@ -81,6 +78,5 @@ public class ParserStrategyConfigBoston {
 
         return dateStr;
     }
-
 
 }
