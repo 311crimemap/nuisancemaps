@@ -1,0 +1,87 @@
+[
+  {
+    "dataType": "crime",
+    "text": "BURGLARY OF SHED/DETACHED GARAGE/STORAGE UNIT (ATTEMPTED)",
+    "label": "1"
+  },
+  {
+    "dataType": "crime",
+    "text": "ESCAPE FROM CUSTODY (ATTEMPTED)",
+    "label": "6"
+  },
+  {
+    "dataType": "crime",
+    "text": "THEFT FROM AUTO (ATTEMPTED)",
+    "label": "2"
+  },
+  {
+    "dataType": "crime",
+    "text": "DEBIT CARD ABUSE (ATTEMPTED)",
+    "label": "3"
+  },
+  {
+    "dataType": "crime",
+    "text": "ROBBERY BY THREAT (ATTEMPTED)",
+    "label": "2"
+  },
+  {
+    "dataType": "crime",
+    "text": "CRIMINAL TRESPASS/IN VEHICLE (ATTEMPTED)",
+    "label": "1"
+  },
+  {
+    "dataType": "crime",
+    "text": "ROBBERY INFORMATION (ATTEMPTED)",
+    "label": "2"
+  },
+  {
+    "dataType": "crime",
+    "text": "CRUELTY TO ANIMALS (ATTEMPTED)",
+    "label": "0"
+  },
+  {
+    "dataType": "crime",
+    "text": "BURGLARY OF NON-RESIDENCE INFORMATION (ATTEMPTED)",
+    "label": "1"
+  },
+  {
+    "dataType": "crime",
+    "text": "BURGLARY OF RESIDENCE INFORMATION (ATTEMPTED)",
+    "label": "1"
+  },
+  {
+    "dataType": "crime",
+    "text": "COLD CASE HOMICIDE",
+    "label": "0"
+  },
+  {
+    "dataType": "crime",
+    "text": "JUGGING (ATTEMPTED)",
+    "label": "2"
+  },
+  {
+    "dataType": "crime",
+    "text": "ASSIST EMS (ATTEMPTED)",
+    "label": "6"
+  },
+  {
+    "dataType": "crime",
+    "text": "OUT OF CITY MURDER",
+    "label": "0"
+  },
+  {
+    "dataType": "crime",
+    "text": "PROSTITUTION (ATTEMPTED)",
+    "label": "4"
+  },
+  {
+    "dataType": "crime",
+    "text": "ISSUANCE OF BAD CHECK",
+    "label": "3"
+  },
+  {
+    "dataType": "crime",
+    "text": "VOYEURISM-PEEPING TOM",
+    "label": "6"
+  }
+]
