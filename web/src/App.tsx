@@ -17,8 +17,11 @@ import { defaultActiveFeatures } from "./types/activefeatures.ts";
 import { Log } from "./Logger";
 
 function App() {
-  const {DEV, MODE, PROD} = {...import.meta.env};
-  console.log("[311CrimeMap]", {env: {DEV, MODE, PROD}});
+  const { DEV, MODE, PROD } = { ...import.meta.env };
+  Log.log({
+    msg: "ENV",
+    params: { env: { DEV, MODE, PROD } },
+  });
 
   const featureZoomLevel = 17;
 
