@@ -8,6 +8,7 @@ import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 
@@ -29,6 +30,9 @@ public class TextCategoryService {
 
     @Autowired
     TextCategoryRepository textCategoryRepository;
+
+    @Autowired
+    PendingTextCategoryRepository pendingTextCategoryRepository;
 
     @Autowired
     CategoryService categoryService;
@@ -154,7 +158,16 @@ public class TextCategoryService {
             try {
                 textCategoryRepository.save(tc);
                 res.add(tc);
+
+                // clean up, remove from PendingTextCategory on successful add
+                pendingTextCategoryRepository.deleteByDataTypeAndText(tc.getDataType(), tc.getText());
+
             } catch (DataIntegrityViolationException e) {
+                // remove from PendingTextCategory on dupe (out of sync somehow, etc)
+                pendingTextCategoryRepository.deleteByDataTypeAndText(tc.getDataType(), tc.getText());
+                log.error(e.getMessage());
+
+            } catch (Exception e) {
                 log.error(e.getMessage());
             }
 
