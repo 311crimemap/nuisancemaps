@@ -297,6 +297,32 @@ point traffic to the db node.
 
 ---
 
+### DB Backup / Export
+
+To grab prod and use in dev, pipe output from prod via `pg_dump`:
+NB: do not use interactive terminal `kubectl -it` as it will corrupt the output
+
+```
+kubectl exec postgresql-0 -- pg_dump -U postgres -Fc nuisancemaps | cat > nuisancemaps_prod.dump
+```
+
+Restore dev - ensure file is available (`/temp` mount) in `docker-compose.yml`
+
+##### pg_restore
+
+Additional options:
+
+* `-j`: jobs increases parallelism
+* `-c`: clean; will drop objects. Still recommended to drop and (re)create database prior.
+* `-d`: database name
+* lastly, dump filename
+
+```
+pg_restore -U <dev_db_user> -j 4 -c -d nuisancemaps nuisancemaps_prod.dump
+```
+
+
+
 ### DB Recovery
 
 * location on host-0 and in container: `/backup_db/pgbackrest`

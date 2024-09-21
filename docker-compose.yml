@@ -88,6 +88,7 @@ services:
       driver: none
     volumes:
       - nuisancemaps_db:/bitnami/postgresql
+      - ./temp:/temp  # useful for temp file store, restore database
       # installed at "per database" level
       - ./db/01_enable_postgis.sql:/docker-entrypoint-initdb.d/01_enable_postgis.sql
 
