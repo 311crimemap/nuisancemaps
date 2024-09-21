@@ -76,8 +76,20 @@ export default function FeatureView({
               <dl>
                 <dt className="text-neutral-content">Report ID</dt>
                 <dd className="text-neutral mb-4">{properties.reportNum}</dd>
-                <dt className="text-neutral-content">Location</dt>
-                <dd className="text-neutral mb-4">{properties.location}</dd>
+
+                {properties.address && (
+                  <>
+                    <dt className="text-neutral-content">Address</dt>
+                    <dd className="text-neutral mb-4">{properties.address}</dd>
+                  </>
+                )}
+
+                {properties.location && (
+                  <>
+                    <dt className="text-neutral-content">Location</dt>
+                    <dd className="text-neutral mb-4">{properties.location}</dd>
+                  </>
+                )}
               </dl>
               <dl>
                 <dt className="text-neutral-content">Report Type</dt>
