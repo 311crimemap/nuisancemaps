@@ -196,13 +196,26 @@ There may be a point where these queries slow down and then another approach
 
 #### Exploration Notes
 
-Typical query took almost 5 seconds. Intuitively, it seemed adding indices on
+Non-indexed query took almost 5 seconds. Intuitively, it seemed adding indices on
 the queried data would be beneficial, namely on the `point` gis data, and on
 `reported_at DESC` field, as the query using dates were also sorted.
 
 ```
-CREATE INDEX idx_point_reported_at_GIST_311 ON data_311 USING GIST (point) INCLUDE (reported_at);
-CREATE INDEX idx_point_reported_at_desc_311 ON data_311 (reported_at DESC, point);
+
+
+
+--- initial index implementation (not currently used, but present to describe intuition)
+
+--- CREATE INDEX idx_point_reported_at_GIST_311 ON data_311 USING GIST (point) INCLUDE (reported_at);
+--- CREATE INDEX idx_point_reported_at_desc_311 ON data_311 (reported_at DESC, point);
+
+
+--- current implementation
+
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+CREATE INDEX idx_gist_point_reported_at_data_311 ON data_311(point, reported_at);
+CREATE INDEX idx_gist_point_reported_at_data_crime ON data_crime(point, reported_at);
+
 ```
 
 However, postgis can't create compound index on `reported_at DESC`, just
@@ -222,7 +235,40 @@ GIST index without the INCLUDE.
 The most costly step is date sorting, but often the reported_at index would be
 ignored in favor of a GIST, and then sequentially scanned to filter by date.
 
-#### Implementation
+Note: It's acutally more nuanced. When zoomed out, the bounding box is fairly
+large geographic area, so almost all points are spatially valid - which makes
+sorting by date the expensive step. However on narrow geographic ranges, the
+spatial query needs to filter out the same sorted date candidates, so the
+spatial query becomes a bottleneck.
+
+To strike a balance, used btree_gist extension to allow compound index using GIST.
+
+(Unfortunately, still cannot use ASC/DESC)
+
+#### Current Implementation
+
+Turns out that a single index on `reported_at DESC` works well for dense sets
+(e.g. NYC, slower on Dallas or Austin), where there's a limited geographic area.
+
+However, once a narrower lat/lng range is selected, the lack of any spatial
+query becomes severely noticeable, with query times running from 2 - 5 seconds.
+
+This is likely because as the geographic range narrows, every point in valid
+date range needs to be scanned vs taking advantage of a spatial index.
+
+Found a `btree_gist` index that enabled a compound GIST index: `(point,
+reported_at)` - so can provide some spatial query support.
+
+On average, all queries are slightly slower but still somewhat (I guess, still
+slow) acceptable. However, it drastically speeds up any zoomed in areas with
+narrower lat/lng bounding boxes. On the whole it's an improvement.
+
+Also still allows the query planner to use the singular `reported_at DESC` index
+on it's own - so there are still some very fast results. (see below, previous
+implementation.)
+
+
+#### Previous Implementation
 
 The most reliable way to get a reasonable query plan - longest < 400ms, with
 internal database memoization, was to:
