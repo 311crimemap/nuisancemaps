@@ -1,5 +1,3 @@
--- moved to src/main/resources/db/changelogs/00-postgis.sql
--- keeping as example location for docker container init scripts
--- would put sql below:
-
+--- on production / staging, these are in postgres configmap
 create extension if not exists postgis;
+create extension if not exists btree_gist;

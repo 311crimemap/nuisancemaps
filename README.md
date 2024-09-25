@@ -172,6 +172,187 @@ localhost:8080/datajobs/1479`
 * Restart Worker: `docker-compose restart worker``
 
 
+---
+
+## Query and Index Optimization Examples
+
+Tried a number of indices in an attempt to improve query speed.
+
+Current fastest implementation:
+
+1. having _no_ GIST index of any kind
+2. single index on `reported_at DESC`
+
+Query plan hits sorted dates first (memoized), then runs spatial query. Gets
+faster after first query.
+
+Concern is that this might not scale horizontally. As more cities are added, the
+number of entries in a date range will continue to increase - so the candidate
+pool for slower spatial query will continue to increase.
+
+There may be a point where these queries slow down and then another approach
+(separate table, additional GINI) might then be faster.
+
+
+#### Exploration Notes
+
+Non-indexed query took almost 5 seconds. Intuitively, it seemed adding indices on
+the queried data would be beneficial, namely on the `point` gis data, and on
+`reported_at DESC` field, as the query using dates were also sorted.
+
+```
+
+
+
+--- initial index implementation (not currently used, but present to describe intuition)
+
+--- CREATE INDEX idx_point_reported_at_GIST_311 ON data_311 USING GIST (point) INCLUDE (reported_at);
+--- CREATE INDEX idx_point_reported_at_desc_311 ON data_311 (reported_at DESC, point);
+
+
+--- current implementation
+
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+CREATE INDEX idx_gist_point_reported_at_data_311 ON data_311(point, reported_at);
+CREATE INDEX idx_gist_point_reported_at_data_crime ON data_crime(point, reported_at);
+
+```
+
+However, postgis can't create compound index on `reported_at DESC`, just
+`reported_at` - which is important. So the thought is to simply make two indices:
+
+1. GIST on point with an INCLUDE to associate the point with reported_at
+2. B-tree compound index on reported_at DESC, point - this isn't spatial.
+
+The hope is these two can be used in combination to query on geo and date.
+
+#### Reality
+
+Unfortunately, the query planner will create different query plans depending on
+the location, often sidestepping the entire date index, or using a pre-existing
+GIST index without the INCLUDE.
+
+The most costly step is date sorting, but often the reported_at index would be
+ignored in favor of a GIST, and then sequentially scanned to filter by date.
+
+Note: It's acutally more nuanced. When zoomed out, the bounding box is fairly
+large geographic area, so almost all points are spatially valid - which makes
+sorting by date the expensive step. However on narrow geographic ranges, the
+spatial query needs to filter out the same sorted date candidates, so the
+spatial query becomes a bottleneck.
+
+To strike a balance, used btree_gist extension to allow compound index using GIST.
+
+(Unfortunately, still cannot use ASC/DESC)
+
+#### Current Implementation
+
+Turns out that a single index on `reported_at DESC` works well for dense sets
+(e.g. NYC, slower on Dallas or Austin), where there's a limited geographic area.
+
+However, once a narrower lat/lng range is selected, the lack of any spatial
+query becomes severely noticeable, with query times running from 2 - 5 seconds.
+
+This is likely because as the geographic range narrows, every point in valid
+date range needs to be scanned vs taking advantage of a spatial index.
+
+Found a `btree_gist` index that enabled a compound GIST index: `(point,
+reported_at)` - so can provide some spatial query support.
+
+On average, all queries are slightly slower but still somewhat (I guess, still
+slow) acceptable. However, it drastically speeds up any zoomed in areas with
+narrower lat/lng bounding boxes. On the whole it's an improvement.
+
+Also still allows the query planner to use the singular `reported_at DESC` index
+on it's own - so there are still some very fast results. (see below, previous
+implementation.)
+
+
+#### Previous Implementation
+
+The most reliable way to get a reasonable query plan - longest < 400ms, with
+internal database memoization, was to:
+
+1. drop all GIST indices
+2. create a single `reported_at DESC` index.
+
+Yes actually removing indices resulting in 10x speed up because it forces the
+query planner to use the `reported_at DESC` index all the time (which is the
+bottleneck).
+
+
+##### Secondary Exploration
+
+Thought experiment: if it's more about forcing the query planner to sort by
+date, what if we move the `point` data to it's own table; `data_311_spatial`,
+and make an spatial index only on that data. This way `data_311` could be sorted
+by date, `data_311_spatial` by GIST, and we could leverage two indices.
+
+```
+# slow ~ 8s-11000s
+
+explain analyze SELECT s.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id
+FROM data_311_spatial s
+JOIN data_311 dc ON s.data_311_id = dc.id
+JOIN category cat ON dc.category_id = cat.id
+ WHERE dc.reported_at BETWEEN '2024-06-01' AND '2024-09-22'
+   AND ST_Within(s.point, ST_MakeEnvelope(-97.9, 30.1, -97.5, 30.3, 4326)::geometry)
+ORDER BY dc.reported_at DESC LIMIT 10000;
+```
+
+The reality was it was not any faster than the slowest original attempt with
+GINI indices. The JOIN's lent to expensive scans, overwhelming any benefit of
+separation.
+
+
+#### Query Examples:
+
+```
+# austin 400ms
+explain analyze SELECT dc.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id
+FROM data_311 dc
+JOIN category cat ON dc.category_id = cat.id
+WHERE reported_at BETWEEN '2024-06-01' AND '2024-09-22' AND ST_Within(point, ST_MakeEnvelope(-97.9, 30.1, -97.5, 30.3, 4326)::geometry)
+ORDER BY reported_at DESC LIMIT 10000;
+
+# nyc 75ms
+explain analyze SELECT dc.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id
+FROM data_311 dc
+JOIN category cat ON dc.category_id = cat.id
+WHERE reported_at BETWEEN '2024-06-01' AND '2024-09-22' AND ST_Within(point, ST_MakeEnvelope(-74.2, 40.6, -73.8, 40.9, 4326)::geometry)
+ORDER BY reported_at DESC LIMIT 10000;
+
+# chicago 130ms
+explain analyze SELECT dc.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id
+FROM data_311 dc
+JOIN category cat ON dc.category_id = cat.id
+WHERE reported_at BETWEEN '2024-04-01' AND '2024-09-22' AND ST_Within(point, ST_MakeEnvelope(-87.8,41.8,-87.4,42,4326)::geometry)
+ORDER BY reported_at DESC LIMIT 10000;
+
+# dallas 170ms
+explain analyze SELECT dc.*, cat.id as cat_id, cat.data_type, cat.text, cat.label, cat.parent_id
+FROM data_311 dc
+JOIN category cat ON dc.category_id = cat.id
+WHERE reported_at BETWEEN '2024-06-01' AND '2024-09-22' AND ST_Within(point, ST_MakeEnvelope(-97,32.7,-96.6,32.9,4326)::geometry)
+ORDER BY reported_at DESC LIMIT 10000;
+
+```
+
+
+#### Helpful queries / commands
+
+* show index usage: `select * from pg_stat_user_indexes where relname = 'data_311';`
+
+* turn off scanning types to force different index usage:
+
+```
+SET enable_indexscan = OFF;
+SET enable_bitmapscan = OFF;
+SET enable_seqscan = OFF;
+```
+
+* "analyze" table: `ANALYZE VERBOSE data_311;`
+
 
 ---
 
@@ -179,6 +360,11 @@ localhost:8080/datajobs/1479`
 
 * "Geometries" in GeoJSON/WKB format are (long, lat) - so they are "reversed",
   in a sense.
+
+* NB: with larger tables, spatial queries become a bottleneck. For optimal
+  query, need to induce a query plan that runs gis queries on a small subset;
+  e.g. filter on date, etc. first.
+
 
 ##### Spatial Index
 
