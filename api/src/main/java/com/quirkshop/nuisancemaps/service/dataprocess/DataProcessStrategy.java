@@ -20,6 +20,8 @@ public interface DataProcessStrategy {
 
     public void process(DataJob dataJob, InputStream inputStream, DataParser dataParser);
 
+    public void cleanup(DataJob dataJob);
+
     default void setJobStatus(Source source, DataJob dataJob, ParseCounter parseCounter) {
 
         final int ERROR_RATE = 5;

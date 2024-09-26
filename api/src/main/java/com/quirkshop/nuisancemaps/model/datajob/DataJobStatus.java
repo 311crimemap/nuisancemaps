@@ -15,6 +15,8 @@ public enum DataJobStatus {
     READ_FILE_ERROR("READ_FILE_ERROR"),
     PARSE_ERROR("PARSE_ERROR"),
     PENDING("PENDING"), // pending createData
+    CLEANUP("CLEANUP"),
+    CLEANUP_ERROR("CLEANUP_ERROR"),
     COMPLETED("COMPLETED"),
     ERROR("ERROR");
 
