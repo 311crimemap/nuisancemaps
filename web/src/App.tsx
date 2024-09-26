@@ -123,6 +123,7 @@ function App() {
 
   useEffect(() => {
     if (!isInitLoaded) return;
+    if (isDataLoading) return;
     if (!map) return;
     if (map.getZoom() < 10) return;
 
@@ -186,19 +187,20 @@ function App() {
     );
 
     //
-    // trigger new fetch primarily watch position.refresh
-    // (NB: change on viewport's position.center is too sensitive/disruptive, even a zoom will trigger)
+    // trigger new fetch by watching position.refresh counter
+    // (NB: setting change on viewport's position.center is too sensitive/disruptive,
+    // even a zoom will trigger unecessary fetches because underlying data doesn't change.)
     //
-    // Math.max(position.refresh, 1) - to avoid double fetch
-    // position.refresh initial value: 0; increments to 1 on useMap load (onMove fires)
+    // position.refresh initial value: 0; increments to 1 on useMap onMove
     //
-    // so both "init" phases won't exceed ceil (max) of 1, and avoids triggering
-    // a fetch, but subsequent valid refreshes will.
+    // there is a double-fetch issue when visiting /cities page and clicking to city
+    // this is resolved by checking if(isDataLoading) guard in above fetch useEffect
+    // but note without it it's a consistent issue
     //
   }, [
     map,
     isInitLoaded,
-    Math.max(position.refresh, 1),
+    position.refresh,
     filterDate.date.startDate,
     filterDate.date.endDate,
   ]);
