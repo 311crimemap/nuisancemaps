@@ -63,7 +63,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         }
         Request request = requestBuilder.build();
 
-        dataJob.setParamLimit(BATCH_SIZE);  // NB: CSV download entire file
+        dataJob.setParamLimit(BATCH_SIZE); // NB: CSV download entire file
         dataJob.setStatus(DataJobStatus.FETCH_START);
         dataJobRepository.save(dataJob);
 
@@ -178,13 +178,26 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
         setJobStatus(dataJob.getSource(), dataJob, parseCounter);
 
-        // Delete file after process - not sure yet
-        /*
-         * File file = new File(filePath);
-         * if (file.exists()) {
-         * file.delete();
-         * }
-         */
+    }
+
+    @Override
+    public void cleanup(DataJob dataJob) {
+
+        String filePath;
+
+        try {
+            filePath = buildFilePath(dataJob);
+            File file = new File(filePath);
+            if (file.exists()) {
+                log.info(String.format("Deleting: %s", filePath));
+                file.delete();
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            dataJob.setStatus(DataJobStatus.CLEANUP_ERROR);
+            dataJobRepository.save(dataJob);
+        }
     }
 
     private String buildFilePath(DataJob dataJob) throws MalformedURLException {
