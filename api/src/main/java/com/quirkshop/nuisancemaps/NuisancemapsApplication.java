@@ -26,16 +26,7 @@ public class NuisancemapsApplication {
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
     public static void main(String[] args) {
-
-        // output before "spring" logo
-        System.out.println("println pre");
-        log.info("log pre");
-
         SpringApplication.run(NuisancemapsApplication.class, args);
-
-        // output after load
-        System.out.println("println post");
-        log.info("log post");
     }
 
     @Bean
