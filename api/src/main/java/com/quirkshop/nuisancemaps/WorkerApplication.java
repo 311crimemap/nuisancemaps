@@ -28,7 +28,5 @@ public class WorkerApplication {
         SpringApplication application = new SpringApplication(WorkerApplication.class);
         application.setWebApplicationType(WebApplicationType.NONE);
         application.run(args);
-
-        // SpringApplication.run(WorkerApplication.class, args);
     }
 }

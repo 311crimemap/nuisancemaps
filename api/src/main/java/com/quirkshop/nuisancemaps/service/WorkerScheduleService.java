@@ -49,7 +49,7 @@ public class WorkerScheduleService {
     @PostConstruct // method called once after beans all loaded
     public void initialize() throws UnsupportedEncodingException {
         // init seed
-        log.info("Init");
+        // log.info("Init");
     }
 
     /*
