@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
@@ -118,6 +119,12 @@ public class WorkerScheduleService {
             return;
         }
 
+        // CLEANUP
+        datajob.setStatus(DataJobStatus.CLEANUP);
+        dataJobRepository.save(datajob);
+        dataProcessStrategy.cleanup(datajob);
+
+        // COMPLETED
         datajob.setStatus(DataJobStatus.COMPLETED);
         dataJobRepository.save(datajob);
         String logDone = String.format("[checkDataJobQueue] %s | fetched: %s | processed: %s",

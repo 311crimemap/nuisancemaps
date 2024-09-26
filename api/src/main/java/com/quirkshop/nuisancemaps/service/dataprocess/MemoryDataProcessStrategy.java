@@ -78,4 +78,8 @@ public class MemoryDataProcessStrategy implements DataProcessStrategy {
         setJobStatus(dataJob.getSource(), dataJob, parseCounter);
     }
 
+    @Override
+    public void cleanup(DataJob dataJob) {
+        return; //no-op
+    }
 }
