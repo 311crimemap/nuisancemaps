@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -39,25 +41,20 @@ public class Geocode {
     private Double longitude;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Geocode() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
+    public Geocode() {}
 
     public Geocode(Source source, String address, Double latitude, Double longitude) {
         this.source = source;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public Integer getId() {

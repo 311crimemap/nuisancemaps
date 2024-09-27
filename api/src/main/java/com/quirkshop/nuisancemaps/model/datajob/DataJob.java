@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.Source;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -78,18 +80,17 @@ public class DataJob {
     private boolean forceDownload = false;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
     public DataJob() {
         this.parameters = new HashMap<String, Object>();
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public DataJob(LocalDateTime sessionId, Source source, String orderKey) {
@@ -100,9 +101,6 @@ public class DataJob {
         this.paramLimit = PARAM_LIMIT;
         this.paramOffset = 0;
         this.status = DataJobStatus.QUEUED;
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public DataJob(DataJob dataJob) {
@@ -115,9 +113,6 @@ public class DataJob {
         this.paramLimit = dataJob.getParamLimit();
         this.paramOffset = dataJob.getParamOffset();
         this.status = DataJobStatus.QUEUED;
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public String buildFilename() throws MalformedURLException {

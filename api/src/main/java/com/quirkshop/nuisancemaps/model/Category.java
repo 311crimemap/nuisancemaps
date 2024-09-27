@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
@@ -50,27 +52,21 @@ public class Category {
 
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Category() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
+    public Category() {}
 
     public Category(String dataType, String text, Integer label, Category parent) {
         this.dataType = dataType;
         this.text = text;
         this.label = label;
         this.parent = parent;
-
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public Category(String dataType, String text, Integer label, Category parent,
@@ -81,10 +77,6 @@ public class Category {
         this.parent = parent;
         this.iconName = iconName;
         this.iconUnicode = iconUnicode;
-
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public Integer getId() {
