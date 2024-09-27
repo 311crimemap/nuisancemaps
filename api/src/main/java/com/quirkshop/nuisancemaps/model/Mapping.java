@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.function.Function;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.AttributeOverride;
@@ -115,16 +117,14 @@ public class Mapping {
     private MappingField reportedAt2;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Mapping() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
+    public Mapping() {}
 
     public Mapping(MappingField reportNum, MappingField reportCategory, String rootPath, String orderKey,
             MappingField description, MappingField address,
@@ -141,10 +141,6 @@ public class Mapping {
         this.longitude = longitude;
         this.reportedAt = reportedAt;
         this.reportedAt2 = reportedAt2;
-
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     /*
