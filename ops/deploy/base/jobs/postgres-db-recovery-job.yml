@@ -28,7 +28,7 @@ spec:
         #
         command: ["sh", "-c", "cp /config/run.sh /mnt/run.sh && chmod +x /mnt/run.sh"]
         volumeMounts:
-        - name: pgbackrest-run-sh
+        - name: pgbackrest-configmap-volume
           mountPath: /config/run.sh
           subPath: run.sh
         - name: workdir
@@ -93,11 +93,11 @@ spec:
           - name: backup-db
             mountPath: /backup_db/pgbackrest
 
-          - name: pgbackrest-pgbackrest-conf
+          - name: pgbackrest-configmap-volume
             mountPath: /etc/pgbackrest.conf
             subPath: pgbackrest.conf   # specifies file in configMap
 
-          - name: pgbackrest-archive-conf
+          - name: pgbackrest-configmap-volume
             mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
             subPath: archive.conf
 
@@ -113,13 +113,7 @@ spec:
           persistentVolumeClaim:
             claimName: data-postgresql-0
 
-        - name: pgbackrest-pgbackrest-conf
-          configMap:
-            name: pgbackrest-config
-        - name: pgbackrest-archive-conf
-          configMap:
-            name: pgbackrest-config
-        - name: pgbackrest-run-sh
+        - name: pgbackrest-configmap-volume
           configMap:
             name: pgbackrest-config
 

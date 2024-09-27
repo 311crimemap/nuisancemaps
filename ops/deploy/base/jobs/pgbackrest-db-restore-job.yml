@@ -48,11 +48,11 @@ spec:
           - name: postgresql-data
             mountPath: /bitnami/postgresql
 
-          - name: pgbackrest-pgbackrest-conf
+          - name: pgbackrest-configmap-volume
             mountPath: /etc/pgbackrest.conf
             subPath: pgbackrest.conf   # specifies file in configMap
 
-          - name: pgbackrest-archive-conf
+          - name: pgbackrest-configmap-volume
             mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
             subPath: archive.conf
 
@@ -63,11 +63,7 @@ spec:
           persistentVolumeClaim:
             claimName: data-postgresql-0
 
-        - name: pgbackrest-pgbackrest-conf
-          configMap:
-            name: pgbackrest-config
-
-        - name: pgbackrest-archive-conf
+        - name: pgbackrest-configmap-volume
           configMap:
             name: pgbackrest-config
 
