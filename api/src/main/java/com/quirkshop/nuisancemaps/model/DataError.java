@@ -2,6 +2,8 @@ package com.quirkshop.nuisancemaps.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -35,25 +37,19 @@ public class DataError {
     private String errorMsg;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public DataError() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
+    public DataError() {}
 
     public DataError(DataJob dataJob, String content, String errorMsg) {
         this.dataJob = dataJob;
         this.content = content;
         this.errorMsg = errorMsg;
-
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public Integer getId() {

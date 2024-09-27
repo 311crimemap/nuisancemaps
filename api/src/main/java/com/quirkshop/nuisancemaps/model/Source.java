@@ -11,6 +11,8 @@ import com.quirkshop.nuisancemaps.dto.SourceDTO;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -75,16 +77,14 @@ public class Source {
     private List<DataJob> dataJobs = new ArrayList<DataJob>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Source() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
+    public Source() {}
 
     public Source(Locale locale, String category, String description, String url,
             DataParserType dataParserType, DataProcessType dataProcessType,

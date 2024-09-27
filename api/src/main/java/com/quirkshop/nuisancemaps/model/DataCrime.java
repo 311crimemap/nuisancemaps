@@ -19,6 +19,8 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Index;
 
 import org.locationtech.jts.geom.Point;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
@@ -67,23 +69,18 @@ public class DataCrime implements DataEntity {
 
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public DataCrime() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    } // default required by JPA
+    public DataCrime() {}
 
     public DataCrime(Source source) {
         this.setSource(source);
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
     }
 
     public Integer getId() {
