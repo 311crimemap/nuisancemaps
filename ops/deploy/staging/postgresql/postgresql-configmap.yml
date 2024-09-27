@@ -10,6 +10,12 @@ data:
   POSTGRESQL_DATABASE: "nuisancemaps"
   POSTGRESQL_URL: "jdbc:postgresql://postgresql:5432/nuisancemaps"
 
+  custom_postgresql.conf: |
+    # custom_postgresql.conf
+    shared_buffers = 2GB
+    maintenance_work_mem = 512MB
+    max_wal_size = 2GB
+
 ---
 
 # this is loaded outside of migration

@@ -82,19 +82,26 @@ spec:
         volumeMounts:
         - name: data-db
           mountPath: /bitnami/postgresql
+
         - name: backup-db
           mountPath: /backup_db/pgbackrest
+
+        - name: dshm # shared memory
+          mountPath: /dev/shm
 
         - name: initdb
           mountPath: /docker-entrypoint-initdb.d/01_enable_postgis.sql
           subPath: 01_enable_postgis.sql
-        - name: pgbackrest-pgbackrest-conf
+
+        - name: pgbackrest-configmap-volume
           mountPath: /etc/pgbackrest.conf
           subPath: pgbackrest.conf   # specifies file in configMap
-        - name: pgbackrest-archive-conf
+
+        - name: pgbackrest-configmap-volume
           mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
           subPath: archive.conf
-        - name: pgbackrest-custom-postgresql-conf
+
+        - name: postgresql-configmap-volume
           mountPath: /opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
           subPath: custom_postgresql.conf
 
@@ -105,19 +112,23 @@ spec:
           path: /backup_db/pgbackrest
           type: DirectoryOrCreate
 
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 2Gi # NB: Gibibyte -> 1 GiB = 1,073,741,824 bytes
+
       - name: initdb
         configMap:
           name: postgresql-initdb-configmap
           items:
             - key: sql
               path: 01_enable_postgis.sql
-      - name: pgbackrest-pgbackrest-conf
+
+      - name: postgresql-configmap-volume
         configMap:
-          name: pgbackrest-config
-      - name: pgbackrest-archive-conf
-        configMap:
-          name: pgbackrest-config
-      - name: pgbackrest-custom-postgresql-conf
+          name: postgresql-config
+
+      - name: pgbackrest-configmap-volume
         configMap:
           name: pgbackrest-config
 
