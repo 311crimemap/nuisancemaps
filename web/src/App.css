@@ -80,6 +80,12 @@
         }
 
     }
+
+    .dropdown-chevron {
+        @media (max-width: 480px) {
+            display:none;
+        }
+    }
 }
 
 #spinner {

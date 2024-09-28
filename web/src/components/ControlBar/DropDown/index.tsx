@@ -87,7 +87,7 @@ export default function DropDown({ children }: DropDownProps) {
         onBlur={() => onBlurHandler()}
       >
         {childArray[0]}
-        <FontAwesomeIcon icon={icon} />
+        <FontAwesomeIcon className="dropdown-chevron" icon={icon} />
       </div>
 
       <ul
