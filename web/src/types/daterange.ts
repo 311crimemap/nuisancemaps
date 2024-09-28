@@ -3,6 +3,7 @@ export type FilterDateDispatcher = (
 ) => void;
 
 export interface DateRange {
+  label: string,
   date: {
     startDate: string;
     endDate: string;
@@ -33,6 +34,7 @@ startDate.setMonth(endDate.getMonth() - 3)
 
 
 export const defaultDateRange: DateRange = {
+    label: "3 Months",
     date: {
         startDate: startDate.toLocaleDateString("en-CA"),
         endDate: endDate.toLocaleDateString("en-CA"),
