@@ -71,6 +71,8 @@
             border-radius: 0;
             border: 1px solid #000;
 
+            /* need to allow clickable checkbox on mobile  */
+            margin-top: 2.75rem;
         }
         /* align end */
         @media (min-width: 640px) and (max-width: 1024px) {
