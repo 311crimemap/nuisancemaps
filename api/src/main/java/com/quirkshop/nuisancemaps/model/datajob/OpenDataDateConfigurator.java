@@ -9,7 +9,7 @@ import com.quirkshop.nuisancemaps.model.Source;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class OpenDataConfigurator implements DataJobConfigurator {
+public class OpenDataDateConfigurator implements DataJobConfigurator {
 
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
@@ -64,12 +64,16 @@ public class OpenDataConfigurator implements DataJobConfigurator {
         // collect fields
         Mapping mapping = source.getMapping();
         String $select = buildURLFields(mapping);
+        String $where = buildWhereField(mapping);
 
         String url = UriComponentsBuilder.fromUriString(sourceURL)
                 .queryParam("$limit", Integer.toString(paramLimit))
                 .queryParam("$offset", Integer.toString(paramOffset))
                 .queryParam("$order", dataJob.getOrderKey())
                 .queryParam("$select", $select)
+                .queryParam("$where", $where)
+                // NB: null value becomes empty query param value (sans '=')
+                // won't break
                 .build()
                 .toUriString();
 
@@ -82,6 +86,18 @@ public class OpenDataConfigurator implements DataJobConfigurator {
         List<String> fields = mapping.getAnnotationValues(MappingField::getField);
 
         return String.join(",", fields);
+    }
+
+    // Map<String, Object> mapping
+    // $where=reportedAtField >= "startReportedAt"
+    public String buildWhereField(Mapping mapping) {
+        if (mapping.getStartReportedAt() == null)
+            return null;
+
+        String fieldName = mapping.getReportedAt().getField();
+        String fieldValue = "\"" + mapping.getStartReportedAt() + "\"";
+        String $where = fieldName + " >= " + fieldValue;
+        return $where;
     }
 
 }
