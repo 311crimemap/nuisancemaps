@@ -11,6 +11,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "reportNum",
+      "startReportedAt": null,
       "reportNum": {
         "field": "Incident Number",
         "pointer": null,
@@ -70,6 +71,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "reportNum",
+      "startReportedAt": null,
       "reportNum": {
         "field": "reportNum",
         "pointer": "tr:nth-of-type(1) td:nth-of-type(2)",
@@ -129,6 +131,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "description": {
         "field": null,
         "pointer": null,
@@ -188,6 +191,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "description": {
         "field": null,
         "pointer": null,
@@ -247,6 +251,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "description": {
         "field": null,
         "pointer": null,
@@ -306,6 +311,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "Case Number",
         "pointer": null,
@@ -365,6 +371,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "SR_NUMBER",
         "pointer": null,
@@ -424,6 +431,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "Incident ID",
         "pointer": null,
@@ -483,6 +491,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "CaseID",
         "pointer": null,
@@ -542,6 +551,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "CMPLNT_NUM",
         "pointer": null,
@@ -602,6 +612,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "CMPLNT_NUM",
         "pointer": null,
@@ -661,6 +672,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "Unique Key",
         "pointer": null,
@@ -720,6 +732,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -779,6 +792,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -838,6 +852,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -897,6 +912,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -956,6 +972,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -1015,6 +1032,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -1074,6 +1092,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -1133,6 +1152,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -1192,6 +1212,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "INCIDENT_NUMBER",
         "pointer": null,
@@ -1251,6 +1272,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1310,6 +1332,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1369,6 +1392,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1428,6 +1452,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1487,6 +1512,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1546,6 +1572,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1605,6 +1632,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1664,6 +1692,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1723,6 +1752,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1782,6 +1812,7 @@
     "mapping": {
       "rootPath": null,
       "orderKey": "_id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "case_enquiry_id",
         "pointer": null,
@@ -1841,6 +1872,7 @@
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "unique_key",
         "pointer": "/unique_key",
@@ -1900,6 +1932,7 @@
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "service_request_id",
         "pointer": "/service_request_id",
@@ -1959,6 +1992,7 @@
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
+      "startReportedAt": null,
       "reportNum": {
         "field": "sr_number",
         "pointer": "/sr_number",
