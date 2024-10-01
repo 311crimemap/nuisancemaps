@@ -18,6 +18,7 @@ import com.quirkshop.nuisancemaps.model.datajob.BaseConfigurator;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.ERSIConfigurator;
 import com.quirkshop.nuisancemaps.model.datajob.OpenDataConfigurator;
+import com.quirkshop.nuisancemaps.model.datajob.OpenDataDateConfigurator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -105,6 +106,29 @@ public class DataJobConfiguratorTest {
         String select = openDataParameters.buildURLFields(source.getMapping());
         String canonURL = source.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" +
                 order_key + "&$select=" + select;
+
+        assertThat(dataJob.getUrl()).isEqualTo(canonURL);
+    }
+
+    @Test
+    public void OpenDataDateConfigurator_initialize_test() {
+        Source source = sources.get(17);
+        DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
+        OpenDataDateConfigurator openDataDateConfigurator = new OpenDataDateConfigurator();
+
+        dataJob = openDataDateConfigurator.initialize(dataJob);
+
+        String limit = System.getenv("WORKER_QUERY_LIMIT");
+        String offset = "0";
+        String order_key = "id";
+        String select = openDataDateConfigurator.buildURLFields(source.getMapping());
+        String where = openDataDateConfigurator.buildWhereField(source.getMapping());
+
+        // NB: hardcoded in source_config_archive.json
+        assertThat(where).isEqualTo("created_date >= \"2024-05-15\"");
+
+        String canonURL = source.getUrl() + "?$limit=" + limit + "&$offset=" + offset + "&$order=" +
+                order_key + "&$select=" + select + "&$where=" + where;
 
         assertThat(dataJob.getUrl()).isEqualTo(canonURL);
     }
