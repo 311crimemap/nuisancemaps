@@ -17,7 +17,7 @@ public class CaffeineConfiguration {
     public Caffeine<Object, Object> caffeineConfig() {
         return Caffeine.newBuilder()
                 .expireAfterWrite(60, TimeUnit.MINUTES)
-                .maximumSize(100);
+                .maximumSize(100); // NB: maximumSize refers to number of entries
     }
 
     @Bean
