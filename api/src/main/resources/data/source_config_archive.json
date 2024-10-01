@@ -1,1005 +1,1082 @@
 [
-    {
-        "sourceConfigId": 1,
-        "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
-        "cookie": null,
-        "category": "crime",
-        "description": "Austin Police",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportNum": {
-                "field": "incident_report_number",
-                "pointer": "/incident_report_number",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "crime_type",
-                "pointer": "/crime_type",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "address",
-                "pointer": "/address",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "location_type",
-                "pointer": "/location_type",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "occ_date_time",
-                "pointer": "/occ_date_time",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": "rep_date_time",
-                "pointer": "/rep_date_time",
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 2,
-        "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
-        "cookie": null,
-        "category": "311",
-        "description": "Austin 311",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportNum": {
-                "field": "sr_number",
-                "pointer": "/sr_number",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "sr_type_desc",
-                "pointer": "/sr_type_desc",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "sr_location",
-                "pointer": "/sr_location",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "sr_location_lat",
-                "pointer": "/sr_location_lat",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "sr_location_long",
-                "pointer": "/sr_location_long",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "sr_created_date",
-                "pointer": "/sr_created_date",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 3,
-        "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
-        "cookie": null,
-        "category": "crime",
-        "description": "Dallas Police",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportNum": {
-                "field": "incidentnum",
-                "pointer": "/incidentnum",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "offincident",
-                "pointer": "/offincident",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "incident_address",
-                "pointer": "/incident_address",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "premise",
-                "pointer": "/premise",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "geocoded_column",
-                "pointer": "/geocoded_column/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "geocoded_column",
-                "pointer": "/geocoded_column/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "reporteddate",
-                "pointer": "/reporteddate",
-                "parsingStrategy": "REPORTED_AT_CRIME_DALLAS"
-            },
-            "reportedAt2": {
-                "field": "date1",
-                "pointer": "/date1",
-                "parsingStrategy": "REPORTED_AT2_CRIME_DALLAS"
-            }
-        }
-    },
-    {
-        "sourceConfigId": 4,
-        "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
-        "cookie": null,
-        "category": "311",
-        "description": "Dallas 311",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportNum": {
-                "field": "service_request_number",
-                "pointer": "/service_request_number",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "service_request_type",
-                "pointer": "/service_request_type",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "address",
-                "pointer": "/address",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "department",
-                "pointer": "/department",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "lat_location",
-                "pointer": "/lat_location",
-                "parsingStrategy": "LATITUDE_311_DALLAS"
-            },
-            "longitude": {
-                "field": "lat_location",
-                "pointer": "/lat_location",
-                "parsingStrategy": "LONGITUDE_311_DALLAS"
-            },
-            "reportedAt": {
-                "field": "created_date",
-                "pointer": "/created_date",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 5,
-        "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
-        "cookie": null,
-        "category": "crime",
-        "description": "Chicago Crime",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "case_number",
-                "pointer": "/case_number",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "primary_type",
-                "pointer": "/primary_type",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "description",
-                "pointer": "/description",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "block",
-                "pointer": "/block",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "location_description",
-                "pointer": "/location_description",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "date",
-                "pointer": "/date",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 6,
-        "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
-        "cookie": null,
-        "category": "311",
-        "description": "Chicago 311",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "sr_number",
-                "pointer": "/sr_number",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "sr_type",
-                "pointer": "/sr_type",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "owner_department",
-                "pointer": "/owner_department",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "street_address",
-                "pointer": "/street_address",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "created_date",
-                "pointer": "/created_date",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 7,
-        "url": "https://data.cityofnewyork.us/resource/5uac-w243.json",
-        "cookie": null,
-        "category": "crime",
-        "description": "New York City Crime YTD",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "cmplnt_num",
-                "pointer": "/cmplnt_num",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "ofns_desc",
-                "pointer": "/ofns_desc",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "pd_desc",
-                "pointer": "/pd_desc",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "prem_typ_desc",
-                "pointer": "/prem_typ_desc",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "rpt_dt",
-                "pointer": "/rpt_dt",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 8,
-        "url": "https://data.cityofnewyork.us/resource/qgea-i56i.json",
-        "cookie": null,
-        "category": "crime",
-        "description": "New York City Crime Historic to YTD (updated quarterly)",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "cmplnt_num",
-                "pointer": "/cmplnt_num",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "ofns_desc",
-                "pointer": "/ofns_desc",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "pd_desc",
-                "pointer": "/pd_desc",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "prem_typ_desc",
-                "pointer": "/prem_typ_desc",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "rpt_dt",
-                "pointer": "/rpt_dt",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 9,
-        "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
-        "cookie": null,
-        "category": "311",
-        "description": "New York City 311",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "unique_key",
-                "pointer": "/unique_key",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "complaint_type",
-                "pointer": "/complaint_type",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "descriptor",
-                "pointer": "/descriptor",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "incident_address",
-                "pointer": "/incident_address",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "location_type",
-                "pointer": "/location_type",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "created_date",
-                "pointer": "/created_date",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 10,
-        "url": "https://data.sfgov.org/resource/wg3w-h783.json",
-        "cookie": null,
-        "category": "crime",
-        "description": "San Francisco Crime",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "incident_id",
-                "pointer": "/incident_id",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "incident_category",
-                "pointer": "/incident_category",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "incident_description",
-                "pointer": "/incident_description",
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "intersection",
-                "pointer": "/intersection",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "analysis_neighborhood",
-                "pointer": "/analysis_neighborhood",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": "/latitude",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": "/longitude",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "incident_date",
-                "pointer": "/incident_date",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 11,
-        "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
-        "cookie": null,
-        "category": "311",
-        "description": "San Francisco 311",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "OPENDATA",
-        "mapping": {
-            "rootPath": "$[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "service_request_id",
-                "pointer": "/service_request_id",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "service_name",
-                "pointer": "/service_name",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "address",
-                "pointer": "/address",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "neighborhoods_sffind_boundaries",
-                "pointer": "/neighborhoods_sffind_boundaries",
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "lat",
-                "pointer": "/lat",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "long",
-                "pointer": "/long",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "requested_datetime",
-                "pointer": "/requested_datetime",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 12,
-        "url": "https://data.cityofnewyork.us/api/views/5uac-w243/rows.csv?fourfour=5uac-w243&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
-        "cookie": null,
-        "category": "crime",
-        "description": "New York City Crime YTD",
-        "dataParserType": "CSV",
-        "dataProcessType": "FILE",
-        "dataJobConfiguratorType": "BASE",
-        "mapping": {
-            "rootPath": null,
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "CMPLNT_NUM",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "OFNS_DESC",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "PD_DESC",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "PREM_TYP_DESC",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "Latitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "Longitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "RPT_DT",
-                "pointer": null,
-                "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
-            },
-            "reportedAt2": {
-                "field": "CMPLNT_FR_DT",
-                "pointer": null,
-                "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
-            }
-        }
-    },
-    {
-        "sourceConfigId": 13,
-        "url": "https://data.cityofnewyork.us/api/views/qgea-i56i/rows.csv?fourfour=qgea-i56i&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
-        "cookie": null,
-        "category": "crime",
-        "description": "New York City Crime Complaint Historic",
-        "dataParserType": "CSV",
-        "dataProcessType": "FILE",
-        "dataJobConfiguratorType": "BASE",
-        "mapping": {
-            "rootPath": null,
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "CMPLNT_NUM",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "OFNS_DESC",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "PD_DESC",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "PREM_TYP_DESC",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "Latitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "Longitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "RPT_DT",
-                "pointer": null,
-                "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
-            },
-            "reportedAt2": {
-                "field": "CMPLNT_FR_DT",
-                "pointer": null,
-                "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
-            }
-        }
-    },
-    {
-        "sourceConfigId": 14,
-        "url": "https://data.cityofnewyork.us/api/views/erm2-nwe9/rows.csv?fourfour=erm2-nwe9&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
-        "cookie": null,
-        "category": "311",
-        "description": "New York City 311 2010 - Present",
-        "dataParserType": "CSV",
-        "dataProcessType": "FILE",
-        "dataJobConfiguratorType": "BASE",
-        "mapping": {
-            "rootPath": null,
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "Unique Key",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "Complaint Type",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": "Descriptor",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "Incident Address",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "Incident Address",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "Latitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "Longitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "Created Date",
-                "pointer": null,
-                "parsingStrategy": "REPORTED_AT_CSV_311_NEW_YORK_CITY"
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 15,
-        "url": "https://maps.austintexas.gov/gis/rest/APDCrimeViewer/APD_Reported_Crimes/MapServer/3/query?f=json&where=1=1 AND OCCURRENCE_DATE BETWEEN date '07/01/2024' AND date '08/15/2024' &returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={\"rings\":[[[3018272.9057345022,10242548.737086222],[3070539.572401169,10280948.737086222],[3290272.9057345022,10247882.070419556],[3234806.2390678357,9873482.070419554],[2911606.2390678357,9984415.403752888],[3018272.9057345022,10242548.737086222]]],\"spatialReference\":{\"wkid\":102739,\"latestWkid\":2277}}&geometryType=esriGeometryPolygon&inSR=102739&outFields=*&orderByFields=OCCURRENCE_DATE&outSR=4326",
-        "cookie": null,
-        "category": "crime",
-        "description": "ERSI Austin Crime Map 07/01/2024 - Present",
-        "dataParserType": "JSON",
-        "dataProcessType": "MEMORY",
-        "dataJobConfiguratorType": "ERSI",
-        "mapping": {
-            "rootPath": "$.features[*]",
-            "orderKey": ":id",
-            "reportNum": {
-                "field": "objectid",
-                "pointer": "/attributes/objectid",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "CRIME_DESCRIPTION",
-                "pointer": "/attributes/CRIME_DESCRIPTION",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "STREET_NAME",
-                "pointer": null,
-                "parsingStrategy": "STREET_NAME_ERSI_AUSTIN"
-            },
-            "location": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "y",
-                "pointer": "/geometry/y",
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "x",
-                "pointer": "/geometry/x",
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "OCCURRENCE_DATE",
-                "pointer": null,
-                "parsingStrategy": "OCCURRENCE_DATE_ERSI_AUSTIN"
-            },
-            "reportedAt2": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 16,
-        "url": "https://services.austintexas.gov/police/reports/search2.cfm?startdate=08/01/2024&numdays=1&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit",
-        "cookie": "APD_IRSEARCH=true",
-        "category": "crime",
-        "description": "Austin Crime APD Incident Report",
-        "dataParserType": "APDINCIDENTREPORT",
-        "dataProcessType": "FILE",
-        "dataJobConfiguratorType": "APDINCIDENTREPORT",
-        "mapping": {
-            "rootPath": null,
-            "orderKey": "reportNum",
-            "reportNum": {
-                "field": "reportNum",
-                "pointer": "tr:nth-of-type(1) td:nth-of-type(2)",
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "reportCategory",
-                "pointer": "tr:nth-of-type(5) td:nth-of-type(2) td",
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "address",
-                "pointer": "tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)",
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "latitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "longitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "reportedAt",
-                "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
-                "parsingStrategy": null
-            },
-            "reportedAt2": {
-                "field": "reportedAt2",
-                "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
-                "parsingStrategy": null
-            }
-        }
-    },
-    {
-        "sourceConfigId": 17,
-        "url": "https://311crimemap-data.s3.us-east-2.amazonaws.com/Crime_Reports_20240708.csv",
-        "cookie": null,
-        "category": "crime",
-        "description": "Austin Crime APD CSV Last Dump 2024-07-08",
-        "dataParserType": "CSV",
-        "dataProcessType": "FILE",
-        "dataJobConfiguratorType": "BASE",
-        "mapping": {
-            "rootPath": null,
-            "orderKey": "reportNum",
-            "reportNum": {
-                "field": "Incident Number",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportCategory": {
-                "field": "Highest Offense Description",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "description": {
-                "field": null,
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "address": {
-                "field": "Address",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "location": {
-                "field": "Location Type",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "latitude": {
-                "field": "Latitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "longitude": {
-                "field": "Longitude",
-                "pointer": null,
-                "parsingStrategy": null
-            },
-            "reportedAt": {
-                "field": "Occurred Date Time",
-                "pointer": null,
-                "parsingStrategy": "REPORTED_AT_CSV_AUSTIN"
-            },
-            "reportedAt2": {
-                "field": "Report Date Time",
-                "pointer": null,
-                "parsingStrategy": "REPORTED_AT2_CSV_AUSTIN"
-            }
-        }
+  {
+    "sourceConfigId": 1,
+    "url": "https://data.austintexas.gov/resource/fdj4-gpfu.json",
+    "cookie": null,
+    "category": "crime",
+    "description": "Austin Police",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportNum": {
+        "field": "incident_report_number",
+        "pointer": "/incident_report_number",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "crime_type",
+        "pointer": "/crime_type",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "address",
+        "pointer": "/address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "location_type",
+        "pointer": "/location_type",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "occ_date_time",
+        "pointer": "/occ_date_time",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": "rep_date_time",
+        "pointer": "/rep_date_time",
+        "parsingStrategy": null
+      }
     }
+  },
+  {
+    "sourceConfigId": 2,
+    "url": "https://data.austintexas.gov/resource/xwdj-i9he.json",
+    "cookie": null,
+    "category": "311",
+    "description": "Austin 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "sr_number",
+        "pointer": "/sr_number",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "sr_type_desc",
+        "pointer": "/sr_type_desc",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "sr_location",
+        "pointer": "/sr_location",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "sr_location_lat",
+        "pointer": "/sr_location_lat",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "sr_location_long",
+        "pointer": "/sr_location_long",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "sr_created_date",
+        "pointer": "/sr_created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 3,
+    "url": "https://www.dallasopendata.com/resource/qv6i-rri7.json",
+    "cookie": null,
+    "category": "crime",
+    "description": "Dallas Police",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportNum": {
+        "field": "incidentnum",
+        "pointer": "/incidentnum",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "offincident",
+        "pointer": "/offincident",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "incident_address",
+        "pointer": "/incident_address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "premise",
+        "pointer": "/premise",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "geocoded_column",
+        "pointer": "/geocoded_column/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "geocoded_column",
+        "pointer": "/geocoded_column/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "reporteddate",
+        "pointer": "/reporteddate",
+        "parsingStrategy": "REPORTED_AT_CRIME_DALLAS"
+      },
+      "reportedAt2": {
+        "field": "date1",
+        "pointer": "/date1",
+        "parsingStrategy": "REPORTED_AT2_CRIME_DALLAS"
+      }
+    }
+  },
+  {
+    "sourceConfigId": 4,
+    "url": "https://www.dallasopendata.com/resource/d7e7-envw.json",
+    "cookie": null,
+    "category": "311",
+    "description": "Dallas 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportNum": {
+        "field": "service_request_number",
+        "pointer": "/service_request_number",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "service_request_type",
+        "pointer": "/service_request_type",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "address",
+        "pointer": "/address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "department",
+        "pointer": "/department",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "lat_location",
+        "pointer": "/lat_location",
+        "parsingStrategy": "LATITUDE_311_DALLAS"
+      },
+      "longitude": {
+        "field": "lat_location",
+        "pointer": "/lat_location",
+        "parsingStrategy": "LONGITUDE_311_DALLAS"
+      },
+      "reportedAt": {
+        "field": "created_date",
+        "pointer": "/created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 5,
+    "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
+    "cookie": null,
+    "category": "crime",
+    "description": "Chicago Crime",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "case_number",
+        "pointer": "/case_number",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "primary_type",
+        "pointer": "/primary_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "description",
+        "pointer": "/description",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "block",
+        "pointer": "/block",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "location_description",
+        "pointer": "/location_description",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "date",
+        "pointer": "/date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 6,
+    "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
+    "cookie": null,
+    "category": "311",
+    "description": "Chicago 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "sr_number",
+        "pointer": "/sr_number",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "sr_type",
+        "pointer": "/sr_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "owner_department",
+        "pointer": "/owner_department",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "street_address",
+        "pointer": "/street_address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "created_date",
+        "pointer": "/created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 7,
+    "url": "https://data.cityofnewyork.us/resource/5uac-w243.json",
+    "cookie": null,
+    "category": "crime",
+    "description": "New York City Crime YTD",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "cmplnt_num",
+        "pointer": "/cmplnt_num",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "ofns_desc",
+        "pointer": "/ofns_desc",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "pd_desc",
+        "pointer": "/pd_desc",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "prem_typ_desc",
+        "pointer": "/prem_typ_desc",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "rpt_dt",
+        "pointer": "/rpt_dt",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 8,
+    "url": "https://data.cityofnewyork.us/resource/qgea-i56i.json",
+    "cookie": null,
+    "category": "crime",
+    "description": "New York City Crime Historic to YTD (updated quarterly)",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "cmplnt_num",
+        "pointer": "/cmplnt_num",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "ofns_desc",
+        "pointer": "/ofns_desc",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "pd_desc",
+        "pointer": "/pd_desc",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "prem_typ_desc",
+        "pointer": "/prem_typ_desc",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "rpt_dt",
+        "pointer": "/rpt_dt",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 9,
+    "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+    "cookie": null,
+    "category": "311",
+    "description": "New York City 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "unique_key",
+        "pointer": "/unique_key",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "complaint_type",
+        "pointer": "/complaint_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "descriptor",
+        "pointer": "/descriptor",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "incident_address",
+        "pointer": "/incident_address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "location_type",
+        "pointer": "/location_type",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "created_date",
+        "pointer": "/created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 10,
+    "url": "https://data.sfgov.org/resource/wg3w-h783.json",
+    "cookie": null,
+    "category": "crime",
+    "description": "San Francisco Crime",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "incident_id",
+        "pointer": "/incident_id",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "incident_category",
+        "pointer": "/incident_category",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "incident_description",
+        "pointer": "/incident_description",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "intersection",
+        "pointer": "/intersection",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "analysis_neighborhood",
+        "pointer": "/analysis_neighborhood",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "incident_date",
+        "pointer": "/incident_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 11,
+    "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
+    "cookie": null,
+    "category": "311",
+    "description": "San Francisco 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "service_request_id",
+        "pointer": "/service_request_id",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "service_name",
+        "pointer": "/service_name",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "address",
+        "pointer": "/address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "neighborhoods_sffind_boundaries",
+        "pointer": "/neighborhoods_sffind_boundaries",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "lat",
+        "pointer": "/lat",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "long",
+        "pointer": "/long",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "requested_datetime",
+        "pointer": "/requested_datetime",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 12,
+    "url": "https://data.cityofnewyork.us/api/views/5uac-w243/rows.csv?fourfour=5uac-w243&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
+    "cookie": null,
+    "category": "crime",
+    "description": "New York City Crime YTD",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "CMPLNT_NUM",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "OFNS_DESC",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "PD_DESC",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "PREM_TYP_DESC",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "Longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "RPT_DT",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
+      },
+      "reportedAt2": {
+        "field": "CMPLNT_FR_DT",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
+      }
+    }
+  },
+  {
+    "sourceConfigId": 13,
+    "url": "https://data.cityofnewyork.us/api/views/qgea-i56i/rows.csv?fourfour=qgea-i56i&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
+    "cookie": null,
+    "category": "crime",
+    "description": "New York City Crime Complaint Historic",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "CMPLNT_NUM",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "OFNS_DESC",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "PD_DESC",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "PREM_TYP_DESC",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "Longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "RPT_DT",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT_CSV_CRIME_NEW_YORK_CITY"
+      },
+      "reportedAt2": {
+        "field": "CMPLNT_FR_DT",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY"
+      }
+    }
+  },
+  {
+    "sourceConfigId": 14,
+    "url": "https://data.cityofnewyork.us/api/views/erm2-nwe9/rows.csv?fourfour=erm2-nwe9&cacheBust=1721670446&date=20240801&accessType=DOWNLOAD",
+    "cookie": null,
+    "category": "311",
+    "description": "New York City 311 2010 - Present",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "Unique Key",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "Complaint Type",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "Descriptor",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "Incident Address",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "Incident Address",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "Longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "Created Date",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT_CSV_311_NEW_YORK_CITY"
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 15,
+    "url": "https://maps.austintexas.gov/gis/rest/APDCrimeViewer/APD_Reported_Crimes/MapServer/3/query?f=json&where=1=1 AND OCCURRENCE_DATE BETWEEN date '07/01/2024' AND date '08/15/2024' &returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={\"rings\":[[[3018272.9057345022,10242548.737086222],[3070539.572401169,10280948.737086222],[3290272.9057345022,10247882.070419556],[3234806.2390678357,9873482.070419554],[2911606.2390678357,9984415.403752888],[3018272.9057345022,10242548.737086222]]],\"spatialReference\":{\"wkid\":102739,\"latestWkid\":2277}}&geometryType=esriGeometryPolygon&inSR=102739&outFields=*&orderByFields=OCCURRENCE_DATE&outSR=4326",
+    "cookie": null,
+    "category": "crime",
+    "description": "ERSI Austin Crime Map 07/01/2024 - Present",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "ERSI",
+    "mapping": {
+      "rootPath": "$.features[*]",
+      "orderKey": ":id",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "objectid",
+        "pointer": "/attributes/objectid",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "CRIME_DESCRIPTION",
+        "pointer": "/attributes/CRIME_DESCRIPTION",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "STREET_NAME",
+        "pointer": null,
+        "parsingStrategy": "STREET_NAME_ERSI_AUSTIN"
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "y",
+        "pointer": "/geometry/y",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "x",
+        "pointer": "/geometry/x",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "OCCURRENCE_DATE",
+        "pointer": null,
+        "parsingStrategy": "OCCURRENCE_DATE_ERSI_AUSTIN"
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 16,
+    "url": "https://services.austintexas.gov/police/reports/search2.cfm?startdate=08/01/2024&numdays=1&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit",
+    "cookie": "APD_IRSEARCH=true",
+    "category": "crime",
+    "description": "Austin Crime APD Incident Report",
+    "dataParserType": "APDINCIDENTREPORT",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "APDINCIDENTREPORT",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": "reportNum",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "reportNum",
+        "pointer": "tr:nth-of-type(1) td:nth-of-type(2)",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "reportCategory",
+        "pointer": "tr:nth-of-type(5) td:nth-of-type(2) td",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "address",
+        "pointer": "tr:nth-of-type(7) td:nth-of-type(2) p:nth-of-type(1)",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "reportedAt",
+        "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": "reportedAt2",
+        "pointer": "tr:nth-of-type(1) td:nth-of-type(4)",
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 17,
+    "url": "https://311crimemap-data.s3.us-east-2.amazonaws.com/Crime_Reports_20240708.csv",
+    "cookie": null,
+    "category": "crime",
+    "description": "Austin Crime APD CSV Last Dump 2024-07-08",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": "reportNum",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "Incident Number",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "Highest Offense Description",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "Address",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "Location Type",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "Longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "Occurred Date Time",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT_CSV_AUSTIN"
+      },
+      "reportedAt2": {
+        "field": "Report Date Time",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT2_CSV_AUSTIN"
+      }
+    }
+  },
+  {
+    "sourceConfigId": 18,
+    "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+    "cookie": null,
+    "category": "311",
+    "description": "New York City 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATADATE",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": "2024-05-15",
+      "reportNum": {
+        "field": "unique_key",
+        "pointer": "/unique_key",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "complaint_type",
+        "pointer": "/complaint_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "descriptor",
+        "pointer": "/descriptor",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "incident_address",
+        "pointer": "/incident_address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "location_type",
+        "pointer": "/location_type",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "created_date",
+        "pointer": "/created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  }
 ]

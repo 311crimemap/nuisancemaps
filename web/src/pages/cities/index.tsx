@@ -58,7 +58,7 @@ export default function Cities() {
               id="311CrimeMap"
               className="block relative invisible -top-64"
             ></a>
-            <h2>States</h2>
+            <h2>Cities</h2>
             <div className="divider"></div>
           </article>
 

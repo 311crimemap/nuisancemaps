@@ -10,6 +10,7 @@ import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
 import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,9 @@ public class JSONDataParser extends DataParser {
 
     @Autowired
     JSONNodeFieldExtractor jsonNodeFieldExtractor;
+
+    @Autowired
+    DataJobRepository dataJobRepository;
 
     @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
@@ -78,7 +82,6 @@ public class JSONDataParser extends DataParser {
 
         // flush remaining
         batchSave(source, parseCounter);
-
         savePendingTextCategories(dataJob, source, pendingReportCategories);
     }
 

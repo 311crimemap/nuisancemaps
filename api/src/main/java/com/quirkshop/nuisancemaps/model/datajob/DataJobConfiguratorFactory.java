@@ -14,6 +14,9 @@ public class DataJobConfiguratorFactory {
             case OPENDATA:
                 return new OpenDataConfigurator();
 
+            case OPENDATADATE:
+                return new OpenDataDateConfigurator();
+
             case ERSI:
                 return new ERSIConfigurator();
 
