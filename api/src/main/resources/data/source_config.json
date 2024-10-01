@@ -1868,11 +1868,11 @@
     "description": "New York City 311",
     "dataParserType": "JSON",
     "dataProcessType": "MEMORY",
-    "dataJobConfiguratorType": "OPENDATA",
+    "dataJobConfiguratorType": "OPENDATADATE",
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
-      "startReportedAt": null,
+      "startReportedAt": "2024-09-01",
       "reportNum": {
         "field": "unique_key",
         "pointer": "/unique_key",
@@ -1928,11 +1928,11 @@
     "description": "San Francisco 311",
     "dataParserType": "JSON",
     "dataProcessType": "MEMORY",
-    "dataJobConfiguratorType": "OPENDATA",
+    "dataJobConfiguratorType": "OPENDATADATE",
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
-      "startReportedAt": null,
+      "startReportedAt": "2024-09-01",
       "reportNum": {
         "field": "service_request_id",
         "pointer": "/service_request_id",
@@ -1988,11 +1988,11 @@
     "description": "Chicago 311",
     "dataParserType": "JSON",
     "dataProcessType": "MEMORY",
-    "dataJobConfiguratorType": "OPENDATA",
+    "dataJobConfiguratorType": "OPENDATADATE",
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
-      "startReportedAt": null,
+      "startReportedAt": "2024-09-01",
       "reportNum": {
         "field": "sr_number",
         "pointer": "/sr_number",

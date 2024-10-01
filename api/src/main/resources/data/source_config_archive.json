@@ -1027,7 +1027,7 @@
     "description": "New York City 311",
     "dataParserType": "JSON",
     "dataProcessType": "MEMORY",
-    "dataJobConfiguratorType": "OPENDATA",
+    "dataJobConfiguratorType": "OPENDATADATE",
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
