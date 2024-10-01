@@ -16,33 +16,38 @@ export default function dateFilterReducer(
       const endMaxDate = max.toLocaleDateString("en-CA");
       const value = action.value;
 
-      if (value.includes("month")) {
+      // month
+      if (value.includes("Month")) {
         const months = value.split(" ")[0];
         calcDate.setMonth(calcDate.getMonth() - months);
-        return {
-          ...filterDate,
-          date: {
-            endDate: endMaxDate,
-            startDate: calcDate.toLocaleDateString("en-CA"),
-          },
-        };
       }
 
-      if (!isNaN(Number(value))) {
-        calcDate.setDate(calcDate.getDate() - Number(value));
-        return {
-          ...filterDate,
-          date: {
-            endDate: endMaxDate,
-            startDate: calcDate.toLocaleDateString("en-CA"),
-          },
-        };
+      // week
+      else if (value.includes("Week")) {
+        const weeks = value.split(" ")[0];
+        calcDate.setDate(calcDate.getDate() - 7 * Number(weeks));
       }
-      break;
+
+      // days
+      else if (value.includes("Day")) {
+        const days = value.split(" ")[0];
+        calcDate.setDate(calcDate.getDate() - Number(days));
+      }
+
+      return {
+        ...filterDate,
+        label: value,
+        date: {
+          startDate: calcDate.toLocaleDateString("en-CA"),
+          endDate: endMaxDate,
+        },
+      };
     }
+
     case "setDate": {
       return {
         ...filterDate,
+        label: "custom",
         date: {
           ...filterDate.date,
           ...action.value,

@@ -1,4 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 import { debounce } from "lodash";
 import DropDown from "../DropDown/index.tsx";
@@ -17,6 +19,7 @@ export function DateComponent({
 }: DateComponentProps) {
   //intermediate date state to avoid re-renders from top
   const [inputDate, setInputDate] = useState({
+    label: filterDate.label,
     startDate: {
       date: filterDate.date.startDate,
       isValid: true,
@@ -58,6 +61,7 @@ export function DateComponent({
   //if date presets are changed, reload to display values in controls
   useEffect(() => {
     setInputDate({
+      label: filterDate.label,
       startDate: {
         date: filterDate.date.startDate,
         isValid: true,
@@ -69,10 +73,18 @@ export function DateComponent({
     });
   }, [filterDate.date.startDate, filterDate.date.endDate]);
 
+  const dateStyle = {
+    fontWeight: "normal",
+  };
   Log.log({ msg: "[DateComponent]", params: { filterDate }, ...Log.data });
   return (
     <DropDown>
-      <div>Date</div>
+      <div>
+        <span className="mr-2">
+          <FontAwesomeIcon icon={faCalendar} />
+        </span>
+        <span style={dateStyle}>{inputDate.label}</span>
+      </div>
 
       <div className="flex flex-col gap-6">
         {/* Preset */}
@@ -96,14 +108,14 @@ export function DateComponent({
             <option disabled value="">
               Select timeframe from today
             </option>
-            <option value="1"> 1 day</option>
-            <option value="3"> 3 days</option>
-            <option value="7"> 1 week</option>
-            <option value="14"> 2 weeks</option>
-            <option value="1 month"> 1 month </option>
-            <option value="2 month"> 2 months </option>
-            <option value="3 month"> 3 months </option>
-            <option value="6 month"> 6 months </option>
+            <option value="1 Day"> 1 Day</option>
+            <option value="3 Days"> 3 Days</option>
+            <option value="1 Week"> 1 Week</option>
+            <option value="2 Weeks"> 2 Weeks</option>
+            <option value="1 Month"> 1 Month </option>
+            <option value="2 Months"> 2 Months </option>
+            <option value="3 Months"> 3 Months </option>
+            <option value="6 Months"> 6 Months </option>
           </select>
         </div>
 
