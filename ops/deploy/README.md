@@ -419,6 +419,8 @@ superuser not necessary.
   * `postgresql-statefulset.yml`: expand `storage` key to desired amount.
 * Restart postgresql service
 
+0. ssh into machine (not container)
+
 1. `lsblk`: check if partition is not full - might need to expand partition
   (likely no need, since volume is standalone.) Here expanded 16gb of space is
   visible, not partitioned

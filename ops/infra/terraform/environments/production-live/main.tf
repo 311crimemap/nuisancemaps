@@ -86,8 +86,8 @@ module "worker-servers" {
     network_zone: "us-west"
   }
 
-  server_type = "cpx11"
-  server_count = 1
+  server_type = "cpx21"
+  server_count = 0
   ssh_key_name = var.ssh_key_name
 
   image_name = "name=packer_base_311crimemap_1.0"
