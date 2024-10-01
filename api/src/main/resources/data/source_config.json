@@ -1828,5 +1828,182 @@
         "parsingStrategy": null
       }
     }
+  },
+  {
+    "sourceConfigId": 32,
+    "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+    "cookie": null,
+    "category": "311",
+    "description": "New York City 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "reportNum": {
+        "field": "unique_key",
+        "pointer": "/unique_key",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "complaint_type",
+        "pointer": "/complaint_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "descriptor",
+        "pointer": "/descriptor",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "incident_address",
+        "pointer": "/incident_address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "location_type",
+        "pointer": "/location_type",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "created_date",
+        "pointer": "/created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 33,
+    "url": "https://data.sfgov.org/resource/vw6y-z8j6.json",
+    "cookie": null,
+    "category": "311",
+    "description": "San Francisco 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "reportNum": {
+        "field": "service_request_id",
+        "pointer": "/service_request_id",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "service_name",
+        "pointer": "/service_name",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "address",
+        "pointer": "/address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "neighborhoods_sffind_boundaries",
+        "pointer": "/neighborhoods_sffind_boundaries",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "lat",
+        "pointer": "/lat",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "long",
+        "pointer": "/long",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "requested_datetime",
+        "pointer": "/requested_datetime",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 34,
+    "url": "https://data.cityofchicago.org/resource/v6vf-nfxy.json",
+    "cookie": null,
+    "category": "311",
+    "description": "Chicago 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "reportNum": {
+        "field": "sr_number",
+        "pointer": "/sr_number",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "sr_type",
+        "pointer": "/sr_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "owner_department",
+        "pointer": "/owner_department",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "street_address",
+        "pointer": "/street_address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "created_date",
+        "pointer": "/created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
   }
 ]
