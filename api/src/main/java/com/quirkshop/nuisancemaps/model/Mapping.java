@@ -43,6 +43,7 @@ public class Mapping {
 
     private String rootPath;
     private String orderKey;
+    private String startReportedAt;
 
     @Embedded
     @AttributeOverrides({
@@ -124,9 +125,11 @@ public class Mapping {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Mapping() {}
+    public Mapping() {
+    }
 
     public Mapping(MappingField reportNum, MappingField reportCategory, String rootPath, String orderKey,
+            String startReportedAt,
             MappingField description, MappingField address,
             MappingField location, MappingField latitude,
             MappingField longitude, MappingField reportedAt, MappingField reportedAt2) {
@@ -134,6 +137,7 @@ public class Mapping {
         this.reportCategory = reportCategory;
         this.rootPath = rootPath;
         this.orderKey = orderKey;
+        this.startReportedAt = startReportedAt;
         this.description = description;
         this.address = address;
         this.location = location;
@@ -227,6 +231,14 @@ public class Mapping {
 
     public void setOrderKey(String orderKey) {
         this.orderKey = orderKey;
+    }
+
+    public String getStartReportedAt() {
+        return startReportedAt;
+    }
+
+    public void setStartReportedAt(String startReportedAt) {
+        this.startReportedAt = startReportedAt;
     }
 
     @Mapped
