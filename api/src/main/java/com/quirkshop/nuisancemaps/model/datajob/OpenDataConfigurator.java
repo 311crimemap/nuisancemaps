@@ -24,6 +24,7 @@ public class OpenDataConfigurator implements DataJobConfigurator {
 
         parameters.putIfAbsent("paramLimit", PARAM_LIMIT);
         parameters.putIfAbsent("paramOffset", 0);
+        dataJob.setParamOffset(0);
 
         String url = buildOpenDataParamsURL(dataJob, parameters);
 
@@ -43,6 +44,7 @@ public class OpenDataConfigurator implements DataJobConfigurator {
 
         parameters.put("paramLimit", (Integer) parameters.getOrDefault("paramLimit", PARAM_LIMIT));
         parameters.put("paramOffset", (Integer) parameters.getOrDefault("paramOffset", 0) + PARAM_LIMIT);
+        dataJob.setParamOffset(dataJob.getParamOffset() + PARAM_LIMIT);
 
         String url = buildOpenDataParamsURL(dataJob, parameters);
 
