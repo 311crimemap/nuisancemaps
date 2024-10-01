@@ -1018,5 +1018,65 @@
         "parsingStrategy": "REPORTED_AT2_CSV_AUSTIN"
       }
     }
+  },
+  {
+    "sourceConfigId": 18,
+    "url": "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+    "cookie": null,
+    "category": "311",
+    "description": "New York City 311",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATA",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": "2024-05-15",
+      "reportNum": {
+        "field": "unique_key",
+        "pointer": "/unique_key",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "complaint_type",
+        "pointer": "/complaint_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "descriptor",
+        "pointer": "/descriptor",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "incident_address",
+        "pointer": "/incident_address",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "location_type",
+        "pointer": "/location_type",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "created_date",
+        "pointer": "/created_date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
   }
 ]
