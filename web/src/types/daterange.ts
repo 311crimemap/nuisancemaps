@@ -12,6 +12,7 @@ export interface DateRange {
 }
 
 export interface InputDateRange {
+    label: string,
     startDate: {
         date: string;
         isValid: boolean;

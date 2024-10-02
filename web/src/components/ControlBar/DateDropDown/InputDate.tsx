@@ -3,7 +3,7 @@ import { InputDateRange } from "../../../types/daterange.ts";
 import validator from "validator";
 
 interface InputDateProps {
-  id: keyof InputDateRange;
+  id: "startDate" | "endDate";
   name: string;
   minDate: string;
   maxDate: string;
@@ -28,7 +28,9 @@ export default function InputDate({
    * 2. passed as prop (via date presets); through set inputDate object;
    *   reloaded via useEffect
    */
-  const [inputDateValue, setInputDateValue] = useState(inputDate[id].date);
+
+  const defaultDateValue = inputDate[id].date;
+  const [inputDateValue, setInputDateValue] = useState(defaultDateValue);
 
   const setDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const controlDate = e.target.value;
