@@ -68,6 +68,9 @@ services:
       - "traefik.http.routers.api.entrypoints=apiEntryPoint"          # rRequests only of entry point "apiEntryPoint"
       - "traefik.http.services.api.loadbalancer.server.port=8080"     # container port of the API service (tomcat)
       - "traefik.http.routers.api.middlewares=api-compression@docker"  # Attach compression middleware
+    depends_on:
+      db:
+         condition: service_healthy
 
   worker:
     image: eclipse-temurin:17-jdk-alpine
@@ -81,9 +84,29 @@ services:
       - .env.dev
     # deploy: # to test multiple workers
     #   replicas: 3
+    depends_on:
+      db:
+         condition: service_healthy
 
   db:
-    image: 'bitnami/postgresql:16.1.0'
+    image: bitnami/pgpool:4
+    env_file:
+      - .env.dev
+    labels:
+      - traefik.enable=false
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db/custom_pgpool.conf:/config/custom_pgpool.conf
+    healthcheck:
+      test: ["CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pg-0:
+    image: bitnami/postgresql-repmgr:16
+    #image: 'bitnami/postgresql:16.1.0'
     logging:
       driver: none
     volumes:
@@ -91,10 +114,11 @@ services:
       - ./temp:/temp  # useful for temp file store, restore database
       # installed at "per database" level
       - ./db/01_enable_postgis.sql:/docker-entrypoint-initdb.d/01_enable_postgis.sql
+      - ./db/custom_pgpool.conf:/config/custom_pgpool.conf
 
       # pgbackrest
       # separate backup directory mounted external to named volume (nuisancemaps_db)
-      - ./db/pgbackrest:/mnt/pgbackrest
+      - ./db/pgbackrest_bkup:/mnt/pgbackrest
       - ./db/pgbackrest.conf:/etc/pgbackrest.conf
       - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
       - ./db/custom_postgresql.conf:/opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
@@ -103,11 +127,12 @@ services:
 
     #network_mode: "host"
     shm_size: 1gb
+    labels:
+      - traefik.enable=false
     ports:
-      - 5432:5432
+      - 5432
     env_file:
       - .env.dev
-
 volumes:
   nuisancemaps_db:
   data:
