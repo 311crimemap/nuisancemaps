@@ -106,24 +106,25 @@ services:
 
   pg-0:
     image: bitnami/postgresql-repmgr:16
-    # logging:
-    #   driver: none
+    #image: 'bitnami/postgresql:16.1.0'
+    logging:
+      driver: none
     volumes:
-      - db_pg_0:/bitnami/postgresql
+      - nuisancemaps_db:/bitnami/postgresql
       - ./temp:/temp  # useful for temp file store, restore database
       # installed at "per database" level
       - ./db/01_enable_postgis.sql:/docker-entrypoint-initdb.d/01_enable_postgis.sql
       - ./db/custom_pgpool.conf:/config/custom_pgpool.conf
-      - ./db/custom_postgresql.conf:/opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
 
       # pgbackrest
-      - ./db/pgbackrest:/opt/bitnami/postgresql/bin/pgbackrest       # executable
       # separate backup directory mounted external to named volume (nuisancemaps_db)
       - ./db/pgbackrest_bkup:/mnt/pgbackrest
       - ./db/pgbackrest.conf:/etc/pgbackrest.conf
       - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
+      - ./db/custom_postgresql.conf:/opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
       # pgbackrest recovery override
       # - ./db/run.sh:/opt/bitnami/scripts/postgresql/run.sh
+
     #network_mode: "host"
     shm_size: 1gb
     labels:
@@ -132,36 +133,6 @@ services:
       - 5432
     env_file:
       - .env.dev
-    environment:
-      - REPMGR_NODE_NAME=pg-0
-      - REPMGR_NODE_NETWORK_NAME=pg-0
-
-  pg-1:
-    image: bitnami/postgresql-repmgr:16
-    shm_size: 1gb
-    labels:
-      - traefik.enable=false
-    ports:
-      - 5432
-    volumes:
-      - db_pg_1:/bitnami/postgresql
-      - ./temp:/temp  # useful for temp file store, restore database
-      - ./db/custom_pgpool.conf:/config/custom_pgpool.conf
-      - ./db/custom_postgresql.conf:/opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
-
-      # pgbackrest
-      - ./db/pgbackrest:/opt/bitnami/postgresql/bin/pgbackrest       # executable
-      - ./db/pgbackrest.conf:/etc/pgbackrest.conf
-      - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
-
-
-    env_file:
-      - .env.dev
-    environment:
-      - REPMGR_NODE_NAME=pg-1
-      - REPMGR_NODE_NETWORK_NAME=pg-1
-
 volumes:
-  db_pg_0:
-  db_pg_1:
+  nuisancemaps_db:
   data:
