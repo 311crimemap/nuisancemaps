@@ -4,6 +4,50 @@
 
 ## vanilla postgres -> repmgr
 
+NB: instructions for primary work, but replica hangs when taking over a previous
+vanilla version of db.
+
+Best approach is to:
+
+1. pg_dump original (vanilla) db
+2. new containers using replication -> make sure new volume so database is initialized
+3. create / drop -create database (don't run migrations)
+4. pg_restore
+
+
+```
+# dump parallel (jobs -j) directory output
+pg_dump -U postgres -d nuisancemaps -F d -j 4 -f ./nuisancemaps
+
+# restore parallel from directory
+pg_restore --disable-triggers -U postgres -d nuisancemaps -F d -j 4 ./nuisancemaps
+```
+
+### repmgr
+
+repmgr needs to be run via `entrypoint.sh`, for proper user / permissions:
+
+Example commands - shouldn't need to do this when starting primary/replica from scratch.
+
+```
+docker-compose exec pg-0 /opt/bitnami/scripts/postgresql-repmgr/entrypoint.sh bash
+
+# status
+repmgr -f /opt/bitnami/repmgr/conf/repmgr.conf cluster show
+
+# pg-0
+repmgr -f /opt/bitnami/repmgr/conf/repmgr.conf primaryregister --force`
+
+# pg-1
+repmgr -f /opt/bitnami/repmgr/conf/repmgr.conf standby register --force`
+
+```
+
+##### For pgpool, need to login using localhost: `psql -U postgres -h localhost`
+
+
+---
+
 To take a database previously created with `bitnami/postgresql:16` and migrating
 to `bitnami/postgresql-repmgr:16`
 
@@ -28,6 +72,8 @@ create extension repmgr;
 create extension repmgr;
 
 ```
+
+#### repmgr register primary
 
 Second phase deals with the script containers: main issue is to run repmgr and
 set the database as a primary replica. Normally this is done automatically as
@@ -106,6 +152,10 @@ PGPOOL_ENABLE_LOAD_BALANCING=yes
 ---
 
 # Pgbackrest
+
+NB: `repmgr` container, no longer contains pgbackrest. So the executable needs
+to be extracted from the vanilla container, and mounted as file at
+`/opt/bitnami/postgresql/bin/pgbackrest`.
 
 ## Initial Backup Configuration
 
