@@ -1,5 +1,5 @@
 .vscode/
 .env
 .env.dev
-
-
+db/pgbackrest_bkup/*
+!db/pgbackrest_bkup/.gitkeep
