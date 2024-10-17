@@ -1,0 +1,84 @@
+#
+# NB: trouble connecting (auth repmgr) - make sure to remove pvc's
+#
+global:
+  defaultStorageClass: local-path
+  postgresql:
+    existingSecret: postgresql-ha-secrets
+    database: nuisancemaps
+    repmgrDatabase: repmgr
+  pgpool:
+    existingSecret: postgresql-ha-secrets
+
+postgresql:
+  replicaCount: 2
+  labels:
+    kind: statefulSet
+  nodeSelector:
+    node.kubernetes.io/class_id: db
+  podLabels:
+    app: postgresql
+    app.kubernetes.io/name: postgresql
+  initdbScriptsCM: init-postgresql-configmap
+  initContainers:
+    - name: copy-pgbackrest
+      image: bitnami/postgresql:16  # contains pgbackrest
+      securityContext:
+        runAsUser: 0
+      command: ["sh", "-c",
+      "cp /opt/bitnami/postgresql/bin/pgbackrest /shared/pgbackrest && chmod +x /shared/pgbackrest"]
+      volumeMounts:
+        - name: pgbackrest-shared-init-volume
+          mountPath: /shared  # Mounting point in the init container
+
+  extraVolumes:
+    - name: pgbackrest-shared-init-volume
+      emptyDir: {}  # shared volume between postgresql init container and this
+                    # (postgresql-repmgr) to stash pgbackrest
+
+    - name: dshm
+      emptyDir:
+        medium: Memory
+        sizeLimit: 512Mi
+        #sizeLimit: 2Gi
+
+    - name: postgresql-configmap-volume
+      configMap:
+        name: postgresql-configmap
+
+    - name: pgbackrest-configmap-volume
+      configMap:
+        name: pgbackrest-configmap
+
+  extraVolumeMounts:
+    - name: pgbackrest-shared-init-volume
+      mountPath: /usr/local/bin # mount for pgbackrest
+
+    - name: dshm
+      mountPath: /dev/shm
+
+    - name: postgresql-configmap-volume
+      mountPath: /opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
+      subPath: custom_postgresql.conf
+
+    - name: pgbackrest-configmap-volume
+      mountPath: /etc/pgbackrest.conf
+      subPath: pgbackrest.conf
+
+    - name: pgbackrest-configmap-volume
+      mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
+      subPath: archive.conf
+
+pgpool:
+  configurationCM: pgpool-configmap
+  nodeSelector:
+    node.kubernetes.io/class_id: db #TODO: -> app
+
+# by virtue of local-path storageClass and pod scheduling rules
+# should provision PV and PVC one per each node
+persistence:
+  storageClass: local-path
+  size: 2Gi
+
+volumePermissions:
+  enabled: true
