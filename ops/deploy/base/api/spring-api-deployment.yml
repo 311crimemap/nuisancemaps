@@ -38,7 +38,7 @@ spec:
           imagePullPolicy: Always
           envFrom:
           - configMapRef:
-              name: postgresql-config
+              name: postgresql-configmap
           env:
           - name: POSTGRESQL_PASSWORD
             valueFrom:
@@ -48,7 +48,7 @@ spec:
           - name: SPRING_DATASOURCE_URL
             valueFrom:
               configMapKeyRef:
-                name: postgresql-config
+                name: postgresql-configmap
                 key: POSTGRESQL_URL
           - name: ADMIN_API_KEY
             valueFrom:

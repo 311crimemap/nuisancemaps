@@ -13,12 +13,12 @@ spec:
         command: ["liquibase", "update"]
         envFrom:
           - configMapRef:
-              name: postgresql-config
+              name: postgresql-configmap
         env:
           - name: LIQUIBASE_COMMAND_USERNAME
             valueFrom:
               configMapKeyRef:
-                name: postgresql-config
+                name: postgresql-configmap
                 key: POSTGRESQL_USER
           - name: LIQUIBASE_COMMAND_PASSWORD
             valueFrom:
@@ -28,7 +28,7 @@ spec:
           - name: LIQUIBASE_COMMAND_URL
             valueFrom:
               configMapKeyRef:
-                name: postgresql-config
+                name: postgresql-configmap
                 key: POSTGRESQL_URL
 
         volumeMounts:

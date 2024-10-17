@@ -21,9 +21,9 @@ spec:
 
         envFrom:
           - configMapRef:
-              name: postgresql-config
+              name: postgresql-configmap
           - configMapRef:
-              name: pgbackrest-config
+              name: pgbackrest-configmap
 
         env:
           - name: PGPASSWORD
@@ -65,7 +65,7 @@ spec:
 
         - name: pgbackrest-configmap-volume
           configMap:
-            name: pgbackrest-config
+            name: pgbackrest-configmap
 
       restartPolicy: Never
   backoffLimit: 4
