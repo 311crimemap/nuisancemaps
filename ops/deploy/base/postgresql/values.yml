@@ -30,11 +30,19 @@ postgresql:
       volumeMounts:
         - name: pgbackrest-shared-init-volume
           mountPath: /shared  # Mounting point in the init container
+    - name: enable-shared-data
+      image: busybox
+      securityContext:
+        runAsUser: 0
+      command: ["sh", "-c", "mkdir -p /mnt/tmp && chown 1001:1001 /mnt/tmp"]
+      volumeMounts:
+        - name: shared-data-volume
+          mountPath: /mnt/tmp
 
   extraVolumes:
     - name: pgbackrest-shared-init-volume
       emptyDir: {}  # shared volume between postgresql init container and this
-                    # (postgresql-repmgr) to stash pgbackrest
+                    # (postgresql-repmgr) to copy pgbackrest
 
     - name: dshm
       emptyDir:
@@ -49,6 +57,13 @@ postgresql:
     - name: pgbackrest-configmap-volume
       configMap:
         name: pgbackrest-configmap
+
+    # backdoor hostPath mount for backups, etc.
+    - name: shared-data-volume
+      hostPath:
+        path: /mnt/tmp
+        type: DirectoryOrCreate
+
 
   extraVolumeMounts:
     - name: pgbackrest-shared-init-volume
@@ -68,6 +83,9 @@ postgresql:
     - name: pgbackrest-configmap-volume
       mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
       subPath: archive.conf
+
+    - name: shared-data-volume
+      mountPath: /mnt/tmp
 
 pgpool:
   configurationCM: pgpool-configmap
