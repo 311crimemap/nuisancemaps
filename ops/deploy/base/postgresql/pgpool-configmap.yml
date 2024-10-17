@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgpool-configmap
+data:
+  pgpool.conf: |
+
+    # Enable load balancing
+    load_balance_mode = on
+
+    # query splitting
+    statement_level_load_balance = on
+
+    # Number of backend nodes
+    # allow auto set hostname0
+    # backend_hostname0 = '<helm-project>-postgresql-ha-postgresql-0.<helm-project>-postgresql-ha-postgresql-headless'
+    backend_port0 = 5432
+    backend_weight0 = 0
+    backend_flag0 = 'ALLOW_TO_FAILOVER'
+
+    # allow auto set hostname1
+    # backend_hostname1 = '<helm-project>-postgresql-ha-postgresql-1.<helm-project>-postgresql-ha-postgresql-headless'
+    backend_port1 = 5432
+    backend_weight1 = 1
+    backend_flag1 = 'ALLOW_TO_FAILOVER'
+
+    log_statement = 'all'
+    log_per_node_statement = on
+    log_connections = on
+    log_hostname = on
