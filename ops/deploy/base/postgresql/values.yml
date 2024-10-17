@@ -4,11 +4,11 @@
 global:
   defaultStorageClass: local-path
   postgresql:
-    existingSecret: postgresql-ha-secrets
+    existingSecret: postgresql-secrets
     database: nuisancemaps
     repmgrDatabase: repmgr
   pgpool:
-    existingSecret: postgresql-ha-secrets
+    existingSecret: postgresql-secrets
 
 postgresql:
   replicaCount: 2
@@ -78,7 +78,7 @@ pgpool:
 # should provision PV and PVC one per each node
 persistence:
   storageClass: local-path
-  size: 2Gi
+  size: 30Gi
 
 volumePermissions:
   enabled: true
