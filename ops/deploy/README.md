@@ -48,6 +48,7 @@ configmap files (pgbackrest)
 ##### Deployments / Service
 
 * `kubectl apply -f base/postgresql/`
+* `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f values.yml`
 * `kubectl apply -f base/api/`
 * `kubectl apply -f base/worker/`
 
