@@ -303,11 +303,15 @@ point traffic to the db node.
 To grab prod and use in dev, pipe output from prod via `pg_dump`:
 NB: do not use interactive terminal `kubectl -it` as it will corrupt the output
 
+See `nuisancemaps/db/README.md` for specifics with `postgresql-ha`, parallelism
+and directory dump/restore.
+
 ```
 kubectl exec postgresql-0 -- pg_dump -U postgres -Fc nuisancemaps | cat > nuisancemaps_prod.dump
 ```
 
-Restore dev - ensure file is available (`/temp` mount) in `docker-compose.yml`
+Restore dev - ensure file is available (`/temp` mount) in `docker-compose.yml`,
+or `/mnt/tmp` in prod.
 
 ##### pg_restore
 
