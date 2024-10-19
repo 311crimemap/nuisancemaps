@@ -79,8 +79,7 @@ postgresql:
     - name: dshm
       emptyDir:
         medium: Memory
-        sizeLimit: 512Mi
-        #sizeLimit: 2Gi
+        sizeLimit: 2Gi #need higher shm for vacuum operations
 
     - name: postgresql-configmap-volume
       configMap:
