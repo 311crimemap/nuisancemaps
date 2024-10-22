@@ -57,7 +57,7 @@ module "app-servers" {
     network_zone: "us-west"
   }
 
-  server_type = "cpx11"
+  server_type = "cpx21"
   server_count = 1
   ssh_key_name = var.ssh_key_name
 
