@@ -79,6 +79,7 @@ spec:
           # can't use configMap on ports
         - name: postgresql
           containerPort: 5432
+
         volumeMounts:
         - name: data-db
           mountPath: /bitnami/postgresql
@@ -106,6 +107,16 @@ spec:
           subPath: custom_postgresql.conf
 
       volumes:
+      #
+      # this volume data-db is manual replacement for dynamically generated volumes
+      # created via volumeClaimTemplate block.
+      #
+      # cases where k3s control node dies, instance dies, detachment) k3s can lose pvc information.
+      # requires postgresql-pvc.yml, and postgresql-pv.yml volume definition
+      #
+      - name: data-db
+        persistentVolumeClaim:
+          claimName: data-db-postgresql-0
 
       - name: backup-db         #local host db backup
         hostPath:
@@ -132,13 +143,14 @@ spec:
         configMap:
           name: pgbackrest-config
 
-  volumeClaimTemplates:
-  - metadata:
-      name: data-db
-    spec:
-      # NB: creates a pvc
-      storageClassName: hcloud-volumes
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 128Gi
+  # to reuse detached volume, switch to manually defined pv pvc
+  # volumeClaimTemplates:
+  # - metadata:
+  #     name: data-db
+  #   spec:
+  #     # NB: creates a pvc
+  #     storageClassName: hcloud-volumes
+  #     accessModes: ["ReadWriteOnce"]
+  #     resources:
+  #       requests:
+  #         storage: 128Gi
