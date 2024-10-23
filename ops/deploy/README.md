@@ -44,6 +44,8 @@ configmap files (pgbackrest)
       * `kubectl describe orders`
       * `kubectl describe challenges`
 
+* If reloading from scratch, may need to delete cert-manager secret:
+  * `kubectl delete secret cert-manager-webhook-ca -n cert-manager`
 
 ##### Deployments / Service
 
