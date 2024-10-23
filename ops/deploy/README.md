@@ -38,7 +38,7 @@ configmap files (pgbackrest)
 * `kubectl apply -f production/cert-manager-issuer.yml`  # PRODUCTION
 * `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
   * Verify: `kubectl describe clusterissuer`
-* `kubectl apply -f base/api/spring-api-ingress.yml`
+* `kubectl apply -f <env>/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
     * Intermediate steps:
       * `kubectl describe orders`
