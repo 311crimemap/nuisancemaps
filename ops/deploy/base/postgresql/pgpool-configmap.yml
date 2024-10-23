@@ -15,7 +15,7 @@ data:
     # allow auto set hostname0
     # backend_hostname0 = '<helm-project>-postgresql-ha-postgresql-0.<helm-project>-postgresql-ha-postgresql-headless'
     backend_port0 = 5432
-    backend_weight0 = 0
+    backend_weight0 = 1
     backend_flag0 = 'ALLOW_TO_FAILOVER'
 
     # allow auto set hostname1
