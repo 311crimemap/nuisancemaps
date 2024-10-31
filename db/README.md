@@ -11,8 +11,9 @@ Best approach is to:
 
 1. pg_dump original (vanilla) db
 2. new containers using replication -> make sure new volume so database is initialized
-3. create / drop -create database (don't run migrations)
-4. pg_restore
+3. don't run migrations - drop anything in database (init extensions ok)
+   * database should exist with postgis/btree_gist, but nothing else.
+4. pg_restore / psql
 
 
 ```
@@ -22,6 +23,19 @@ pg_dump -U postgres -d nuisancemaps -F d -j 4 -f ./nuisancemaps
 # restore parallel from directory
 pg_restore --disable-triggers -U postgres -d nuisancemaps -F d -j 4 ./nuisancemaps
 ```
+
+psql logical backup/restore
+
+```
+pg_dump -U postgres -d nuisancemaps | gzip > dump.sql.gz
+
+psql -U postgres -d nuisancemaps -f dump.sql --echo-all
+
+# or
+gunzip -c dump.sql.gz | psql -U postgres -d nuisancemaps
+
+```
+
 
 ### repmgr
 

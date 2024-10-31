@@ -38,18 +38,22 @@ configmap files (pgbackrest)
 * `kubectl apply -f production/cert-manager-issuer.yml`  # PRODUCTION
 * `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
   * Verify: `kubectl describe clusterissuer`
-* `kubectl apply -f base/api/spring-api-ingress.yml`
+* `kubectl apply -f <env>/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
     * Intermediate steps:
       * `kubectl describe orders`
       * `kubectl describe challenges`
 
-* If reloading from scratch, may need to delete cert-manager secret:
-  * `kubectl delete secret cert-manager-webhook-ca -n cert-manager`
+- clean up / redo:
+* kubectl get secrets / get cert -> delete these
+* kubectl delete -f <env>/api/spring-api-ingress.yml
+* kubectl delete -f <env>/cert-manager-issuer.yml
+
 
 ##### Deployments / Service
 
 * `kubectl apply -f base/postgresql/`
+* `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f values.yml`
 * `kubectl apply -f base/api/`
 * `kubectl apply -f base/worker/`
 
@@ -80,7 +84,10 @@ configmap files (pgbackrest)
 ## Spin Down
 
 ```
+
 kubectl delete -f <manifest>
+
+helm uninstall <name / e.g. crimemap-db>
 
 #
 # clean up and disables from further scheduling
@@ -304,11 +311,15 @@ point traffic to the db node.
 To grab prod and use in dev, pipe output from prod via `pg_dump`:
 NB: do not use interactive terminal `kubectl -it` as it will corrupt the output
 
+See `nuisancemaps/db/README.md` for specifics with `postgresql-ha`, parallelism
+and directory dump/restore.
+
 ```
 kubectl exec postgresql-0 -- pg_dump -U postgres -Fc nuisancemaps | cat > nuisancemaps_prod.dump
 ```
 
-Restore dev - ensure file is available (`/temp` mount) in `docker-compose.yml`
+Restore dev - ensure file is available (`/temp` mount) in `docker-compose.yml`,
+or `/mnt/tmp` in prod.
 
 ##### pg_restore
 

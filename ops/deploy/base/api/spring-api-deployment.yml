@@ -36,16 +36,14 @@ spec:
         - image: 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
           name: spring-api
           imagePullPolicy: Always
-
           resources:
             requests:
               memory: "1Gi"        # Minimum memory requested
             limits:
               memory: "3Gi"        # Maximum memory allowed
-
           envFrom:
           - configMapRef:
-              name: postgresql-config
+              name: postgresql-configmap
           env:
           - name: POSTGRESQL_PASSWORD
             valueFrom:
@@ -55,7 +53,7 @@ spec:
           - name: SPRING_DATASOURCE_URL
             valueFrom:
               configMapKeyRef:
-                name: postgresql-config
+                name: postgresql-configmap
                 key: POSTGRESQL_URL
           - name: ADMIN_API_KEY
             valueFrom:
