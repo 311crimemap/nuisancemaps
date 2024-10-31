@@ -1,0 +1,147 @@
+#
+# NB: trouble connecting (auth repmgr) - make sure to remove pvc's
+#
+global:
+  defaultStorageClass: local-path
+  postgresql:
+    existingSecret: postgresql-secrets
+    database: nuisancemaps
+    repmgrDatabase: repmgr
+  pgpool:
+    existingSecret: postgresql-secrets
+
+postgresql:
+  replicaCount: 2
+  resources:
+    requests:
+      memory: "1Gi"
+    limits:
+      memory: "3Gi"
+  livenessProbe:
+     # replica can be unresponsive on initial large db clone
+     # can lead to repeated pod restart unless liveness delayed
+     # latest stat: ~3m for 25GB
+    initialDelaySeconds: 600
+  labels:
+    kind: statefulSet
+  nodeSelector:
+    node.kubernetes.io/class_id: db
+
+    #
+    # Attempt to pin statefulSets to node
+    # statefulSets create pods in order (postgresql-0, postgresql-1..)
+    #
+    # pod-0 is scheduled first and weighted to schedule on node db-0
+    #
+    # pod-N: subsequent replica pods use podAntityAffinity to be scheduled
+    # on all other nodes
+    #   podAntiAffinity moves pods to empty non-postgresql nodes
+    #
+    #   no strict guarantee to exactly map replica pod to node ordinal
+    #   but I think it's OK to have replicas on nodes > 0, as long as
+    #   primary can be placed on db-0.
+    #
+
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 50
+        preference:
+          matchExpressions:
+          - key: node.kubernetes.io/class_instance
+            operator: In
+            values:
+              - "db-0"
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - "postgresql"
+          topologyKey: "kubernetes.io/hostname"
+
+  podLabels:
+    app: postgresql
+    app.kubernetes.io/name: postgresql
+  initdbScriptsCM: init-postgresql-configmap
+  initContainers:
+    - name: copy-pgbackrest
+      image: bitnami/postgresql:16  # contains pgbackrest
+      securityContext:
+        runAsUser: 0
+      command: ["sh", "-c",
+      "cp /opt/bitnami/postgresql/bin/pgbackrest /shared/pgbackrest && chmod +x /shared/pgbackrest"]
+      volumeMounts:
+        - name: pgbackrest-shared-init-volume
+          mountPath: /shared  # Mounting point in the init container
+    - name: enable-shared-data
+      image: busybox
+      securityContext:
+        runAsUser: 0
+      command: ["sh", "-c", "mkdir -p /mnt/tmp && chown 1001:1001 /mnt/tmp"]
+      volumeMounts:
+        - name: shared-data-volume
+          mountPath: /mnt/tmp
+
+  extraVolumes:
+    - name: pgbackrest-shared-init-volume
+      emptyDir: {}  # shared volume between postgresql init container and this
+                    # (postgresql-repmgr) to copy pgbackrest
+
+    - name: dshm
+      emptyDir:
+        medium: Memory
+        sizeLimit: 2Gi #need higher shm for vacuum operations
+
+    - name: postgresql-configmap-volume
+      configMap:
+        name: postgresql-configmap
+
+    - name: pgbackrest-configmap-volume
+      configMap:
+        name: pgbackrest-configmap
+
+    # backdoor hostPath mount for backups, etc.
+    - name: shared-data-volume
+      hostPath:
+        path: /mnt/tmp
+        type: DirectoryOrCreate
+
+
+  extraVolumeMounts:
+    - name: pgbackrest-shared-init-volume
+      mountPath: /usr/local/bin # mount for pgbackrest
+
+    - name: dshm
+      mountPath: /dev/shm
+
+    - name: postgresql-configmap-volume
+      mountPath: /opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
+      subPath: custom_postgresql.conf
+
+    - name: pgbackrest-configmap-volume
+      mountPath: /etc/pgbackrest.conf
+      subPath: pgbackrest.conf
+
+    - name: pgbackrest-configmap-volume
+      mountPath: /opt/bitnami/postgresql/conf/conf.d/archive.conf
+      subPath: archive.conf
+
+    - name: shared-data-volume
+      mountPath: /mnt/tmp
+
+pgpool:
+  configurationCM: pgpool-configmap
+  nodeSelector:
+    node.kubernetes.io/class_id: db #TODO: -> app
+
+# by virtue of local-path storageClass and pod scheduling rules
+# should provision PV and PVC one per each node
+persistence:
+  storageClass: local-path
+  size: 30Gi
+
+volumePermissions:
+  enabled: true
