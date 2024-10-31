@@ -44,6 +44,11 @@ configmap files (pgbackrest)
       * `kubectl describe orders`
       * `kubectl describe challenges`
 
+- clean up / redo:
+* kubectl get secrets / get cert -> delete these
+* kubectl delete -f <env>/api/spring-api-ingress.yml
+* kubectl delete -f <env>/cert-manager-issuer.yml
+
 
 ##### Deployments / Service
 
@@ -79,7 +84,10 @@ configmap files (pgbackrest)
 ## Spin Down
 
 ```
+
 kubectl delete -f <manifest>
+
+helm uninstall <name / e.g. crimemap-db>
 
 #
 # clean up and disables from further scheduling
