@@ -245,7 +245,7 @@ always running.
 
 ---
 
-#### K3s Traefik
+### K3s Traefik Ingress
 
 * Traefik is default ingress provider `-n=kube-system`, initial job installs
   traefik via helm chart.
@@ -302,6 +302,148 @@ ServiceLB (svclb) is controlled by the labeling nodes:
 
 Not sure but it might be better to just leave svclb on all nodes, but don't
 point traffic to the db node.
+
+
+#### ingress-nginx configuration (experiment branch - mnanifests only written for staging environment)
+
+Experiment to use `ingress-nginx` as ingress controller via helm. See files in
+branch `experiments/ops/ingress`.
+
+Note there are different editions of nginxl community - free, enterprise - pay,
+with missing support for annotation configuration or server-snippets that are
+not available.
+
+`ingress-nginx` is the k8s version; configuration options:
+https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/
+
+##### Install
+
+1. Install k3s disabling traefik - configuration option via ansible task
+   `roles/k3s_server/tasks/main.yml` environmental variable:
+
+`INSTALL_K3S_EXEC: "server --dsiable traefik"`
+
+2. Install ingress-nginx
+
+https://cert-manager.io/docs/tutorials/acme/nginx-ingress/#step-2---deploy-the-nginx-ingress-controller
+
+* `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
+* `helm repo update`
+* `helm install quickstart ingress-nginx/ingress-nginx` (quickstart name)
+
+3. Add ingress resource
+
+* `deploy/staging/api/spring-api-ingress-nginx.yml`
+    * `spring-api-ingress` rules point to existing `spring-api-service` (swap
+      out traefik ingress)
+
+3a. Add additional configuration via helm
+
+* `deploy/staging/api/spring-api-ingress-nginx-helm-config.yml`
+  * addition of `use-gzip` values
+  * config usage:
+    * `helm install quickstart ingress-nginx/ingress-nginx -f spring-api-ingress-nginx-helm-config.yml`
+    * `helm upgrade quickstart ingress-nginx/ingress-nginx -f spring-api-ingress-nginx-helm-config.yml`
+
+4. Cert-Manager with nginx
+
+* `deploy/staging/cert-manager-issuer-nginx.yml`
+  * replace any traefik with ingress class / ingressClassName: nginx
+
+##### Performance
+
+`ingress-nginx` is substantially slower than traefik. Using siege (`siege -f
+stage.txt -c 20 -t 300s`), number of transactions were ~5000, while traefik
+would deliver ~7000 in the same period.
+
+This is surprising and unexpected. I thought nginx would far surpass traefik.
+But it might be since k3s is bundled with traefik, it has some predisposed
+configuration to support traefik, or helm chart configuration for nginx is not
+optimal. Other thoughts include nginx (worker) model vs traefik (event) model
+that would favor traefik when dealing with concurrency.
+
+But I just don't have time to keep digging into this.
+
+
+#### haproxy-ingress configuration (experiment branch)
+
+https://www.haproxy.com/blog/enable-tls-with-lets-encrypt-and-the-haproxy-kubernetes-ingress-controller
+
+1. Install k3s disabling traefik (see above)
+
+2. Install Helm Haproxy charts
+
+```
+helm repo add haproxytech https://haproxytech.github.io/helm-charts
+helm repo update
+```
+
+3. Install Haproxy via Helm as DaemonSet
+
+```
+helm install haproxy haproxytech/kubernetes-ingress \
+  --set controller.kind=DaemonSet \
+  --set controller.daemonset.useHostPort=true \
+  -f spring-api-ingress-haproxy-helm-config.yml
+```
+
+3a. Any helm configuration update - no config used in this demo.
+
+```
+helm upgrade --install haproxy haproxytech/kubernetes-ingress -f spring-api-ingress-haproxy-helm-config.yml
+```
+
+4. Run ingress
+
+`kubectl apply -f deploy/staging/api/spring-api-ingress-haproxy.yml`
+`
+
+##### Performance
+
+haproxy with gzip enabled and no cloudflare is significantly worse than nginx.
+```
+siege -f stage.txt -c 20 -t 300s
+{	"transactions":			        3529,
+	"availability":			      100.00,
+	"elapsed_time":			      299.62,
+	"data_transferred":		     2624.40,
+	"response_time":		        1.48,
+	"transaction_rate":		       11.78,
+	"throughput":			        8.76,
+	"concurrency":			       17.48,
+	"successful_transactions":	        3529,
+	"failed_transactions":		           0,
+	"longest_transaction":		      148.08,
+	"shortest_transaction":		        0.32
+}
+```
+
+However with no gzip and put behind cloudflare, it's almost equivalent to
+traefik. But some dropped connections I think simply because of data being sent
+over.
+
+```
+siege -f stage.txt -c 20 -t 300s
+
+
+{	"transactions":			        6940,
+	"availability":			       99.97,
+	"elapsed_time":			      299.64,
+	"data_transferred":		     2175.60,
+	"response_time":		        0.84,
+	"transaction_rate":		       23.16,
+	"throughput":			        7.26,
+	"concurrency":			       19.39,
+	"successful_transactions":	        6940,
+	"failed_transactions":		           2,
+	"longest_transaction":		        8.19,
+	"shortest_transaction":		        0.25
+}
+
+```
+
+On smaller instances seems like traefik, or the pre-build configuration is
+ideal.
 
 
 ---
