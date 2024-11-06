@@ -51,13 +51,16 @@ configmap files (pgbackrest)
 
 ##### Monitoring
 
+Note: there isn't an equivalent "useExistingSecret" in helm config, so using command line.
+
 ```
 # install prometheus & grafana
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
 # /monitor
-helm install prometheus prometheus-community/kube-prometheus-stack -f monitor/values.yml
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --set grafana.adminPassword="$(kubectl get secret grafana-secrets -o jsonpath="{.data.GRAFANA_PASSWORD}" | base64 --decode)"
 
 ```
 
