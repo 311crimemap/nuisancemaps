@@ -49,6 +49,17 @@ configmap files (pgbackrest)
 * kubectl delete -f <env>/api/spring-api-ingress.yml
 * kubectl delete -f <env>/cert-manager-issuer.yml
 
+##### Monitoring
+
+```
+# install prometheus & grafana
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+# /monitor
+helm install prometheus prometheus-community/kube-prometheus-stack -f monitor/values.yml
+
+```
 
 ##### Deployments / Service
 
@@ -56,6 +67,12 @@ configmap files (pgbackrest)
 * `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f values.yml`
 * `kubectl apply -f base/api/`
 * `kubectl apply -f base/worker/`
+
+
+#### Logical Restore
+
+`gunzip -c dump.sql.gz | psql -U postgres -d nuisancemaps`
+
 
 #### Jobs
 
