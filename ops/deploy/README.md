@@ -466,6 +466,17 @@ On smaller instances seems like traefik, or the pre-build configuration is
 ideal.
 
 
+#### Monitoring
+
+Using prometheus + grafana.
+
+* Prometheus is the exporter / collector. Use servicemonitor to auto-discover.
+  Typically requires labeling with the helm install name: e.g. `labels.release:
+  prometheus` to pick up.
+* Grafana, can import databases.
+* Does take some time to ingest exports and render a dashboard. Be patient.
+
+
 ---
 
 ### DB Backup / Export
