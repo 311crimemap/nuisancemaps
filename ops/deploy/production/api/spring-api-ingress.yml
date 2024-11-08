@@ -12,6 +12,7 @@ spec:
   tls:
   - hosts:
     - api.311crimemap.com
+    - grafana.311crimemap.com
     #
     # NB: tls secret persists without running cert manager / issuer containers
     # containers only used for validation (initial, renewal) of cert.
@@ -23,7 +24,7 @@ spec:
   rules:
     # NB: catches all when no host
     - host: api.311crimemap.com
-    - http:
+      http:
         paths:
           - path: /
             pathType: Prefix
@@ -32,3 +33,13 @@ spec:
                 name: spring-api-service
                 port:
                   number: 8080
+    - host: grafana.311crimemap.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-grafana
+                port:
+                  number: 80
