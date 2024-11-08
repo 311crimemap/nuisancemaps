@@ -1,0 +1,29 @@
+#
+# apply whitelist-middleware.yml ip range to the paths
+#
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-api-restricted-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: default-allow-internal@kubernetescrd
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure,web
+spec:
+  rules:
+    - host: staging-api.311crimemap.com
+      http:
+        paths:
+          - path: /actuator
+            pathType: Prefix
+            backend:
+              service:
+                name: spring-api-service
+                port:
+                  number: 8080
+          - path: /actuator/*
+            pathType: Prefix
+            backend:
+              service:
+                name: spring-api-service
+                port:
+                  number: 8080
