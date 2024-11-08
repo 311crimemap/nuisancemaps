@@ -470,11 +470,104 @@ ideal.
 
 Using prometheus + grafana.
 
-* Prometheus is the exporter / collector. Use servicemonitor to auto-discover.
-  Typically requires labeling with the helm install name: e.g. `labels.release:
+* Prometheus is the exporter / collector. Create service monitor resource to
+  enable auto-discover. (Sometimes created in Helm Chart.)
+
+* Typically requires labeling with the helm install name (helm install
+  prometheus prometheus-community/kube-prometheus-stack): e.g. `labels.release:
   prometheus` to pick up.
-* Grafana, can import databases.
-* Does take some time to ingest exports and render a dashboard. Be patient.
+
+* Does take some time (30s, 1m) to ingest exports and render a dashboard. Be
+  patient.
+
+##### Grafana Dashboards
+
+* Postgres: https://grafana.com/grafana/dashboards/9628-postgresql-database/
+* Spring: https://grafana.com/grafana/dashboards/14430-spring-boot-statistics-endpoint-metrics/
+* Search: https://grafana.com/grafana/dashboards/
+
+
+##### Prometheus
+
+To expose service, need to link a Service Monitor resource to Service:
+
+1. Service resource: make sure it's labeled
+   * `metadata.labels`: key: value.
+   * also make sure to add `name` to `ports` config
+
+2. Service Monitor:
+   * add `metadata.labels`: `release: prometheus` <- label indicates pick up by prometheus
+   * add `spec.selector.matchLabels`: match Service label above key: value
+   * set `endpoints.port`: match the `ports.name` in Service
+
+```
+#
+# service
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-api-service
+  labels:
+    app: spring-api-service
+spec:
+  selector:
+    app: spring-api
+  ports:
+    - name: "http"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
+
+#
+# service monitor
+#
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spring-api-servicemonitor
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: spring-api-service  # refers to service
+  endpoints:
+    - port: "http"
+      path: /actuator/prometheus
+      interval: 15s
+
+```
+
+Debug Prometheus, make sure service monitor is being polled, visit the
+prometheus console.
+
+Enable console via spring-api-ingress: (make sure to also enable tls)
+
+```
+#
+# spring-api-ingress.yml
+#
+- host: staging-prometheus.311crimemap.com
+  http:
+    paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service:
+          name: prometheus-kube-prometheus-prometheus
+          port:
+            number: 9090
+```
+
+In Prometheus console; hit "target" navbar and verify monitor is populated and
+exporting.
+
+Sometimes takes 30s - 1 min to populate
 
 
 ---
