@@ -435,6 +435,14 @@ In `WorkerApplication.java` below, we exclude the `NuisancemapsApplication.class
 class and its controllers from being loaded. However, `@EnableScheduling` is
 active, so service classes with `@Scheduled` tasks will be activated.
 
+Note: by setting `WebApplicationType.NONE`, we're removing the need for a web
+server and any servlet related code. However, that means monitoring isn't
+available (actuator requires endpoint or a push gateway, etc) for the Spring
+WorkerApplication. If metrics needed beyond node or pod exporters, we'll
+revisit. API monitoring can provide paths and response codes - so there's more
+useful data.
+
+
 The `@ConditionalOnProperty` is also used to enable/disable `@EnableScheduling`
 for testing purposes (in this case, not `main()`api/worker separation). This
 disables the annotation below it, given the value in the
@@ -459,9 +467,9 @@ public class WorkerApplication {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     public static void main(String args[]) {
-        log.info("WorkerApplication pre");
-        SpringApplication.run(WorkerApplication.class, args);
-        log.info("WorkerApplication post");
+        SpringApplication application = new SpringApplication(WorkerApplication.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        application.run(args);
     }
 }
 ```
