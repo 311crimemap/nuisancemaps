@@ -1,0 +1,18 @@
+#
+# whitelist only internal traffic by checking X-Forwarded-For header if ip is
+# external
+#
+# used to prevent external traffic from reaching certain endpoints
+# e.g spring-api-restricted-ingress.yml
+#
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: allow-internal
+spec:
+  ipWhiteList:
+    sourceRange:
+      - "10.0.0.0/8"
+    ipStrategy:
+      depth: 1 # checks X-Forwarded-For

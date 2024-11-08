@@ -24,7 +24,12 @@ public class SecurityConfig {
 
         // whitelist routes that will skip AuthenticationFilter entirely
         // default is to check authentication - expect an api key
+        //
+        // NB: "/** " matches both /, /aa, and /aa/bb - see doc
+        //
         OrRequestMatcher whiteList = new OrRequestMatcher(
+                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/actuator/**"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/actuator/**"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/init"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/init"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/categories"),

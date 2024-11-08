@@ -10,6 +10,14 @@ global:
   pgpool:
     existingSecret: postgresql-secrets
 
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    # require label to helm install name to allow servicemonitor discovery
+    labels:
+      release: prometheus
+
 postgresql:
   replicaCount: 2
   resources:

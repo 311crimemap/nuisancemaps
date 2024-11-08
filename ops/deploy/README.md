@@ -49,6 +49,20 @@ configmap files (pgbackrest)
 * kubectl delete -f <env>/api/spring-api-ingress.yml
 * kubectl delete -f <env>/cert-manager-issuer.yml
 
+##### Monitoring
+
+Note: there isn't an equivalent "useExistingSecret" in helm config, so using command line.
+
+```
+# install prometheus & grafana
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+# /monitor
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --set grafana.adminPassword="$(kubectl get secret grafana-secrets -o jsonpath="{.data.GRAFANA_PASSWORD}" | base64 --decode)"
+
+```
 
 ##### Deployments / Service
 
@@ -56,6 +70,12 @@ configmap files (pgbackrest)
 * `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f values.yml`
 * `kubectl apply -f base/api/`
 * `kubectl apply -f base/worker/`
+
+
+#### Logical Restore
+
+`gunzip -c dump.sql.gz | psql -U postgres -d nuisancemaps`
+
 
 #### Jobs
 
@@ -444,6 +464,110 @@ siege -f stage.txt -c 20 -t 300s
 
 On smaller instances seems like traefik, or the pre-build configuration is
 ideal.
+
+
+#### Monitoring
+
+Using prometheus + grafana.
+
+* Prometheus is the exporter / collector. Create service monitor resource to
+  enable auto-discover. (Sometimes created in Helm Chart.)
+
+* Typically requires labeling with the helm install name (helm install
+  prometheus prometheus-community/kube-prometheus-stack): e.g. `labels.release:
+  prometheus` to pick up.
+
+* Does take some time (30s, 1m) to ingest exports and render a dashboard. Be
+  patient.
+
+##### Grafana Dashboards
+
+* Postgres: https://grafana.com/grafana/dashboards/9628-postgresql-database/
+* Spring: https://grafana.com/grafana/dashboards/14430-spring-boot-statistics-endpoint-metrics/
+* Search: https://grafana.com/grafana/dashboards/
+
+
+##### Prometheus
+
+To expose service, need to link a Service Monitor resource to Service:
+
+1. Service resource: make sure it's labeled
+   * `metadata.labels`: key: value.
+   * also make sure to add `name` to `ports` config
+
+2. Service Monitor:
+   * add `metadata.labels`: `release: prometheus` <- label indicates pick up by prometheus
+   * add `spec.selector.matchLabels`: match Service label above key: value
+   * set `endpoints.port`: match the `ports.name` in Service
+
+```
+#
+# service
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-api-service
+  labels:
+    app: spring-api-service
+spec:
+  selector:
+    app: spring-api
+  ports:
+    - name: "http"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
+
+#
+# service monitor
+#
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spring-api-servicemonitor
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: spring-api-service  # refers to service
+  endpoints:
+    - port: "http"
+      path: /actuator/prometheus
+      interval: 15s
+
+```
+
+Debug Prometheus, make sure service monitor is being polled, visit the
+prometheus console.
+
+Enable console via spring-api-ingress: (make sure to also enable tls)
+
+```
+#
+# spring-api-ingress.yml
+#
+- host: staging-prometheus.311crimemap.com
+  http:
+    paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service:
+          name: prometheus-kube-prometheus-prometheus
+          port:
+            number: 9090
+```
+
+In Prometheus console; hit "target" navbar and verify monitor is populated and
+exporting.
+
+Sometimes takes 30s - 1 min to populate
 
 
 ---

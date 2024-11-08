@@ -38,3 +38,7 @@ kubectl create secret generic api-secrets \
         --from-literal=VITE_MAPTILER_API_KEY=$VITE_MAPTILER_API_KEY \
         --from-literal=GEOAPIFY_API_KEY=$GEOAPIFY_API_KEY
 
+# grafana
+kubectl delete secret grafana-secrets --ignore-not-found=true
+kubectl create secret generic grafana-secrets \
+        --from-literal=GRAFANA_PASSWORD=$GRAFANA_PASSWORD
