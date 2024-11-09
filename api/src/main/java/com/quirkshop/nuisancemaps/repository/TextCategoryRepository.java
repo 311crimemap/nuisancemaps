@@ -1,6 +1,7 @@
 package com.quirkshop.nuisancemaps.repository;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public interface TextCategoryRepository extends CrudRepository<TextCategory, Int
 
     public TextCategory findByDataTypeAndText(String dataType, String text);
 
+    @EntityGraph(attributePaths = { "category" })
     public List<TextCategory> findAllByDataType(String dataType);
 }
