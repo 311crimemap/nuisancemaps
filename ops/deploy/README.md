@@ -49,6 +49,15 @@ configmap files (pgbackrest)
 * kubectl delete -f <env>/api/spring-api-ingress.yml
 * kubectl delete -f <env>/cert-manager-issuer.yml
 
+##### PV Reclaim Policy
+
+In case pv's ReclaimPolicy is to Delete:
+
+```
+kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+```
+
+
 ##### Monitoring
 
 Note: there isn't an equivalent "useExistingSecret" in helm config, so using command line.
