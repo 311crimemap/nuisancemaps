@@ -132,7 +132,7 @@ public class DataCrimeRepositoryTest {
     @Test
     @Transactional
     public void DataCrimeGeoJSONQuery() throws Exception {
-        //test native query
+        // test native query
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), 4326);
 
         double latitude = 30.2944;
@@ -177,7 +177,7 @@ public class DataCrimeRepositoryTest {
         d3.setReportCategory("test category 3");
         d3.setReportedAt(now);
 
-        double new_latitude = 29.2944; //OUT OF RADIUS
+        double new_latitude = 29.2944; // OUT OF RADIUS
         coordinate = new Coordinate(longitude, new_latitude);
         point = geometryFactory.createPoint(coordinate);
         d3.setPoint(point);
@@ -189,20 +189,29 @@ public class DataCrimeRepositoryTest {
         datacrime_repo.save(d3);
 
         // save 3 points, 2 within 1 mile radius, 1 between date
-        List<DataCrime> results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(10, latitude, longitude,
-                tenDaysAgo, now);
+        double offset = 0.01;
+        double sw_lat = latitude - offset;
+        double sw_lng = longitude - offset;
+        double ne_lat = latitude + offset;
+        double ne_lng = longitude + offset;
+
+        List<Object[]> results = datacrime_repo
+                .findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng, tenDaysAgo, now, 10000);
 
         assertThat(results.size()).isEqualTo(2);
 
-        results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(10, latitude, longitude, now, now);
+        results = datacrime_repo
+                .findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng, now, now, 10000);
         assertThat(results.size()).isEqualTo(1);
 
-        results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(10, new_latitude, longitude, tenDaysAgo, now);
+        results = datacrime_repo
+                .findAllByLatLngBoundsAndBetweenDates(new_latitude - 0.01, sw_lng, new_latitude + 0.01, ne_lng,
+                        tenDaysAgo, now, 10000);
         assertThat(results.size()).isEqualTo(1);
 
-        //note overflow 5700 miles
-        results = datacrime_repo.findAllByLatLngDistanceAndBetweenDates(100,
-                                                                        new_latitude, longitude, tenDaysAgo, now);
+        results = datacrime_repo
+                .findAllByLatLngBoundsAndBetweenDates(new_latitude - 2, sw_lng, new_latitude + 2,
+                        ne_lng, tenDaysAgo, now, 10000);
 
         assertThat(results.size()).isEqualTo(3);
     }
