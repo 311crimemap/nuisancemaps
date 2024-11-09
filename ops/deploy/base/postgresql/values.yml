@@ -151,5 +151,10 @@ persistence:
   storageClass: local-path
   size: 30Gi
 
+persistentVolumeClaimRetentionPolicy:
+  enabled: true
+  whenDeleted: Retain
+
+
 volumePermissions:
   enabled: true
