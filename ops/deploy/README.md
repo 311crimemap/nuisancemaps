@@ -86,6 +86,22 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
 `gunzip -c dump.sql.gz | psql -U postgres -d nuisancemaps`
 
 
+#### Scale up/down DB
+
+1. Ensure `postgresql-0` is primary; (or delete postgresql-1 pod to ping pong primary back to 0)
+2. adjust `base/postgresql/pgpool-configmap.yml` to comment/uncomment backend_1 replica host and apply.
+3. `kubectl get statefulset`
+   * `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1`
+4. Update `values.yml` `postgresql.replicaCount` to match values.
+
+AVOID any `helm upgrade` commands. This will restart each statefulset pod with
+rollingUpdate; this triggers primary to replica failover.
+* `DO NOT: helm upgrade crimemap-db bitnami/postgresql-ha -f values.yml`
+* `DO NOT: helm upgrade crimemap-db bitnami/postgresql-ha --set replicaCount=2 --reuse-values`
+
+Depending on infra changes, may also need to delete `pvc` / `pv` if spinning down.
+
+
 #### Jobs
 
 * `kubectl apply -f base/jobs/spring-db-migration-job.yml`
