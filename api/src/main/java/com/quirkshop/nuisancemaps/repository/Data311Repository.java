@@ -41,7 +41,7 @@ public interface Data311Repository extends DataEntityRepository<Data311>, CrudRe
                 .map(result -> {
 
                     // Mapping data_311 fields
-                    Integer dcId = (Integer) result[0];
+                    Long dcId = (Long) result[0];
                     String reportNum = (String) result[1];
                     String reportCategory = (String) result[2];
                     String address = (String) result[3];

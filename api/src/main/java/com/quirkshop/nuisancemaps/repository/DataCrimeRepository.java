@@ -59,7 +59,7 @@ public interface DataCrimeRepository extends DataEntityRepository<DataCrime>, Cr
                 .map(result -> {
 
                     // Mapping data_crime fields
-                    Integer dcId = (Integer) result[0];
+                    Long dcId = (Long) result[0];
                     String reportNum = (String) result[1];
                     String reportCategory = (String) result[2];
                     String address = (String) result[3];
