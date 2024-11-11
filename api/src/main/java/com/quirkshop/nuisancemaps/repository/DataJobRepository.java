@@ -36,6 +36,17 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     DataJob findTopByStatusOrderByIdAsc(DataJobStatus status);
 
+    // inner: find max data job via group by, then match return data_job d.* for JPA
+    @Query(value = "SELECT d.* " +
+            "FROM data_job d " +
+            "WHERE (d.source_id, d.session_id, d.param_offset, d.id) IN ( " +
+            "    SELECT source_id, MAX(session_id), MAX(param_offset), MAX(id) " +
+            "    FROM data_job " +
+            "    GROUP BY source_id " +
+            ") " +
+            "ORDER BY d.source_id;", nativeQuery = true)
+    List<DataJob> findMaxSessionIdOffsetDataJobs();
+
     // NB: JPQL doesn't support enums as params
     // but is allowed in queries (e.g. where)
     @Transactional

@@ -37,7 +37,7 @@ public class Data311 implements DataEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_311_seq")
     @SequenceGenerator(name = "data_311_seq", allocationSize = 1)
-    private Integer id;
+    private Long id;
 
     @JsonIgnore
     @ManyToOne
@@ -84,11 +84,11 @@ public class Data311 implements DataEntity {
         this.setSource(source);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
