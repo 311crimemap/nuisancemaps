@@ -58,7 +58,7 @@ public class WorkerScheduleService {
      */
 
     @Async("asyncExecutor")
-    @Scheduled(fixedDelay = 2000, initialDelay = 3000)
+    @Scheduled(fixedDelay = 3500, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         String currentThreadName = Thread.currentThread().getName();
         // log.info("[checkDataJobQueue] " + currentThreadName);
