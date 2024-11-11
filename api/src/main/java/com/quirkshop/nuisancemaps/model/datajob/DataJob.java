@@ -54,6 +54,10 @@ public class DataJob {
     @JoinColumn(name = "source_id", nullable = false)
     private Source source;
 
+    // derived column for just getting source_id foreign key
+    @Column(name = "source_id", insertable = false, updatable = false)
+    private Integer sourceId;
+
     private LocalDateTime sessionId;
 
     @JsonIgnore
@@ -168,6 +172,10 @@ public class DataJob {
     @JsonProperty("sourceId")
     public Integer getJsonSourceId() {
         return source != null ? source.getId() : null;
+    }
+
+    public Integer getSourceId() {
+        return sourceId;
     }
 
     public DataJobStatus getStatus() {

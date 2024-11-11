@@ -5,9 +5,9 @@ import org.locationtech.jts.geom.Point;
 
 public interface DataEntity {
 
-    public Integer getId();
+    public Long getId();
 
-    public void setId(Integer id);
+    public void setId(Long id);
 
     public String getReportNum();
 

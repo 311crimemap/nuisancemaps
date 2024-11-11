@@ -2,6 +2,9 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -44,11 +47,22 @@ public class DataJobService {
 
     public void createNewJobs() throws UnsupportedEncodingException {
 
+        // get all Sources
         Iterable<Source> sources = sourceRepository.findAll();
 
+        // build source_id -> DataJob map (max session_id, max param_offset)
+        List<DataJob> dataJobs = dataJobRepository.findMaxSessionIdOffsetDataJobs();
+
+        Map<Integer, DataJob> dataJobMap = dataJobs.stream()
+                .collect(Collectors.toMap(
+                        dataJob -> (Integer) dataJob.getSourceId(), // Key: source_id
+                        dataJob -> dataJob // Value: DataJob
+                ));
+
+        // loop and create new job if available
         for (Source source : sources) {
 
-            DataJob nextJob = createNextDataJob(source);
+            DataJob nextJob = createNextDataJob(source, dataJobMap);
             if (nextJob == null)
                 continue;
 
@@ -60,12 +74,10 @@ public class DataJobService {
     }
 
     @Transactional
-    private DataJob createNextDataJob(Source source) throws UnsupportedEncodingException {
+    private DataJob createNextDataJob(Source source, Map<Integer, DataJob> dataJobMap)
+            throws UnsupportedEncodingException {
 
-
-        // NB: Locked
-        DataJob maxSessionIdOffsetDataJob = dataJobRepository
-                .findTopBySourceIdOrderBySessionIdDescParamOffsetDescIdDesc(source.getId());
+        DataJob maxSessionIdOffsetDataJob = dataJobMap.getOrDefault(source.getId(), null);
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {
@@ -106,7 +118,7 @@ public class DataJobService {
             dataJob = dataJobConfigurator.initialize(dataJob);
         } else {
 
-            dataJob = dataJobConfigurator.next( new DataJob(prevDataJob) );
+            dataJob = dataJobConfigurator.next(new DataJob(prevDataJob));
 
             if (dataJob == null)
                 return null;

@@ -172,7 +172,7 @@ public class DataParser {
 
         // replace existing with new
         for (DataEntity dataEntityDB : existing) {
-            int id = dataEntityDB.getId();
+            Long id = dataEntityDB.getId();
             String reportNum = dataEntityDB.getReportNum();
             DataEntity dNew = parseNewDataMap.getOrDefault(reportNum, null);
 

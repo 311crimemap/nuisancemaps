@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,10 @@ public interface SourceRepository extends CrudRepository<Source, Integer> {
     // auto implemented
     public Source findOneByUrl(String url);
     public Source findOneBySourceConfigId(Integer id);
+
+    @EntityGraph(attributePaths = { "locale", "mapping" })
+    public List<Source> findAll();
+
     public List<Source> findAllByLocaleId(Integer id);
 
     // deprecated
