@@ -19,8 +19,8 @@ baseURL = baseProductionURL
 #FILENAME = "stage.txt"
 FILENAME = "prod.txt"
 
-COUNT = 10
-INC = .0001
+COUNT = 1000
+INC = .001     #NB: param string will truncate precision > 3 digits
 
 
 def write_urls(filename, urls):
@@ -45,6 +45,7 @@ def buildURLList(baseURL, sw_lat, sw_lng, ne_lat, ne_lng, count = 1000, step = 0
             sw_lng += step
             ne_lat += step
             ne_lng += step
+
 
     return url_list
 
