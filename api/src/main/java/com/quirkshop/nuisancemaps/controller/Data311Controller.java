@@ -13,7 +13,7 @@ import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
-
+import com.quirkshop.nuisancemaps.service.Data311Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -33,6 +33,9 @@ public class Data311Controller {
 
     @Autowired
     Data311Repository data311Repository;
+
+    @Autowired
+    Data311Service data311Service;
 
     private static final int MAX_LIMIT = Integer.parseInt(System.getenv("VITE_MAX_DATA_RECORDS"));
 
@@ -94,7 +97,7 @@ public class Data311Controller {
         String logStr = String.format("Data311 %d: %s %s %s %s: ", count, _sw_lat, _sw_lng, _ne_lat, _ne_lng);
         log.info(logStr);
 
-        return data311Repository.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
+        return data311Service.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
                 startDateTime, endDateTime, MAX_LIMIT);
 
     }
