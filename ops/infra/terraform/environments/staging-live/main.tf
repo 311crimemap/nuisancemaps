@@ -105,7 +105,7 @@ module "worker-servers" {
 }
 
 module "db-server" {
-  source = "../../modules/app"
+  source = "../../modules/db"
 
   # define variables to pass into this module
   product = var.product
@@ -119,8 +119,14 @@ module "db-server" {
     network_zone: "us-west"
   }
 
-  server_type = "cpx21"
+  #
+  # first server primary (db-0)
+  # rest are replica (db-N) where n > 0
+  #
+  primary_server_type = "cpx31"
+  replica_server_type = "cpx21"
   server_count = 2
+
   ssh_key_name = var.ssh_key_name
 
   image_name = "name=packer_base_311crimemap_1.0"
