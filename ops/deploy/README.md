@@ -62,14 +62,19 @@ kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"
 
 Note: there isn't an equivalent "useExistingSecret" in helm config, so using command line.
 
+Chart values.yml: https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/heads/main/charts/kube-prometheus-stack/values.yaml
+
+Not consistent component labels, need to check each component for proper label hierarchy nodeSelector.
+
 ```
 # install prometheus & grafana
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
 # /monitor
-helm install prometheus prometheus-community/kube-prometheus-stack \
-  --set grafana.adminPassword="$(kubectl get secret grafana-secrets -o jsonpath="{.data.GRAFANA_PASSWORD}" | base64 --decode)"
+# calls helm, assigns password, sets labels to assign pods to control node.
+#
+./create-kube-prometheus-stack.sh
 
 ```
 
