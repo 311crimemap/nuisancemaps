@@ -49,14 +49,6 @@ configmap files (pgbackrest)
 * kubectl delete -f <env>/api/spring-api-ingress.yml
 * kubectl delete -f <env>/cert-manager-issuer.yml
 
-##### PV Reclaim Policy
-
-In case pv's ReclaimPolicy is to Delete:
-
-```
-kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
-```
-
 
 ##### Monitoring
 
@@ -89,6 +81,14 @@ helm repo update
 #### Logical Restore
 
 `gunzip -c dump.sql.gz | psql -U postgres -d nuisancemaps`
+
+##### PV Reclaim Policy
+
+In case pv's ReclaimPolicy is to Delete:
+
+```
+kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+```
 
 
 #### Scale up/down DB
