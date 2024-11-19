@@ -100,7 +100,10 @@ module "app-servers" {
 
   image_name = "name=packer_base_311crimemap_1.0"
 
-  additional_labels = {}
+  additional_labels = {
+    "enablelb"="true"
+  }
+
   k3s_server = false
 
   network_id   = module.network.hcloud_network_id
