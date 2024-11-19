@@ -19,8 +19,8 @@ baseURL = baseProductionURL
 #FILENAME = "stage.txt"
 FILENAME = "prod.txt"
 
-COUNT = 10
-INC = .0001
+COUNT = 1000
+INC = .0001     #NB: param string will truncate precision > 4 digits
 
 
 def write_urls(filename, urls):
@@ -36,7 +36,7 @@ def buildURLList(baseURL, sw_lat, sw_lng, ne_lat, ne_lng, count = 1000, step = 0
     for urlType in ["datacrimes.geojson?", "data311s.geojson?"]:
 
         for i in range(count):
-            paramStr = f"sw_lat={sw_lat:.3f}&sw_lng={sw_lng:.3f}&ne_lat={ne_lat:.3f}&ne_lng={ne_lng:.3f}"
+            paramStr = f"sw_lat={sw_lat:.4f}&sw_lng={sw_lng:.4f}&ne_lat={ne_lat:.4f}&ne_lng={ne_lng:.4f}"
             url = "/".join([baseURL, urlType + paramStr])
             url_list.append(url)
 
@@ -45,6 +45,7 @@ def buildURLList(baseURL, sw_lat, sw_lng, ne_lat, ne_lng, count = 1000, step = 0
             sw_lng += step
             ne_lat += step
             ne_lng += step
+
 
     return url_list
 

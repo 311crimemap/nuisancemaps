@@ -19,7 +19,7 @@ data:
   POSTGRESQL_USER: "postgres"
   # # POSTGRESQL_PASSWORD: loaded as secret
   # POSTGRESQL_DATABASE: "nuisancemaps"
-  POSTGRESQL_URL: "jdbc:postgresql://db:5432/nuisancemaps"
+  POSTGRESQL_URL: "jdbc:postgresql://postgresql:5432/nuisancemaps"
 
   custom_postgresql.conf: |
     # custom_postgresql.conf
@@ -27,3 +27,4 @@ data:
     work_mem = 64MB
     maintenance_work_mem = 512MB
     max_wal_size = 2GB
+    max_connections = 160

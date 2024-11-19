@@ -5,9 +5,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+import com.quirkshop.nuisancemaps.service.DataCrimeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,7 +28,14 @@ public class DataCrimeController {
     @Autowired
     DataCrimeRepository dataCrimeRepository;
 
+    @Autowired
+    DataCrimeService dataCrimeService;
+
     private static final int MAX_LIMIT = Integer.parseInt(System.getenv("VITE_MAX_DATA_RECORDS"));
+
+    private int count = 0;
+
+    private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datacrimes")
@@ -75,8 +87,13 @@ public class DataCrimeController {
         double _ne_lat = ne_lat.map(Double::parseDouble).orElse(_lat);
         double _ne_lng = ne_lng.map(Double::parseDouble).orElse(_lng);
 
-        return dataCrimeRepository.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
-                startDateTime, endDateTime, MAX_LIMIT);
+        count++;
+        String logStr = String.format("DataCrime %d: %s %s %s %s: ", count, _sw_lat, _sw_lng, _ne_lat, _ne_lng);
+        log.info(logStr);
+
+        return dataCrimeService
+            .findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
+                                                         startDateTime, endDateTime, MAX_LIMIT);
     }
 
 }

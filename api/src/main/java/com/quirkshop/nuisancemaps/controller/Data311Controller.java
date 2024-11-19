@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
-
+import com.quirkshop.nuisancemaps.service.Data311Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -30,7 +34,14 @@ public class Data311Controller {
     @Autowired
     Data311Repository data311Repository;
 
+    @Autowired
+    Data311Service data311Service;
+
     private static final int MAX_LIMIT = Integer.parseInt(System.getenv("VITE_MAX_DATA_RECORDS"));
+
+    private int count = 0;
+
+    private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/data311s")
@@ -82,7 +93,11 @@ public class Data311Controller {
         double _ne_lat = ne_lat.map(Double::parseDouble).orElse(_lat);
         double _ne_lng = ne_lng.map(Double::parseDouble).orElse(_lng);
 
-        return data311Repository.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
+        count++;
+        String logStr = String.format("Data311 %d: %s %s %s %s: ", count, _sw_lat, _sw_lng, _ne_lat, _ne_lng);
+        log.info(logStr);
+
+        return data311Service.findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
                 startDateTime, endDateTime, MAX_LIMIT);
 
     }
