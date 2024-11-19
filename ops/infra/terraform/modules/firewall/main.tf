@@ -46,8 +46,8 @@ resource "hcloud_firewall" "firewall-311crimemap" {
     protocol  = "udp"
     port      = "51820-51821"
     source_ips = [
-      "0.0.0.0/0",
-      "::/0",
+      #"0.0.0.0/0",
+      #"::/0",
       "10.0.0.0/8"
     ]
   }
@@ -58,8 +58,8 @@ resource "hcloud_firewall" "firewall-311crimemap" {
     protocol  = "tcp"
     port      = "2379-2380"
     source_ips = [
-      "0.0.0.0/0",
-      "::/0",
+      #"0.0.0.0/0",
+      #"::/0",
       "10.0.0.0/8"
     ]
   }
