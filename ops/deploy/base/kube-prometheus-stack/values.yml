@@ -1,0 +1,30 @@
+global:
+  nodeSelector:
+    node.kubernetes.io/class_id: cntrl
+
+# Explicitly set nodeSelector for subchart components may not inherit global
+
+alertmanager:
+  alertmanagerSpec:
+    nodeSelector:
+      node.kubernetes.io/class_id: cntrl
+
+#works
+prometheusOperator:
+  nodeSelector:
+    node.kubernetes.io/class_id: cntrl
+
+prometheus:
+  prometheusSpec:
+    nodeSelector:
+      node.kubernetes.io/class_id: cntrl
+
+#work
+grafana:
+  nodeSelector:
+    node.kubernetes.io/class_id: cntrl
+
+# works
+kube-state-metrics:
+  nodeSelector:
+    node.kubernetes.io/class_id: cntrl
