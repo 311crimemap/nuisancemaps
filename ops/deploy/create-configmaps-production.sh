@@ -12,6 +12,9 @@
 # hetzner
 kubectl apply -f hcloud-csi.yml
 
+# labels from terraform node to k3s node: traefik lb
+kubectl get nodes -l "node.kubernetes.io/enablelb=true" -o name | xargs -I {} kubectl label {} svccontroller.k3s.cattle.io/enablelb=true
+
 # postgres
 kubectl apply -f production/postgresql/postgresql-configmap.yml
 

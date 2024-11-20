@@ -5,10 +5,30 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
-    nodeSelector:
-      node.kubernetes.io/class_id: app
-    tolerations:
-      - key: "node.kubernetes.io/class_id"
-        operator: "Equal"
-        value: "db"
-        effect: "NoSchedule"
+    affinity:
+      nodeAffinity:
+        # Hard requirement: Avoid `node.kubernetes.io/class_id=cntrl`
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node.kubernetes.io/class_id
+                  operator: NotIn
+                  values:
+                    - cntrl
+        preferredDuringSchedulingIgnoredDuringExecution:
+          # Preference: Prefer `node.kubernetes.io/class_id=app`
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: node.kubernetes.io/class_id
+                  operator: In
+                  values:
+                    - app
+          # Lower priority preference for `node.kubernetes.io/class_instance=db-0`
+          - weight: 10
+            preference:
+              matchExpressions:
+                - key: node.kubernetes.io/class_instance
+                  operator: In
+                  values:
+                    - db-0

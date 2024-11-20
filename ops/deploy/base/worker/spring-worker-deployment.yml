@@ -17,8 +17,41 @@ spec:
       labels:
         app: spring-worker
     spec:
-      nodeSelector:
-        node.kubernetes.io/class_id: worker
+      affinity:
+        nodeAffinity:
+          # Hard requirement: Avoid `node.kubernetes.io/class_id=cntrl`
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node.kubernetes.io/class_id
+                    operator: NotIn
+                    values:
+                      - cntrl
+          # Preference: Prefer `node.kubernetes.io/class_id=worker`
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: node.kubernetes.io/class_id
+                    operator: In
+                    values:
+                      - worker
+            # Lower priority preference for `node.kubernetes.io/class_id=app`
+            - weight: 50
+              preference:
+                matchExpressions:
+                  - key: node.kubernetes.io/class_id
+                    operator: In
+                    values:
+                      - app
+            # Lower priority preference for `node.kubernetes.io/class_instance=db-0`
+            - weight: 10
+              preference:
+                matchExpressions:
+                  - key: node.kubernetes.io/class_instance
+                    operator: In
+                    values:
+                      - db-0
       imagePullSecrets:
         - name: regcred
       containers:
