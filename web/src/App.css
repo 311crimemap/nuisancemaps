@@ -1,6 +1,9 @@
 body {
-    overscroll-behavior-y: contain;
-    overflow: hidden;
+    /* this css is to remove pull-to-scroll on feature-list-component but
+     * it seems to be ok without - can't replicate */
+
+    /* overscroll-behavior-y: contain; */
+    /* overflow: hidden; */
 }
 
 /*
