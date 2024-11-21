@@ -11,6 +11,7 @@ import { DateRange, FilterDateDispatcher } from "../../types/daterange.ts";
 import { Category } from "../../types/category";
 import { ActiveCategoriesDispatcher } from "../ControlBar/CategoryDropDown/CategoryFilterReducer";
 import { ActiveFeatures } from "../../types/activefeatures";
+import { DATASTATUS } from "../../types/datastatus";
 
 interface ControlBarProps {
   map: Map;
@@ -22,7 +23,7 @@ interface ControlBarProps {
   filterDateDispatcher: FilterDateDispatcher;
   dataCrimes: DataFeatureCollection;
   data311s: DataFeatureCollection;
-  isDataLoading: boolean;
+  dataStatus: DATASTATUS;
 }
 
 export default function ControlBar({
@@ -35,7 +36,7 @@ export default function ControlBar({
   filterDateDispatcher,
   dataCrimes,
   data311s,
-  isDataLoading,
+  dataStatus,
 }: ControlBarProps) {
   if (activeCategories.length == 0) return null;
 
@@ -75,7 +76,7 @@ export default function ControlBar({
           map={map}
           dataCrimes={dataCrimes}
           data311s={data311s}
-          isDataLoading={isDataLoading}
+          dataStatus={dataStatus}
         />
       </div>
     </div>
