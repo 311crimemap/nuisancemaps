@@ -8,6 +8,7 @@ import { FeatureListComponent } from "./components/FeatureList";
 import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/CategoryFilterReducer";
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
 import { DATASOURCES, DataSourcesMap } from "./types/datasources.ts";
+import { DATASTATUS } from "./types/datastatus.ts";
 import { calcMaxLatLngBounds } from "./Util";
 import { getData } from "./Util";
 import { defaultData } from "./types/datafeatures.ts";
@@ -15,6 +16,7 @@ import { defaultDateRange } from "./types/daterange";
 import { MapPosition, defaultMapPosition } from "./types/mapposition";
 import { defaultActiveFeatures } from "./types/activefeatures.ts";
 import { Log } from "./Logger";
+import { MapStatus } from "./components/MapStatus";
 
 function App() {
   const { DEV, MODE, PROD } = { ...import.meta.env };
@@ -28,8 +30,10 @@ function App() {
   const [position, setPosition] = useState<MapPosition>(defaultMapPosition);
   const [dataCrimes, setDataCrimes] = useState(defaultData);
   const [data311s, setData311s] = useState(defaultData);
-  const [isInitLoaded, setIsInitLoaded] = useState(false);
-  const [isDataLoading, setIsDataLoading] = useState(false);
+
+  const [initStatus, setInitStatus] = useState(DATASTATUS.LOADING);
+  const [dataStatus, setDataStatus] = useState(DATASTATUS.NONE);
+
   const [activeReportNum, setActiveReportNum] = useState(null);
   const [activeFeatures, setActiveFeatures] = useState(defaultActiveFeatures);
   const [sources, setSources] = useState(defaultData);
@@ -78,36 +82,41 @@ function App() {
   };
 
   /*
-   * FETCH
+   * INIT FETCH
    */
 
   useEffect(() => {
     const initURL = `${import.meta.env.VITE_API_SERVER_URL}/init`;
+    setInitStatus(DATASTATUS.LOADING);
 
     Promise.all([
       categories.length == 0 ? getData(initURL) : Promise.resolve(categories),
-    ]).then(([dataSourceCategories]) => {
-      //preserve any checked filters
-      if (categories.length == 0) {
-        setCategories(dataSourceCategories.data.categories);
-        setSources(dataSourceCategories.data.sources);
+    ])
+      .then(([dataSourceCategories]) => {
+        //preserve any checked filters
+        if (categories.length == 0) {
+          setCategories(dataSourceCategories.data.categories);
+          setSources(dataSourceCategories.data.sources);
 
-        activeCategoriesDispatcher({
-          type: "init",
-          categories: Categories.buildHierarchy(
-            dataSourceCategories.data.categories
-          ),
+          activeCategoriesDispatcher({
+            type: "init",
+            categories: Categories.buildHierarchy(
+              dataSourceCategories.data.categories
+            ),
+          });
+        }
+
+        filterDateDispatcher({
+          type: "isBusy",
+          value: false,
         });
-      }
-
-      filterDateDispatcher({
-        type: "isBusy",
-        value: false,
+        //throw new Error();
+        setInitStatus(DATASTATUS.OK);
+      })
+      .catch(() => {
+        setInitStatus(DATASTATUS.ERROR);
       });
-
-      setIsInitLoaded(true);
-    });
-  }, []);
+  }, [initStatus > DATASTATUS.NONE]);
 
   // want to initalize map first
   // to populate position obj
@@ -118,12 +127,15 @@ function App() {
     dataSources,
     setActiveFeatures,
     featureZoomLevel,
-    isInitLoaded,
+    isInitLoaded: initStatus === DATASTATUS.OK,
   });
 
+  /*
+   * DATA FETCH
+   */
   useEffect(() => {
-    if (!isInitLoaded) return;
-    if (isDataLoading) return;
+    if (initStatus !== DATASTATUS.OK) return;
+    if (dataStatus === DATASTATUS.LOADING) return;
     if (!map) return;
     if (map.getZoom() < 10) return;
 
@@ -158,13 +170,13 @@ function App() {
       import.meta.env.VITE_API_SERVER_URL
     }/data311s.geojson?${params.toString()}`;
 
-    setIsDataLoading(true);
+    setDataStatus(DATASTATUS.LOADING);
 
     Log.log({
       msg: "Fetch Data",
       params: { dataCrimesURL, data311sURL },
       useEffect: {
-        isInitLoaded,
+        isInitLoaded: initStatus === DATASTATUS.OK,
         refresh: position.refresh,
         date: filterDate.date,
         map,
@@ -172,19 +184,21 @@ function App() {
       ...Log.data,
     });
 
-    Promise.all([getData(dataCrimesURL), getData(data311sURL)]).then(
-      ([dataCrimes, data311s]) => {
+    Promise.all([getData(dataCrimesURL), getData(data311sURL)])
+      .then(([dataCrimes, data311s]) => {
         setDataCrimes(dataCrimes);
         setData311s(data311s);
-
+        setDataStatus(DATASTATUS.OK);
+      })
+      .catch(() => {
+        setDataStatus(DATASTATUS.ERROR);
+      })
+      .finally(() => {
         filterDateDispatcher({
           type: "isBusy",
           value: false,
         });
-
-        setIsDataLoading(false);
-      }
-    );
+      });
 
     //
     // trigger new fetch by watching position.refresh counter
@@ -194,12 +208,13 @@ function App() {
     // position.refresh initial value: 0; increments to 1 on useMap onMove
     //
     // there is a double-fetch issue when visiting /cities page and clicking to city
-    // this is resolved by checking if(isDataLoading) guard in above fetch useEffect
+    // this is resolved by checking if(DATASTATUS.LOADING) guard in above fetch useEffect
     // but note without it it's a consistent issue
     //
   }, [
     map,
-    isInitLoaded,
+    //isInitLoaded,
+    initStatus !== DATASTATUS.LOADING,
     position.refresh,
     filterDate.date.startDate,
     filterDate.date.endDate,
@@ -210,6 +225,18 @@ function App() {
     params: { position, activeReportNum, map, mapController },
     ...Log.data,
   });
+
+  /* RENDER */
+
+  //init MapStatus state
+  if (initStatus !== DATASTATUS.OK) {
+    return (
+      <MapStatus
+        dataStatus={initStatus}
+        errorRefreshFn={() => setInitStatus(DATASTATUS.NONE)}
+      />
+    );
+  }
 
   return (
     <>
@@ -225,21 +252,15 @@ function App() {
             filterDateDispatcher={filterDateDispatcher}
             dataCrimes={dataCrimes}
             data311s={data311s}
-            isDataLoading={isDataLoading}
+            dataStatus={dataStatus}
           />
         )}
       </div>
-
-      {isDataLoading && (
-        <div id="spinner" className="flex flex-col items-center z-10">
-          <span className="loading loading-spinner text-error loading-lg mb-4"></span>
-          <span>Loading</span>
-        </div>
-      )}
-
       <div
         id="container"
-        className={`${isDataLoading ? "opacity-50" : "opacity-100"}`}
+        className={`${
+          dataStatus === DATASTATUS.LOADING ? "opacity-50" : "opacity-100"
+        }`}
       >
         <MapComponent
           map={map}
@@ -255,6 +276,13 @@ function App() {
 
         <FeatureListComponent activeFeatures={activeFeatures} />
       </div>
+
+      <MapStatus
+        dataStatus={dataStatus}
+        errorRefreshFn={() =>
+          setPosition({ ...position, refresh: position.refresh + 1 })
+        }
+      />
     </>
   );
 }

@@ -116,6 +116,25 @@ export default function useMap({
       Log.log({ msg: "onLoad", ...Log.data });
     });
 
+    //source points zoom in
+    _map.on(
+      "click",
+      "point-circle-sources",
+      async (e: maplibregl.MapLayerMouseEvent) => {
+        Log.log({ msg: "click unclustered", params: { e }, ...Log.data });
+        if (!e.features) return;
+
+        const feature: MapGeoJSONFeature = e.features[0];
+        const geometry = feature.geometry as GeoJSON.Point;
+        const coordinates = geometry.coordinates;
+
+        _map.flyTo({
+          center: new LngLat(coordinates[0], coordinates[1]),
+          zoom: 10,
+        });
+      }
+    );
+
     for (const dataset of [DATASOURCES.Data311s, DATASOURCES.DataCrimes]) {
       // When a click event occurs on a feature in
       // the unclustered-point layer, open a popup at

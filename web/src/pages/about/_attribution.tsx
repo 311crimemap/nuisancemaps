@@ -27,12 +27,12 @@ export default function Attribution({ sources }: AttributionProps) {
         </thead>
 
         <tbody>
-          {sources.features.map((feature) => {
+          {sources.features.map((feature, i) => {
             const { city, attribution } = { ...feature.properties };
             const markup = { __html: attribution };
 
             return (
-              <tr>
+              <tr key={`${city}-${i}`}>
                 <td>{city}</td>
                 <td dangerouslySetInnerHTML={markup} />
               </tr>

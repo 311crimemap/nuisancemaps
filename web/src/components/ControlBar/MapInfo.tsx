@@ -1,18 +1,19 @@
 import { DataFeatureCollection } from "../../types/datafeatures";
 import { Map } from "maplibre-gl";
+import { DATASTATUS } from "../../types/datastatus";
 
 interface MapInfoProps {
   map: Map;
   dataCrimes: DataFeatureCollection;
   data311s: DataFeatureCollection;
-  isDataLoading: boolean;
+  dataStatus: DATASTATUS;
 }
 
 export default function MapInfo({
   map,
   dataCrimes,
   data311s,
-  isDataLoading,
+  dataStatus,
 }: MapInfoProps) {
   if (!map) return;
 
@@ -24,16 +25,18 @@ export default function MapInfo({
     (dataCrimes?.features?.length || 0) >= MAX_DATA_RECORDS ||
     (data311s?.features?.length || 0) >= MAX_DATA_RECORDS;
 
-  const numCrime: string | number = isDataLoading
-    ? "-"
-    : dataCrimes.isDefaultData
-    ? 0
-    : dataCrimes?.features?.length;
-  const num311: string | number = isDataLoading
-    ? "-"
-    : data311s.isDefaultData
-    ? 0
-    : data311s?.features?.length;
+  const numCrime: string | number =
+    dataStatus !== DATASTATUS.OK
+      ? "-"
+      : dataCrimes.isDefaultData
+      ? 0
+      : dataCrimes?.features?.length;
+  const num311: string | number =
+    dataStatus !== DATASTATUS.OK
+      ? "-"
+      : data311s.isDefaultData
+      ? 0
+      : data311s?.features?.length;
 
   const dataTip: string = `Warning: maximum result count set to ${MAX_DATA_RECORDS.toLocaleString()}. Zoom in, and/or adjust dates to shorten time frame and reduce number of results.`;
 
