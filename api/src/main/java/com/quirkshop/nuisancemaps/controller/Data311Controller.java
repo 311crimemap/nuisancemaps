@@ -9,11 +9,12 @@ import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.service.Data311Service;
 import com.quirkshop.nuisancemaps.util.DataParamValidator;
+import com.quirkshop.nuisancemaps.model.DataURLCache;
+import com.quirkshop.nuisancemaps.service.DataURLCacheService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,13 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class Data311Controller {
 
     @Autowired
-    CacheManager cacheManager;
-
-    @Autowired
     Data311Repository data311Repository;
 
     @Autowired
     Data311Service data311Service;
+
+    @Autowired
+    DataURLCacheService dataURLCacheService;
 
     private static final int MAX_LIMIT = Integer.parseInt(System.getenv("VITE_MAX_DATA_RECORDS"));
 
@@ -72,6 +73,12 @@ public class Data311Controller {
             count++;
             String logStr = String.format("Data311 %d: %s %s %s %s: ", count, _sw_lat, _sw_lng, _ne_lat, _ne_lng);
             log.info(logStr);
+
+            // NB: cached requests won't reach here, so only fetched queries will be recorded here.
+            DataURLCache dataURLCache = new DataURLCache("/data311s.json", startDateTime, endDateTime,
+                                                         _sw_lat, _sw_lng, _ne_lat, _ne_lng);
+            dataURLCacheService.increment(dataURLCache);
+
 
             FeatureCollectionDTO results = data311Service
                     .findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
