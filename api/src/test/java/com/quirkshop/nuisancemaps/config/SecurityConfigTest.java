@@ -56,14 +56,14 @@ public class SecurityConfigTest {
 
     @Test
     public void getOpenRouteDataCrimes() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/datacrimes.geojson?limit=10").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/datacrimes.geojson?sw_lat=42.599&sw_lng=-72.201&ne_lat=42.899&ne_lng=-71.801").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void getOpenRouteData311s() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/data311s.geojson?limit=10").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/data311s.geojson?sw_lat=42.599&sw_lng=-72.201&ne_lat=42.899&ne_lng=-71.801").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
