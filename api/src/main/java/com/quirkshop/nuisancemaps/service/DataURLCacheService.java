@@ -14,6 +14,9 @@ public class DataURLCacheService {
     @Autowired
     DataURLCacheRepository dataURLCacheRepository;
 
+    // used to track counts of non-cached requests
+    // eventually want a list of popular locations to warm cache after new data
+    // is input
     @Transactional
     public void increment(DataURLCache dataURLCache) {
         if (dataURLCacheRepository.incrementCountByUrl(dataURLCache.getUrl()) == 0) {
