@@ -30,7 +30,7 @@ public class DataURLCache {
     @SequenceGenerator(name = "data_url_cache_seq", allocationSize = 1)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true) // ignore liquibase constraint generation
     private String url;
 
     @Column(nullable = false)
@@ -47,13 +47,13 @@ public class DataURLCache {
     private LocalDateTime updatedAt;
 
     public DataURLCache(String path, LocalDateTime startDateTime, LocalDateTime endDateTime,
-                        double sw_lat, double sw_lng, double ne_lat, double ne_lng) {
+            double sw_lat, double sw_lng, double ne_lat, double ne_lng) {
         this.url = calcURL(path, startDateTime, endDateTime, sw_lat, sw_lng, ne_lat, ne_lng);
         this.count = 1L;
     }
 
     public String calcURL(String path, LocalDateTime startDateTime, LocalDateTime endDateTime,
-                   double sw_lat, double sw_lng, double ne_lat, double ne_lng) {
+            double sw_lat, double sw_lng, double ne_lat, double ne_lng) {
         return String.format("%s?startDateTime=%s&endDateTime=%s&sw_lat=%s&sw_lng=%s&ne_lat=%s&ne_lng=%s",
                 path, startDateTime, endDateTime, sw_lat, sw_lng, ne_lat, ne_lng);
     }
