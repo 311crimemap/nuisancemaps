@@ -19,7 +19,7 @@ data:
   POSTGRESQL_USER: "postgres"
   # # POSTGRESQL_PASSWORD: loaded as secret
   # POSTGRESQL_DATABASE: "nuisancemaps"
-  POSTGRESQL_URL: "jdbc:postgresql://postgresql:5432/nuisancemaps"
+  POSTGRESQL_URL: "jdbc:postgresql://db:5432/nuisancemaps"
 
   custom_postgresql.conf: |
     # custom_postgresql.conf
