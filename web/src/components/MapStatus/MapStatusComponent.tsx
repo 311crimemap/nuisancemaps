@@ -2,7 +2,7 @@ import { DATASTATUS } from "../../types/datastatus";
 
 interface MapStatusProps {
   dataStatus: DATASTATUS;
-  errorRefreshFn: () => {};
+  errorRefreshFn: () => void;
 }
 
 export default function MapStatus({
