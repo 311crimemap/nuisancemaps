@@ -12,7 +12,7 @@ spec:
 
       containers:
       - name: postgresql
-        image: bitnami/postgresql:16.1.0
+        image: bitnami/postgresql-repmgr:16.6.0-debian-12-r0
         command: ["bin/bash", "-c"]
         args:
           - |
