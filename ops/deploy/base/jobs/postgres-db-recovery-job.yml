@@ -108,10 +108,10 @@ spec:
 
       volumes:
         - name: postgresql-data
-          # NB: k8s auto-generates the claimName:
-          # volumeClaimTemplate.name + statefulset.name + ordinal
+          # NB: helm auto-generates the claimName:
+          # "data" - helm project - image container - statefulset - ordinal
           persistentVolumeClaim:
-            claimName: data-postgresql-0
+            claimName: data-crimemap-db-postgresql-ha-postgresql-0
 
         - name: pgbackrest-configmap-volume
           configMap:
