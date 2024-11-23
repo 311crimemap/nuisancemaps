@@ -35,9 +35,11 @@ configmap files (pgbackrest)
 * `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
   * wait until webhook error resolves (~ 1min)
   * Verify: `kubectl get pods -A`
+* Ensure Cloudflare dashboard domain A records point to correct server IP address
+  * prod cert-manager retries take > 1 hr
 * `kubectl apply -f production/cert-manager-issuer.yml`  # PRODUCTION
 * `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
-  * Verify: `kubectl describe clusterissuer`
+    * Verify: `kubectl describe clusterissuer`
 * `kubectl apply -f <env>/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
     * Intermediate steps:
