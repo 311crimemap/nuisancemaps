@@ -36,7 +36,7 @@ spec:
 
       containers:
       - name: postgresql
-        image: bitnami/postgresql-repmgr:16.6.0-debian-12-r0
+        image: bitnami/postgresql:16.1.0
         #
         # need to run this in an active container at some point during recovery phase
         # ideally done at time of backup, but if restoring from a backup on fresh instance
