@@ -9,6 +9,12 @@ data:
     start-fast=y
     log-level-file=warn
 
+    [global:archive-get]
+    process-max=2
+
+    [global:archive-push]
+    process-max=2
+
     [311crimemap]
     pg1-user=postgres
     pg1-path=/bitnami/postgresql/data
