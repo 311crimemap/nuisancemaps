@@ -22,9 +22,9 @@ postgresql:
   replicaCount: 1
   resources:
     requests:
-      memory: "1Gi"
+      memory: "2Gi"
     limits:
-      memory: "3Gi"
+      memory: "6Gi"
   livenessProbe:
      # replica can be unresponsive on initial large db clone
      # can lead to repeated pod restart unless liveness delayed
@@ -93,6 +93,19 @@ postgresql:
         - name: shared-data-volume
           mountPath: /mnt/tmp
 
+  # needed to bootstrap with pgbackrest (stanza-create / stanza-upgrade)
+  extraEnvVars:
+    - name: PGBACKREST_REPO2_S3_KEY_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: pgbackrest-secrets
+          key: PGBACKREST_REPO2_S3_KEY_SECRET
+    - name: PGBACKREST_REPO2_S3_KEY
+      valueFrom:
+        secretKeyRef:
+          name: pgbackrest-secrets
+          key: PGBACKREST_REPO2_S3_KEY
+
   extraVolumes:
     - name: pgbackrest-shared-init-volume
       emptyDir: {}  # shared volume between postgresql init container and this
@@ -145,8 +158,8 @@ pgpool:
   nodeSelector:
     node.kubernetes.io/class_instance: db-0
 
-# by virtue of local-path storageClass and pod scheduling rules
-# should provision PV and PVC one per each node
+# local-path storageClass and pod scheduling rules
+# automatically provisions PV and PVC; one per each node
 persistence:
   storageClass: local-path
   size: 30Gi
@@ -154,7 +167,6 @@ persistence:
 persistentVolumeClaimRetentionPolicy:
   enabled: true
   whenDeleted: Retain
-
 
 volumePermissions:
   enabled: true

@@ -613,7 +613,12 @@ See `nuisancemaps/db/README.md` for specifics with `postgresql-ha`, parallelism
 and directory dump/restore.
 
 ```
-kubectl exec postgresql-0 -- pg_dump -U postgres -Fc nuisancemaps | cat > nuisancemaps_prod.dump
+kubectl exec crimemap-db-postgresql-ha-postgresql-0 -- pg_dump -U postgres -d nuisancemaps |  gzip  > nuisancemaps_prod.sql.gz
+```
+
+```
+# .dump compression which frankly, is kind of troublesome
+kubectl exec crimemap-db-postgresql-ha-postgresql-0 -- pg_dump -U postgres -Fc nuisancemaps | cat > nuisancemaps_prod.dump
 ```
 
 Restore dev - ensure file is available (`/temp` mount) in `docker-compose.yml`,
@@ -624,19 +629,55 @@ or `/mnt/tmp` in prod.
 Additional options:
 
 * `-j`: jobs increases parallelism
-* `-c`: clean; will drop objects. Still recommended to drop and (re)create database prior.
+* `-c`: clean; will drop objects. Recommended to drop and (re)create an empty database.
 * `-d`: database name
 * lastly, dump filename
 
 ```
-pg_restore -U <dev_db_user> -j 4 -c -d nuisancemaps nuisancemaps_prod.dump
+# sql (more reliable)
+gunzip -c nuisancemaps_prod.sql.gz | psql -U postgres -d nuisancemaps
 ```
 
 
+```
+# dump
+pg_restore -U <dev_db_user> -j 4 -c -d nuisancemaps nuisancemaps_prod.dump
+```
+
+### PGBackrest Backup 
+
+Backups jobs use a kubectl container executed on control node with hostNetwork
+enabled. They execute `kubectl exec -it <pod>` using mounted KUBECONFIG on the
+control node.
+
+* full backup: `kubectl apply -f base/jobs/pgbackrest-db-backup-full-job.yml`
+* scheduled cron incremental diff: `kubectl apply -f base/jobs/pgbackrest-db-backup-cron-diff.yml`
+
+Job check:
+
+```
+kubectl get jobs
+kubectl get cronjobs
+```
+
+Raw command line
+```
+PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap --log-level-console=detail --type=full --archive-timeout=1d backup
+```
 
 ### DB Recovery
 
-* location on host-0 and in container: `/backup_db/pgbackrest`
+* [Deprecated] - no longer storing backup on local filesystem:
+  `/backup_db/pgbackrest`, but only on s3
+* General process:
+  1. stop postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0`
+  2. job: `pgbackrest-db-restore-job.yml` -retrieve backup on to filesystem
+  ~~3. job: `postgres-db-recovery-job.yml` - postgres toggle recovery mode via
+     touched recovery.signal file~~
+  3. restart postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1`
+     postgresql-ha container will auto recover.
+  4. restart pgpool
+
 
 1. Create Stanza
 
@@ -665,7 +706,12 @@ mounts the volume and executes restore.
 For initial restore to different environment, may need to specify the latest
 backup set, and modify the job command:
 
+The `set` value comes from `pgbackrest info` (diffs are lengthly, full backups are
+shorter ids)
+
 ```
+# restore from incremental backup
+
 pgbackrest --stanza=311crimemap --repo=2 --delta \
     --set=20240702-211456F_20240702-212513D \
     --log-level-console=detail restore
@@ -697,11 +743,14 @@ Terminate postgres recovery container
 `kubectl apply -f /postgresql`
 
 
-5. Run pgbackrest backup to build local machine copy alongside s3
+5. [Deprecated] no longer storing local copy
+
+Run pgbackrest backup to build local machine copy alongside s3
 
 ```
 kubectl exec -it postgresql-0 -- bash
 PGPASSWORD=xxxx pgbackrest --stanza=311crimemap --repo=1 --log-level-console=detail --type=full backup
+
 ```
 
 
