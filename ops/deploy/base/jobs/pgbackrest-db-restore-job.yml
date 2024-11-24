@@ -5,6 +5,9 @@ metadata:
 spec:
   template:
     spec:
+      nodeSelector:
+        node.kubernetes.io/class_instance: db-0
+
       # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
       securityContext:
         runAsUser: 1001
