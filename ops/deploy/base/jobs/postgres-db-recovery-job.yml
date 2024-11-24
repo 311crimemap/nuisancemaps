@@ -1,3 +1,8 @@
+#
+# DEPRECATED - postgresql-ha helm chart seems to auto recover after
+# pgbackrest-db-restore-job.yml.
+# NB: may need to restart pg-pool.
+#
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -5,6 +10,9 @@ metadata:
 spec:
   template:
     spec:
+      nodeSelector:
+        node.kubernetes.io/class_instance: db-0
+
       # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
       securityContext:
         runAsUser: 1001
