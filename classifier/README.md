@@ -23,6 +23,10 @@ using limit no longer "distincts". "Group" is more reliable and seems faster.
 * ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`~~
 * ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`~~
 
+1a. Pending Text Category Data Approach
+
+* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=crime | jq -r '.data[].text'`
+* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=3131 | jq -r '.data[].text'`
 
 2. Output text categories to text file
 
@@ -41,7 +45,17 @@ and overwrite `data_311.txt`, `data_crime.txt` with sorted versions.
 
 sends text list to openAI for labeling
 
-#### `2-convert-out_to_csv.py`
+Assumes `data_311.txt`, `data_crime.txt` exist above
+
+* `docker compose run classifier bash`
+* `python 1-classifier.py crime pending_2024_11_26_prod` (example)
+* `python 1-classifier.py 311 pending_2024_11_26_prod` (example)
+
+
+#### `2-convert-out_to_csv.py` -> EXCEL STEP
+
+* `python 2-convert-out_to_csv.py crime pending_2024_11_26_prod` (example)
+* `python 2-convert-out_to_csv.py 311 pending_2024_11_26_prod` (example)
 
 1. Avoid copy paste, convert api json to csv, open file directly in excel.
   * need to preserve text formatting, as there's all sorts of hidden / garbage
@@ -50,6 +64,7 @@ sends text list to openAI for labeling
 2. Correct any labels, add SKIP, etc and save as `labeled_311.csv`, `labeled_crime.csv`.
 
 3. Make sure `dataType`, `text`, `label` are the columns
+   * compare with `classifer/config/categories_<type>.txt`
 
 #### `3-convert_csv_to_json.py <city>`
 
@@ -189,9 +204,10 @@ Reminder many error messages will end up being duplicates, so it's less intimida
 
 NB: if getting parse errors, proper json has no dangling ','.
 
+* Collect errors:
+  * ~~`curl -H 'X-API-KEY: <KEY>' localhost:8080/dataerrors | jq '.[].errorMsg`~~
+  * `curl -H 'X-API-KEY: <KEY>' localhost:8080/pendingtextcategories?type=crime | jq -r '.data[].text'`
 
-* Collect errors: `curl -H 'X-API-KEY:1234' localhost:8080/dataerrors | jq '.[].errorMsg`
-  * these should be "missing category"
 * Take each type, category and start label process for submission
 * Either manually label category, or submit to openAI
 

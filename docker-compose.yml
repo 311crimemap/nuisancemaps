@@ -16,6 +16,7 @@ services:
 
   classifier:
     image: "058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/classifier"
+    user: "1000:1000"
     build: "./classifier"
     volumes:
       - ./classifier:/classifier

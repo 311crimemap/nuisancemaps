@@ -1,6 +1,21 @@
 # nuisancemaps
 
-## Setup Fresh
+## Setup Local Environment Base DB (easiest)
+
+* Download
+  [dump.sq.gz](https://311crimemap-data.s3.us-east-2.amazonaws.com/dump.sql.gz)
+  (easiest to get signed url)
+
+* Import latest db dump
+
+```
+docker-compose run db bash
+
+`gunzip -c dump.sql.gz | psql -U postgres -d nuisancemaps`
+
+```
+
+## Setup Local Environment Scratch
 
 * Create database, install postgis extension:
 
@@ -35,7 +50,7 @@ docker-compose run api ash  # yes 'ash'
 archive_mode=off   # change
 ```
 
-* (optional) OR db restore (if db archive available)
+#### Setup Local Environment Pgbackrest db restore (if db archive available)
 
 ````
 # 1. create stanza (database is running)
@@ -63,11 +78,13 @@ docker-compose up db
 
 #### Restart / Update Jobs
 
-1. `curl localhost:8080/sources/<id>/updateNumRecords`: will fetch and update
-   source to most recent counts (takes a while)
+* `curl localhost:8080/datajobs`: index of all datajobs
+* `curl localhost:8080/datajobs/sources/{sourceId}`: create new datajob session for source
+* `curl localhost:8080/datajobs/errors`: list DataJobStatus.*_ERROR
+* `curl localhost:8080/datajobs/restartAll`: reset all non-completed, non-queued jobs within 1 day to QUEUED
+* `curl localhost:8080/datajobs/restart`: restart all error jobs within the day
 
-2. `docker-compose restart worker`: restarts worker will check record count and
-   fetch if necessary.
+* `docker-compose restart worker`: restarts worker
 
 #### Broken Jobs
 
