@@ -1,0 +1,632 @@
+[
+    {
+        "dataType": "311",
+        "text": "Graffiti City Streets & Bridges - TPW",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti Traffic Signal - TPW",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Graffiti Traffic Sign - TPW",
+        "label": "2"
+    },
+    {
+        "dataType": "311",
+        "text": "Conservation District Violation - PDD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Historic District Violation - PDD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Landscaping Violation (Arborist) - PDD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Building Permits Violation - PDD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Illegal Removal of Protected Tree - PDD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Site Complaint - PDD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "Private Development Coordination - PDD",
+        "label": "3"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Booting Complaint",
+        "label": "4"
+    },
+    {
+        "dataType": "311",
+        "text": "Guardrail Repair - Hazardous - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Utility Obstruction - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Sidewalk Replacement Program - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Barricades - Pickup/Reset/Replace - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Repair - Routine - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Paving Street Resurface Program - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Median/Right of Way Maintenance - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Alley Repair - Routine - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Lighting - Maintenance- TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Guardrail Repair - Routine - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Lighting- New/Relocation - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Sweeping - Thoroughfares - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Railroad Crossing Repair - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Paving Reconstruction Project - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "New Street/Sidewalk/Alley - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Wheel Chair Ramp/Curb Cuts - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Guardrail - New - TPW",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Alley &amp; Unpaved Street Maintenance",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Bridge Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Pavement Failure",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Sidewalk Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Curb/Gutter Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Street Resurfacing",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Street and Bridge Miscellaneous",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - New Sidewalk/Curb Ramp/Route",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Road Markings/Striping - Maintenance",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Alley & Unpaved Street Maintenance",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Guardrail New/Repair",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Road Markings/Striping - New",
+        "label": "5"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Markings - New - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Visibility Obstruction - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Maintenance (Other) - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic - Construction Signs - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Speed Limit Change Request - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Head Turn (Conflicting) - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Bike Lane Marking Maintenance \u2013 TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - School Flasher Maintenance - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Stuck - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - New - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Other Dispatch - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic - Speed Control - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Knockdown - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Visibility Obstruction - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Flashing - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Knockdown - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Timing - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - New - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - Bulb Out/NonConflict Hd Trn VO - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Markings - Maintenance - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Signal - All Out - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "Traffic Sign - Other Dispatch - TPW",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - School Zone Beacon - Maintenance",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Traffic Signal - New",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Traffic Sign Emergency",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Street Name Sign Maintenance",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Speed Management",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Traffic Signal - Maintenance",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Traffic Sign Maintenance",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Traffic Sign New",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - School Zone Sign Maintenance",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Traffic Signal - Modification",
+        "label": "6"
+    },
+    {
+        "dataType": "311",
+        "text": "High Water Flooded Roadway Alarm Warning System - TPW",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Drainage Ditch Cleaning/Repairs - TPW",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Flooding - Emergency - TPW",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Roadway Spillage",
+        "label": "7"
+    },
+    {
+        "dataType": "311",
+        "text": "Steel Plates in Street - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Visibility Obstruction - Hazardous - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Street Spillage/Debris in Right of Way - Hazardous - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Pot Hole - Hazardous - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Pot Hole - Routine - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Street/Road Blockage - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Visibility Obstruction - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Alley/Sidewalk/Street Repair - Hazardous - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Lid Cover Broken/Missing - Hazardous - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Lid Cover Broken - Routine - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Objects Dropped in Inlet - Hazardous - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Debris in Street",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Pothole Repair",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Obstruction in Right of Way",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Lane/Road Closure Notification",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - View Obstruction and Fencing at Intersection",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking - Valet Complaint - TPW",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Scooter/Bike Shared Dockless Vehicle - TPW",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Fair Park Parking Violation - TPW",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Resident Only Parking Permit - TPW",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Parking - Report a Violation - TPW",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Shared Micromobility",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Pay-by-Phone App",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Parking Machine Issue",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Parking Violation Enforcement",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Bicycle and Pedestrian Issues",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Bicycle Issues",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Parking Sign Maintenance",
+        "label": "9"
+    },
+    {
+        "dataType": "311",
+        "text": "Tree Down/Low Limbs - TPW",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "MOWmentum Program - TPW",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Park Maintenance - Building Electric Issues",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Tree Issue Right of Way",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Mowing Medians",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - School Issues - Crossing Guards",
+        "label": "10"
+    },
+    {
+        "dataType": "311",
+        "text": "Water Main Leak/Break - DWU",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Cut/Routine - TPW",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Utility Cut/Hazardous - TPW",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Utility Cut Repair",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Dig Tess Request",
+        "label": "11"
+    },
+    {
+        "dataType": "311",
+        "text": "Shopping Cart Routine Pickup - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Shopping Carts - TPW",
+        "label": "8"
+    },
+    {
+        "dataType": "311",
+        "text": "Clean Sweep - TPW",
+        "label": "12"
+    },
+    {
+        "dataType": "311",
+        "text": "Service Request Copy",
+        "label": "15"
+    },
+    {
+        "dataType": "311",
+        "text": "City Property Management/ Real Estate - FRM",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Social Services Request - ECR",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Interagency - TPW",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "Construction Right of Way/Status - TPW",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "City Property Management/ Real Estate - FMR",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Construction Concerns in Right of Way",
+        "label": "14"
+    },
+    {
+        "dataType": "311",
+        "text": "TPW - Special Event",
+        "label": "14"
+    }
+]
