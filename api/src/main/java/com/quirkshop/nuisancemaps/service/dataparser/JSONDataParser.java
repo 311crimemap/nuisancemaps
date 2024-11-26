@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
@@ -59,7 +60,7 @@ public class JSONDataParser extends DataParser {
                         pendingReportCategories.add(e.getReportCategory());
                         parseCounter.numMissingIncrement();
 
-                    } catch (MissingCoordinateException | MissingReportCategoryException e) {
+                    } catch (InvalidCoordinateException | MissingCoordinateException | MissingReportCategoryException e) {
 
                         String content = StringUtils.substring(item.toString(), 0, 4096);
                         logMissingException(source, content, e);
