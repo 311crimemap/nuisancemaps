@@ -90,6 +90,8 @@ services:
 
   db:
     image: bitnami/pgpool:4
+    logging:
+      driver: none
     env_file:
       - .env.dev
     labels:
@@ -136,30 +138,28 @@ services:
       - REPMGR_NODE_NAME=pg-0
       - REPMGR_NODE_NETWORK_NAME=pg-0
 
-  pg-1:
-    image: bitnami/postgresql-repmgr:16
-    shm_size: 1gb
-    labels:
-      - traefik.enable=false
-    ports:
-      - 5432
-    volumes:
-      - db_pg_1:/bitnami/postgresql
-      - ./temp:/temp  # useful for temp file store, restore database
-      - ./db/custom_pgpool.conf:/config/custom_pgpool.conf
-      - ./db/custom_postgresql.conf:/opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
+  # pg-1:
+  #   image: bitnami/postgresql-repmgr:16
+  #   shm_size: 1gb
+  #   labels:
+  #     - traefik.enable=false
+  #   ports:
+  #     - 5432
+  #   volumes:
+  #     - db_pg_1:/bitnami/postgresql
+  #     - ./temp:/temp  # useful for temp file store, restore database
+  #     - ./db/custom_pgpool.conf:/config/custom_pgpool.conf
+  #     - ./db/custom_postgresql.conf:/opt/bitnami/postgresql/conf/conf.d/custom_postgresql.conf
 
-      # pgbackrest
-      - ./db/pgbackrest:/opt/bitnami/postgresql/bin/pgbackrest       # executable
-      - ./db/pgbackrest.conf:/etc/pgbackrest.conf
-      - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
-
-
-    env_file:
-      - .env.dev
-    environment:
-      - REPMGR_NODE_NAME=pg-1
-      - REPMGR_NODE_NETWORK_NAME=pg-1
+  #     # pgbackrest
+  #     - ./db/pgbackrest:/opt/bitnami/postgresql/bin/pgbackrest       # executable
+  #     - ./db/pgbackrest.conf:/etc/pgbackrest.conf
+  #     - ./db/archive.conf:/opt/bitnami/postgresql/conf/conf.d/archive.conf
+  #   env_file:
+  #     - .env.dev
+  #   environment:
+  #     - REPMGR_NODE_NAME=pg-1
+  #     - REPMGR_NODE_NETWORK_NAME=pg-1
 
 volumes:
   db_pg_0:
