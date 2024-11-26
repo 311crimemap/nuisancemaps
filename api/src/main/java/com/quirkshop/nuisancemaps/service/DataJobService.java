@@ -78,6 +78,7 @@ public class DataJobService {
             throws UnsupportedEncodingException {
 
         DataJob maxSessionIdOffsetDataJob = dataJobMap.getOrDefault(source.getId(), null);
+        //log.info("Source id: " + source.getId() + " maxSessionId: " + maxSessionIdOffsetDataJob);
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {
@@ -93,7 +94,6 @@ public class DataJobService {
         // != 0 - has fetched so continue fetching next set until we get 0 - know for
         // sure we've reached the end.
         if (maxSessionIdOffsetDataJob.getNumFetched() != 0) {
-
             DataJob nextJob = createNewDataJob(source, maxSessionIdOffsetDataJob);
             return nextJob;
         }
@@ -117,7 +117,7 @@ public class DataJobService {
             dataJob = new DataJob(LocalDateTime.now(), source, key);
             dataJob = dataJobConfigurator.initialize(dataJob);
         } else {
-
+            prevDataJob.setSource(source); // ranked query lacks association; set here
             dataJob = dataJobConfigurator.next(new DataJob(prevDataJob));
 
             if (dataJob == null)
