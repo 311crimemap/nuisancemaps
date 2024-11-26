@@ -1,0 +1,127 @@
+dataType,text,label
+311,Graffiti City Streets & Bridges - TPW,2
+311,Graffiti Traffic Signal - TPW,2
+311,Graffiti Traffic Sign - TPW,2
+311,Conservation District Violation - PDD,3
+311,Historic District Violation - PDD,3
+311,Landscaping Violation (Arborist) - PDD,3
+311,Building Permits Violation - PDD,3
+311,Illegal Removal of Protected Tree - PDD,3
+311,Construction Site Complaint - PDD,3
+311,Private Development Coordination - PDD,3
+311,TPW - Booting Complaint,4
+311,Guardrail Repair - Hazardous - TPW,5
+311,Sidewalk Utility Obstruction - TPW,5
+311,Sidewalk Replacement Program - TPW,5
+311,Barricades - Pickup/Reset/Replace - TPW,5
+311,Street Repair - Routine - TPW,5
+311,Paving Street Resurface Program - TPW,5
+311,Median/Right of Way Maintenance - TPW,5
+311,Alley Repair - Routine - TPW,5
+311,Street Lighting - Maintenance- TPW,5
+311,Guardrail Repair - Routine - TPW,5
+311,Street Lighting- New/Relocation - TPW,5
+311,Street Sweeping - Thoroughfares - TPW,5
+311,Railroad Crossing Repair - TPW,5
+311,Paving Reconstruction Project - TPW,5
+311,New Street/Sidewalk/Alley - TPW,5
+311,Wheel Chair Ramp/Curb Cuts - TPW,5
+311,Guardrail - New - TPW,5
+311,TPW - Alley &amp; Unpaved Street Maintenance,5
+311,TPW - Bridge Repair,5
+311,TPW - Pavement Failure,5
+311,TPW - Sidewalk Repair,5
+311,TPW - Curb/Gutter Repair,5
+311,TPW - Street Resurfacing,5
+311,TPW - Street and Bridge Miscellaneous,5
+311,TPW - New Sidewalk/Curb Ramp/Route,5
+311,TPW - Road Markings/Striping - Maintenance,5
+311,TPW - Alley & Unpaved Street Maintenance,5
+311,TPW - Guardrail New/Repair,5
+311,TPW - Road Markings/Striping - New,5
+311,Traffic Markings - New - TPW,6
+311,Traffic Signal - Visibility Obstruction - TPW,6
+311,Traffic Sign - Maintenance (Other) - TPW,6
+311,Traffic - Construction Signs - TPW,6
+311,Speed Limit Change Request - TPW,6
+311,Traffic Signal - Head Turn (Conflicting) - TPW,6
+311,Bike Lane Marking Maintenance – TPW,6
+311,Traffic Signal - School Flasher Maintenance - TPW,6
+311,Traffic Signal - Stuck - TPW,6
+311,Traffic Sign - New - TPW,6
+311,Traffic Signal - Other Dispatch - TPW,6
+311,Traffic - Speed Control - TPW,6
+311,Traffic Signal - Knockdown - TPW,6
+311,Traffic Sign - Visibility Obstruction - TPW,6
+311,Traffic Signal - Flashing - TPW,6
+311,Traffic Sign - Knockdown - TPW,6
+311,Traffic Signal - Timing - TPW,6
+311,Traffic Signal - New - TPW,6
+311,Traffic Signal - Bulb Out/NonConflict Hd Trn VO - TPW,6
+311,Traffic Markings - Maintenance - TPW,6
+311,Traffic Signal - All Out - TPW,6
+311,Traffic Sign - Other Dispatch - TPW,6
+311,TPW - School Zone Beacon - Maintenance,6
+311,TPW - Traffic Signal - New,6
+311,TPW - Traffic Sign Emergency,6
+311,TPW - Street Name Sign Maintenance,6
+311,TPW - Speed Management,6
+311,TPW - Traffic Signal - Maintenance,6
+311,TPW - Traffic Sign Maintenance,6
+311,TPW - Traffic Sign New,6
+311,TPW - School Zone Sign Maintenance,6
+311,TPW - Traffic Signal - Modification,6
+311,High Water Flooded Roadway Alarm Warning System - TPW,7
+311,Drainage Ditch Cleaning/Repairs - TPW,7
+311,Flooding - Emergency - TPW,7
+311,TPW - Roadway Spillage,7
+311,Steel Plates in Street - TPW,8
+311,Visibility Obstruction - Hazardous - TPW,8
+311,Street Spillage/Debris in Right of Way - Hazardous - TPW,8
+311,Pot Hole - Hazardous - TPW,8
+311,Pot Hole - Routine - TPW,8
+311,Street/Road Blockage - TPW,8
+311,Visibility Obstruction - TPW,8
+311,Alley/Sidewalk/Street Repair - Hazardous - TPW,8
+311,Lid Cover Broken/Missing - Hazardous - TPW,8
+311,Lid Cover Broken - Routine - TPW,8
+311,Objects Dropped in Inlet - Hazardous - TPW,8
+311,TPW - Debris in Street,8
+311,TPW - Pothole Repair,8
+311,TPW - Obstruction in Right of Way,8
+311,TPW - Lane/Road Closure Notification,8
+311,TPW - View Obstruction and Fencing at Intersection,8
+311,Parking - Valet Complaint - TPW,9
+311,Scooter/Bike Shared Dockless Vehicle - TPW,9
+311,Fair Park Parking Violation - TPW,9
+311,Resident Only Parking Permit - TPW,9
+311,Parking - Report a Violation - TPW,9
+311,TPW - Shared Micromobility,9
+311,TPW - Pay-by-Phone App,9
+311,TPW - Parking Machine Issue,9
+311,TPW - Parking Violation Enforcement,9
+311,TPW - Bicycle and Pedestrian Issues,9
+311,TPW - Bicycle Issues,9
+311,TPW - Parking Sign Maintenance,9
+311,Tree Down/Low Limbs - TPW,10
+311,MOWmentum Program - TPW,10
+311,Park Maintenance - Building Electric Issues,10
+311,TPW - Tree Issue Right of Way,10
+311,TPW - Mowing Medians,10
+311,TPW - School Issues - Crossing Guards,10
+311,Water Main Leak/Break - DWU,11
+311,Utility Cut/Routine - TPW,11
+311,Utility Cut/Hazardous - TPW,11
+311,TPW - Utility Cut Repair,11
+311,TPW - Dig Tess Request,11
+311,Shopping Cart Routine Pickup - TPW,8
+311,Shopping Carts - TPW,8
+311,Clean Sweep - TPW,12
+311,Service Request Copy,15
+311,City Property Management/ Real Estate - FRM,14
+311,Social Services Request - ECR,14
+311,Interagency - TPW,14
+311,Construction Right of Way/Status - TPW,14
+311,City Property Management/ Real Estate - FMR,14
+311,TPW - Construction Concerns in Right of Way,14
+311,TPW - Special Event,14

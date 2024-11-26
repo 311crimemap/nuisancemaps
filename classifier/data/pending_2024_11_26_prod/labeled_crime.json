@@ -1,0 +1,337 @@
+[
+    {
+        "dataType": "crime",
+        "text": "CHILD ABANDONMENT/NON SUPPORT 1",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "FAMILY DISTURBANCE (ATTEMPTED)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EDP-PES (PSYCHIATRIC EMERGENCY SERVICES)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ACCIDENTAL DROWNING DEATH",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "WARRANT DALLAS PD (VIOL BOND/PROTECTIVE ORDER)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "COLLISION INV DEATH",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "COLLISION INV INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "DEADLY CONDUCT-FAM VIOL-DISCHARGE FIREARM (ASSAULT)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATTACK BY DOG CAUSES BODILY INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT -SECURITY OFFICER -BODILY INJURY ONLY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT (AGG) -OTHER",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "WARRANT DALLAS PD (DEADLY CONDUCT)",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT -HOSPITAL PERSONNEL ON HOSP PROPERTY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT -ELD OR DISABLED -OFFENSIVE CONTACT",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "INTOXICATION MANSLAUGHTER W/VEHICLE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ATTACK BY DOG CAUSES SBI",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "COLLISION INV SERIOUS BODILY INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT -PUBLIC SERVANT -BODILY INJURY ONLY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSAULT (AGG) -SECURITY OFFICER -SER BODY INJURY",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "LEGACY HOMICIDE CODE",
+        "label": "0"
+    },
+    {
+        "dataType": "crime",
+        "text": "EVIDENCE REVIEW - BURGLARY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMPOUNDED VEH/PROP SALE",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "COLLISION INV DAMAGE TO VEHICLE > OR EQUAL $200",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLARY OF HABITATION INTEND OTHER FELONY",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "COLLISION INV DAMAGE TO VEHICLE <$200",
+        "label": "1"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT BY EXTORTION (ATTEMPTED)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF SERVICE > OR EQUAL $150K <$300K PC 31.04(e6)",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF U.S. MAIL < 10 ADDRESSES",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "THEFT OF CATALYTIC CONVERTER <30K",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "FORGERY AND PASSING (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "IDENTITY THEFT (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD - PRELIMINARY INVESTIGATION",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNLAW DECRYPT DEFRAUD/HARM > OR EQUAL $750<$2500 IAT",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "PURCHASE/POSS LICENSE PLATE FLIPPER CRIM NEG",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "WIRE FRAUD (UCR USE ONLY)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "FRAUD-PHISHING (ATTEMPTED)",
+        "label": "3"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CONT SUB PEN GRP 1/1-B > OR EQUALS 1G<4G",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CONT SUB PEN GRP 1/1-B > OR EQUALS 4G<200G",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNL CARRY WEAPON W/ FELONY CONV",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "MAN DEL CONT SUB PEN GRP 1-B > OR EQUALS 400G",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "OPERATION OF STASH HOUSE",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "UNL POSS FIREARM FAM/HOUSE/COURT ORDER/GANG",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "TAKE WEAPON FRM POLICE OFFICER (ATTEMPTED)",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CONT SUB PEN GRP 2-A 4OZ<5LB DFZ IAT",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "POSS CONT SUB PEN GRP 1/1-B > OR EQUALS 200G<400G",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "MAN DEL CONT SUB PEN GRP 1-B > OR EQUALS 4G<200G",
+        "label": "4"
+    },
+    {
+        "dataType": "crime",
+        "text": "PARKING VIOLATION",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DRIVERS LICENSE VIOL/OTHER",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "LIQUOR PREMISE CHECK",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "ASSIST MOTORIST/PUBLIC",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "RACING ON HIGHWAY",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "VIOL STATE LAW - OTHER (ATTEMPTED)",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "HOAX BOMB",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "TRAF VIO -DRIVING WHILE DISQUALIFIED/COMM VEH",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "DISORDERLY CONDUCT DISCHARGE/DISPLAY FIREARM (NO ASSAULT)",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "BURGLAR ALARM",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "MUST DISPLAY PERMIT",
+        "label": "5"
+    },
+    {
+        "dataType": "crime",
+        "text": "OTHER OFFENSES RELATED TO THEFT",
+        "label": "2"
+    },
+    {
+        "dataType": "crime",
+        "text": "MAJOR CRIMES UNIT",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "REQUEST TO LOCATE (ATTEMPTED)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "EVIDENCE DESTRUCTION - ALL",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISSING PERSON (NO OFFENSE)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "HOMICIDE INVESTIGATION (NO OFFENSE)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "MISSING PERSON - CRITICAL (NO OFFENSE)",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "IMMIGRATION STATUS INQUIRY",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "AIRPORT INFORMATION",
+        "label": "6"
+    },
+    {
+        "dataType": "crime",
+        "text": "DNA TESTING COMPLETE",
+        "label": "6"
+    }
+]
