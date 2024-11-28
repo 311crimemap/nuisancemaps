@@ -1,4 +1,11 @@
-# Classifier
+
+# Source Builders
+
+
+
+---
+
+# TextCategory Classifier
 
 Currently using ChatGPT API as a "zero-shot" classifier. Hugging Face models are
 poor on 311 data - because the data is very 'vague' and requires context).
@@ -7,7 +14,7 @@ Hugging Face Slow enough that it's not worth spinning up and provisioning an
 entire GPU instance for a helper utility.
 
 
-All data is in `/data/<city>`.
+All data is in `textcategory/data/<city>`.
 
 ## Steps
 
