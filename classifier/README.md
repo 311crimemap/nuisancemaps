@@ -1,6 +1,12 @@
 # Source Builders
 
-TODO: building...
+`./source-catalog`: general exploration to create a list of cities / urls to
+import
+
+`./source-config`: create source_config.json with any additional methods for
+submission to worker.
+
+Before submission, make sure to extract list of text category.
 
 # TextCategory Classifier
 
