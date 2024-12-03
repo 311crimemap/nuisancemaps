@@ -1,47 +1,6 @@
 # Source Builders
 
-
-## Filter Sources for 311, Crime
-
-Raw Data
-
-* `catalog.json`: https://api.us.socrata.com/api/catalog?limit=100000
-
-Additional Examples
-
-* https://www.opendatanetwork.com/search?q=crime+data
-* https://api.us.socrata.com/api/catalog/v1?q=crime%20data&offset=0&limit=10
-
-Reduce input for submission:
-
-```
-jq '.results | map({
-  resource: {
-    id: .resource.id,
-    name: .resource.name,
-    description: .resource.description,
-    attribution: .resource.attribution,
-    type: .resource.type,
-    updatedAt: .resource.updatedAt,
-    createdAt: .resource.createdAt,
-    data_updated_at: .resource.data_updated_at,
-    columns_name: .resource.columns_name,
-    columns_description: .resource.columns_description,
-    provenance: .resource.provenance,
-    lens_view_type: .resource.lens_view_type,
-    lens_display_type: .resource.lens_display_type
-  },
-  classification: {
-    categories: .classification.categories,
-    domain_tags: .classification.domain_tags
-  }
-})' catalog.json > catalog-filtered.json
-
-```
-
-
-
----
+TODO: building...
 
 # TextCategory Classifier
 
