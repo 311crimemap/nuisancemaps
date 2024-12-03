@@ -1,0 +1,85 @@
+You are provided a list of field names and data types:
+
+TEMPLATE FIELD DATA TYPES:
+
+* reportNum: String
+* reportCategory: String
+* description: String
+* location: String
+* latitude: String of single coordinate (not point or coordinate pair)
+* longitude: String of single coordinate (not point or coordinate pair)
+* reportedAt: DateTimeFormatter.ISO_LOCAL_DATE_TIME
+* reportedAt2: DateTimeFormatter.ISO_LOCAL_DATE_TIME
+
+A user provides a TEMPLATE object that maps theses data type fields to user
+input.
+
+For each "mapping" field's 'pointer' or 'field' value in the user data,
+determine if it matches the mapping field's data type. If a conversion is
+needed, generate a java method with the proper conversion.
+
+Here are some examples:
+
+```
+    public static String REPORTED_AT_CSV_CRIME_DALLAS(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("Date of Report");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    public static String LATITUDE_CSV_CRIME_DALLAS(Map<String, String> row) {
+        // "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)"
+        String latitude = null;
+
+        try {
+
+            String text = row.get("Location1");
+
+            Pattern pattern = Pattern.compile("\\(([^,]+),\\s*([^\\)]+)\\)");
+
+            Matcher matcher = pattern.matcher(text);
+
+            if (matcher.find()) {
+                latitude = matcher.group(1);
+            }
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return latitude;
+    }
+
+
+    public static String STREET_NAME_ERSI_AUSTIN(JsonNode item) {
+        String value = null;
+
+        try {
+            String addressBlock = item.at("/attributes/ADDRESS_BLOCK").asText();
+            String streetName = item.at("/attributes/STREET_NAME").asText();
+            String streetType = item.at("/attributes/STREET_TYPE").asText();
+            value = String.join(" ", addressBlock, streetName, streetType);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return value;
+    }
+
+```
+
+Method names are all caps, separated with underscores like <FieldName>_<Category
+(CRIME or 311>_<City name>. If sample DATA is JSON, methods use a "JsonNode
+item" parameter and return a String. If sample DATA is CSV, methods use a
+"Map<String, String> row" parameter and return a String.
+
+Return only code (no summary).

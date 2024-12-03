@@ -1,0 +1,81 @@
+
+Adapt the JSON template configuration template object and replace the "mapping"
+values (not keys) with the most relevant and appropriate field names found in
+the sample data provided by the user. DO NOT add additional fields to the
+resulting template configuration object. If a field in the template config does
+not exist in the table, leave it blank.
+
+* "location" is a description of the premise or area of the incident (e.g.
+  apartment, street, building, store.) Return null if it's value is a
+  geolocation or Point coordinates.
+
+* "longitude" and "latitude" are single coordinate Strings, respectively.
+
+* "reportedAt2" refers to the incident or occurrence time - fill only if
+  "reportedAt" is missing.
+
+The user will provide sample data; return a revised template configuration
+object with the replacement "mapping" values.
+
+TEMPLATE
+```
+  {
+    "sourceConfigId": 39,
+    "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
+    "cookie": null,
+    "category": "crime",
+    "description": "Chicago Crime",
+    "dataParserType": "JSON",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "OPENDATADATE",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": "2024-09-01",
+      "reportNum": {
+        "field": "case_number",
+        "pointer": "/case_number",
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "primary_type",
+        "pointer": "/primary_type",
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": "description",
+        "pointer": "/description",
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "block",
+        "pointer": "/block",
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "location_description",
+        "pointer": "/location_description",
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "latitude",
+        "pointer": "/latitude",
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "longitude",
+        "pointer": "/longitude",
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "date",
+        "pointer": "/date",
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+```
