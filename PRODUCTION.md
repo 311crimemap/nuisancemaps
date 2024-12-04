@@ -103,6 +103,15 @@ The id becomes `locale_id` below
 * `@new_source.json`: source file; make sure its in `source_config.json` for archive.
 * `curl -X POST -H 'content-type:application/json' -H 'X-API-KEY: <KEY>' -d @new_source.json localhost:8080/locales/<locale_id>/sources`
 
+3. Update source (e.g. update 'startReportedAt' Mapping date)
+
+* Extract and change source: `cat source_config.json | jq '.[38]' > test.json`
+  * want to send the full updated object with changes
+* Edit `test.json` with changes; any mapping values will overwrite as well
+* Submit to update route:
+  * `curl -X PATCH -H 'X-API-KEY: <key>' -H 'content-type:application/json' -d @38.json api.311crimemap.com/sources/38`
+
+
 
 ---
 
