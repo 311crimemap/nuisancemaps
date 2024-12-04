@@ -25,6 +25,7 @@ import { DataFeatureCollection } from "../../types/datafeatures";
 import { MapPosition } from "../../types/mapposition.ts";
 import { DATASOURCES, DataSourcesMap } from "../../types/datasources";
 import { ActiveFeatures } from "../../types/activefeatures";
+import { defaultMapPosition } from "../../types/mapposition";
 
 const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
 
@@ -440,10 +441,16 @@ export default function useMap({
     setMap(_map);
     setMapController(createMapLibreGlMapController(_map, maplibregl, false));
 
+    // flyTo default position on home link click
+    const $homeLink = document.getElementById("homelink");
+    const homeLinkClick = () => _map.flyTo(defaultMapPosition);
+    $homeLink.addEventListener("click", homeLinkClick);
+
     return () => {
       if (_map) {
         Log.log({ msg: "[useMap] Remove", ...Log.data });
         _map.remove();
+        $homeLink.removeEventListener("click", homeLinkClick);
       }
     };
   }, [isInitLoaded]);
