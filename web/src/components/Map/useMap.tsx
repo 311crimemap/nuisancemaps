@@ -444,12 +444,17 @@ export default function useMap({
     // flyTo default position on home link click
     const $homeLink = document.getElementById("homelink");
     const homeLinkClick = () => _map.flyTo(defaultMapPosition);
-    $homeLink.addEventListener("click", homeLinkClick);
+    if ($homeLink) {
+      $homeLink.addEventListener("click", homeLinkClick);
+    }
 
     return () => {
       if (_map) {
         Log.log({ msg: "[useMap] Remove", ...Log.data });
         _map.remove();
+      }
+
+      if ($homeLink) {
         $homeLink.removeEventListener("click", homeLinkClick);
       }
     };
