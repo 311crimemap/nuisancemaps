@@ -84,7 +84,8 @@ public class Source {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Source() {}
+    public Source() {
+    }
 
     public Source(Locale locale, String category, String description, String url,
             DataParserType dataParserType, DataProcessType dataProcessType,
@@ -230,6 +231,9 @@ public class Source {
     }
 
     public SourceDTO toDTO() {
+        Mapping mapping = this.getMapping();
+        String startReportedAt = mapping.getStartReportedAt();
+
         SourceDTO sourceDTO = new SourceDTO(this.getId(),
                 this.getSourceConfigId(),
                 this.getCategory(),
@@ -237,7 +241,8 @@ public class Source {
                 this.getDescription(),
                 this.getDataParserType(),
                 this.getDataProcessType(),
-                this.getDataJobConfiguratorType());
+                this.getDataJobConfiguratorType(),
+                startReportedAt);
         return sourceDTO;
     }
 
