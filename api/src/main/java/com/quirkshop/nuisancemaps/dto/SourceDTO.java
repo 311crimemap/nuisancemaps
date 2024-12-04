@@ -14,10 +14,13 @@ public class SourceDTO {
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
     private DataJobConfiguratorType dataJobConfiguratorType;
+    private String startReportedAt;
 
-    public SourceDTO(Integer id, Integer sourceConfigId, String category, String url, String description,
+    public SourceDTO(Integer id,
+            Integer sourceConfigId, String category, String url, String description,
             DataParserType dataParserType, DataProcessType dataProcessType,
-            DataJobConfiguratorType dataJobConfiguratorType) {
+            DataJobConfiguratorType dataJobConfiguratorType,
+            String startReportedAt) {
         this.id = id;
         this.sourceConfigId = sourceConfigId;
         this.category = category;
@@ -26,6 +29,7 @@ public class SourceDTO {
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
         this.dataJobConfiguratorType = dataJobConfiguratorType;
+        this.startReportedAt = startReportedAt;
     }
 
     public Integer getId() {
@@ -90,5 +94,13 @@ public class SourceDTO {
 
     public void setDataJobConfiguratorType(DataJobConfiguratorType dataJobConfiguratorType) {
         this.dataJobConfiguratorType = dataJobConfiguratorType;
+    }
+
+    public String getStartReportedAt() {
+        return startReportedAt;
+    }
+
+    public void setStartReportedAt(String startReportedAt) {
+        this.startReportedAt = startReportedAt;
     }
 }
