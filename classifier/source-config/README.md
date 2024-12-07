@@ -8,19 +8,19 @@ partial query construction needed.
 
 1. [spreadsheet] base url → determine downloadable json and/or csv url
 
-2. download sample (TODO: possible 0-dl-sample step bash)
-
 3. Create directory `data/xxx-city-crime`, `/data/xxx-city-311`
 
 4. Populate meta_template.json -> directory `meta.json`
 
-5. submit `1-generate-source-config.py`
+5. Download: `0-download.py <dir>`
 
-6. submit `2-generate-source-methods.py`
+6. submit `1-generate-source-config.py <dir> <data.csv/json>`
 
-7. review source_config, change url, id, add any code
+7. submit `2-generate-source-methods.py <dir> <data.csv/json>`
 
-8. test and verify local; commit
+8. review source_config, change url, id, add any code
+
+9. test and verify local; commit
 
 
 ## Source urls pattern from id key
@@ -30,6 +30,11 @@ partial query construction needed.
 
 
 ## Template -> Source Config
+
+### Download
+
+`0-download.py <dir>` takes `meta.json` url and downloads sample
+`data.json` or `data.csv`.
 
 ### Prompt
 
