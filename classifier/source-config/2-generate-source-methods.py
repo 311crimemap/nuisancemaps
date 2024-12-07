@@ -3,15 +3,16 @@
 import argparse
 
 parser = argparse.ArgumentParser(description="generate source config java methods via openAI API")
-parser.add_argument('source_config', type=str, help="source config generated file: '41.json.out.json'")
-parser.add_argument('data', type=str, help="source data examples: 'xyz-123.json'")
+#parser.add_argument('source_config', type=str, help="source config generated file: 'buffalo.json.out.json'")
+parser.add_argument('data', type=str, help="city data subdirectory: 039-buffalo-crime")
+parser.add_argument('input', type=str, help="input file of records (csv or json): 'buffalo.json'")
 args = parser.parse_args()
 
-
-SOURCE_CONFIG_FILE=f"./{args.source_config}"
-SAMPLE_DATA_FILE=f"./{args.data}"
+DIR=f"{args.data}"
+SAMPLE_DATA_FILE=f"./{args.input}"
+SOURCE_CONFIG_FILE=f"./{args.input}.out.json"
 PROMPT_FILE=f"prompt/2-generate-source-methods.txt"
-OUTPUT_FILE=f"./{args.source_config}.methods.txt"
+OUTPUT_FILE=f"{SOURCE_CONFIG_FILE}.methods.txt"
 
 import os
 import json
