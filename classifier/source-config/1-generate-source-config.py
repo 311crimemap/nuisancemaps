@@ -3,11 +3,15 @@
 import argparse
 
 parser = argparse.ArgumentParser(description="generate source-config via openAI API")
-parser.add_argument('input', type=str, help="same input file: '41.json'")
+parser.add_argument('data', type=str, help="city data subdirectory: 039-buffalo-crime")
+parser.add_argument('input', type=str, help="input file of records (csv or json): 'buffalo.json'")
+
 args = parser.parse_args()
 
-
+DIR=f"{args.data}"
 CATALOG_FILE=f"./{args.input}"
+
+META_FILE = f"./{DIR}/meta.json"
 PROMPT_FILE=f"prompt/1-gen-source-config.txt"
 OUTPUT_FILE=f"./{args.input}.out.json"
 BATCH_SIZE=10
@@ -22,6 +26,12 @@ with open(CATALOG_FILE, 'r') as file:
 
 with open(PROMPT_FILE, 'r') as file:
     prompt = file.read()
+
+with open(META_FILE, 'r') as file:
+    meta = json.loads(file.read())
+
+
+print(meta)
 
 client = OpenAI()
 
@@ -64,6 +74,8 @@ if (CATALOG_FILE.endswith("csv")):
         if "pointer" in v:
             v['pointer'] = None
 
+# res: add meta (maintain ordering)
+res = {**meta, **res}
 
 # write total output per iteration in case of error
 with open(OUTPUT_FILE, 'w') as file:
