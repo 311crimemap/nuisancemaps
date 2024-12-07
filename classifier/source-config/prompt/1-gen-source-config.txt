@@ -20,14 +20,6 @@ object with the replacement "mapping" values.
 TEMPLATE
 ```
   {
-    "sourceConfigId": 39,
-    "url": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
-    "cookie": null,
-    "category": "crime",
-    "description": "Chicago Crime",
-    "dataParserType": "JSON",
-    "dataProcessType": "MEMORY",
-    "dataJobConfiguratorType": "OPENDATADATE",
     "mapping": {
       "rootPath": "$[*]",
       "orderKey": ":id",
