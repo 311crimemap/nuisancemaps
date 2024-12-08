@@ -1,31 +1,37 @@
 #!/usr/bin/env python3
 
 import argparse
-
-parser = argparse.ArgumentParser(description="generate source config java methods via openAI API")
-#parser.add_argument('source_config', type=str, help="source config generated file: 'buffalo.json.out.json'")
-parser.add_argument('data', type=str, help="city data subdirectory: 039-buffalo-crime")
-parser.add_argument('input', type=str, help="input file of records (csv or json): 'buffalo.json'")
-args = parser.parse_args()
-
-DIR=f"{args.data}"
-SAMPLE_DATA_FILE=f"./{args.input}"
-SOURCE_CONFIG_FILE=f"./{args.input}.out.json"
-PROMPT_FILE=f"prompt/2-generate-source-methods.txt"
-OUTPUT_FILE=f"{SOURCE_CONFIG_FILE}.methods.txt"
-
 import os
 import json
 from openai import OpenAI
 
-with open(SOURCE_CONFIG_FILE, 'r') as file:
-    source_config = file.read()
+parser = argparse.ArgumentParser(description="generate source config java methods via openAI API")
+parser.add_argument('data', type=str, help="city data subdirectory: 039-buffalo-crime")
+args = parser.parse_args()
 
-with open(SAMPLE_DATA_FILE, 'r') as file:
-    sample_data = file.read()
+DIR=f"{args.data}"
+META_FILE = f"./{DIR}/meta.json"
+PROMPT_FILE=f"prompt/2-generate-source-methods.txt"
 
 with open(PROMPT_FILE, 'r') as file:
     prompt = file.read()
+
+with open(META_FILE, 'r') as file:
+    meta = json.loads(file.read())
+
+DATA_FILE=f"./{DIR}/data.json"
+if (meta['dataParserType'] == "CSV"):
+    DATA_FILE=f"./{DIR}/data.csv"
+
+with open(DATA_FILE, 'r') as file:
+    data = file.read()
+
+SOURCE_CONFIG_FILE=f"./{DATA_FILE}.out.json"
+with open(SOURCE_CONFIG_FILE, 'r') as file:
+    source_config = file.read()
+
+OUTPUT_FILE=f"{SOURCE_CONFIG_FILE}.methods.txt"
+
 
 data = f"""
 TEMPLATE:
@@ -34,7 +40,7 @@ TEMPLATE:
 ---
 
 DATA:
-{sample_data}
+{data}
 """
 
 print(data)
@@ -78,6 +84,5 @@ with open(OUTPUT_FILE, 'w') as file:
 
 
 
-print(f"{OUTPUT_FILE}")
-
+print(OUTPUT_FILE)
 print("DONE")

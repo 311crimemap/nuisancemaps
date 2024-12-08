@@ -4,16 +4,11 @@ import argparse
 
 parser = argparse.ArgumentParser(description="generate source-config via openAI API")
 parser.add_argument('data', type=str, help="city data subdirectory: 039-buffalo-crime")
-parser.add_argument('input', type=str, help="input file of records (csv or json): 'buffalo.json'")
-
 args = parser.parse_args()
 
 DIR=f"{args.data}"
-CATALOG_FILE=f"./{args.input}"
-
 META_FILE = f"./{DIR}/meta.json"
 PROMPT_FILE=f"prompt/1-gen-source-config.txt"
-OUTPUT_FILE=f"./{args.input}.out.json"
 BATCH_SIZE=10
 OFFSET=0
 
@@ -21,22 +16,24 @@ import os
 import json
 from openai import OpenAI
 
-with open(CATALOG_FILE, 'r') as file:
-    catalog = file.read()
-
 with open(PROMPT_FILE, 'r') as file:
     prompt = file.read()
 
 with open(META_FILE, 'r') as file:
     meta = json.loads(file.read())
 
+DATA_FILE=f"./{DIR}/data.json"
+if (meta['dataParserType'] == "CSV"):
+    DATA_FILE=f"./{DIR}/data.csv"
 
-print(meta)
+OUTPUT_FILE=f"./{DATA_FILE}.out.json"
+with open(DATA_FILE, 'r') as file:
+    data = file.read()
+
 
 client = OpenAI()
 
 print(f"Requesting")
-data = catalog
 
 chat_completion = client.chat.completions.create(
     messages=[
@@ -68,7 +65,7 @@ res = json.loads(chat_completion.choices[0].message.content)
 print(res)
 
 # clear out pointer if csvfile
-if (CATALOG_FILE.endswith("csv")):
+if (DATA_FILE.endswith("csv")):
     mapping = res['mapping']
     for (k,v) in mapping.items():
         if "pointer" in v:
@@ -85,6 +82,5 @@ with open(OUTPUT_FILE, 'w') as file:
 
 
 
-print(f"{OUTPUT_FILE}")
-
+print(OUTPUT_FILE)
 print("DONE")
