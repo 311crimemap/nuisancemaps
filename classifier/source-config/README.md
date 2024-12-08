@@ -8,20 +8,56 @@ partial query construction needed.
 
 1. [spreadsheet] base url → determine downloadable json and/or csv url
 
-3. Create directory `data/xxx-city-crime`, `/data/xxx-city-311`
+3. Create directory `data/098-city-crime`, `/data/099-city-311` pattern
 
-4. Populate meta_template.json -> directory `meta.json`
+4. Populate `meta_template.json` -> edit and copy to directory `meta.json`
 
-5. Download: `0-download.py <dir>`
+5. Download: `0-download.py <dir>` -> downloads sample data to `data.json` or `data.csv`
 
-6. submit `1-generate-source-config.py <dir> <data.csv/json>`
+6. Submit openAI: `1-generate-source-config.py <dir>`
 
-7. submit `2-generate-source-methods.py <dir> <data.csv/json>`
+7. Submit openAI: `2-generate-source-methods.py <dir>`
 
-8. review source_config, change url, id, add any code
+8. Review generated source_config in `data.csv.out.json` / `data.json.out.csv` amend for proper fields / methods
+   * `csvlook data.csv`
+   * `csvcut -c "Field1,Field2" data.csv`
+   * change url, id; add any methods to service/parserstrategy
+     * `ParserStrategy.java`  - enum
+     * `ParserStrategyConfig.java` - mapping
+     * `ParserStrategyConfig<City>.java` - method
 
-9. test and verify local; commit
+9. Save `source_config.json` (from `data.*.out.json`) to track final submit vs
+   generated/modified
 
+10. Create `locale.json` if needed
+
+11. Text Category Workflow:
+
+* `3-text-category-fetch.py <dir>` -> possibly downloads `data-full.csv`, but
+  generates `text_categories.txt`
+
+* `4-text-category-classifier.py` -> saves labels to
+  `text_categories.txt.out.json` and converts `text_categories.txt.out.csv` -
+  for easier edit and verification
+
+* `5-text-category-to-json-for-submit.py` ->
+  `text_categories.txt.out.csv.final.json` for submit
+
+12. Submit, test, verify worker on dev
+
+* submit text categories: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @text_categories.txt localhost:8080/textcategories`
+
+* submit locales: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @locale.json localhost:8080/locales'`
+
+* submit source config: what was `data.csv.out.json` (NB: triggers worker)
+  * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @source_config.json 'localhost:8080/locales/{id}/sources'`
+
+
+
+13. Fixes and submit to prod
+
+
+---
 
 ## Source urls pattern from id key
 
