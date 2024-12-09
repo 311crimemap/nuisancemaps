@@ -2,3 +2,5 @@
 *.csv
 *.methods.txt
 *.gz
+data/*
+

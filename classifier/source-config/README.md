@@ -120,3 +120,17 @@ USER INPUT:
 * add methods to api `service/parserstrategy/*.java` city methods page.
 * add source_config to source-config.json
 * submit and verify
+
+---
+
+### Data Notes
+
+`./data` contains downloads, scratch.
+
+From `001-*` to `039-*` were original "scratch" datasets cobbled together
+without much process.
+
+The data is valid, but they're the results of old extraction scripts
+(textcategory) approach of passing "crime" and "311" parameter.
+
+From `040-*`, using the source-config process outlined above.
