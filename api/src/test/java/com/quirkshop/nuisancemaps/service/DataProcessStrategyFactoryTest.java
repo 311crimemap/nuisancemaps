@@ -163,7 +163,7 @@ public class DataProcessStrategyFactoryTest {
                                                       new TypeReference<List<Source>>() {
         });
 
-        Source s = sources.get(15); //html apd incident
+        Source s = sources.get(6); //html apd incident
 
         when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
 

@@ -72,8 +72,8 @@ public class DataJobTest {
     @Test
     public void DataJobBuildFilenameTest() throws IOException {
 
-        Source source = sources.get(12); // sourceConfigId: 13
-        assertThat(source.getSourceConfigId()).isEqualTo(13);
+        Source source = sources.get(3); // sourceConfigId: 12
+        assertThat(source.getSourceConfigId()).isEqualTo(12);
 
         // NYC
         DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
@@ -89,7 +89,7 @@ public class DataJobTest {
                 .replaceAll("=", "_");
 
         String result = String.format("%s-%s-%s.csv",
-                "data.cityofnewyork.us-api-views-qgea-i56i-rows",
+                "data.cityofnewyork.us-api-views-5uac-w243-rows",
                 params,
                 formattedDateTime);
 
