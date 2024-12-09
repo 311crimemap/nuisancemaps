@@ -52,10 +52,9 @@ partial query construction needed.
 * submit source config: what was `data.csv.out.json` (NB: triggers worker)
   * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @source_config.json 'localhost:8080/locales/{id}/sources'`
 
-
-
 13. Fixes and submit to prod
 
+14. `copy_data_s3.sh`: upload /data directory to s3 bucket
 
 ---
 
