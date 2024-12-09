@@ -35,6 +35,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.OCCURRENCE_DATE_ERSI_AUSTIN,
                 ParserStrategyConfigAustin::OCCURRENCE_DATE_ERSI_AUSTIN);
 
+        // los angeles
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_311_LA,
+                ParserStrategyConfigLosAngeles::REPORTED_AT_311_LA);
+
         return parsingFunctions;
     }
 
@@ -94,6 +98,12 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigBoston::REPORTED_AT_CSV_CRIME_BOSTON);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_BOSTON,
                 ParserStrategyConfigBoston::REPORTED_AT_CSV_311_BOSTON);
+
+        // los angeles
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_LA,
+                ParserStrategyConfigLosAngeles::REPORTED_AT_CSV_CRIME_LA);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_CRIME_LA,
+                ParserStrategyConfigLosAngeles::REPORTED_AT2_CSV_CRIME_LA);
 
         return parsingFunctions;
     }
