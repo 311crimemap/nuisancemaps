@@ -5,3 +5,4 @@ db/pgbackrest_bkup/*
 !db/pgbackrest_bkup/.gitkeep
 ops/benchmark/*.txt
 ops/benchmark/*.out
+temp

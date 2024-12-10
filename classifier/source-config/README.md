@@ -52,10 +52,9 @@ partial query construction needed.
 * submit source config: what was `data.csv.out.json` (NB: triggers worker)
   * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @source_config.json 'localhost:8080/locales/{id}/sources'`
 
-
-
 13. Fixes and submit to prod
 
+14. `copy_data_s3.sh`: upload /data directory to s3 bucket
 
 ---
 
@@ -120,3 +119,17 @@ USER INPUT:
 * add methods to api `service/parserstrategy/*.java` city methods page.
 * add source_config to source-config.json
 * submit and verify
+
+---
+
+### Data Notes
+
+`./data` contains downloads, scratch.
+
+From `001-*` to `039-*` were original "scratch" datasets cobbled together
+without much process.
+
+The data is valid, but they're the results of old extraction scripts
+(textcategory) approach of passing "crime" and "311" parameter.
+
+From `040-*`, using the source-config process outlined above.

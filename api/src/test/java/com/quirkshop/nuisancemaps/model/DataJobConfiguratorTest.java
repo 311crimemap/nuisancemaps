@@ -48,7 +48,7 @@ public class DataJobConfiguratorTest {
 
     @Test
     public void BaseConfigurator_initialize_test() {
-        Source source = sources.get(11);
+        Source source = sources.get(3);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
         BaseConfigurator baseConfigurator = new BaseConfigurator();
 
@@ -60,7 +60,7 @@ public class DataJobConfiguratorTest {
 
     @Test
     public void BaseConfigurator_next_test() {
-        Source source = sources.get(11);
+        Source source = sources.get(3);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
         BaseConfigurator baseConfigurator = new BaseConfigurator();
 
@@ -73,7 +73,7 @@ public class DataJobConfiguratorTest {
 
     @Test
     public void OpenDataConfigurator_initialize_test() {
-        Source source = sources.get(1);
+        Source source = sources.get(0);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
         OpenDataConfigurator openDataConfigurator = new OpenDataConfigurator();
 
@@ -91,7 +91,7 @@ public class DataJobConfiguratorTest {
 
     @Test
     public void OpenDataConfigurator_next_test() {
-        Source source = sources.get(1);
+        Source source = sources.get(0);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
         OpenDataConfigurator openDataParameters = new OpenDataConfigurator();
 
@@ -112,7 +112,7 @@ public class DataJobConfiguratorTest {
 
     @Test
     public void OpenDataDateConfigurator_initialize_test() {
-        Source source = sources.get(17);
+        Source source = sources.get(7);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
         OpenDataDateConfigurator openDataDateConfigurator = new OpenDataDateConfigurator();
 
@@ -135,7 +135,7 @@ public class DataJobConfiguratorTest {
 
     @Test
     public void APDIncidentReportConfigurator_initialize_test() {
-        Source source = sources.get(15);
+        Source source = sources.get(6);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "reportNum");
         APDIncidentReportConfigurator apdIncidentReportConfigurator = new APDIncidentReportConfigurator();
         dataJob = apdIncidentReportConfigurator.initialize(dataJob);
@@ -146,7 +146,7 @@ public class DataJobConfiguratorTest {
 
     @Test
     public void APDIncidentReportConfigurator_next_test() {
-        Source source = sources.get(15);
+        Source source = sources.get(6);
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "reportNum");
 
         // set dataJob parameters to end sooner than .now()
