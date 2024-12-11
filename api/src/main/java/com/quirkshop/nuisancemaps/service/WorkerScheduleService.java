@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.DataProcessType;
@@ -62,6 +63,9 @@ public class WorkerScheduleService {
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         String currentThreadName = Thread.currentThread().getName();
         // log.info("[checkDataJobQueue] " + currentThreadName);
+
+        // check for any DataJobStatus.POLL_WAIT from LocaleDateTime ago
+        dataJobService.resetElapsedPollWait(LocalDateTime.now().minusSeconds(10));
 
         // GET / CREATE NEXT JOB
         DataJob datajob = dataJobService.getNextDataJob(DataJobStatus.QUEUED);

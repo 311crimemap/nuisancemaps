@@ -45,6 +45,17 @@ public class DataJobService {
         return dataJob;
     }
 
+    @Transactional
+    public int resetElapsedPollWait(LocalDateTime duration) {
+        int count = dataJobRepository.updateElapsedJobs(duration, DataJobStatus.POLL_WAIT, DataJobStatus.QUEUED);
+        if (count > 0) {
+            String logStr = String.format("[resetElapsedPollWait] reset %d DataJobStatus.POLL_WAIT -> QUEUED",
+                    count);
+            log.info(logStr);
+        }
+        return count;
+    }
+
     public void createNewJobs() throws UnsupportedEncodingException {
 
         // get all Sources
@@ -78,7 +89,8 @@ public class DataJobService {
             throws UnsupportedEncodingException {
 
         DataJob maxSessionIdOffsetDataJob = dataJobMap.getOrDefault(source.getId(), null);
-        //log.info("Source id: " + source.getId() + " maxSessionId: " + maxSessionIdOffsetDataJob);
+        // log.info("Source id: " + source.getId() + " maxSessionId: " +
+        // maxSessionIdOffsetDataJob);
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {
