@@ -1,211 +1,141 @@
-# Source Builders
+# Source Config
+---
 
-`./source-catalog`: general exploration to create a list of cities / urls to
-import
+General rule, use csv if data is already broken up in yearly increments. JSON if
+partial query construction needed.
 
-`./source-config`: create source_config.json with any additional methods for
-submission to worker.
+## General Process
 
-Before submission, make sure to extract list of text category.
+1. [spreadsheet] base url → determine downloadable json and/or csv url
 
-# TextCategory Classifier
+3. Create directory `data/098-city-crime`, `/data/099-city-311` pattern
 
-Currently using ChatGPT API as a "zero-shot" classifier. Hugging Face models are
-poor on 311 data - because the data is very 'vague' and requires context).
+4. Populate `meta_template.json` -> edit and copy to directory `meta.json`
 
-Hugging Face Slow enough that it's not worth spinning up and provisioning an
-entire GPU instance for a helper utility.
+5. Download: `0-download.py <dir>` -> downloads sample data to `data.json` or `data.csv`
 
+6. Submit openAI: `1-generate-source-config.py <dir>`
 
-All data is in `textcategory/data/<city>`.
+7. Submit openAI: `2-generate-source-methods.py <dir>`
 
-## Steps
+8. Review generated source_config in `data.csv.out.json` / `data.json.out.csv` amend for proper fields / methods
+   * `csvlook data.csv`
+   * `csvcut -c "Field1,Field2" data.csv`
+   * change url, id; add any methods to service/parserstrategy
+     * `ParserStrategy.java`  - enum
+     * `ParserStrategyConfig.java` - mapping
+     * `ParserStrategyConfig<City>.java` - method
 
-#### `0-data.py`
+9. Save `source_config.json` (from `data.*.out.json`) to track final submit vs
+   generated/modified
 
-1. Download data
+10. Create `locale.json` if needed
 
-* `curl <datasource>?$select=<column>&$group=<column>&$limit=100000 > data_<type>.json`
+11. Text Category Workflow:
 
-NB: Avoid distinct queries on these json endpoints; on opendata endpoints when
-using limit no longer "distincts". "Group" is more reliable and seems faster.
+* `3-text-category-fetch.py <dir>` -> possibly downloads `data-full.csv`, but
+  generates `text_categories.txt`
 
-* ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_311.json`~~
-* ~~`curl <url>?$query=select distinct <field>... > data/<city>/data_crime.json`~~
+* `4-text-category-classifier.py` -> saves labels to
+  `text_categories.txt.out.json` and converts `text_categories.txt.out.csv` -
+  for easier edit and verification
 
-1a. Pending Text Category Data Approach
+* `5-text-category-to-json-for-submit.py` ->
+  `text_categories.txt.out.csv.final.json` for submit
 
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=crime | jq -r '.data[].text'`
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=3131 | jq -r '.data[].text'`
+12. Submit, test, verify worker on dev
 
-2. Output text categories to text file
+* submit text categories: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @text_categories.txt localhost:8080/textcategories`
 
-* `cat /data/<city>/data_311.json | jq -r '.[].<field>' > data/<city>/data_311.txt`
-* `cat /data/<city>/data_crime.json | jq -r'.[].<field>' > data/<city>/data_crime.txt`
+* submit locales: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @locale.json localhost:8080/locales'`
 
-3. Sort uniq if needed
+* submit source config: what was `data.csv.out.json` (NB: triggers worker)
+  * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @source_config.json 'localhost:8080/locales/{id}/sources'`
 
-* `sort /data/<city>/data_311.txt | uniq > sorted_311.txt`
-* `sort /data/<city>/data_crime.txt | uniq > sorted_crime.txt`
+13. Fixes and submit to prod
 
-and overwrite `data_311.txt`, `data_crime.txt` with sorted versions.
-
-
-#### `1-classifier.py <type> <city>`
-
-sends text list to openAI for labeling
-
-Assumes `data_311.txt`, `data_crime.txt` exist above
-
-* `docker compose run classifier bash`
-* `python 1-classifier.py crime pending_2024_11_26_prod` (example)
-* `python 1-classifier.py 311 pending_2024_11_26_prod` (example)
-
-
-#### `2-convert-out_to_csv.py` -> EXCEL STEP
-
-* `python 2-convert-out_to_csv.py crime pending_2024_11_26_prod` (example)
-* `python 2-convert-out_to_csv.py 311 pending_2024_11_26_prod` (example)
-
-1. Avoid copy paste, convert api json to csv, open file directly in excel.
-  * need to preserve text formatting, as there's all sorts of hidden / garbage
-    text that needs to be properly mapped.
-
-2. Correct any labels, add SKIP, etc and save as `labeled_311.csv`, `labeled_crime.csv`.
-
-3. Make sure `dataType`, `text`, `label` are the columns
-   * compare with `classifer/config/categories_<type>.txt`
-
-#### `3-convert_csv_to_json.py <city>`
-
-* converts previously saved `csv` to `json` for submission to API
-
-#### Submit to API /textcategories endpoing
-
-* `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
-
+14. `copy_data_s3.sh`: upload /data directory to s3 bucket
 
 ---
 
-## ChatGPT Classifier
+## Source urls pattern from id key
 
-Used for labeling `TextCategory` records: these are the data's <reportCategory>
-that are labeled and mapped to one of several `Category` records.
+* CSV: https://data.buffalony.gov/api/views/d6g9-xbgu/rows.csv?accessType=DOWNLOAD
+* JSON: https://data.buffalony.gov/resource/d6g9-xbgu.json?$limit=2
 
-1. Make sure `OPENAI_API_KEY` is set in env.
-2. Download "select distinct <reportCategory> list of fields > (`data_311.json`,
-   `data_crime.json`)
-3. Populate `data_311.txt`, `data_crime.txt` with `TextCategory` to be
-   classified (use `jq`)
-4. Ensure `prompt_311.txt`, `prompt_crime.txt`, and `categories_311.txt`,
-   `categories_crime.txt` are valid inputs (should not change after a while0)
-5. Run `classifier.py` in docker container
-6. Check `out_311.json` and `out_crime.json` for label
+
+## Template -> Source Config
+
+### Download
+
+`0-download.py <dir>` takes `meta.json` url and downloads sample
+`data.json` or `data.csv`.
+
+### Prompt
+
+`./prompt/.1-gen-source-config.txt`:
+
+#### Obtaining User Data
+
+Snippet of JSON or CSV data from url source e.g $?limit=3 (Example commands)
+
+* JSON: `curl -s 'https://data.buffalony.gov/resource/d6g9-xbgu.json?$limit=3' > buffalo.json`
+* CSV: `curl -s 'https://data.buffalony.gov/api/views/d6g9-xbgu/rows.csv?accessType=DOWNLOAD' | awk 'NR > 3 { exit } { print }' > buffalo.csv`
+
+NB: use awk here since `curl | head -n 3` doesn't (OS Specific) always send
+SIGPIPE to indicate end of process, so curl could continue to download in
+background. Does seem to work in ubuntu, but using awk for robustness.
+
+Submit ~3 examples as user role.
 
 ---
 
-## Adding a Source
+## Sample Data -> Source Config
 
-1. Populate new entity modeled on `api/src/main/resources/data/source_config.json` (but don't save)
+* `./1-generate-source_config.py <data_directory> <sample_data.json>`
+* e.g.: `./1-generate-source-config.py data/039-buffalo-crime/ data/039-buffalo-crime/buffalo.json`
 
-* URL
-* lat/lng center point for city
-* Mappings: make sure to use JSON path notation (`/` for object depth)
-* numRecords: `<URL>?$query=SELECT%20count(*)`
+Requires correct `meta.json`.
 
-2. Submit json object at endpoints `/sources` or `/sources/batch`:
+## Source Config -> Method Gen
 
-`curl -X POST -H 'X-API-KEY: <key>' -H 'content-type: application/json' -d @source.json localhost:8080/sources/batch`
+* `./2-generate-source-methods.py <data_directory> <sample_data.json>`
+* e.g.: `./2-generate-source-methods.py data/039-buffalo-crime/ data/039-buffalo-crime/buffalo.json`
 
+### Prompt
 
-## Adding Source's TextCategory
+`./prompt/.2=generate-source-methods.txt`:
 
-General process:
+USER INPUT:
 
-1. compile and download distinct `TextCategory` elements via `reportCategory` field
-2. Classify, using openAI or whatever classifier
+1. source config json from previous step (`1-generate-source-config.py`)
+2. sample data Same as above snippet of json or csv data
 
-#### Getting `reportCategory` Data
+---
 
-Download
+## Verify; add any method gen, use in Source Config.
 
-Use `group` is preferred, distinct will duplicate on large sets
+* Determine if `*.json.methods.txt` has separate methods
+* add methods to api `service/parserstrategy/*.java` city methods page.
+* add source_config to source-config.json
+* submit and verify
 
-* `curl <url>$select=<column>&$group=<column>&$limit=100000 > data_<type>.json`
-* `curl <url>$query=SELECT distinct <reportCategory> limit 10000 > data_crime.json`
-* `curl <url>$query=SELECT distinct <reportCategory> limit 10000 > data_311.json`
+---
 
+### Data Notes
 
-Extract via jq (Note the raw output (-r) to strip quotes.)
+`./data` contains downloads, scratch.
 
-* `cat data_crime.json | jq -r '.[].<reportCategory>' > data_crime.txt`
-* `cat data_311.json | jq -r '.[].<reportCategory>' > data_311.txt`
+From `001-*` to `039-*` were original "scratch" datasets cobbled together
+without much process.
 
+The data is valid, but they're the results of old extraction scripts
+(textcategory) approach of passing "crime" and "311" parameter.
 
-
-#### /Classifier
-
-* Current category labels are in `categories_311.txt`, and
-  `categories_crime.txt`
-  * (these are setup for huggingface models and scripts adapts to openAI as
-    well)
-* Ensure "select distinct `reportCategory`" data from query is extracted to
-  `/classifier/data/<city>/data_311.txt` and `/classifier/data/<city>/data_crime.txt`. (copy paste
-  lists)
-* Verify prompts in `/classifier/prompt_311.txt`, `/classifier/prompt_crime.txt`
-* `classifer_311.py`, `classifer_crime.py`: are setup to submit prompt, category and data to OpenAI
-* output: `out_311.json`, `out_crime.json`
+From `040-*`, using the source-config process outlined above.
 
 
-#### Labeling
-
-* Classifier is a starting point, still have to manually assign labels. Easiest
-to do side-by-side in Excel.
-
-* There are some convenience scripts above, but generally the process is below
-
-* Review labels, make sure to overwrite with any _SKIP_..
-
-`2-convert_out_to_csv.py <type> <city>`
-
-* `classifier/config/categories_<type>.txt` contains reference labels
-
-* Save as csv: Title columns, save as .csv -> `labeled_crime.csv`, `labeled_311.csv`.
-  * !!! * column titles: ["dataType", "text", "label"] *
-
-NB: Data Submission Format:
-
-```
-    [
-...,
-{
-    "dataType": "crime",
-    "text": <textCategory>,
-    "label": 1
-},
-...]
-```
-
-
-#### Submitting new Source TextCategory(ies): convert_csv_to_json.py
-
-`3-convert_csv_to_json.py <city>`: to take csv and convert to list of json for  `/textcategory` submission.
-
-* `data/<city>/labeled_crime.csv` -> `data/<city>/labeled_crime.json`
-* `data/<city>/labeled_311.csv` -> `data/<city>/labeled_311.json`
-
-
-Build and submit `TextCategory` *before* submitting any `Source` /
-`source_config.json`. A new `Source` triggers workers, but if no `TextCategory`
-are built, each record will throw a `MissingCategoryException` error.
-
-Submission:
-
-```
-* `curl -X POST -d @labeled_311.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
-* `curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
-
-```
+---
 
 
 ## Adding Error TextCategories
