@@ -48,7 +48,6 @@ public class DataJobRepositoryTest {
     private Source source;
     private Source source2;
 
-
     @BeforeEach
     public void setUp() {
         Locale locale = new Locale();
@@ -58,15 +57,14 @@ public class DataJobRepositoryTest {
         mappingRepository.save(mapping);
         mappingRepository.save(mapping2);
         source = new Source(locale, "category", "description", "url",
-                            DataParserType.JSON, DataProcessType.MEMORY, DataJobConfiguratorType.BASE);
+                DataParserType.JSON, DataProcessType.MEMORY, DataJobConfiguratorType.BASE);
         source2 = new Source(locale, "category", "description", "url",
-                             DataParserType.JSON, DataProcessType.MEMORY, DataJobConfiguratorType.BASE);
+                DataParserType.JSON, DataProcessType.MEMORY, DataJobConfiguratorType.BASE);
         source.setMapping(mapping);
         source2.setMapping(mapping2);
         sourceRepository.save(source);
         sourceRepository.save(source2);
     }
-
 
     @Test
     @Transactional
@@ -192,7 +190,60 @@ public class DataJobRepositoryTest {
         int num = dataJobRepository.updateAllIncompleteToQueuedBefore(DataJobStatus.QUEUED, LocalDateTime.now(),
                 excludedStatuses, aDayAgo);
 
-
         assertThat(num).isEqualTo(2);
+    }
+
+    @Test
+    @Transactional
+    public void updateElapsedJobsTest() {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime aDayAgo = now.minusDays(1);
+        LocalDateTime twoDaysAgo = now.minusDays(2);
+
+        DataJob datajob1 = new DataJob(LocalDateTime.now(), source, "id");
+        DataJob datajob2 = new DataJob(LocalDateTime.now(), source, "id");
+        DataJob datajob3 = new DataJob(LocalDateTime.now(), source, "id");
+
+        datajob1.setStatus(DataJobStatus.POLL_WAIT);
+        datajob2.setStatus(DataJobStatus.POLL_WAIT);
+        datajob3.setStatus(DataJobStatus.POLL_WAIT);
+
+        dataJobRepository.save(datajob1);
+        dataJobRepository.save(datajob2);
+        dataJobRepository.save(datajob3);
+
+        // avoid auto updatedAt on save
+        entityManager.createNativeQuery("UPDATE data_job SET updated_at = :updatedAt WHERE id = :id")
+                .setParameter("updatedAt", aDayAgo)
+                .setParameter("id", datajob2.getId())
+                .executeUpdate();
+
+        entityManager.createNativeQuery("UPDATE data_job SET updated_at = :updatedAt WHERE id = :id")
+                .setParameter("updatedAt", twoDaysAgo)
+                .setParameter("id", datajob3.getId())
+                .executeUpdate();
+
+        List<DataJob> waits = dataJobRepository.findAllInStatuses(List.of(DataJobStatus.POLL_WAIT));
+        assertThat(waits.size()).isEqualTo(3);
+
+        LocalDateTime tenSecsAgo = LocalDateTime.now().minusSeconds(10);
+        int num = dataJobRepository.updateElapsedJobs(tenSecsAgo, DataJobStatus.POLL_WAIT, DataJobStatus.QUEUED);
+        assertThat(num).isEqualTo(2);
+
+        waits = dataJobRepository.findAllInStatuses(List.of(DataJobStatus.POLL_WAIT));
+        assertThat(waits.size()).isEqualTo(1);
+
+        // ensure return zero
+        entityManager.createNativeQuery("UPDATE data_job SET updated_at = :updatedAt WHERE id = :id")
+                .setParameter("updatedAt", aDayAgo)
+                .setParameter("id", datajob1.getId())
+                .executeUpdate();
+        num = dataJobRepository.updateElapsedJobs(tenSecsAgo, DataJobStatus.POLL_WAIT, DataJobStatus.QUEUED);
+        assertThat(num).isEqualTo(1);
+
+        waits = dataJobRepository.findAllInStatuses(List.of(DataJobStatus.POLL_WAIT));
+        assertThat(waits.size()).isEqualTo(0);
+
     }
 }
