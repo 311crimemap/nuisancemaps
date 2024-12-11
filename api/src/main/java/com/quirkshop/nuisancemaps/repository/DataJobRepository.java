@@ -3,7 +3,6 @@ package com.quirkshop.nuisancemaps.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 
@@ -14,10 +13,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.persistence.SqlResultSetMapping;
-import jakarta.persistence.EntityResult;
-import jakarta.persistence.FieldResult;
 
 import jakarta.persistence.LockModeType;
 
@@ -43,18 +38,18 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     // inner: find max data job via group by, then match return data_job
     @Query(value = """
-           SELECT ranked.*
-           FROM (
-                 SELECT d.*,
-                 ROW_NUMBER() OVER (
-                                    PARTITION BY d.source_id
-                                    ORDER BY d.session_id DESC, d.param_offset DESC, d.id DESC
-                                    ) AS row_rank
-                 FROM data_job d
-                 ) ranked
-           WHERE ranked.row_rank = 1
-           ORDER BY ranked.source_id
-           """, nativeQuery = true)
+            SELECT ranked.*
+            FROM (
+                  SELECT d.*,
+                  ROW_NUMBER() OVER (
+                                     PARTITION BY d.source_id
+                                     ORDER BY d.session_id DESC, d.param_offset DESC, d.id DESC
+                                     ) AS row_rank
+                  FROM data_job d
+                  ) ranked
+            WHERE ranked.row_rank = 1
+            ORDER BY ranked.source_id
+            """, nativeQuery = true)
     List<DataJob> findMaxSessionIdOffsetDataJobs();
 
     // NB: JPQL doesn't support enums as params
@@ -78,4 +73,8 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     DataJob findLastDataJobBySource(Integer source_id);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE DataJob d SET d.status = :newStatus WHERE d.status = :currentStatus AND d.updatedAt < :threshold")
+    int updateElapsedJobs(LocalDateTime threshold, DataJobStatus currentStatus, DataJobStatus newStatus);
 }
