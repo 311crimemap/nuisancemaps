@@ -62,6 +62,9 @@ public class FileDataProcessingStrategyTest {
     private DataJob mockDataJob;
 
     @MockBean
+    private FileDataPreProcessor fileDataPreProcessor;
+
+    @MockBean
     private DataJobRepository mockDataJobRepository;
 
     @Autowired
@@ -210,7 +213,7 @@ public class FileDataProcessingStrategyTest {
         Source source = sourceRepository.findOneBySourceConfigId(12);
 
         DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
-            .create(source.getDataJobConfiguratorType());
+                .create(source.getDataJobConfiguratorType());
         DataJob dataJob = new DataJob(LocalDateTime.now(), source, "id");
         dataJobConfigurator.initialize(dataJob);
 
@@ -222,6 +225,7 @@ public class FileDataProcessingStrategyTest {
         when(fs.getUsableSpace()).thenReturn(DATA_DIR_MIN_FREE + 1);
         when(mockDataJob.getSource()).thenReturn(source);
         when(mockDataJob.buildFilename()).thenReturn(filename);
+        when(fileDataPreProcessor.preProcess(mockDataJob, true)).thenReturn(filePath);
 
         File file = new File(filePath);
 
@@ -265,6 +269,7 @@ public class FileDataProcessingStrategyTest {
         when(fs.getUsableSpace()).thenReturn(DATA_DIR_MIN_FREE + 1);
         when(mockDataJob.getSource()).thenReturn(source);
         when(mockDataJob.buildFilename()).thenReturn(filename);
+        when(fileDataPreProcessor.preProcess(mockDataJob, true)).thenReturn(filePath);
 
         File file = new File(filePath);
 
@@ -281,7 +286,7 @@ public class FileDataProcessingStrategyTest {
         reportIds.add("16236266");
         reportIds.add("16236267");
         List<Data311> data311s = data311Repository
-            .findAllBySource_Locale_IdAndReportNumIn(locale.getId(), reportIds);
+                .findAllBySource_Locale_IdAndReportNumIn(locale.getId(), reportIds);
 
         assertThat(file.exists()).isTrue();
 
