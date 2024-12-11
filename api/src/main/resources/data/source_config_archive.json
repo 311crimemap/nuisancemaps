@@ -478,6 +478,125 @@
         "parsingStrategy": null
       }
     }
+  },
+  {
+    "sourceConfigId": 19,
+    "url": "https://hub.arcgis.com/api/download/v1/items/8e53asdf2adsdfaaseedc1sd1f4sd9df8s79bd5e67fdd9c8be0/csv?redirect=true&layers=0",
+    "cookie": null,
+    "category": "crime",
+    "description": "Detroit Crime",
+    "dataParserType": "CSV",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": "2024-05-15",
+      "reportNum": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
+  },
+  {
+    "sourceConfigId": 20,
+    "url": "https://hub.arcgis.com/api/download/v1/items/8e53asdf2adsdfaaseedc1sd1f4sd9df8s79bd5e67fdd9c8be0/csv?redirect=true&layers=0",
+    "cookie": null,
+    "category": "crime",
+    "description": "Detroit Crime",
+    "dataParserType": "CSV",
+    "dataProcessType": "MEMORY",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": "$[*]",
+      "orderKey": ":id",
+      "startReportedAt": "2024-05-15",
+      "reportNum": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
   }
-
 ]

@@ -106,7 +106,6 @@ public class DataProcessStrategyFactoryTest {
 
         assertThat(dataJob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
 
-
         // Mock okHttpClient to return the jsonFixtureContent if it ever makes a
         // request to url; the client.newCall(), call and execute() are set to
         // return mocked response, responseBody (see @Autowire above)
@@ -145,7 +144,6 @@ public class DataProcessStrategyFactoryTest {
 
     }
 
-
     @Test
     @Transactional
     void testFetchDataCookieWithMock() throws IOException {
@@ -160,10 +158,10 @@ public class DataProcessStrategyFactoryTest {
         File sourceJSON = resourceLoader.getResource("classpath:data/source_config_archive.json").getFile();
 
         List<Source> sources = objectMapper.readValue(sourceJSON,
-                                                      new TypeReference<List<Source>>() {
-        });
+                new TypeReference<List<Source>>() {
+                });
 
-        Source s = sources.get(6); //html apd incident
+        Source s = sources.get(6); // html apd incident
 
         when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
 
@@ -208,6 +206,88 @@ public class DataProcessStrategyFactoryTest {
         Request capturedRequest = requestCaptor.getValue();
         Headers headers = capturedRequest.headers();
         assertThat(headers.get("cookie")).isEqualTo(s.getCookie());
+    }
+
+    @Test
+    @Transactional
+    void testFileFetchData202JobStatus() throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config_archive.json").getFile();
+
+        List<Source> sources = objectMapper.readValue(sourceJSON,
+                new TypeReference<List<Source>>() {
+                });
+
+        Source s = sources.get(8); // Detroit Crime FILE
+
+        when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
+
+        // DataJob
+        DataJob dataJob = new DataJob(LocalDateTime.now(), s, "reportNum");
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(s.getDataJobConfiguratorType());
+        dataJob = dataJobConfigurator.initialize(dataJob);
+
+        // initial DataJobStatus before 202
+        assertThat(dataJob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
+
+        // set mocked okHttpClient client responses in fetchData (return 202 status code
+        // )
+        InputStream mockInputStream = null;
+        when(response.code()).thenReturn(202);
+        when(client.newCall(Mockito.any(Request.class))).thenReturn(call);
+        when(call.execute()).thenReturn(response);
+
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(DataProcessType.FILE);
+
+        InputStream inputStream2 = dataProcessStrategy.fetchData(dataJob);
+
+        // sets DataJobStatus to POLL_WAIT and return null (job end)
+        assertThat(inputStream2).isNull();
+        assertThat(dataJob.getStatus()).isEqualTo(DataJobStatus.POLL_WAIT);
+    }
+
+    @Test
+    @Transactional
+    void testMemoryFetchData202JobStatus() throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        File sourceJSON = resourceLoader.getResource("classpath:data/source_config_archive.json").getFile();
+
+        List<Source> sources = objectMapper.readValue(sourceJSON,
+                new TypeReference<List<Source>>() {
+                });
+
+        Source s = sources.get(9); // Detroit Crime Memory
+
+        when(source_repo.save(Mockito.any(Source.class))).thenReturn(s);
+
+        // DataJob
+        DataJob dataJob = new DataJob(LocalDateTime.now(), s, "reportNum");
+        DataJobConfigurator dataJobConfigurator = DataJobConfiguratorFactory
+                .create(s.getDataJobConfiguratorType());
+        dataJob = dataJobConfigurator.initialize(dataJob);
+
+        // initial DataJobStatus before 202
+        assertThat(dataJob.getStatus()).isEqualTo(DataJobStatus.QUEUED);
+
+        // set mocked okHttpClient client responses in fetchData
+        // to return 202 status code
+        InputStream mockInputStream = null;
+        when(response.code()).thenReturn(202);
+        when(client.newCall(Mockito.any(Request.class))).thenReturn(call);
+        when(call.execute()).thenReturn(response);
+
+        DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
+                .getDataProcessStrategy(DataProcessType.FILE);
+
+        InputStream inputStream2 = dataProcessStrategy.fetchData(dataJob);
+
+        // sets DataJobStatus to POLL_WAIT and return null (job end)
+        assertThat(inputStream2).isNull();
+        assertThat(dataJob.getStatus()).isEqualTo(DataJobStatus.POLL_WAIT);
     }
 
 }

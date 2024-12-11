@@ -46,6 +46,16 @@ public class MemoryDataProcessStrategy implements DataProcessStrategy {
 
         try {
             Response response = client.newCall(request).execute();
+
+            // 202 accept: typically indicates start of background job, requires
+            // periodic poll check for generated requested file. Set status and
+            // defer back to queue.
+            if (response.code() == 202) {
+                dataJob.setStatus(DataJobStatus.POLL_WAIT);
+                dataJobRepository.save(dataJob);
+                return null;
+            }
+
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             }
