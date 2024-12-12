@@ -18,6 +18,9 @@ public class DataParserFactory {
     @Autowired
     private ObjectFactory<APDIncidentReportDataParser> apdHTMLDataParserFactory;
 
+    @Autowired
+    private ObjectFactory<XLSDataParser> xlsDataParserFactory;
+
     public DataParser getDataParser(DataParserType dataParserType) {
 
         switch (dataParserType) {
@@ -27,6 +30,8 @@ public class DataParserFactory {
             return jsonDataParserFactory.getObject();
         case APDINCIDENTREPORT:
             return apdHTMLDataParserFactory.getObject();
+        case XLS:
+            return xlsDataParserFactory.getObject();
         default:
             throw new IllegalArgumentException("Unsupported DataParserType: " + dataParserType);
 
