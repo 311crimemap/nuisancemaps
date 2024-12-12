@@ -609,11 +609,11 @@
     "dataProcessType": "FILE",
     "dataJobConfiguratorType": "BASE",
     "mapping": {
-      "rootPath": "$[*]",
-      "orderKey": "incident",
-      "startReportedAt": "2024-05-15",
+      "rootPath": null,
+      "orderKey": "Incident",
+      "startReportedAt": null,
       "reportNum": {
-        "field": "incident",
+        "field": "Incident",
         "pointer": null,
         "parsingStrategy": null
       },
@@ -628,12 +628,12 @@
         "parsingStrategy": null
       },
       "address": {
-        "field": null,
+        "field": "StreetName",
         "pointer": null,
         "parsingStrategy": null
       },
       "location": {
-        "field": "premise",
+        "field": "Premise",
         "pointer": null,
         "parsingStrategy": null
       },

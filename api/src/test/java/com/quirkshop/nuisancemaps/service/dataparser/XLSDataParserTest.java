@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Locale;
-import com.quirkshop.nuisancemaps.model.PendingTextCategory;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
