@@ -13,6 +13,7 @@ import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 
 import org.slf4j.Logger;
@@ -38,6 +39,9 @@ public class FileDataPreProcessor {
         try {
             String filename = dataJob.buildFilename();
             String filePath = String.join("/", FETCH_DATA_DIR, filename);
+
+            dataJob.setStatus(DataJobStatus.PREPROCESS);
+            dataJobRepository.save(dataJob);
 
             preProcessFilePath = preProcessZIP(dataJob, filePath, enableProcess);
 
@@ -89,7 +93,9 @@ public class FileDataPreProcessor {
         if (!enableProcess)
             return outputFilePath;
 
-        // unzip to csv
+        log.info("[preProcessZip] Start extraction: " + inputFilePath);
+
+        // unzip to outputFile
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(inputFilePath))) {
             ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {
@@ -161,8 +167,7 @@ public class FileDataPreProcessor {
 
         } catch (Exception e) {
             e.printStackTrace();
-            // dataJob.setStatus(DataJobStatus.PREPROCESS_CLEANUP_ERROR);
-
+            dataJob.setStatus(DataJobStatus.PREPROCESS_CLEANUP_ERROR);
             dataJobRepository.save(dataJob);
         }
 

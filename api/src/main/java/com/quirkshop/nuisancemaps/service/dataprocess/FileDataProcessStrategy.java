@@ -176,7 +176,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
         filePath = fileDataPreProcessor.preProcess(dataJob, true);
         if (filePath == null) {
-            // setError - DataJobStatus.PREPROCESS_ERROR
+            dataJob.setStatus(DataJobStatus.PREPROCESS_ERROR);
             return;
         }
 
