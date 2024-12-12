@@ -598,5 +598,65 @@
         "parsingStrategy": null
       }
     }
+  },
+  {
+    "sourceConfigId": 21,
+    "url": "https://data.gov/NIBRSPublicView2024.xlsx",
+    "cookie": null,
+    "category": "crime",
+    "description": "Detroit Crime",
+    "dataParserType": "XLS",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": "Incident",
+      "startReportedAt": null,
+      "reportNum": {
+        "field": "Incident",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "NIBRSDescription",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "StreetName",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "Premise",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "MapLatitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "MapLongitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "RMSOccurrenceDate",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
   }
 ]
