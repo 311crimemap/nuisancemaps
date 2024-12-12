@@ -10,6 +10,7 @@ import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.MappingRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,16 +32,10 @@ public class FileDataPreProcessorTest {
     private ResourceLoader resourceLoader;
 
     @Autowired
-    private LocaleRepository localeRepository;
-
-    @Autowired
-    private MappingRepository mappingRepository;
-
-    @Autowired
-    private SourceRepository sourceRepository;
-
-    @Autowired
     private FileDataProcessStrategy fileDataProcessStrategy;
+
+    @MockBean
+    private DataJobRepository dataJobRepository;
 
     @Autowired
     private FileDataPreProcessor fileDataPreProcessor;
