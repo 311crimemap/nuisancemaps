@@ -29,8 +29,8 @@ import org.springframework.stereotype.Service;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.Request.Builder;
+import okhttp3.Response;
 
 @Service
 public class FileDataProcessStrategy implements DataProcessStrategy {
@@ -47,6 +47,9 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
     @Autowired
     private DataJobRepository dataJobRepository;
+
+    @Autowired
+    private FileDataPreProcessor fileDataPreProcessor;
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
@@ -167,6 +170,17 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         dataJobRepository.save(dataJob);
 
         /*
+         * PREPROCESS
+         * intermediate conversion (zip, etc) to indicated DataParserType
+         */
+
+        filePath = fileDataPreProcessor.preProcess(dataJob, true);
+        if (filePath == null) {
+            dataJob.setStatus(DataJobStatus.PREPROCESS_ERROR);
+            return;
+        }
+
+        /*
          * PARSE FILE
          */
 
@@ -193,6 +207,8 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     @Override
     public void cleanup(DataJob dataJob) {
 
+        fileDataPreProcessor.cleanup(dataJob);
+
         String filePath;
 
         try {
@@ -203,7 +219,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
                 file.delete();
             }
 
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             dataJob.setStatus(DataJobStatus.CLEANUP_ERROR);
             dataJobRepository.save(dataJob);
@@ -242,7 +258,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return new TimerTask() {
             @Override
             public void run() {
-                log.info(String.format("Download: %s | %d", filePath, totalBytesRead.get()));
+                log.info(String.format("Writing: %s | %d", filePath, totalBytesRead.get()));
             }
         };
     }
