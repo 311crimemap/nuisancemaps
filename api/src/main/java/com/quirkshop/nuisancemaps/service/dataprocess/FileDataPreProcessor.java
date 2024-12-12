@@ -45,14 +45,11 @@ public class FileDataPreProcessor {
 
             preProcessFilePath = preProcessZIP(dataJob, filePath, enableProcess);
 
-            // preProcessFilePath = preProcessXLS(dataJob, preProcessFilePath,
-            // enableProcess);
-            // System.out.println("PREPROCESSXLS: " + preProcessFilePath);
+            // TODO: chain any other preprocess steps
+            // preProcessFilePath = preProcessXYZ(dataJob, preProcessFilePath,
 
         } catch (Exception e) {
-            // on error return null
             return null;
-
         }
 
         return preProcessFilePath;
@@ -123,29 +120,10 @@ public class FileDataPreProcessor {
                 }
             }
         } catch (Exception e) {
-            // Log
-        }
 
-        return outputFilePath;
-    }
-
-    // convert excel
-    public String preProcessXLS(DataJob dataJob, String inputFilePath, boolean enableProcess) {
-        String outputFilePath = inputFilePath;
-        Source source = dataJob.getSource();
-        DataParserType dataParserType = source.getDataParserType();
-
-        if (!(inputFilePath.endsWith(".xls") || inputFilePath.endsWith(".xlsx")))
-            return inputFilePath;
-
-        if (dataParserType == DataParserType.CSV) {
-
-            // filename
-            // .xls or .xlsz
-            if (!enableProcess)
-                return outputFilePath;
-
-            // if enableProcess
+            String logErr = String.format("[ERR] preProcessZip: DataJob ID: %s | URL: %s | inputFilePath: %s",
+                    dataJob.getId(), dataJob.getUrl(), inputFilePath);
+            log.info(logErr);
         }
 
         return outputFilePath;

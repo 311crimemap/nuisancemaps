@@ -171,7 +171,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
         /*
          * PREPROCESS
-         * intermediate conversion from zip, xls to indicated DataParserType
+         * intermediate conversion (zip, etc) to indicated DataParserType
          */
 
         filePath = fileDataPreProcessor.preProcess(dataJob, true);
