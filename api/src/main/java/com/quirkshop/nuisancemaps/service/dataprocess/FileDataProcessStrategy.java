@@ -258,7 +258,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return new TimerTask() {
             @Override
             public void run() {
-                log.info(String.format("Download: %s | %d", filePath, totalBytesRead.get()));
+                log.info(String.format("Writing: %s | %d", filePath, totalBytesRead.get()));
             }
         };
     }

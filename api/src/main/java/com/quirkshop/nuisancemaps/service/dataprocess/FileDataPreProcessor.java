@@ -1,7 +1,13 @@
 package com.quirkshop.nuisancemaps.service.dataprocess;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.config.DataParserType;
@@ -35,7 +41,9 @@ public class FileDataPreProcessor {
 
             preProcessFilePath = preProcessZIP(dataJob, filePath, enableProcess);
 
-            preProcessFilePath = preProcessXLS(dataJob, preProcessFilePath, enableProcess);
+            // preProcessFilePath = preProcessXLS(dataJob, preProcessFilePath,
+            // enableProcess);
+            // System.out.println("PREPROCESSXLS: " + preProcessFilePath);
 
         } catch (Exception e) {
             // on error return null
@@ -49,18 +57,19 @@ public class FileDataPreProcessor {
 
     // unzip
     public String preProcessZIP(DataJob dataJob, String inputFilePath, boolean enableProcess)
-            throws MalformedURLException {
+            throws MalformedURLException, IOException {
         String outputFilePath = inputFilePath;
         Source source = dataJob.getSource();
         DataParserType dataParserType = source.getDataParserType();
 
-        if (!inputFilePath.endsWith(".zip"))
+        // determine zipfile with extension and added query stuff param
+        if (!(inputFilePath.contains("zipfile")))
             return inputFilePath;
 
         // filename is listed as stuffed query parameter ZIPFILE_PARAM
         // check if there is a ZIPFILE_PARAM file to extract
 
-        String url = source.getUrl();
+        String url = dataJob.getUrl();
         String zipFile = UriComponentsBuilder.fromUriString(url)
                 .build()
                 .getQueryParams()
@@ -69,15 +78,46 @@ public class FileDataPreProcessor {
         if (zipFile == null)
             return inputFilePath;
 
-        if (dataParserType == DataParserType.CSV) {
+        // e.g host.com/test/xyz.zip?zipfile=2024.csv ->
+        // host.com-test-xvz.zip-zipfile_2024.csv
 
-            // filename
+        // filename from source
+        String fileName = dataJob.buildFilename();
+        String extension = "-" + zipFile;
+        outputFilePath = String.join("/", FETCH_DATA_DIR, fileName) + extension;
 
-            if (!enableProcess)
-                return outputFilePath;
+        if (!enableProcess)
+            return outputFilePath;
 
-            // unzip to csv
+        // unzip to csv
+        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(inputFilePath))) {
+            ZipEntry entry;
+            while ((entry = zipInputStream.getNextEntry()) != null) {
 
+                if (entry.getName().equals(zipFile)) {
+
+                    File outputFile = new File(outputFilePath);
+
+                    // Ensure parent directories are created
+                    File parentDir = outputFile.getParentFile();
+                    if (parentDir != null && !parentDir.exists()) {
+                        parentDir.mkdirs();
+                    }
+
+                    try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(outputFile))) {
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+                            bos.write(buffer, 0, bytesRead);
+                        }
+                    }
+
+                    log.info("Extracted: " + outputFile.getAbsolutePath());
+                    return outputFilePath; // Stop after extracting the specific file
+                }
+            }
+        } catch (Exception e) {
+            // Log
         }
 
         return outputFilePath;
@@ -95,7 +135,7 @@ public class FileDataPreProcessor {
         if (dataParserType == DataParserType.CSV) {
 
             // filename
-
+            // .xls or .xlsz
             if (!enableProcess)
                 return outputFilePath;
 
