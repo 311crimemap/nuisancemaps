@@ -21,6 +21,9 @@ public class DataParserFactory {
     @Autowired
     private ObjectFactory<XLSDataParser> xlsDataParserFactory;
 
+    @Autowired
+    private ObjectFactory<CSVCustomDataParser> csvCustomDataParserFactory;
+
     public DataParser getDataParser(DataParserType dataParserType) {
 
         switch (dataParserType) {
@@ -32,6 +35,8 @@ public class DataParserFactory {
             return apdHTMLDataParserFactory.getObject();
         case XLS:
             return xlsDataParserFactory.getObject();
+        case CSVCUSTOM:
+            return csvCustomDataParserFactory.getObject();
         default:
             throw new IllegalArgumentException("Unsupported DataParserType: " + dataParserType);
 

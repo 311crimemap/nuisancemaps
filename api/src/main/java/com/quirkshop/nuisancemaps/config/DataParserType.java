@@ -5,5 +5,6 @@ public enum DataParserType {
     CSV,
     JSON,
     APDINCIDENTREPORT,
-    XLS
+    XLS,
+    CSVCUSTOM
 }

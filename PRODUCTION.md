@@ -111,6 +111,10 @@ The id becomes `locale_id` below
 * Submit to update route:
   * `curl -X PATCH -H 'X-API-KEY: <key>' -H 'content-type:application/json' -d @38.json api.311crimemap.com/sources/38`
 
+2a. Source `Mapping`
+
+* Optional fields:
+  * CSVCUSTOM: `dataParserDelimeter`, `dataParserNumSkip`
 
 
 ---

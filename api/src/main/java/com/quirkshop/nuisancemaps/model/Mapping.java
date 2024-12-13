@@ -45,6 +45,9 @@ public class Mapping {
     private String orderKey;
     private String startReportedAt;
 
+    private String dataParserDelimeter = ",";
+    private Integer dataParserNumSkip = 0;
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "field", column = @Column(name = "description_field")),
@@ -130,6 +133,8 @@ public class Mapping {
 
     public Mapping(MappingField reportNum, MappingField reportCategory, String rootPath, String orderKey,
             String startReportedAt,
+            String dataParserDelimeter,
+            Integer dataParserNumSkip,
             MappingField description, MappingField address,
             MappingField location, MappingField latitude,
             MappingField longitude, MappingField reportedAt, MappingField reportedAt2) {
@@ -138,6 +143,8 @@ public class Mapping {
         this.rootPath = rootPath;
         this.orderKey = orderKey;
         this.startReportedAt = startReportedAt;
+        this.dataParserDelimeter = dataParserDelimeter;
+        this.dataParserNumSkip = dataParserNumSkip;
         this.description = description;
         this.address = address;
         this.location = location;
@@ -239,6 +246,22 @@ public class Mapping {
 
     public void setStartReportedAt(String startReportedAt) {
         this.startReportedAt = startReportedAt;
+    }
+
+    public String getDataParserDelimeter() {
+        return dataParserDelimeter;
+    }
+
+    public void setDataParserDelimeter(String dataParserDelimeter) {
+        this.dataParserDelimeter = dataParserDelimeter;
+    }
+
+    public Integer getDataParserNumSkip() {
+        return dataParserNumSkip;
+    }
+
+    public void setDataParserNumSkip(Integer dataParserNumSkip) {
+        this.dataParserNumSkip = dataParserNumSkip;
     }
 
     @Mapped
