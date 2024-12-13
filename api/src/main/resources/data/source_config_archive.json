@@ -658,5 +658,67 @@
         "parsingStrategy": null
       }
     }
+  },
+  {
+    "sourceConfigId": 22,
+    "url": "https://data.gov/houston-311.txt",
+    "cookie": null,
+    "category": "311",
+    "description": "Houston 311",
+    "dataParserType": "CSVCUSTOM",
+    "dataProcessType": "FILE",
+    "dataJobConfiguratorType": "BASE",
+    "mapping": {
+      "rootPath": null,
+      "orderKey": "365 Case Number",
+      "startReportedAt": null,
+      "dataParserDelimeter": "|",
+      "dataParserNumSkip": 5,
+      "reportNum": {
+        "field": "365 Case Number",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportCategory": {
+        "field": "Incident Case Type",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "description": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "address": {
+        "field": "Incident Street",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "location": {
+        "field": "Customer SuperNeighborhood",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "latitude": {
+        "field": "Latitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "longitude": {
+        "field": "Longitude",
+        "pointer": null,
+        "parsingStrategy": null
+      },
+      "reportedAt": {
+        "field": "Created Date Local",
+        "pointer": null,
+        "parsingStrategy": "REPORTED_AT_CSV_311_HOUSTON"
+      },
+      "reportedAt2": {
+        "field": null,
+        "pointer": null,
+        "parsingStrategy": null
+      }
+    }
   }
 ]
