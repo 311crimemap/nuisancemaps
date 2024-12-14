@@ -2,11 +2,14 @@
 #
 # given source config, downloads data to extract text categories
 #
+import sys
 import argparse
 import os
 import json
 import subprocess
 import csv
+import itertools
+import chardet
 import pandas as pd
 
 parser = argparse.ArgumentParser(description="generate source config java methods via openAI API")
@@ -37,8 +40,12 @@ with open(META_FILE, 'r') as file:
 url = meta['url']
 dataParserType = meta['dataParserType']
 source_config = get_source_config(dataParserType)
-report_category = source_config['mapping']['reportCategory']['field']
+mapping = source_config['mapping']
+dataParserDelimeter = mapping.get("dataParserDelimeter", ",")
+dataParserNumSkip = mapping.get("dataParserNumSkip", 0)
+report_category = mapping['reportCategory']['field']
 
+csv.field_size_limit(sys.maxsize)
 #
 # download
 # filter report category and/or save to text_cat
@@ -63,17 +70,35 @@ if (dataParserType == "XLS"):
             outfile.write(item + '\n')
 
 
-if (dataParserType == "CSV"):
+if (dataParserType in ["CSV", "CSVCUSTOM"]):
     command = f"curl -C - '{url}' > {CSV_FILE}"
     print(f"downloading {url}")
     subprocess.run(command, shell=True, check=True)
 
+    # grab encoding
+    with open(CSV_FILE, 'rb') as rawfile:
+        print("Detecting encoding")
+        chunk = rawfile.read(1024 * 1024)
+        result = chardet.detect(chunk)
+        encoding = result['encoding']
+        encoding = encoding if encoding in ["utf-8", "utf-8-sig"] else "latin1"
+        print(f"Encoding: {encoding}")
+
     print("filter unique and sort")
     unique_items = set()
-    with open(CSV_FILE, mode='r', newline='') as infile:
-        reader = csv.DictReader(infile)
+    numRow = 0
+    with open(CSV_FILE, mode='r', newline='', encoding=encoding) as infile:
+
+        reader = csv.DictReader(itertools.islice(infile, dataParserNumSkip, None),  delimiter=dataParserDelimeter)
+        print(f"Skipping {dataParserNumSkip} lines")
+
         for row in reader:
-            unique_items.add(row[report_category])
+            try:
+                val = row[report_category]
+                if (val and val.strip()):
+                    unique_items.add(val)
+            except Exception as e:
+                print(f"[ERR] {e}")
 
     sorted_items = sorted(unique_items)
 

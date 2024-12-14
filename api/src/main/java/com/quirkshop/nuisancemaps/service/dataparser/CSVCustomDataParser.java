@@ -6,11 +6,13 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
 import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
@@ -38,6 +40,25 @@ public class CSVCustomDataParser extends DataParser {
     @Autowired
     MapFieldExtractor mapFieldExtractor;
 
+    /*
+     * Parsing Notes:
+     * &
+     * NO_QUOTE_CHARACTER: don't care about properly enclosed quotes - it breaks
+     * parsing, just keep rows consistent
+     *
+     * EOF extra blank lines can trigger noisy errors but overall parsing iteration
+     * should recover
+     *
+     * Separate out csv iterator to catch and recover from bad parses on a row
+     * basis. Bit more robust.
+     *
+     * Process:
+     * 1. skip initial lines (specified by mapping.getDataParserNumSkip())
+     * 2. "first" row assumed as headers; load
+     * 3. skip subsequent rows according to paramOffset
+     * 4. start parsing rows
+     *
+     */
     @Override
     public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
         // sanity checks
@@ -58,21 +79,33 @@ public class CSVCustomDataParser extends DataParser {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
         try (CSVReader csvReader = new CSVReaderBuilder(reader)
-                .withCSVParser(new CSVParserBuilder().withSeparator(delimeter).build())
+                .withCSVParser(new CSVParserBuilder()
+                        .withSeparator(delimeter)
+                        .withQuoteChar(CSVWriter.NO_QUOTE_CHARACTER)
+                        .build())
                 .build()) {
 
-            csvReader.skip(initialNumSkip + dataJob.getParamOffset());
+            if (initialNumSkip > 0) {
+                csvReader.skip(initialNumSkip);
 
-            if (initialNumSkip + dataJob.getParamOffset() > 0) {
-                log.info(String.format("[CSVCustomDataParser]: offset detected skipping %d + %d = %d lines",
-                        initialNumSkip, dataJob.getParamOffset(),
-                        initialNumSkip + dataJob.getParamOffset()));
+                log.info(String.format("[CSVCustomDataParser]: offset detected skipping %d lines",
+                        initialNumSkip));
             }
 
-            // Map<String, String> trimmedRow;
             String[] headers = null;
             Map<String, String> rowMap = new HashMap<>();
-            for (String[] row : csvReader) {
+            String[] row;
+
+            Iterator<String[]> csvIter = csvReader.iterator();
+            while (csvIter.hasNext()) {
+
+                try {
+                    row = csvIter.next();
+                } catch (Exception e) {
+                    log.error("[CSVCustomDataParser] Iterator Row Parse ERR: " + e.getMessage());
+                    parseCounter.numRowErrorsIncrement();
+                    continue;
+                }
 
                 // build headers
                 if (headers == null) {
@@ -81,21 +114,39 @@ public class CSVCustomDataParser extends DataParser {
                     }
 
                     headers = row;
+
+                    try {
+                        csvReader.skip(dataJob.getParamOffset());
+                    } catch (Exception e) {
+                        log.error("[CSVCustomDataParser] Row Skip ERR: " + e.getMessage());
+                        parseCounter.numRowErrorsIncrement();
+                    }
+
                     continue;
                 }
 
-                // populate each row
+                // populate row with each column value
+                boolean hasMismatchHeaderRowLenError = false;
                 for (int i = 0; i < headers.length; i++) {
 
                     try {
+                        // System.out.println(headers[i] + " | " + row[i]);
                         rowMap.put(headers[i], i < row.length ? row[i] : null);
                     } catch (Exception e) {
-
-                        // handle bad row; improper number of columns vs. headers, etc.
-                        log.info("[CSVDataParser]: " + e.getMessage());
-                        parseCounter.numRowErrorsIncrement();
+                        // typically header vs row column num mismatch:
+                        // improper number of columns vs. headers, etc.
+                        hasMismatchHeaderRowLenError = true;
                         continue;
                     }
+                }
+
+                // System.out.println("----------------------\n");
+
+                if (hasMismatchHeaderRowLenError) {
+                    String errMsg = String.format("Header-Row Mismatch Parse ERR: headers len: %d | row len: %d",
+                            headers.length, row.length);
+                    log.info("[CSVCustomDataParser] " + errMsg);
+                    parseCounter.numRowErrorsIncrement();
                 }
 
                 // PARSE
@@ -112,7 +163,8 @@ public class CSVCustomDataParser extends DataParser {
                     pendingReportCategories.add(e.getReportCategory());
                     parseCounter.numMissingIncrement();
 
-                } catch (InvalidCoordinateException | MissingCoordinateException | MissingReportCategoryException e) {
+                } catch (InvalidCoordinateException | MissingCoordinateException
+                        | MissingReportCategoryException e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
                     logMissingException(source, content, e);
                     parseCounter.numMissingIncrement();
@@ -131,7 +183,8 @@ public class CSVCustomDataParser extends DataParser {
 
                 parseCounter.numFetchedIncrement();
                 numRows++;
-            }
+
+            } // end row loop
 
             numBatch++;
             logSaveBatch(dataJob, parseCounter, csvReader, numBatch, numRows);
