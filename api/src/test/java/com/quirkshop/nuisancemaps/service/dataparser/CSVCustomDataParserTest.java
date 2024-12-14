@@ -142,4 +142,27 @@ public class CSVCustomDataParserTest {
         assertThat(data311Repository.count()).isEqualTo(6);
     }
 
+    @Test
+    @Transactional
+    public void parseCSVCustomMissingClosingQuoteTest() throws IOException {
+
+        // csv has 7 records total
+        // testing unclosed breaking quote parse string:
+        // "The Solid Waste Department is aware of the delay and is diligen
+        Resource csvResource = resourceLoader.getResource("classpath:data/csvcustom-quote.csv");
+        InputStream inputstream = csvResource.getInputStream();
+        ParseCounter parseCounter = new ParseCounter();
+
+        Source s = sourceRepository.findOneBySourceConfigId(22);
+
+        DataJob d = new DataJob(LocalDateTime.now(), s, "365 Case Number");
+        dataJobRepository.save(d);
+
+        assertThat(data311Repository.count()).isEqualTo(0);
+
+        csvCustomDataParser.parse(d, inputstream, parseCounter);
+
+        assertThat(data311Repository.count()).isEqualTo(7);
+    }
+
 }
