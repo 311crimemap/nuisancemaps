@@ -70,70 +70,62 @@ For each source.id above, submit to create new api task:
 
 ---
 
-## Create New Source
 
-### PRE Submit New TextCategory per Source
+## Create New Source / Locale / TextCategories
 
-see `./classifer`:
+see `./classifer/README.md`. Broad strokes below.
 
-Extract data:
-* `column` is category name, `type` is 311 or crime
-* `curl <datasource>?$select=<column>&$group=<column>&$limit=100000 > data_<type>.json`
+### New Locale
 
-Follow classifier sequence:
-* `0-data.py`
-* `1-classifier.py`
-* `2-convert_out_to_csv.py`
-* EXCEL Verify columns: `| dataType | text | label |` - compare with `classifer/config/categories_<type>.txt`
-  * add SKIP as category + 1
-* `3-convert_csv_to_json.py`
-* Submit to api:
-  * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
+* copy `classifier/source-config/data/locale_template.json` -> `data/<dir>/locale.json`
+* Fill in fields
 
-### Create new Source
+### New Source
 
-1. Find locale
+Follow `./classifier/source-config/` sequence:
 
-` curl localhost:8080/locales`
+* `0-download.py`
+* `1-generate-source-config.py`
+* `2-generate-source-methods.py`
 
-The id becomes `locale_id` below
+### For Text Categories (continued):
 
-2. Submit new source:
+* `3-text-category-fetch.py`
+* `4-text-category-classifier.py`
+  * * EXCEL Verify and relable columns: `| dataType | text | label |`
+* `5-text-category-to-json-for-submit.py`
 
-* `@new_source.json`: source file; make sure its in `source_config.json` for archive.
-* `curl -X POST -H 'content-type:application/json' -H 'X-API-KEY: <KEY>' -d @new_source.json localhost:8080/locales/<locale_id>/sources`
+### Update Errant Source
 
-3. Update source (e.g. update 'startReportedAt' Mapping date)
-
-* Extract and change source: `cat source_config.json | jq '.[38]' > test.json`
-  * want to send the full updated object with changes
-* Edit `test.json` with changes; any mapping values will overwrite as well
+* Make any `source_config.json`changes - includes any mapping updates
 * Submit to update route:
-  * `curl -X PATCH -H 'X-API-KEY: <key>' -H 'content-type:application/json' -d @38.json api.311crimemap.com/sources/38`
+  * `curl -X PATCH -H 'content-type:application/json' -H 'X-API-KEY: <key>' -d @source_config.json api.311crimemap.com/sources/<id>`
+  * submit full source (updates all) object not single fields
 
-2a. Source `Mapping`
 
-* Optional fields:
-  * CSVCUSTOM: `dataParserDelimeter`, `dataParserNumSkip`
+##### Mapping
+
+Mapping has optional fields that can be ignored for most types, but required for
+specific `dataParserType`:
+
+* `CSVCUSTOM`: `dataParserDelimeter`, `dataParserNumSkip`
 
 
 ---
 
 ## Pending Text Category -> Text Category
 
-see `./classifer` - same steps  as new source once data is extracted:
+see `./classifer/source-config`: similar steps but from `/pendingtextcategories`
+endpoint, becomes source agnostic.
 
-Extract data:
+1. Extract data to particular `pending_crime_<date>` / `pending_311_<date>`
+   directory to `text_categories.txt`:
 
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=crime | jq -r '.data[].text'`
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=3131 | jq -r '.data[].text'`
+* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=crime | jq -r '.data[].text' > text_categories.txt`
+* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=3131 | jq -r '.data[].text' > text_categories.txt`
 
-Follow classifier sequence:
-* `0-data.py`
-* `1-classifier.py`
-* `2-convert_out_to_csv.py`
-* EXCEL Verify columns: `| dataType | text | label |` - compare with `classifer/config/categories_<type>.txt`
-  * add SKIP as category + 1
-* `3-convert_csv_to_json.py`
-* Submit to api
-  * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: ...' -d @labeled_311.json localhost:8080/textcategories`
+2. Follow text category sequence:
+
+* `4-text-category-classifier.py`
+  * * EXCEL Verify and relable columns: `| dataType | text | label |`
+* `5-text-category-to-json-for-submit.py`
