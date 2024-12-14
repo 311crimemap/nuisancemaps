@@ -11,6 +11,8 @@ partial query construction needed.
 3. Create directory `data/098-city-crime`, `/data/099-city-311` pattern
 
 4. Populate `meta_template.json` -> edit and copy to directory `meta.json`
+   * zipfile: add `?zipfile=<file-to-extract.csv>`
+   * arcgis: - make sure hub.arcgis url param has `redirect=true`
 
 5. Download: `0-download.py <dir>` -> downloads sample data to `data.json` or `data.csv`
 
@@ -40,6 +42,8 @@ partial query construction needed.
   `text_categories.txt.out.json` and converts `text_categories.txt.out.csv` -
   for easier edit and verification
 
+* VERIFY `text_categories.txt.out.csv` IN EXCEL
+
 * `5-text-category-to-json-for-submit.py` ->
   `text_categories.txt.out.csv.final.json` for submit
 
@@ -47,7 +51,7 @@ partial query construction needed.
 
 * submit text categories: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @text_categories.txt.out.csv.final.json localhost:8080/textcategories`
 
-* submit locales: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @locale.json localhost:8080/locales'`
+* submit locales: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @locale.json localhost:8080/locales`
 
 * submit source config: what was `data.csv.out.json` (NB: triggers worker)
   * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @source_config.json 'localhost:8080/locales/{id}/sources'`
