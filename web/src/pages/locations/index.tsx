@@ -5,7 +5,7 @@ import { getData } from "../../Util";
 import { FeatureCollection } from "../../types/features";
 import { StateCityMap } from "./statecitymap";
 
-export default function Cities() {
+export default function Locations() {
   const [sources, setSources] = useState<FeatureCollection>({
     type: "FeatureCollection",
     features: [],
