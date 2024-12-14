@@ -107,11 +107,18 @@ public class ParserStrategyConfig {
 
         // houston
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_HOUSTON,
-                             ParserStrategyConfigHouston::REPORTED_AT_CSV_311_HOUSTON);
+                ParserStrategyConfigHouston::REPORTED_AT_CSV_311_HOUSTON);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_XLS_CRIME_HOUSTON,
-                             ParserStrategyConfigHouston::REPORTED_AT_XLS_CRIME_HOUSTON);
+                ParserStrategyConfigHouston::REPORTED_AT_XLS_CRIME_HOUSTON);
         parsingFunctions.put(ParserStrategy.ADDRESS_XLS_CRIME_HOUSTON,
-                             ParserStrategyConfigHouston::ADDRESS_XLS_CRIME_HOUSTON);
+                ParserStrategyConfigHouston::ADDRESS_XLS_CRIME_HOUSTON);
+
+        // charlotte
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_CHARLOTTE,
+                ParserStrategyConfigCharlotte::REPORTED_AT_CSV_CRIME_CHARLOTTE);
+
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_CHARLOTTE,
+                ParserStrategyConfigCharlotte::ADDRESS_CSV_CRIME_CHARLOTTE);
 
         return parsingFunctions;
     }
