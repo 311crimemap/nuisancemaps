@@ -21,6 +21,7 @@ import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -29,6 +30,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,9 @@ public class XLSDataParser extends DataParser {
         textCategoryService.refreshTextCategoryIdMap();
 
         HashSet<String> pendingReportCategories = new HashSet<String>();
+
+        // 300MB - load in memory for now
+        IOUtils.setByteArrayMaxOverride(300 * 1024 * 1024);
 
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
 
@@ -83,7 +89,7 @@ public class XLSDataParser extends DataParser {
 
             // row iteration
             HashMap<String, String> row = new HashMap<String, String>();
-
+            log.info("Row Loop Start");
             // skip header or skip to offset (plus 1 for header)
             for (int i = dataJob.getParamOffset() + 1; i <= sheet.getLastRowNum(); i++) {
 
@@ -170,6 +176,8 @@ public class XLSDataParser extends DataParser {
         }
 
         savePendingTextCategories(dataJob, source, pendingReportCategories);
+
+        IOUtils.setByteArrayMaxOverride(100 * 1024 * 1024); // restore
     }
 
     private void logSaveBatch(DataJob dataJob, ParseCounter parseCounter, int numBatch, int numRows) {

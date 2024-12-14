@@ -108,6 +108,10 @@ public class ParserStrategyConfig {
         // houston
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_HOUSTON,
                              ParserStrategyConfigHouston::REPORTED_AT_CSV_311_HOUSTON);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_XLS_CRIME_HOUSTON,
+                             ParserStrategyConfigHouston::REPORTED_AT_XLS_CRIME_HOUSTON);
+        parsingFunctions.put(ParserStrategy.ADDRESS_XLS_CRIME_HOUSTON,
+                             ParserStrategyConfigHouston::ADDRESS_XLS_CRIME_HOUSTON);
 
         return parsingFunctions;
     }
