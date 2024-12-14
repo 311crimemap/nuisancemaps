@@ -7,6 +7,7 @@ import os
 import json
 import subprocess
 import csv
+import pandas as pd
 
 parser = argparse.ArgumentParser(description="generate source config java methods via openAI API")
 parser.add_argument('data', type=str, help="city data subdirectory: 039-buffalo-crime")
@@ -49,10 +50,23 @@ if (dataParserType == "JSON"):
     print(f"downloading {url}")
     subprocess.run(command, shell=True, check=True)
 
+if (dataParserType == "XLS"):
+    print("Converting .xls to .csv")
+    print("Reading xls")
+    df = pd.read_excel(f"{DIR}/data.xls")
+
+    print("filter unique and sort")
+    sorted_items = sorted(df[report_category].dropna().unique())
+
+    with open(TEXTCAT_FILE, mode='w') as outfile:
+        for item in sorted_items:
+            outfile.write(item + '\n')
+
+
 if (dataParserType == "CSV"):
     command = f"curl -C - '{url}' > {CSV_FILE}"
     print(f"downloading {url}")
-    #subprocess.run(command, shell=True, check=True)
+    subprocess.run(command, shell=True, check=True)
 
     print("filter unique and sort")
     unique_items = set()

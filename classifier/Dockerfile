@@ -2,7 +2,7 @@ FROM python:3.11.7
 
 RUN apt-get update && apt-get install -y jq curl
 
-RUN pip install pandas jq python-dotenv gnureadline openai bs4
+RUN pip install pandas jq python-dotenv gnureadline openai bs4 openpyxl csvkit
 
 COPY . /classifier
 WORKDIR /classifier

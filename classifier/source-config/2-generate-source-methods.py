@@ -20,7 +20,7 @@ with open(META_FILE, 'r') as file:
     meta = json.loads(file.read())
 
 DATA_FILE=f"./{DIR}/data.json"
-if (meta['dataParserType'] == "CSV"):
+if (meta['dataParserType'] in ["CSV", "XLS"]):
     DATA_FILE=f"./{DIR}/data.csv"
 
 with open(DATA_FILE, 'r') as file:

@@ -29,7 +29,7 @@ partial query construction needed.
 9. Save `source_config.json` (from `data.*.out.json`) to track final submit vs
    generated/modified
 
-10. Create `locale.json` if needed
+10. Create `locale.json` if needed (from `/data/locale_template.json`)
 
 11. Text Category Workflow:
 
@@ -45,7 +45,7 @@ partial query construction needed.
 
 12. Submit, test, verify worker on dev
 
-* submit text categories: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @text_categories.txt localhost:8080/textcategories`
+* submit text categories: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @text_categories.txt.out.csv.final.json localhost:8080/textcategories`
 
 * submit locales: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @locale.json localhost:8080/locales'`
 
