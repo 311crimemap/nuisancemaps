@@ -71,7 +71,7 @@ if (dataParserType == "XLS"):
 
 
 if (dataParserType in ["CSV", "CSVCUSTOM"]):
-    command = f"curl -C - '{url}' > {CSV_FILE}"
+    command = f"curl -L -C - '{url}' > {CSV_FILE}"
     print(f"downloading {url}")
     subprocess.run(command, shell=True, check=True)
 

@@ -26,7 +26,7 @@ if (meta['dataParserType'] == 'JSON'):
     command = f"curl '{url}?$limit=3' > {DIR}/data.json"
 
 if (meta['dataParserType'] in ['CSV', 'CSVCUSTOM']):
-    command = f"curl -s '{url}' | awk 'NR > 3 {{ exit }} {{ print}}' > {DIR}/data.csv"
+    command = f"curl -L -s '{url}' | awk 'NR > 4 {{ exit }} {{ print}}' > {DIR}/data.csv"
 
 if (meta['dataParserType'] == 'XLS'):
     command = f"curl '{url}' > {DIR}/data.xls"
