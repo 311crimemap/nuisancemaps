@@ -6,13 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /*
@@ -33,12 +28,14 @@ import jakarta.persistence.Table;
  */
 @Entity
 @IdClass(LocaleCategoryMinMaxReportedAt.class)
-//NB: unique index created for concurrent refresh of materialized view (migration 70)
+// NB: unique index created for concurrent refresh of materialized view
+// (migration 70)
+// * REFRESH MATERIALIZED VIEW CONCURRENTLY locale_category_min_max_reported_at;
 @Table(name = "locale_category_min_max_reported_at")
 public class LocaleCategoryMinMaxReportedAt {
 
     @Id
-    @Column(name="locale_id")
+    @Column(name = "locale_id")
     @JsonIgnore
     private int localeId;
 
