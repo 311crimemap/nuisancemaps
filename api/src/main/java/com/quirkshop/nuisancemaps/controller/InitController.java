@@ -48,7 +48,7 @@ public class InitController {
 
         try {
             ArrayList<LocaleFeatureDTO> localeFeatureDTOs = new ArrayList<LocaleFeatureDTO>();
-            Iterable<Locale> locales = localeRepository.findAll();
+            Iterable<Locale> locales = localeRepository.findAllWithSources();
 
             List<Category> categories = categoryRepository.findAllByTextNotOrderByIdAsc("SKIP");
 
