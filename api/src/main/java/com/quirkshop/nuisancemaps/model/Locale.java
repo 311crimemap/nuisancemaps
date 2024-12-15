@@ -3,6 +3,8 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -61,11 +63,16 @@ public class Locale {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Locale() {}
+    public Locale() {
+    }
 
     public LocaleDTO toDTO() {
 
         Double[] location = { this.getLocation().getX(), this.getLocation().getY() };
+
+        Set<String> categories = this.getSources().stream()
+                .map(Source::getCategory)
+                .collect(Collectors.toSet());
 
         LocaleDTO localeDTO = new LocaleDTO(this.getId(),
                 this.getName(),
@@ -76,7 +83,8 @@ public class Locale {
                 this.isEnabled(),
                 location,
                 this.getIconName(),
-                this.getIconUnicode());
+                this.getIconUnicode(),
+                categories);
 
         return localeDTO;
     }
