@@ -33,6 +33,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @IdClass(LocaleCategoryMinMaxReportedAt.class)
+//NB: unique index created for concurrent refresh of materialized view (migration 70)
 @Table(name = "locale_category_min_max_reported_at")
 public class LocaleCategoryMinMaxReportedAt {
 
