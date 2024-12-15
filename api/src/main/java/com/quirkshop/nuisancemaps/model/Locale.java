@@ -22,6 +22,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -70,10 +71,23 @@ public class Locale {
 
         Double[] location = { this.getLocation().getX(), this.getLocation().getY() };
 
-        Set<String> categories = this.getSources().stream()
-                .map(Source::getCategory)
-                .collect(Collectors.toSet());
+        LocaleDTO localeDTO = new LocaleDTO(this.getId(),
+                this.getName(),
+                this.getDescription(),
+                this.getCity(),
+                this.getState(),
+                this.getAttribution(),
+                this.isEnabled(),
+                location,
+                this.getIconName(),
+                this.getIconUnicode());
 
+        return localeDTO;
+    }
+
+    public LocaleDTO toDTO(List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt) {
+
+        Double[] location = { this.getLocation().getX(), this.getLocation().getY() };
         LocaleDTO localeDTO = new LocaleDTO(this.getId(),
                 this.getName(),
                 this.getDescription(),
@@ -84,7 +98,7 @@ public class Locale {
                 location,
                 this.getIconName(),
                 this.getIconUnicode(),
-                categories);
+                categoryMinMaxReportedAt);
 
         return localeDTO;
     }

@@ -3,6 +3,8 @@ package com.quirkshop.nuisancemaps.dto;
 import java.util.List;
 import java.util.Set;
 
+import com.quirkshop.nuisancemaps.model.LocaleCategoryMinMaxReportedAt;
+
 public class LocaleDTO {
 
     private Integer id;
@@ -16,10 +18,11 @@ public class LocaleDTO {
     private Double[] location;
     private String iconName;
     private String iconUnicode;
-    private Set<String> categories;
+
+    private List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt;
 
     public LocaleDTO(Integer id, String name, String description, String city, String state, String attribution,
-            boolean enabled, Double[] location, String iconName, String iconUnicode, Set<String> categories) {
+            boolean enabled, Double[] location, String iconName, String iconUnicode) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -30,7 +33,21 @@ public class LocaleDTO {
         this.location = location;
         this.iconName = iconName;
         this.iconUnicode = iconUnicode;
-        this.categories = categories;
+    }
+
+    public LocaleDTO(Integer id, String name, String description, String city, String state, String attribution,
+                     boolean enabled, Double[] location, String iconName, String iconUnicode, List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+        this.state = state;
+        this.attribution = attribution;
+        this.enabled = enabled;
+        this.description = description;
+        this.location = location;
+        this.iconName = iconName;
+        this.iconUnicode = iconUnicode;
+        this.categoryMinMaxReportedAt = categoryMinMaxReportedAt;
     }
 
     public Integer getId() {
@@ -113,12 +130,12 @@ public class LocaleDTO {
         this.iconUnicode = iconUnicode;
     }
 
-    public Set<String> getCategories() {
-        return categories;
+    public List<LocaleCategoryMinMaxReportedAt> getCategoryMinMaxReportedAt() {
+        return categoryMinMaxReportedAt;
     }
 
-    public void setCategories(Set<String> categories) {
-        this.categories = categories;
+    public void setCategoryMinMaxReportedAt(List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt) {
+        this.categoryMinMaxReportedAt = categoryMinMaxReportedAt;
     }
 
 }
