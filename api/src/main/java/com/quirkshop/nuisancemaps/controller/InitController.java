@@ -4,13 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Locale;
+import com.quirkshop.nuisancemaps.model.LocaleCategoryMinMaxReportedAt;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.repository.CategoryRepository;
+import com.quirkshop.nuisancemaps.repository.LocaleCategoryMinMaxReportedAtRepository;
 import com.quirkshop.nuisancemaps.repository.LocaleRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +39,9 @@ public class InitController {
     LocaleRepository localeRepository;
 
     @Autowired
+    LocaleCategoryMinMaxReportedAtRepository localeCategoryMinMaxReportedAtRepository;
+
+    @Autowired
     SourceRepository sourceRepository;
 
     @Autowired
@@ -47,8 +55,16 @@ public class InitController {
         JSendDTO jSendDTO;
 
         try {
+
+            List<Locale> locales = localeRepository.findAll();
+            List<LocaleCategoryMinMaxReportedAt> localeCategoryMinMaxReportedAts = localeCategoryMinMaxReportedAtRepository
+                    .findAll();
+
+            Map<Integer, List<LocaleCategoryMinMaxReportedAt>> localeCategoryMinMaxReportedAtMap = localeCategoryMinMaxReportedAts
+                    .stream()
+                    .collect(Collectors.groupingBy(LocaleCategoryMinMaxReportedAt::getLocaleId));
+
             ArrayList<LocaleFeatureDTO> localeFeatureDTOs = new ArrayList<LocaleFeatureDTO>();
-            Iterable<Locale> locales = localeRepository.findAllWithSources();
 
             List<Category> categories = categoryRepository.findAllByTextNotOrderByIdAsc("SKIP");
 
@@ -57,7 +73,9 @@ public class InitController {
                 Double[] location = { locale.getLocation().getX(), locale.getLocation().getY() };
                 GeometryDTO g = new GeometryDTO("Point", location);
 
-                LocaleDTO localeDTO = locale.toDTO();
+                List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt = localeCategoryMinMaxReportedAtMap
+                        .get(locale.getId());
+                LocaleDTO localeDTO = locale.toDTO(categoryMinMaxReportedAt);
 
                 LocaleFeatureDTO localeFeatureDTO = new LocaleFeatureDTO("Feature", g, localeDTO);
                 localeFeatureDTOs.add(localeFeatureDTO);
