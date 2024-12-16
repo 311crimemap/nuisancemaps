@@ -7,7 +7,7 @@ interface StateCitiesProps {
 }
 
 export default function StateCities({ stateCityMap }: StateCitiesProps) {
-  const buildState = () => {
+  const buildState = (stateCityMap: StateCityMap) => {
     return Object.keys(stateCityMap)
       .sort()
       .map((state: string, i: number) => {
@@ -36,7 +36,7 @@ export default function StateCities({ stateCityMap }: StateCitiesProps) {
 
   return (
     <article className="prose">
-      <ul className="list-none ml-[-1.625rem]">{buildState()}</ul>
+      <ul className="list-none ml-[-1.625rem]">{buildState(stateCityMap)}</ul>
     </article>
   );
 }
