@@ -28,8 +28,10 @@ export default function CityData({ cityData }: any) {
         <td> {cat.category}</td>
         <td className="text-right">{dateFormat(cat.minReportedAt)}</td>
         <td className="text-right">{dateFormat(cat.maxReportedAt)}</td>
-        <td className="text-right">{formattedCount}</td>
-        <td className="text-right">{dateFormat(cat.djMaxUpdatedAt)}</td>
+        <td className="text-right hidden md:table-cell">{formattedCount}</td>
+        <td className="text-right hidden lg:table-cell">
+          {dateFormat(cat.djMaxUpdatedAt)}
+        </td>
       </tr>
     );
   };
@@ -48,8 +50,12 @@ export default function CityData({ cityData }: any) {
             <th className="font-normal">Dataset</th>
             <th className="font-normal text-right">Start Date</th>
             <th className="font-normal text-right">End Date</th>
-            <th className="font-normal text-right">Records</th>
-            <th className="font-normal text-right">Last Update</th>
+            <th className="font-normal text-right hidden md:table-cell">
+              Records
+            </th>
+            <th className="font-normal text-right hidden lg:table-cell">
+              Last Update
+            </th>
           </tr>
         </thead>
         <tbody>

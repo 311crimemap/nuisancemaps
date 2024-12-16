@@ -13,7 +13,7 @@ export default function StateCities({ stateCityMap }: StateCitiesProps) {
       .map((state: string, i: number) => {
         const offset = i == 0 ? "-top-64" : "-top-28";
         return (
-          <li>
+          <li key={`location-li-${state}`}>
             <div className="font-bold text-xl pt-6">
               <a
                 id={`${slugify(state)}`}
@@ -26,7 +26,12 @@ export default function StateCities({ stateCityMap }: StateCitiesProps) {
               {Object.values(stateCityMap[state])
                 .sort()
                 .map((cityData) => {
-                  return <CityData cityData={cityData} />;
+                  return (
+                    <CityData
+                      key={`CityData-${cityData.name}-${cityData.state}`}
+                      cityData={cityData}
+                    />
+                  );
                 })}
             </ul>
           </li>
