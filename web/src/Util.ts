@@ -9,6 +9,18 @@ export function slugify(text: string): string {
   return text.replaceAll(/\s+/g, "-").toLowerCase();
 }
 
+export function dateFormat(dateString: string): string {
+    const date = new Date(dateString);
+
+    // extract components
+    const day = String(date.getDate()).padStart(2, '0'); // Ensure 2 digits
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure 2 digits
+    const year = date.getFullYear();
+
+    // format as "1-1-2020"
+    return `${month}-${day}-${year}`;
+}
+
 // precision: number of decimal places to floor/ciel
 export function calcMaxLatLngBounds(
   bounds: LngLatBounds,
