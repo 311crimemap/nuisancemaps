@@ -48,6 +48,12 @@ public class LocaleCategoryMinMaxReportedAt {
     @Column(name = "max_reported_at")
     private LocalDateTime maxReportedAt;
 
+    @Column(name = "count")
+    private int count;
+
+    @Column(name = "dj_max_updated_at")
+    private LocalDateTime djMaxUpdatedAt;
+
     public String getCategory() {
         return category;
     }
@@ -78,5 +84,21 @@ public class LocaleCategoryMinMaxReportedAt {
 
     public void setLocaleId(int localeId) {
         this.localeId = localeId;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public LocalDateTime getDjMaxUpdatedAt() {
+        return djMaxUpdatedAt;
+    }
+
+    public void setDjMaxUpdatedAt(LocalDateTime djMaxUpdatedAt) {
+        this.djMaxUpdatedAt = djMaxUpdatedAt;
     }
 }
