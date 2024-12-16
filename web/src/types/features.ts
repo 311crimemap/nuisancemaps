@@ -1,3 +1,5 @@
+import { CategoryMinMaxReportedAt } from "./categoryminmaxreportedat";
+
 export interface Geometry {
   type: "Point";
   coordinates: [number, number];
@@ -9,6 +11,7 @@ export interface FeatureProperties {
   description: string;
   city: string;
   state: string;
+  categoryMinMaxReportedAt: CategoryMinMaxReportedAt[],
   attribution: string;
   enabled: boolean;
   location: [number, number];
