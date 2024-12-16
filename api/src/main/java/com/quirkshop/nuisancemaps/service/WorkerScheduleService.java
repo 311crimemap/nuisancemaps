@@ -10,6 +10,7 @@ import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
+import com.quirkshop.nuisancemaps.repository.LocaleCategoryMinMaxReportedAtRepository;
 import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParser;
 import com.quirkshop.nuisancemaps.service.dataparser.DataParserFactory;
@@ -22,11 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.annotation.PostConstruct;
 
 @Service
 public class WorkerScheduleService {
+
+    @Autowired
+    LocaleCategoryMinMaxReportedAtRepository localeCategoryMinMaxReportedAtRepository;
 
     @Autowired
     SourceLoaderService sourceLoaderService;
@@ -57,6 +62,15 @@ public class WorkerScheduleService {
     /*
      * SCHEDULED TASKS
      */
+
+    // schedule every 20 minutes, initial 5 min delay (avoid initial hanging on deploy, restarts)
+    @Scheduled(fixedRate = 20 * 60 * 1000, initialDelay = 5 * 60 * 1000)
+    @Transactional
+    public void refreshMaterializedView() {
+        log.info("Materialized view start refresh");
+        localeCategoryMinMaxReportedAtRepository.refreshMaterializedView();
+        log.info("Materialized view end refresh");
+    }
 
     @Async("asyncExecutor")
     @Scheduled(fixedDelay = 3500, initialDelay = 3000)

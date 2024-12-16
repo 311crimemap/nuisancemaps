@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import StatesMenu from "./_states_menu";
-import StateCities from "./_state_cities";
+import StatesMenu from "./SidebarStatesMenu";
+import StateCities from "./StateCities";
 import { getData } from "../../Util";
 import { FeatureCollection } from "../../types/features";
 import { StateCityMap } from "./statecitymap";
 
-export default function Cities() {
+export default function Locations() {
   const [sources, setSources] = useState<FeatureCollection>({
     type: "FeatureCollection",
     features: [],
@@ -16,12 +16,15 @@ export default function Cities() {
     const stateCityMap: StateCityMap = {};
 
     for (const feature of sources.features) {
-      const { name, city, state } = { ...feature.properties };
+      const { name, city, state, categoryMinMaxReportedAt } = {
+        ...feature.properties,
+      };
       stateCityMap[state] = stateCityMap[state] || [];
       stateCityMap[state].push({
         name,
         city,
         state,
+        categoryMinMaxReportedAt,
       });
     }
 
@@ -47,7 +50,7 @@ export default function Cities() {
   return (
     <div className="container mx-auto mt-16">
       <div className="flex flex-col sm:flex-row py-1 justify-center">
-        <div id="menu" className="sm:mt-8 pr-4">
+        <div id="menu" className="sm:mt-8 pr-4 z-10">
           <StatesMenu states={Object.keys(stateCityMap)} />
         </div>
 
@@ -58,7 +61,7 @@ export default function Cities() {
               id="311CrimeMap"
               className="block relative invisible -top-64"
             ></a>
-            <h2>Cities</h2>
+            <h2>Locations</h2>
             <div className="divider"></div>
           </article>
 

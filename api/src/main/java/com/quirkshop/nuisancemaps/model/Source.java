@@ -60,7 +60,7 @@ public class Source {
     @Column(name = "data_job_configurator_type")
     private DataJobConfiguratorType dataJobConfiguratorType;
 
-    @OneToOne // NB: creates unique constraint mapping_id
+    @OneToOne(fetch = FetchType.LAZY) // NB: creates unique constraint mapping_id
     @JoinColumn(name = "mapping_id", nullable = false)
     private Mapping mapping;
 

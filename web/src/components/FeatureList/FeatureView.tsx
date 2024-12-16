@@ -41,11 +41,13 @@ export default function FeatureView({
     : null;
 
   const iconStyle = {
-    fontFamily: "Font Awesome\\ 6 Free",
+    fontFamily: "'Font Awesome 6 Free'",
     fontWeight: 900,
     fontSize: "1.5rem",
-    alignContent: "center",
-    padding: "0 .25rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "1.5rem",
   };
 
   return (
@@ -59,7 +61,7 @@ export default function FeatureView({
         <div className="min-h-8 flex justify-between items-center text-sm mb-2 cursor-pointer">
           <div className="flex gap-3">
             <span style={iconStyle}>{properties.category.iconUnicode}</span>
-            <span>
+            <span className="uppercase ml-2">
               <strong>{properties.reportCategory}</strong>
             </span>
           </div>

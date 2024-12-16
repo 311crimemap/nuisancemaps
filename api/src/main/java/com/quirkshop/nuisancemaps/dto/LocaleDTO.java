@@ -1,6 +1,9 @@
 package com.quirkshop.nuisancemaps.dto;
 
 import java.util.List;
+import java.util.Set;
+
+import com.quirkshop.nuisancemaps.model.LocaleCategoryMinMaxReportedAt;
 
 public class LocaleDTO {
 
@@ -15,7 +18,8 @@ public class LocaleDTO {
     private Double[] location;
     private String iconName;
     private String iconUnicode;
-    private List<SourceDTO> sourceDTOs;
+
+    private List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt;
 
     public LocaleDTO(Integer id, String name, String description, String city, String state, String attribution,
             boolean enabled, Double[] location, String iconName, String iconUnicode) {
@@ -29,6 +33,21 @@ public class LocaleDTO {
         this.location = location;
         this.iconName = iconName;
         this.iconUnicode = iconUnicode;
+    }
+
+    public LocaleDTO(Integer id, String name, String description, String city, String state, String attribution,
+                     boolean enabled, Double[] location, String iconName, String iconUnicode, List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+        this.state = state;
+        this.attribution = attribution;
+        this.enabled = enabled;
+        this.description = description;
+        this.location = location;
+        this.iconName = iconName;
+        this.iconUnicode = iconUnicode;
+        this.categoryMinMaxReportedAt = categoryMinMaxReportedAt;
     }
 
     public Integer getId() {
@@ -110,4 +129,13 @@ public class LocaleDTO {
     public void setIconUnicode(String iconUnicode) {
         this.iconUnicode = iconUnicode;
     }
+
+    public List<LocaleCategoryMinMaxReportedAt> getCategoryMinMaxReportedAt() {
+        return categoryMinMaxReportedAt;
+    }
+
+    public void setCategoryMinMaxReportedAt(List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt) {
+        this.categoryMinMaxReportedAt = categoryMinMaxReportedAt;
+    }
+
 }
