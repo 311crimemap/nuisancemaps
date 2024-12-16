@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import StatesMenu from "./_states_menu";
-import StateCities from "./_state_cities";
+import StateCities from "./StateCities";
 import { getData } from "../../Util";
 import { FeatureCollection } from "../../types/features";
 import { StateCityMap } from "./statecitymap";
