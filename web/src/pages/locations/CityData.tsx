@@ -19,11 +19,17 @@ export default function CityData({ cityData }: any) {
   const minMaxReportedAt = (cat: CategoryMinMaxReportedAt) => {
     if (!cat) return null;
 
+    const formattedCount = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 0,
+    }).format(cat.count);
+
     return (
       <tr className="border-0">
         <td> {cat.category}</td>
-        <td className="">{dateFormat(cat.minReportedAt)}</td>
-        <td className="">{dateFormat(cat.maxReportedAt)}</td>
+        <td className="text-right">{dateFormat(cat.minReportedAt)}</td>
+        <td className="text-right">{dateFormat(cat.maxReportedAt)}</td>
+        <td className="text-right">{formattedCount}</td>
+        <td className="text-right">{dateFormat(cat.djMaxUpdatedAt)}</td>
       </tr>
     );
   };
@@ -40,8 +46,10 @@ export default function CityData({ cityData }: any) {
         <thead className="border-0">
           <tr>
             <th className="font-normal">Dataset</th>
-            <th className="font-normal">Start Date</th>
-            <th className="font-normal">End Date</th>
+            <th className="font-normal text-right">Start Date</th>
+            <th className="font-normal text-right">End Date</th>
+            <th className="font-normal text-right">Records</th>
+            <th className="font-normal text-right">Last Update</th>
           </tr>
         </thead>
         <tbody>
