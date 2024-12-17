@@ -12,6 +12,8 @@ import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -60,8 +62,9 @@ public class Source {
     @Column(name = "data_job_configurator_type")
     private DataJobConfiguratorType dataJobConfiguratorType;
 
-    @OneToOne(fetch = FetchType.LAZY) // NB: creates unique constraint mapping_id
-    @JoinColumn(name = "mapping_id", nullable = false)
+    @OneToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "mapping_id", nullable = false) // NB: creates unique constraint mapping_id
     private Mapping mapping;
 
     @JsonIgnore
