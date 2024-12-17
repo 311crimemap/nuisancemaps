@@ -59,4 +59,19 @@ public class ParserStrategyConfigLosAngeles {
         return dateStr;
     }
 
+    // 01/01/2023 12:00:46 AM
+    public static String REPORTED_AT_CSV_311_LA(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("CreatedDate");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
 }

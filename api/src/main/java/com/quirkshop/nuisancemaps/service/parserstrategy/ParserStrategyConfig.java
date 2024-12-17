@@ -104,6 +104,8 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigLosAngeles::REPORTED_AT_CSV_CRIME_LA);
         parsingFunctions.put(ParserStrategy.REPORTED_AT2_CSV_CRIME_LA,
                 ParserStrategyConfigLosAngeles::REPORTED_AT2_CSV_CRIME_LA);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_LA,
+                ParserStrategyConfigLosAngeles::REPORTED_AT_CSV_311_LA);
 
         // houston
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_HOUSTON,
