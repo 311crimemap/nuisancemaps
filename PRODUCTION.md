@@ -45,21 +45,24 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 ### Daily Runs: production-blue ids
 
 
-| Source  | type  | source.id | locale | init submit | freq                         |
-|---------|-------|-----------|--------|-------------|------------------------------|
-| Austin  | Crime | 2         | 1      | x           |                              |
-| Austin  | 311   | 35        | 1      | x           |                              |
-| Dallas  | Crime | 36        | 2      | x           |                              |
-| Dallas  | 311   | 37        | 2      | x           |                              |
-| Chicago | Crime | 39        | 3      | x           |                              |
-| Chicago | 311   | 34        | 3      | x           |                              |
-| NYC     | Crime | 11        | 4      | x           | quarterly last update Oct 21 |
-| NYC     | 311   | 32        | 4      | x           |                              |
-| SF      | Crime | 38        | 5      | x           |                              |
-| SF      | 311   | 33        | 5      | x           |                              |
-| Boston  | Crime | 13        | 6      | x           |                              |
-| Boston  | 311   | 22        | 6      | x           |                              |
-
+| Source           | type  | source.id | locale | init submit | freq                         |
+|------------------|-------|-----------|--------|-------------|------------------------------|
+| Austin           | Crime | 2         | 1      | x           |                              |
+| Austin           | 311   | 35        | 1      | x           |                              |
+| Dallas           | Crime | 36        | 2      | x           |                              |
+| Dallas           | 311   | 37        | 2      | x           |                              |
+| Chicago          | Crime | 39        | 3      | x           |                              |
+| Chicago          | 311   | 34        | 3      | x           |                              |
+| NYC              | Crime | 11        | 4      | x           | quarterly last update Oct 21 |
+| NYC              | 311   | 32        | 4      | x           |                              |
+| SF               | Crime | 38        | 5      | x           |                              |
+| SF               | 311   | 33        | 5      | x           |                              |
+| Boston           | Crime | 13        | 6      | x           |                              |
+| Boston           | 311   | 22        | 6      | x           |                              |
+| Los Angeles      | Crime | 40        | 7      | x           | weekly (csv)                 |
+| Los Angeles 2024 | 311   | 41        | 7      | x           | daily                        |
+| Houston 2024     | Crime | 46        | 8      | x           | monthly                      |
+|                  |       |           |        |             |                              |
 
 #### Submit New Worker Task
 

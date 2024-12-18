@@ -1,8 +1,47 @@
 # Source Config
+
+* Restart Jobs within past day: ` curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimemap.com/datajobs/restart`
+
+## Quick Submit Prod
+
+From completed / verified dev to prod:
+
+0. log worker
+
+* `kubectl logs -f <worker pod>`
+
+1. Did you build latest image and deploy?
+
+* `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
+* `docker push 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:<TAG>`
+
+* `kubectl rollout restart deployment/spring-worker`
+* `kubectl rollout restart deployment/spring-api`
+
+---
+
+1. submit text categories
+
+* `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @text_categories.txt.out.csv.final.json https://api.311crimemap.com/textcategories`
+
+2. submit locale
+
+* `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @locale.json https://api.311crimemap.com/locales`
+
+3. submit source (source_config.json)
+
+* `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @source_config.json https://api.311crimemap.com/locales/{id}/sources`
+
+Restart Job:
+
+`curl -X PATCH -H "content-type: application/json" -H "X-API-KEY: $ADMIN_API_KEY" -d '{"status":"QUEUED"}' api.311crimemap.com/datajobs/<dataJobId>`
+
 ---
 
 General rule, use csv if data is already broken up in yearly increments. JSON if
-partial query construction needed.
+repeat, or partial subset query is needed.
+
+Try on dev first if there's a custom method - breaks way too often.
 
 ## General Process
 
@@ -58,7 +97,11 @@ partial query construction needed.
 
 13. Fixes and submit to prod
 
-14. `copy_data_s3.sh`: upload /data directory to s3 bucket
+14. Mark if source is a daily runner on ./PRODUCTION.md
+
+15. `copy_data_s3.sh`: upload /data directory to s3 bucket
+
+16. If city is complete, remove from dev
 
 ---
 
