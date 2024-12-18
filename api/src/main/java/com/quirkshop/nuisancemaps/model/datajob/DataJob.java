@@ -74,7 +74,7 @@ public class DataJob {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "parameters", columnDefinition = "jsonb")
-    private HashMap<String, Object> parameters;
+    private HashMap<String, Object> parameters = new HashMap<String, Object>();
 
     private int paramLimit;
     private int paramOffset; // csv: readLines

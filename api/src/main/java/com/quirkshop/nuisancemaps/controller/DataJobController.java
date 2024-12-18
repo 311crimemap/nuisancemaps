@@ -77,6 +77,9 @@ public class DataJobController {
             try {
                 DataJob d = dataJob.get();
                 d.setStatus(DataJobStatus.valueOf(status));
+                if (d.getParameters() == null) {
+                    d.setParameters(new HashMap<>()); // Initialize if null
+                }
                 d = dataJobRepository.save(d);
                 return ResponseEntity.ok(d);
             } catch (IllegalArgumentException e) {
