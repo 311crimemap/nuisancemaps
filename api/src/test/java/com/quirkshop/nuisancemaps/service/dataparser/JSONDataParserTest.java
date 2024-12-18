@@ -140,7 +140,7 @@ public class JSONDataParserTest {
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
-        jsonDataParser.parse(d, inputstream, parseCounter);
+        jsonDataParser.parse(d, null, inputstream, parseCounter);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(2);
     }
@@ -159,7 +159,7 @@ public class JSONDataParserTest {
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
-        jsonDataParser.parse(d, inputstream, parseCounter);
+        jsonDataParser.parse(d, null, inputstream, parseCounter);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(5);
     }
@@ -182,7 +182,7 @@ public class JSONDataParserTest {
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
-        jsonDataParser.parse(d, inputstream, parseCounter);
+        jsonDataParser.parse(d, null, inputstream, parseCounter);
 
         // missing a TextCategory, no longer saves the parsed dataEntity
         assertThat(dataCrimeRepository.count()).isEqualTo(1);

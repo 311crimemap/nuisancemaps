@@ -83,7 +83,7 @@ public class MemoryDataProcessStrategy implements DataProcessStrategy {
         // dataParser.parseData(dataJob, inputStream);
         ParseCounter parseCounter = new ParseCounter();
 
-        dataParser.parse(dataJob, inputStream, parseCounter);
+        dataParser.parse(dataJob, null, inputStream, parseCounter);
 
         setJobStatus(dataJob.getSource(), dataJob, parseCounter);
     }

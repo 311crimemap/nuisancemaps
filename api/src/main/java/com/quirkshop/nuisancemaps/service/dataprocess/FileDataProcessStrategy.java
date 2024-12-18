@@ -188,10 +188,11 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         dataJobRepository.save(dataJob);
 
         try (InputStream fileInputStream = new FileInputStream(filePath)) {
+            File file = new File(filePath);
             dataJob.setStatus(DataJobStatus.PENDING);
             dataJobRepository.save(dataJob);
 
-            dataParser.parse(dataJob, fileInputStream, parseCounter);
+            dataParser.parse(dataJob, file, fileInputStream, parseCounter);
 
         } catch (IOException e) {
             dataJob.setStatus(DataJobStatus.READ_FILE_ERROR);

@@ -137,7 +137,7 @@ public class CSVCustomDataParserTest {
 
         assertThat(data311Repository.count()).isEqualTo(0);
 
-        csvCustomDataParser.parse(d, inputstream, parseCounter);
+        csvCustomDataParser.parse(d, null, inputstream, parseCounter);
 
         assertThat(data311Repository.count()).isEqualTo(6);
     }
@@ -160,7 +160,7 @@ public class CSVCustomDataParserTest {
 
         assertThat(data311Repository.count()).isEqualTo(0);
 
-        csvCustomDataParser.parse(d, inputstream, parseCounter);
+        csvCustomDataParser.parse(d, null, inputstream, parseCounter);
 
         assertThat(data311Repository.count()).isEqualTo(7);
     }

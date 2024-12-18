@@ -126,6 +126,7 @@ public class XLSDataParserTest {
         // xls has 6 records total
         Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2024.xlsx");
         InputStream inputstream = csvResource.getInputStream();
+        File file = csvResource.getFile();
         ParseCounter parseCounter = new ParseCounter();
 
         Source s = sourceRepository.findOneBySourceConfigId(21);
@@ -134,7 +135,7 @@ public class XLSDataParserTest {
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
-        xlsDataParser.parse(d, inputstream, parseCounter);
+        xlsDataParser.parse(d, file, inputstream, parseCounter);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(6);
     }

@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class APDIncidentReportDataParser extends DataParser {
      */
 
     @Override
-    public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+    public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
 
         log.info(String.format("[APDIncidentReport] parse() | DataJob: %s", dataJob.getId()));
 

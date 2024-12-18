@@ -138,7 +138,7 @@ public class CSVDataParserTest {
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
-        csvDataParser.parse(d, inputstream, parseCounter);
+        csvDataParser.parse(d, null, inputstream, parseCounter);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(9);
 

@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.HashSet;
 
@@ -32,7 +33,7 @@ public class JSONDataParser extends DataParser {
     DataJobRepository dataJobRepository;
 
     @Override
-    public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+    public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
         Source source = dataJob.getSource();
         setTypes(source);
 

@@ -223,7 +223,7 @@ public class APDIncidentReportDataParserTest {
         // 2. geocode() enriches mockRowMaps with mockCoordinates
         // 3. mockRowMaps are sent do dataEntityMappingService.buildDataEntity() for
         // saving
-        spyParser.parse(d, inputStream, parseCounter);
+        spyParser.parse(d, null, inputStream, parseCounter);
 
         // last rowMap is missing coordinates - not saved
         assertThat(dataCrimeRepository.count()).isEqualTo(2);
@@ -272,7 +272,7 @@ public class APDIncidentReportDataParserTest {
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
 
         // saving
-        spyParser.parse(d, inputStream, parseCounter);
+        spyParser.parse(d, null, inputStream, parseCounter);
 
         // last rowMap is missing coordinates - nothing saved
         assertThat(dataCrimeRepository.count()).isEqualTo(0);

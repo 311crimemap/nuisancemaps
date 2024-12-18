@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -71,7 +72,7 @@ public class DataParser {
     HashMap<String, DataEntity> parseNewDataMap = new HashMap<String, DataEntity>();
     List<String> reportNums = new ArrayList<String>();
 
-    public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+    public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
         throw new Error("Missing Implementation");
     }
 

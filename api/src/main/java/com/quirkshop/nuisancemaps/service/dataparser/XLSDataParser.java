@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
+import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -47,7 +48,7 @@ public class XLSDataParser extends DataParser {
     MapFieldExtractor mapFieldExtractor;
 
     @Override
-    public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+    public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
         // sanity checks
         int numRows = 0;
         int numBatch = 0;
@@ -59,10 +60,7 @@ public class XLSDataParser extends DataParser {
 
         HashSet<String> pendingReportCategories = new HashSet<String>();
 
-        // 300MB - load in memory for now
-        IOUtils.setByteArrayMaxOverride(300 * 1024 * 1024);
-
-        try (Workbook workbook = WorkbookFactory.create(inputStream)) {
+        try (Workbook workbook = WorkbookFactory.create(file)) {
 
             Sheet sheet = workbook.getSheetAt(0);
 

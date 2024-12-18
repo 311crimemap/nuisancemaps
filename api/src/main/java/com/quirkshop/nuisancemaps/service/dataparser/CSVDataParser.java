@@ -1,6 +1,7 @@
 package com.quirkshop.nuisancemaps.service.dataparser;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,7 +40,7 @@ public class CSVDataParser extends DataParser {
     MapFieldExtractor mapFieldExtractor;
 
     @Override
-    public void parse(DataJob dataJob, InputStream inputStream, ParseCounter parseCounter) {
+    public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
         // sanity checks
         int numRows = 0;
         int numBatch = 0;
