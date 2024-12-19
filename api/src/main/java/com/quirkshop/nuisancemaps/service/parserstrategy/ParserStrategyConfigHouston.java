@@ -3,6 +3,8 @@ package com.quirkshop.nuisancemaps.service.parserstrategy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,23 +34,30 @@ public class ParserStrategyConfigHouston {
         return dateStr;
     }
 
-    // 2024-01-04T00:00:00
+    // 1/1/24 or also possibly 1/1/2024 given excel variability
     // hour: 0
-    // NB: input is converted in XLSDataParser to ISO_LOCAL_DATE_TIME
     public static String REPORTED_AT_XLS_CRIME_HOUSTON(Map<String, String> row) {
         String dateStr = null;
         try {
             String text = row.get("RMSOccurrenceDate");
             Integer hour = Integer.parseInt(row.getOrDefault("RMSOccurrenceHour", "0"));
 
-            // input ISO_LOCAL_DATE_TIME, but want to add hour
-            DateTimeFormatter inputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-            LocalDateTime dateTime = LocalDateTime.parse(text, inputFormatter);
+            List<DateTimeFormatter> formatters = Arrays.asList(DateTimeFormatter.ofPattern("M/d/yy"),
+                                                               DateTimeFormatter.ofPattern("M/d/yyyy"));
 
-            dateStr = dateTime
-                    .withHour(hour)
-                    .withMinute(0)
-                    .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            LocalDate date = null;
+            for (DateTimeFormatter inputFormatter : formatters) {
+                try {
+                    date = LocalDate.parse(text, inputFormatter);
+                    break;
+                } catch (Exception e) {
+
+                }
+            }
+
+
+            LocalDateTime dateTime = date.atTime(hour, 0);
+            dateStr = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         } catch (Exception e) {
             log.error(e.getMessage());

@@ -1,3 +1,15 @@
+
+/*
+ * Need to use sax parser to avoid high memory usage parsing excel:
+ * https://poi.apache.org/components/spreadsheet/limitations.html
+ * https://poi.apache.org/components/spreadsheet/how-to.html#xssf_sax_api
+ *
+ * This parser ported from example XLSX2CSV.java:
+ * https://svn.apache.org/repos/asf/poi/trunk/poi-examples/src/main/java/org/apache/poi/examples/xssf/eventusermodel/XLSX2CSV.java
+ *
+ * NB: only works with .xlsx (not older .xls)
+ */
+
 /* ====================================================================
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -20,24 +32,27 @@ package com.quirkshop.nuisancemaps.service.dataparser;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingCategoryException;
+import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
+import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
+import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
-import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.XMLHelper;
@@ -98,14 +113,18 @@ public class XLSSAXDataParser extends DataParser {
         private HashMap<String, String> row = new HashMap<String, String>();
 
         private DataJob dataJob;
+        private Source source;
         private ParseCounter parseCounter;
+
+        private int numBatch = 0;
 
         public SheetToCSV(DataJob dataJob, ParseCounter parseCounter) {
             this.dataJob = dataJob;
             this.parseCounter = parseCounter;
+            this.source = dataJob.getSource();
 
             if (dataJob.getParamOffset() > 0) {
-                log.info(String.format("[XLSDataParser]: offset detected skipping %d lines",
+                log.info(String.format("[XLSSAXDataParser]: offset detected skipping %d lines",
                         dataJob.getParamOffset()));
             }
         }
@@ -125,15 +144,47 @@ public class XLSSAXDataParser extends DataParser {
                 return;
 
             // PARSE
-            for (String header : headers) {
-                System.out.println(header + ": " + row.getOrDefault(header, null));
+
+            // for (String header : headers) {
+            // System.out.println(header + ": " + row.getOrDefault(header, null));
+            // }
+            // System.out.println("---");
+
+            try {
+
+                DataEntity dataEntity = dataEntityMappingService
+                        .buildDataEntity(dataEntityClass, source, row, geometryFactory,
+                                mapFieldExtractor);
+
+                addDataEntity(dataEntity, parseCounter);
+
+            } catch (MissingCategoryException e) {
+
+                pendingReportCategories.add(e.getReportCategory());
+                parseCounter.numMissingIncrement();
+
+            } catch (InvalidCoordinateException | MissingCoordinateException
+                    | MissingReportCategoryException e) {
+                String content = StringUtils.substring(row.toString(), 0, 4096);
+                logMissingException(source, content, e);
+                parseCounter.numMissingIncrement();
+
+            } catch (Exception e) {
+                String content = StringUtils.substring(row.toString(), 0, 4096);
+                log.info("[XLSSAXDataParser] row: " + currentRow);
+                logException(dataJob, content, e);
+                parseCounter.numErrorsIncrement();
             }
-            System.out.println("---");
+
+            if (reportNums.size() >= BATCH_SIZE) {
+                logSaveBatch(dataJob, parseCounter);
+                System.out.println("ROW: " + rowNum);
+            }
+
+            parseCounter.numFetchedIncrement();
         }
 
-        @Override
         public void cell(String cellReference, String formattedValue, XSSFComment comment) {
-
             // SKIP offset (but make sure to capture headers)
             // NB: rowNum starts at 0 (typically headers)
             if (currentRow != 0 && currentRow < dataJob.getParamOffset()) {
@@ -153,14 +204,25 @@ public class XLSSAXDataParser extends DataParser {
             currentCol = (new CellReference(cellReference)).getCol();
 
             // EXTRACT
+            // Note: can't get Cell type with SAX parser approach.
+            // Issue with consistently handling Dates; for now deferring to custom Mapping
+            // functions per source
+            //
+            // When opening and re-saving an xlsx, the actual date representation in the
+            // cell can change
+            // e.g. resaved to create a truncated test fixture, original data in parsing
+            // changed from
+            // 1/1/23 to 1/1/2023
+            //
 
             if (currentRow == 0) {
-                // popuplate header
+                // build initial header
                 headers.add(formattedValue);
             } else {
                 String header = headers.get(currentCol);
                 row.put(header, formattedValue);
             }
+
         }
     }
 
@@ -168,6 +230,8 @@ public class XLSSAXDataParser extends DataParser {
     /**
      * Creates a new XLSX -&gt; CSV converter
      */
+
+    HashSet<String> pendingReportCategories = new HashSet<String>();
 
     @Autowired
     DataJobRepository dataJobRepository;
@@ -224,16 +288,13 @@ public class XLSSAXDataParser extends DataParser {
      */
     // TODO: reduce to one sheet (continue?)
     public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
-        // sanity checks
-        int numRows = 0;
-        int numBatch = 0;
+
+        int currentRow = 0;
 
         Source source = dataJob.getSource();
         setTypes(source);
 
         textCategoryService.refreshTextCategoryIdMap();
-
-        HashSet<String> pendingReportCategories = new HashSet<String>();
 
         OPCPackage p = null;
         try {
@@ -257,7 +318,7 @@ public class XLSSAXDataParser extends DataParser {
                 ++index;
             }
         } catch (Exception e) {
-            log.info("[XLSDataParser] SAX parse ERR: " + e.getMessage());
+            log.info("[XLSSAXDataParser] SAX parse ERR: " + e.getMessage());
             e.printStackTrace();
             dataJob.setStatus(DataJobStatus.ERROR);
         } finally {
@@ -265,6 +326,23 @@ public class XLSSAXDataParser extends DataParser {
             p.revert();
         }
 
+
+        logSaveBatch(dataJob, parseCounter); // finish remaining set less than batch
         savePendingTextCategories(dataJob, source, pendingReportCategories);
     }
+
+    private void logSaveBatch(DataJob dataJob, ParseCounter parseCounter) {
+        int numRows = parseCounter.getNumFetched();
+
+        batchSave(dataJob.getSource(), parseCounter);
+
+        log.info(String.format("[XLSSAXDataParser] dataJob: %d | numBatch: %d | numRows: %d",
+                dataJob.getId(), parseCounter.getNumBatch(), numRows));
+
+        // update offset for possible restart
+        dataJob.setParamOffset(dataJob.getParamOffset() + numRows);
+        parseCounter.setNumBatch(parseCounter.getNumBatch() + 1);
+        dataJobRepository.save(dataJob);
+    }
+
 }

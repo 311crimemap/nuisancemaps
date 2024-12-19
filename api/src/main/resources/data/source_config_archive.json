@@ -650,7 +650,7 @@
       "reportedAt": {
         "field": "RMSOccurrenceDate",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "REPORTED_AT_XLS_CRIME_HOUSTON"
       },
       "reportedAt2": {
         "field": null,
