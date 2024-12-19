@@ -74,7 +74,7 @@ import org.xml.sax.XMLReader;
  * your own!
  */
 @SuppressWarnings({ "java:S106", "java:S4823", "java:S1192" })
-public class XLSX2CSV {
+public class XLSSAXDataParser {
     /**
      * Uses the XSSF Event SAX helpers to do most of the work
      * of parsing the Sheet XML, and outputs the contents
