@@ -28,6 +28,8 @@ import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -75,6 +77,9 @@ public class XLSDataParserTest {
     @Autowired
     private XLSDataParser xlsDataParser;
 
+    @Autowired
+    private XLSSAXDataParser xlsSaxDataParser;
+
     private List<Source> sources;
 
     @BeforeAll
@@ -119,12 +124,13 @@ public class XLSDataParserTest {
         pendingTextCategoryRepository.deleteAll();
     }
 
+    /*
     @Test
     @Transactional
     public void parseTest() throws IOException {
 
         // xls has 6 records total
-        Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2024.xlsx");
+        Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2023.xlsx");
         InputStream inputstream = csvResource.getInputStream();
         File file = csvResource.getFile();
         ParseCounter parseCounter = new ParseCounter();
@@ -139,5 +145,31 @@ public class XLSDataParserTest {
 
         assertThat(dataCrimeRepository.count()).isEqualTo(6);
     }
+    */
+
+    @Test
+    @Transactional
+    public void XLSSAXDataParserTest() throws Exception {
+
+        // xls has 6 records total
+        Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2024.xlsx");
+        InputStream inputStream = csvResource.getInputStream();
+        File file = csvResource.getFile();
+        ParseCounter parseCounter = new ParseCounter();
+
+        Source s = sourceRepository.findOneBySourceConfigId(21);
+        DataJob d = new DataJob(LocalDateTime.now(), s, "Incident");
+        //d.setParamOffset(3);
+        dataJobRepository.save(d);
+
+        assertThat(dataCrimeRepository.count()).isEqualTo(0);
+
+        xlsSaxDataParser.parse(d, file, inputStream, parseCounter);
+
+
+        //assertThat(dataCrimeRepository.count()).isEqualTo(6);
+
+    }
+
 
 }

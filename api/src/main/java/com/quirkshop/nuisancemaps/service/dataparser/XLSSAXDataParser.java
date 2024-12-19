@@ -23,16 +23,21 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
+import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
+import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.XMLHelper;
@@ -45,6 +50,9 @@ import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.Styles;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -73,8 +81,11 @@ import org.xml.sax.XMLReader;
  * {@link SheetContentsHandler} and no SAX code needed of
  * your own!
  */
+
+@Service
+@Scope("prototype")
 @SuppressWarnings({ "java:S106", "java:S4823", "java:S1192" })
-public class XLSSAXDataParser {
+public class XLSSAXDataParser extends DataParser {
     /**
      * Uses the XSSF Event SAX helpers to do most of the work
      * of parsing the Sheet XML, and outputs the contents
@@ -92,6 +103,11 @@ public class XLSSAXDataParser {
         public SheetToCSV(DataJob dataJob, ParseCounter parseCounter) {
             this.dataJob = dataJob;
             this.parseCounter = parseCounter;
+
+            if (dataJob.getParamOffset() > 0) {
+                log.info(String.format("[XLSDataParser]: offset detected skipping %d lines",
+                        dataJob.getParamOffset()));
+            }
         }
 
         @Override
@@ -124,42 +140,19 @@ public class XLSSAXDataParser {
                 return;
             }
 
-            // gracefully handle missing CellRef here in a similar way as XSSFCell does
-            if (cellReference == null) {
-                cellReference = new CellAddress(currentRow, currentCol).formatAsString();
-            }
-
-            int thisCol = (new CellReference(cellReference)).getCol();
-
             // no need to append anything if we do not have a value
             if (formattedValue == null) {
                 return;
             }
 
-            currentCol = thisCol;
-
-            // TODO convert to Date
-            // Number or string?
-            try {
-                // Number
-                // noinspection ResultOfMethodCallIgnored
-                Double.parseDouble(formattedValue);
-                // output.append(formattedValue);
-
-            } catch (Exception e) {
-                // String
-                // let's remove quotes if they are already there
-                if (formattedValue.startsWith("\"") && formattedValue.endsWith("\"")) {
-                    formattedValue = formattedValue.substring(1, formattedValue.length() - 1);
-                }
-
-                // output.append('"');
-                // encode double-quote with two double-quotes to produce a valid CSV format
-                // output.append(formattedValue.replace("\"", "\"\""));
-                formattedValue = formattedValue.replace("\"", "\"\"");
-                // output.append('"');
-
+            // gracefully handle missing CellRef here in a similar way as XSSFCell does
+            if (cellReference == null) {
+                cellReference = new CellAddress(currentRow, currentCol).formatAsString();
             }
+
+            currentCol = (new CellReference(cellReference)).getCol();
+
+            // EXTRACT
 
             if (currentRow == 0) {
                 // popuplate header
@@ -176,6 +169,12 @@ public class XLSSAXDataParser {
      * Creates a new XLSX -&gt; CSV converter
      */
 
+    @Autowired
+    DataJobRepository dataJobRepository;
+
+    @Autowired
+    MapFieldExtractor mapFieldExtractor;
+
     public XLSSAXDataParser() {
     }
 
@@ -188,7 +187,7 @@ public class XLSSAXDataParser {
      * @param strings          The table of strings that may be referenced by cells
      *                         in the sheet
      * @param sheetInputStream The stream to read the sheet-data from.
-     * 
+     *
      * @throws java.io.IOException An IO exception from the parser,
      *                             possibly from a byte stream or character stream
      *                             supplied by the application.
@@ -224,8 +223,18 @@ public class XLSSAXDataParser {
      * @throws SAXException if parsing the XML data fails.
      */
     // TODO: reduce to one sheet (continue?)
-    public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter)
-            throws IOException, OpenXML4JException, SAXException {
+    public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
+        // sanity checks
+        int numRows = 0;
+        int numBatch = 0;
+
+        Source source = dataJob.getSource();
+        setTypes(source);
+
+        textCategoryService.refreshTextCategoryIdMap();
+
+        HashSet<String> pendingReportCategories = new HashSet<String>();
+
         OPCPackage p = null;
         try {
             p = OPCPackage.open(file.getPath(), PackageAccess.READ);
@@ -239,9 +248,6 @@ public class XLSSAXDataParser {
             while (iter.hasNext()) {
                 try (InputStream stream = iter.next()) {
                     String sheetName = iter.getSheetName();
-                    // this.output.println();
-                    // this.output.println(sheetName + " [index=" + index + "]:");
-
                     try {
                         processSheet(styles, strings, new SheetToCSV(dataJob, parseCounter), stream);
                     } catch (NumberFormatException e) {
@@ -250,9 +256,15 @@ public class XLSSAXDataParser {
                 }
                 ++index;
             }
+        } catch (Exception e) {
+            log.info("[XLSDataParser] SAX parse ERR: " + e.getMessage());
+            e.printStackTrace();
+            dataJob.setStatus(DataJobStatus.ERROR);
         } finally {
+            dataJobRepository.save(dataJob);
             p.revert();
         }
 
+        savePendingTextCategories(dataJob, source, pendingReportCategories);
     }
 }
