@@ -174,8 +174,6 @@ public class XLSDataParser extends DataParser {
         }
 
         savePendingTextCategories(dataJob, source, pendingReportCategories);
-
-        IOUtils.setByteArrayMaxOverride(100 * 1024 * 1024); // restore
     }
 
     private void logSaveBatch(DataJob dataJob, ParseCounter parseCounter, int numBatch, int numRows) {
