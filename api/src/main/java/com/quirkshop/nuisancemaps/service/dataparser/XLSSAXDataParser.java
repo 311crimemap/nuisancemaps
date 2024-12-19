@@ -81,7 +81,6 @@ public class XLSSAXDataParser {
      * as a (basic) CSV.
      */
     private class SheetToCSV implements SheetContentsHandler {
-        private boolean firstCellOfRow;
         private int currentRow = -1;
         private int currentCol = -1;
         private ArrayList<String> headers = new ArrayList<String>();
@@ -95,34 +94,15 @@ public class XLSSAXDataParser {
             this.parseCounter = parseCounter;
         }
 
-        private void outputMissingRows(int number) {
-            for (int i = 0; i < number; i++) {
-                for (int j = 0; j < minColumns; j++) {
-                    // output.append(',');
-                }
-                // output.append('\n');
-            }
-        }
-
         @Override
         public void startRow(int rowNum) {
             // rowNum starts at 0
-
-            // If there were gaps, output the missing rows
-            outputMissingRows(rowNum - currentRow - 1);
-            // Prepare for this row
-            firstCellOfRow = true;
             currentRow = rowNum;
             currentCol = -1;
         }
 
         @Override
         public void endRow(int rowNum) {
-            // Ensure the minimum number of columns
-            for (int i = currentCol; i < minColumns; i++) {
-                // output.append(',');
-            }
-            // output.append('\n');
 
             // build if not headers
             if (rowNum == 0 || rowNum < dataJob.getParamOffset())
@@ -138,12 +118,6 @@ public class XLSSAXDataParser {
         @Override
         public void cell(String cellReference, String formattedValue, XSSFComment comment) {
 
-            if (firstCellOfRow) {
-                firstCellOfRow = false;
-            } else {
-                // output.append(',');
-            }
-
             // SKIP offset (but make sure to capture headers)
             // NB: rowNum starts at 0 (typically headers)
             if (currentRow != 0 && currentRow < dataJob.getParamOffset()) {
@@ -155,12 +129,7 @@ public class XLSSAXDataParser {
                 cellReference = new CellAddress(currentRow, currentCol).formatAsString();
             }
 
-            // Did we miss any cells?
             int thisCol = (new CellReference(cellReference)).getCol();
-            int missedCols = thisCol - currentCol - 1;
-            for (int i = 0; i < missedCols; i++) {
-                // output.append(',');
-            }
 
             // no need to append anything if we do not have a value
             if (formattedValue == null) {
@@ -170,7 +139,6 @@ public class XLSSAXDataParser {
             currentCol = thisCol;
 
             // TODO convert to Date
-            // output.append("ROW: " + currentRow + " | COL: " + currentCol);
             // Number or string?
             try {
                 // Number
@@ -204,37 +172,11 @@ public class XLSSAXDataParser {
     }
 
     ///////////////////////////////////////
-
-    private final OPCPackage xlsxPackage;
-
-    /**
-     * Number of columns to read starting with leftmost
-     */
-    private final int minColumns;
-
-    /**
-     * Destination for data
-     */
-    private final PrintStream output;
-
     /**
      * Creates a new XLSX -&gt; CSV converter
-     *
-     * @param pkg        The XLSX package to process
-     * @param output     The PrintStream to output the CSV to
-     * @param minColumns The minimum number of columns to output, or -1 for no
-     *                   minimum
      */
-    public XLSX2CSV(OPCPackage pkg, PrintStream output, int minColumns) {
-        this.xlsxPackage = pkg;
-        this.output = output;
-        this.minColumns = minColumns;
-    }
 
-    public XLSX2CSV() {
-        this.xlsxPackage = null;
-        this.output = null;
-        this.minColumns = -1;
+    public XLSSAXDataParser() {
     }
 
     /**
@@ -281,7 +223,7 @@ public class XLSSAXDataParser {
      * @throws IOException  If reading the data from the package fails.
      * @throws SAXException if parsing the XML data fails.
      */
-    // TODO: reduce to one shit (continue?)
+    // TODO: reduce to one sheet (continue?)
     public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter)
             throws IOException, OpenXML4JException, SAXException {
         OPCPackage p = null;
