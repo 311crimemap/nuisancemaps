@@ -19,7 +19,7 @@ public class DataParserFactory {
     private ObjectFactory<APDIncidentReportDataParser> apdHTMLDataParserFactory;
 
     @Autowired
-    private ObjectFactory<XLSDataParser> xlsDataParserFactory;
+    private ObjectFactory<XLSSAXDataParser> xlsDataParserFactory;
 
     @Autowired
     private ObjectFactory<CSVCustomDataParser> csvCustomDataParserFactory;

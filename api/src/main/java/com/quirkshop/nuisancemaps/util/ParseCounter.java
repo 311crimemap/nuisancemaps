@@ -12,7 +12,10 @@ public class ParseCounter {
     int numProcessed = 0;
     int numDuplicates = 0;
 
-    public ParseCounter() {}
+    int numBatch = 0;
+
+    public ParseCounter() {
+    }
 
     public void numRowErrorsIncrement() {
         this.numRowErrors++;
@@ -86,4 +89,39 @@ public class ParseCounter {
         return numRowErrors;
     }
 
+    public void setNumFetched(int numFetched) {
+        this.numFetched = numFetched;
+    }
+
+    public void setNumSkipped(int numSkipped) {
+        this.numSkipped = numSkipped;
+    }
+
+    public void setNumMissing(int numMissing) {
+        this.numMissing = numMissing;
+    }
+
+    public void setNumBuilt(int numBuilt) {
+        this.numBuilt = numBuilt;
+    }
+
+    public void setNumErrors(int numErrors) {
+        this.numErrors = numErrors;
+    }
+
+    public void setNumRowErrors(int numRowErrors) {
+        this.numRowErrors = numRowErrors;
+    }
+
+    public void setNumReplaced(int numReplaced) {
+        this.numReplaced = numReplaced;
+    }
+
+    public int getNumBatch() {
+        return numBatch;
+    }
+
+    public void setNumBatch(int numBatch) {
+        this.numBatch = numBatch;
+    }
 }
