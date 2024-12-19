@@ -55,6 +55,7 @@ import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.XMLHelper;
 import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
@@ -178,7 +179,6 @@ public class XLSSAXDataParser extends DataParser {
 
             if (reportNums.size() >= BATCH_SIZE) {
                 logSaveBatch(dataJob, parseCounter);
-                System.out.println("ROW: " + rowNum);
             }
 
             parseCounter.numFetchedIncrement();
@@ -340,7 +340,7 @@ public class XLSSAXDataParser extends DataParser {
                 dataJob.getId(), parseCounter.getNumBatch(), numRows));
 
         // update offset for possible restart
-        dataJob.setParamOffset(dataJob.getParamOffset() + numRows);
+        dataJob.setParamOffset(numRows);
         parseCounter.setNumBatch(parseCounter.getNumBatch() + 1);
         dataJobRepository.save(dataJob);
     }
