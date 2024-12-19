@@ -28,8 +28,6 @@ import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -129,6 +127,7 @@ public class XLSDataParserTest {
     @Transactional
     public void parseTest() throws IOException {
 
+        // DEPRECATED
         // xls has 6 records total
         Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2023.xlsx");
         InputStream inputstream = csvResource.getInputStream();
@@ -151,7 +150,7 @@ public class XLSDataParserTest {
     @Transactional
     public void XLSSAXDataParserTest() throws Exception {
 
-        // xls has 6 records total
+        // xlsx has 6 records total
         Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2024.xlsx");
         InputStream inputStream = csvResource.getInputStream();
         File file = csvResource.getFile();
@@ -166,8 +165,7 @@ public class XLSDataParserTest {
 
         xlsSaxDataParser.parse(d, file, inputStream, parseCounter);
 
-
-        //assertThat(dataCrimeRepository.count()).isEqualTo(6);
+        assertThat(dataCrimeRepository.count()).isEqualTo(6);
 
     }
 

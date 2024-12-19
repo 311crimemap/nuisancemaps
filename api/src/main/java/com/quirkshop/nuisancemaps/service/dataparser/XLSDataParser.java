@@ -22,7 +22,6 @@ import com.quirkshop.nuisancemaps.repository.DataJobRepository;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -31,11 +30,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+/*
+ * DEPRECATED
+ * This parser consumes insane amounts of memory (heap) for even reasonably
+ * sized workbooks (e.g. 25MB)
+ */
 
 @Service
 @Scope("prototype")
