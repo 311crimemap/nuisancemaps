@@ -34,6 +34,21 @@ public class ParserStrategyConfigHouston {
         return dateStr;
     }
 
+    // 2021-01-01 00:40:43
+    public static String REPORTED_AT_CSV2_311_HOUSTON(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("SR CREATE DATE");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
     // 1/1/24 or also possibly 1/1/2024 given excel variability
     // hour: 0
     public static String REPORTED_AT_XLS_CRIME_HOUSTON(Map<String, String> row) {
