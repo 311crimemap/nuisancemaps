@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.model.datajob;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.hash.Hashing;
 import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.Source;
 
@@ -149,7 +151,17 @@ public class DataJob {
         String fileName = String.join("-", hostName, filePath + params,
                 formattedDateTime + "." + fileExtension);
 
+        // NB: max java filename length is 255
+        if (fileName.length() > 225) {
+            String h = hashFilenameMD5(filePath + params);
+            fileName = String.join("-", hostName, h, formattedDateTime + "." + fileExtension);
+        }
+
         return fileName;
+    }
+
+    public String hashFilenameMD5(String filename) {
+        return Hashing.md5().hashString(filename, StandardCharsets.UTF_8).toString();
     }
 
     public String getSourceURL() {
