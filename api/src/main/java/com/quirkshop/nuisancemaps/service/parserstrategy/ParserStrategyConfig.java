@@ -120,6 +120,8 @@ public class ParserStrategyConfig {
         // philadelphia
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_PHILADELPHIA,
                 ParserStrategyConfigPhiladelphia::REPORTED_AT_CSV_CRIME_PHILADELPHIA);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_PHILADELPHIA,
+                ParserStrategyConfigPhiladelphia::REPORTED_AT_CSV_311_PHILADELPHIA);
 
         // charlotte
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_CHARLOTTE,

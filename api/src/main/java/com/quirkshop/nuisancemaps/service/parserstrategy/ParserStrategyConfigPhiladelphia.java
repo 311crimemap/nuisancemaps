@@ -34,4 +34,21 @@ public class ParserStrategyConfigPhiladelphia {
 
         return dateStr;
     }
+
+    // 2024-01-05 17:23:40+00
+    public static String REPORTED_AT_CSV_311_PHILADELPHIA(Map<String, String> row) {
+        String dateStr = null;
+        try {
+            String text = row.get("requested_datetime");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssx");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
 }

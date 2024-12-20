@@ -31,4 +31,15 @@ public class ParserStrategyConfigPhiladelphiaTest {
         assertThat(value).isEqualTo("2024-07-01T22:59:00");
     }
 
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_311_PHILADELPHIA_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_311_PHILADELPHIA).isNotNull();
+
+        Map<String, String> row = Map.of("requested_datetime", "2024-01-05 17:23:40+00");
+
+        String value = ParserStrategyConfigPhiladelphia.REPORTED_AT_CSV_311_PHILADELPHIA(row);
+        assertThat(value).isEqualTo("2024-01-05T17:23:40");
+    }
+
 }

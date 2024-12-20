@@ -56,6 +56,7 @@ public enum ParserStrategy {
 
     /* philadelphia */
     REPORTED_AT_CSV_CRIME_PHILADELPHIA,
+    REPORTED_AT_CSV_311_PHILADELPHIA,
 
     /* charlotte */
     ADDRESS_CSV_CRIME_CHARLOTTE,
