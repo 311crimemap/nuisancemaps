@@ -54,7 +54,11 @@ public enum ParserStrategy {
     REPORTED_AT_XLS_CRIME_HOUSTON,
     ADDRESS_XLS_CRIME_HOUSTON,
 
+    /* philadelphia */
+    REPORTED_AT_CSV_CRIME_PHILADELPHIA,
+
     /* charlotte */
     ADDRESS_CSV_CRIME_CHARLOTTE,
     REPORTED_AT_CSV_CRIME_CHARLOTTE
+
 }
