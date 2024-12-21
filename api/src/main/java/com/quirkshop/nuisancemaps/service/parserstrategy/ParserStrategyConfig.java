@@ -123,13 +123,16 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_PHILADELPHIA,
                 ParserStrategyConfigPhiladelphia::REPORTED_AT_CSV_311_PHILADELPHIA);
 
+        // san diego
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_SAN_DIEGO,
+                ParserStrategyConfigSanDiego::REPORTED_AT_CSV_CRIME_SAN_DIEGO);
+
         // charlotte
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_CHARLOTTE,
                 ParserStrategyConfigCharlotte::REPORTED_AT_CSV_CRIME_CHARLOTTE);
 
         parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_CHARLOTTE,
                 ParserStrategyConfigCharlotte::ADDRESS_CSV_CRIME_CHARLOTTE);
-
 
         return parsingFunctions;
     }
