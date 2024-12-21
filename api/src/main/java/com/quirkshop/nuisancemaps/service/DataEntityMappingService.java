@@ -58,11 +58,13 @@ public class DataEntityMappingService {
         address = formatString(address);
         location = formatString(location);
 
-        // validate
+        // MissingReportCategoryException - empty
         validateReportCategory(source, reportCategory);
 
+        // InvalidCoordinateException | MissingCoordinateException - invalid / empty
         Point point = buildValidPoint(source, geometryFactory, latitude, longitude);
 
+        // MissingCategoryException - empty textCategory lookup
         Category textCategory = textCategoryService.lookupCategory(source.getCategory(), reportCategory);
         validateCategory(source, textCategory, reportCategory);
 
