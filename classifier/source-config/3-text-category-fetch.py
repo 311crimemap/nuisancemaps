@@ -32,8 +32,6 @@ def get_source_config(dataTypeParser):
         source_config = json.loads(file.read())
     return source_config
 
-
-
 with open(META_FILE, 'r') as file:
     meta = json.loads(file.read())
 
@@ -43,7 +41,11 @@ source_config = get_source_config(dataParserType)
 mapping = source_config['mapping']
 dataParserDelimeter = mapping.get("dataParserDelimeter", ",")
 dataParserNumSkip = mapping.get("dataParserNumSkip", 0)
+
+# categories
 report_category = mapping['reportCategory']['field']
+latitude_category = mapping['latitude']['field']
+longitude_category = mapping['longitude']['field']
 
 csv.field_size_limit(sys.maxsize)
 #
@@ -52,6 +54,7 @@ csv.field_size_limit(sys.maxsize)
 # json sort/uniq done via query
 #
 if (dataParserType == "JSON"):
+    # TODO: filter out report_category missing lat/lng
     url += f"?$select={report_category}&$group={report_category}&$limit=100000"
     command = f"curl '{url}' | jq -r '.[].{report_category}' > {TEXTCAT_FILE}"
     print(f"downloading {url}")
@@ -62,8 +65,10 @@ if (dataParserType == "XLS"):
     print("Reading xls")
     df = pd.read_excel(f"{DIR}/data.xls")
 
+    # TODO: verify
+    filtered_df = df[df[latitude_category].notna() & df[longitude_category].notna()]
     print("filter unique and sort")
-    sorted_items = sorted(df[report_category].dropna().unique())
+    sorted_items = sorted(filtered_df[report_category].dropna().unique())
 
     with open(TEXTCAT_FILE, mode='w') as outfile:
         for item in sorted_items:
@@ -81,8 +86,10 @@ if (dataParserType in ["CSV", "CSVCUSTOM"]):
         chunk = rawfile.read(1024 * 1024)
         result = chardet.detect(chunk)
         encoding = result['encoding']
-        encoding = encoding if encoding in ["utf-8", "utf-8-sig"] else "latin1"
-        print(f"Encoding: {encoding}")
+        print(f"Detected chardet: {encoding}")
+        #encoding = "utf-8"
+        encoding = encoding.lower() if encoding.lower() in ["utf-8", "utf-8-sig"] else "latin1"
+        print(f"Using Encoding: {encoding}")
 
     print("filter unique and sort")
     unique_items = set()
@@ -94,6 +101,14 @@ if (dataParserType in ["CSV", "CSVCUSTOM"]):
 
         for row in reader:
             try:
+                # check if lat/lng exist - if they don't, we'll skip it in parse
+                # so don't bother extracting (reduces a lot of 'noisy' online only submissions)
+                lat = row[latitude_category]
+                lng = row[longitude_category]
+
+                if not (lat and lat.strip() and lng and lng.strip()):
+                    continue
+
                 val = row[report_category]
                 if (val and val.strip()):
                     unique_items.add(val)

@@ -32,6 +32,13 @@ BATCH_SIZE=100
 OFFSET=0
 
 
+def format_str(str):
+    return str.replace("\\uFEFF", "")\
+              .replace("\\u00A0", "")\
+              .replace("\\u200B", "")\
+              .replace("\\xa0", "")
+
+
 with open(TEXTCAT_FILE, 'r') as file:
     text_categories = file.readlines()
 
@@ -71,9 +78,15 @@ while (OFFSET < len(text_categories)):
         presence_penalty = 0
     )
 
-    res = json.loads(chat_completion.choices[0].message.content)['examples']
-    res = [{"text": r['text'].strip(), "index": r['index']} for r in res]
-    results += res
+    content = format_str(chat_completion.choices[0].message.content)
+    examples = json.loads(content)['examples']
+    for example in examples:
+        try:
+            res = {"text": example['text'].strip(), "index": example['index']}
+            results.append(res)
+        except Exception as e:
+            print("[ERR]: ", e)
+            print(example)
 
 
 with open(OUTPUT_FILE, 'w') as file:
