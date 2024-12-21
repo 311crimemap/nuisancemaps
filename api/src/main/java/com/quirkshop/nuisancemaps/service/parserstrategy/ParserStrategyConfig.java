@@ -130,7 +130,8 @@ public class ParserStrategyConfig {
         // charlotte
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_CHARLOTTE,
                 ParserStrategyConfigCharlotte::REPORTED_AT_CSV_CRIME_CHARLOTTE);
-
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_CHARLOTTE,
+                ParserStrategyConfigCharlotte::REPORTED_AT_CSV_311_CHARLOTTE);
         parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_CHARLOTTE,
                 ParserStrategyConfigCharlotte::ADDRESS_CSV_CRIME_CHARLOTTE);
 
