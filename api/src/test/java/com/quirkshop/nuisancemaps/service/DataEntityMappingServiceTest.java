@@ -13,11 +13,13 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
+import com.quirkshop.nuisancemaps.config.ThresholdReportedAtException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.Locale;
@@ -147,7 +149,7 @@ public class DataEntityMappingServiceTest {
     public void BuildDataEntityParseEntityTest()
             throws IOException, NoSuchMethodException, IllegalAccessException, InstantiationException,
             InvocationTargetException, MissingReportCategoryException, MissingCategoryException,
-            InvalidCoordinateException, MissingCoordinateException {
+            InvalidCoordinateException, MissingCoordinateException, ThresholdReportedAtException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-dallas.json");
         Source s = sourceRepository.findOneBySourceConfigId(4);
@@ -217,6 +219,33 @@ public class DataEntityMappingServiceTest {
         JsonNode node = rootNode.get(0);
         GeometryFactory geometryFactory = new GeometryFactory();
         assertThrows(MissingCategoryException.class, () -> {
+            dataEntityMappingService.buildDataEntity(Data311.class, s, node, geometryFactory, jsonNodeFieldExtractor);
+        });
+    }
+
+    @Test
+    @Transactional
+    public void buildDataEntityThresholdReportedAtException() throws IOException, NoSuchMethodException, SecurityException {
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
+        Source s = sourceRepository.findOneBySourceConfigId(2);
+
+        // DataJob to crawl: stub job and fetch with json fixture response
+        // Read the content of the JSON file vs actual fetch
+        DataJob d = new DataJob(LocalDateTime.now(), s, "sr_number");
+        dataJobRepository.save(d);
+        textCategoryService.refreshTextCategoryIdMap();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(jsonResource.getInputStream());
+
+        // NB: jsonNode is immutable, use objectNode
+        // set date to before threshold (2020) to trigger exception
+        ObjectNode node = (ObjectNode) rootNode.get(0);
+        node.put("sr_created_date", "2010-01-24T23:52:32.000");
+
+        GeometryFactory geometryFactory = new GeometryFactory();
+        assertThrows(ThresholdReportedAtException.class, () -> {
             dataEntityMappingService.buildDataEntity(Data311.class, s, node, geometryFactory, jsonNodeFieldExtractor);
         });
     }
