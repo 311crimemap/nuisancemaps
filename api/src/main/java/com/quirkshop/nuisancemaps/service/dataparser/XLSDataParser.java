@@ -14,6 +14,7 @@ import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
+import com.quirkshop.nuisancemaps.config.ThresholdReportedAtException;
 import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
@@ -148,6 +149,8 @@ public class XLSDataParser extends DataParser {
                     logMissingException(source, content, e);
                     parseCounter.numMissingIncrement();
 
+                } catch (ThresholdReportedAtException e) {
+                    parseCounter.numExceededThresholdIncrement();
                 } catch (Exception e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
                     log.info("[XLSDataParser] row: " + numRows);

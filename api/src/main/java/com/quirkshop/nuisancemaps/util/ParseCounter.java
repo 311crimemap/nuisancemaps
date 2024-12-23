@@ -4,6 +4,7 @@ public class ParseCounter {
     int numFetched = 0;
     int numSkipped = 0;
     int numMissing = 0;
+    int numExceededThreshold = 0;
     int numBuilt = 0;
     int numErrors = 0;
     int numRowErrors = 0;
@@ -31,6 +32,10 @@ public class ParseCounter {
 
     public void numMissingIncrement() {
         this.numMissing++;
+    }
+
+    public void numExceededThresholdIncrement() {
+        this.numExceededThreshold++;
     }
 
     public void numBuiltIncrement() {
@@ -123,5 +128,13 @@ public class ParseCounter {
 
     public void setNumBatch(int numBatch) {
         this.numBatch = numBatch;
+    }
+
+    public int getNumExceededThreshold() {
+        return numExceededThreshold;
+    }
+
+    public void setNumExceededThreshold(int numExceededThreshold) {
+        this.numExceededThreshold = numExceededThreshold;
     }
 }

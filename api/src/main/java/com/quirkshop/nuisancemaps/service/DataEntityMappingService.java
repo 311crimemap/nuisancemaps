@@ -7,6 +7,7 @@ import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingReportCategoryException;
+import com.quirkshop.nuisancemaps.config.ThresholdReportedAtException;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.Mapping;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataEntityMappingService {
 
+    private final LocalDateTime REPORTED_AT_THRESHOLD = LocalDateTime.of(2020, 1, 1, 0, 0);
+
     @Autowired
     private TextCategoryService textCategoryService;
 
@@ -31,7 +34,7 @@ public class DataEntityMappingService {
             FieldExtractor<T> extractor)
             throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException,
             MissingCategoryException, MissingReportCategoryException,
-            InvalidCoordinateException, MissingCoordinateException {
+            InvalidCoordinateException, MissingCoordinateException, ThresholdReportedAtException {
 
         String report_num = extractor.extract(Mapping::getReportNum, source, item);
         String reportCategory = extractor.extract(Mapping::getReportCategory, source, item);
@@ -71,6 +74,9 @@ public class DataEntityMappingService {
         LocalDateTime reported_at = reported_at1 == null
                 ? (reported_at2 == null ? null : LocalDateTime.parse(reported_at2))
                 : LocalDateTime.parse(reported_at1);
+
+        // ThresholdReportedAtException
+        validateReportedAt(reported_at);
 
         DataEntity dataEntity = dataEntityClass.getConstructor(Source.class).newInstance(source);
 
@@ -115,6 +121,15 @@ public class DataEntityMappingService {
         dataEntity.setPoint(point);
         dataEntity.setReportedAt(reported_at);
         dataEntity.setUpdatedAt(LocalDateTime.now());
+    }
+
+    private void validateReportedAt(LocalDateTime reportedAt) throws ThresholdReportedAtException {
+        if (reportedAt.isBefore(REPORTED_AT_THRESHOLD)) {
+            String logStr = String.format("reportedAt %s: prior to threshold date %s",
+                    reportedAt.toString(),
+                    REPORTED_AT_THRESHOLD.toString());
+            throw new ThresholdReportedAtException(logStr);
+        }
     }
 
     private void validateReportCategory(Source source, String reportCategory) throws MissingReportCategoryException {
