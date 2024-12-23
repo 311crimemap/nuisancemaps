@@ -2,6 +2,9 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 public enum ParserStrategy {
+    /* GENERAL */
+    REPORTED_AT_CSV_MMddyyyyhhmmssa,
+
     /* austin */
     STREET_NAME_ERSI_AUSTIN,
     OCCURRENCE_DATE_ERSI_AUSTIN,
@@ -78,7 +81,11 @@ public enum ParserStrategy {
     REPORTED_AT_CSV_CRIME_MEMPHIS,
     REPORTED_AT_CSV_311_MEMPHIS,
     LATITIUDE_CSV_311_MEMPHIS,
-    LONGITUDE_CSV_311_MEMPHIS
+    LONGITUDE_CSV_311_MEMPHIS,
+
+    /* montgomery country */
+    ADDRESS_CSV_CRIME_MONTGOMERY_COUNTY,
+    ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY
 
 }
 

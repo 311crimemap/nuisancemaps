@@ -40,6 +40,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_311_LA,
                 ParserStrategyConfigLosAngeles::REPORTED_AT_311_LA);
 
+        // montgomery county
+        parsingFunctions.put(ParserStrategy.ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY,
+                ParserStrategyConfigMontgomeryCounty::ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY);
+
         return parsingFunctions;
     }
 
@@ -47,6 +51,12 @@ public class ParserStrategyConfig {
     public Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctionsMap() {
 
         Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctions = new HashMap<>();
+
+        // multi
+
+        // 01/09/2022 01:18:38 AM
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyyhhmmssa,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_MMddyyyyhhmmssa);
 
         // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN,
@@ -157,6 +167,10 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigMemphis::LATITIUDE_CSV_311_MEMPHIS);
         parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_311_MEMPHIS,
                 ParserStrategyConfigMemphis::LONGITUDE_CSV_311_MEMPHIS);
+
+        // montgomery county
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_MONTGOMERY_COUNTY,
+                ParserStrategyConfigMontgomeryCounty::ADDRESS_CSV_CRIME_MONTGOMERY_COUNTY);
 
         return parsingFunctions;
     }

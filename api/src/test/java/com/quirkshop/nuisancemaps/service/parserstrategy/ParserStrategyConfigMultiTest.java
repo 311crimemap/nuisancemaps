@@ -1,0 +1,37 @@
+package com.quirkshop.nuisancemaps.service.parserstrategy;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quirkshop.nuisancemaps.NuisancemapsApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+@SpringBootTest(classes = NuisancemapsApplication.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class ParserStrategyConfigMultiTest {
+
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_MMddyyyyhhmmssa_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_MMddyyyyhhmmssa).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "01/09/2022 01:18:38 PM");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_CSV_MMddyyyyhhmmssa(row, mappingField);
+        assertThat(value).isEqualTo("2022-01-09T13:18:38");
+    }
+
+}
