@@ -28,7 +28,7 @@ public class ParserStrategyConfigDenverTest {
 
         Map<String, String> row = Map.of("REPORTED_DATE", "10/14/2020 10:20:00 PM");
 
-        String value = ParserStrategyConfigDenver.REPORTED_AT_CSV_CRIME_DENVER(row);
+        String value = ParserStrategyConfigDenver.REPORTED_AT_CSV_CRIME_DENVER(row, null);
         assertThat(value).isEqualTo("2020-10-14T22:20:00");
     }
 
@@ -40,7 +40,7 @@ public class ParserStrategyConfigDenverTest {
 
         Map<String, String> row = Map.of("Case_Created_dttm", "12/6/2023 10:40:02 AM");
 
-        String value = ParserStrategyConfigDenver.REPORTED_AT_CSV_311_DENVER(row);
+        String value = ParserStrategyConfigDenver.REPORTED_AT_CSV_311_DENVER(row, null);
         assertThat(value).isEqualTo("2023-12-06T10:40:02");
     }
 

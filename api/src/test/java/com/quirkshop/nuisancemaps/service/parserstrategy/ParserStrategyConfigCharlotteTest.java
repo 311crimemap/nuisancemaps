@@ -27,7 +27,7 @@ public class ParserStrategyConfigCharlotteTest {
 
         Map<String, String> row = Map.of("RECEIVED_DATE", "2017/05/16 14:09:00+00");
 
-        String value = ParserStrategyConfigCharlotte.REPORTED_AT_CSV_311_CHARLOTTE(row);
+        String value = ParserStrategyConfigCharlotte.REPORTED_AT_CSV_311_CHARLOTTE(row, null);
         assertThat(value).isEqualTo("2017-05-16T14:09:00");
     }
 

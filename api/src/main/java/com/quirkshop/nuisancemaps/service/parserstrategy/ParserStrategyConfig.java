@@ -2,10 +2,11 @@ package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,9 @@ public class ParserStrategyConfig {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     @Bean
-    public Map<ParserStrategy, Function<JsonNode, String>> parsingFunctionsJSON() {
+    public Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctionsJSON() {
 
-        Map<ParserStrategy, Function<JsonNode, String>> parsingFunctions = new HashMap<>();
+        Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctions = new HashMap<>();
 
         parsingFunctions.put(ParserStrategy.LATITUDE_311_DALLAS,
                 ParserStrategyConfigDallas::LATITUDE_311_DALLAS);
@@ -43,9 +44,9 @@ public class ParserStrategyConfig {
     }
 
     @Bean
-    public Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctionsMap() {
+    public Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctionsMap() {
 
-        Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctions = new HashMap<>();
+        Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctions = new HashMap<>();
 
         // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN,
@@ -146,6 +147,17 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigDetroit::REPORTED_AT_CSV_CRIME_DETROIT);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_DETROIT,
                 ParserStrategyConfigDetroit::REPORTED_AT_CSV_311_DETROIT);
+
+        // memphis
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_MEMPHIS,
+                ParserStrategyConfigMemphis::REPORTED_AT_CSV_CRIME_MEMPHIS);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_311_MEMPHIS,
+                ParserStrategyConfigMemphis::REPORTED_AT_CSV_311_MEMPHIS);
+        parsingFunctions.put(ParserStrategy.LATITIUDE_CSV_311_MEMPHIS,
+                ParserStrategyConfigMemphis::LATITIUDE_CSV_311_MEMPHIS);
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_311_MEMPHIS,
+                ParserStrategyConfigMemphis::LONGITUDE_CSV_311_MEMPHIS);
+
         return parsingFunctions;
     }
 

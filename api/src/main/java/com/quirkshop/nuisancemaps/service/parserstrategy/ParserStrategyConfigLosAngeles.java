@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class ParserStrategyConfigLosAngeles {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     // '09/21/2023 07:18:00 AM'
-    public static String REPORTED_AT_CSV_CRIME_LA(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_LA(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Date Rptd");
@@ -30,7 +31,7 @@ public class ParserStrategyConfigLosAngeles {
     }
 
     // '09/21/2023 07:18:00 AM'
-    public static String REPORTED_AT2_CSV_CRIME_LA(Map<String, String> row) {
+    public static String REPORTED_AT2_CSV_CRIME_LA(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("DATE OCC");
@@ -45,7 +46,7 @@ public class ParserStrategyConfigLosAngeles {
     }
 
     // 2024-01-01T00:06:54.000
-    public static String REPORTED_AT_311_LA(JsonNode item) {
+    public static String REPORTED_AT_311_LA(JsonNode item, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = item.at("/createddate").asText();
@@ -60,7 +61,7 @@ public class ParserStrategyConfigLosAngeles {
     }
 
     // 01/01/2023 12:00:46 AM
-    public static String REPORTED_AT_CSV_311_LA(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_LA(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("CreatedDate");

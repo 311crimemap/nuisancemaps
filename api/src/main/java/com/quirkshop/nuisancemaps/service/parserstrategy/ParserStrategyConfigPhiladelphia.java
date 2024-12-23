@@ -1,16 +1,11 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +15,7 @@ public class ParserStrategyConfigPhiladelphia {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     // 2024-07-01 22:59:00+00
-    public static String REPORTED_AT_CSV_CRIME_PHILADELPHIA(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_PHILADELPHIA(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("dispatch_date_time");
@@ -36,7 +31,7 @@ public class ParserStrategyConfigPhiladelphia {
     }
 
     // 2024-01-05 17:23:40+00
-    public static String REPORTED_AT_CSV_311_PHILADELPHIA(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_PHILADELPHIA(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("requested_datetime");

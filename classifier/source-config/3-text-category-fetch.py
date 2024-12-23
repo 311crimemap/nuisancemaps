@@ -23,7 +23,7 @@ TEXTCAT_FILE=f"{DIR}/text_categories.txt"
 
 # build url
 def get_source_config(dataTypeParser):
-    SOURCE_CONFIG_FILE = f"./{DIR}/data.csv.out.json"
+    SOURCE_CONFIG_FILE = f"./{DIR}/source_config.json"
 
     if (dataParserType == "JSON"):
         SOURCE_CONFIG_FILE = f"./{DIR}/data.json.out.json"
@@ -69,6 +69,7 @@ if (dataParserType == "XLS"):
     filtered_df = df[df[latitude_category].notna() & df[longitude_category].notna()]
     print("filter unique and sort")
     sorted_items = sorted(filtered_df[report_category].dropna().unique())
+    print("Example Categories:", sorted_items[0:5])
 
     with open(TEXTCAT_FILE, mode='w') as outfile:
         for item in sorted_items:
@@ -116,6 +117,7 @@ if (dataParserType in ["CSV", "CSVCUSTOM"]):
                 print(f"[ERR] {e}")
 
     sorted_items = sorted(unique_items)
+    print("Example Categories:", sorted_items[0:5])
 
     with open(TEXTCAT_FILE, mode='w') as outfile:
         for item in sorted_items:

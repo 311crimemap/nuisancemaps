@@ -27,7 +27,7 @@ public class ParserStrategyConfigSanDiegoTest {
 
         Map<String, String> row = Map.of("occured_on", "2022-02-11 22:00:00");
 
-        String value = ParserStrategyConfigSanDiego.REPORTED_AT_CSV_CRIME_SAN_DIEGO(row);
+        String value = ParserStrategyConfigSanDiego.REPORTED_AT_CSV_CRIME_SAN_DIEGO(row, null);
         assertThat(value).isEqualTo("2022-02-11T22:00:00");
     }
 

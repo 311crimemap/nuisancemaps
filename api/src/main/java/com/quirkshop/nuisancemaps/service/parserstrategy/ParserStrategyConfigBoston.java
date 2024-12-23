@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,8 @@ public class ParserStrategyConfigBoston {
     // LocalDateTime.parse requires ISO format but field is a simple date with 24 hr
     // time and timezone offset:
     // 2020-12-31 20:30:00+00
-    public static String REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON(Map<String, String> row,
+            MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("OCCURRED_ON_DATE");
@@ -46,7 +48,7 @@ public class ParserStrategyConfigBoston {
 
     // field is a simple date with 24 hr time
     // 2020-12-31 20:30:00
-    public static String REPORTED_AT_CSV_CRIME_BOSTON(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_BOSTON(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("OCCURRED_ON_DATE");
@@ -63,7 +65,7 @@ public class ParserStrategyConfigBoston {
     }
 
     // 2020-12-31 20:30:00
-    public static String REPORTED_AT_CSV_311_BOSTON(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_BOSTON(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("open_dt");

@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service.dataparser;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.quirkshop.nuisancemaps.service.parserstrategy.ParserStrategy;
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapFieldExtractor implements FieldExtractor<Map<String, String>> {
 
-    private final Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctionsMap;
+    private final Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctionsMap;
 
     @Autowired
-    public MapFieldExtractor(Map<ParserStrategy, Function<Map<String, String>, String>> parsingFunctionsMap) {
+    public MapFieldExtractor(Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctionsMap) {
         this.parsingFunctionsMap = parsingFunctionsMap;
     }
 
@@ -49,16 +50,16 @@ public class MapFieldExtractor implements FieldExtractor<Map<String, String>> {
 
         if (result.getParsingStrategy() != null) {
             ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
-            return parseRow((Map<String, String>) row, strategy);
+            return parseRow((Map<String, String>) row, result, strategy);
         }
 
         return ((Map<String, String>) row).get(result.getField());
     }
 
-    public String parseRow(Map<String, String> row, ParserStrategy strategy) {
-        Function<Map<String, String>, String> parser = parsingFunctionsMap.get(strategy);
+    public String parseRow(Map<String, String> row, MappingField mappingField, ParserStrategy strategy) {
+        BiFunction<Map<String, String>, MappingField, String> parser = parsingFunctionsMap.get(strategy);
         if (parser != null) {
-            return parser.apply(row);
+            return parser.apply(row, mappingField);
         }
         return null;
     }

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class ParserStrategyConfigDetroit {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     // 2024/12/16 00:25:00+00
-    public static String REPORTED_AT_CSV_CRIME_DETROIT(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_DETROIT(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("incident_occurred_at");
@@ -34,7 +35,7 @@ public class ParserStrategyConfigDetroit {
     }
 
     // 2024/11/25 12:34:56+00
-    public static String REPORTED_AT_CSV_311_DETROIT(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_DETROIT(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Created_At");

@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service.dataparser;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,10 +17,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JSONNodeFieldExtractor implements FieldExtractor<JsonNode> {
 
-    private final Map<ParserStrategy, Function<JsonNode, String>> parsingFunctionsJSON;
+    private final Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctionsJSON;
 
     @Autowired
-    public JSONNodeFieldExtractor(Map<ParserStrategy, Function<JsonNode, String>> parsingFunctionsJSON) {
+    public JSONNodeFieldExtractor(Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctionsJSON) {
         this.parsingFunctionsJSON = parsingFunctionsJSON;
     }
 
@@ -46,16 +47,16 @@ public class JSONNodeFieldExtractor implements FieldExtractor<JsonNode> {
 
         if (result.getParsingStrategy() != null) {
             ParserStrategy strategy = ParserStrategy.valueOf(result.getParsingStrategy());
-            return parseNode((JsonNode) item, strategy);
+            return parseNode((JsonNode) item, result, strategy);
         }
 
         return ((JsonNode) item).at(result.getPointer()).asText();
     }
 
-    public String parseNode(JsonNode item, ParserStrategy strategy) {
-        Function<JsonNode, String> parser = parsingFunctionsJSON.get(strategy);
+    public String parseNode(JsonNode item, MappingField mappingField, ParserStrategy strategy) {
+        BiFunction<JsonNode, MappingField, String> parser = parsingFunctionsJSON.get(strategy);
         if (parser != null) {
-            return parser.apply(item);
+            return parser.apply(item, mappingField);
         }
         return null;
     }

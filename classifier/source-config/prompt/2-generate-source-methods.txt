@@ -21,10 +21,11 @@ needed, generate a java method with the proper conversion.
 Here are some examples:
 
 ```
-    public static String REPORTED_AT_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_DALLAS(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
-            String text = row.get("Date of Report");
+            String field = mappingField.getField();
+            String text = row.get(field);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
@@ -35,7 +36,7 @@ Here are some examples:
         return dateStr;
     }
 
-    public static String LATITUDE_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String LATITUDE_CSV_CRIME_DALLAS(Map<String, String> row, MappingField mappingField) {
         // "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)"
         String latitude = null;
 
@@ -59,7 +60,7 @@ Here are some examples:
     }
 
 
-    public static String STREET_NAME_ERSI_AUSTIN(JsonNode item) {
+    public static String STREET_NAME_ERSI_AUSTIN(JsonNode item, MappingField mappingField) {
         String value = null;
 
         try {

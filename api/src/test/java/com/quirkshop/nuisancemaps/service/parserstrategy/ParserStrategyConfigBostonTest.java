@@ -24,7 +24,7 @@ public class ParserStrategyConfigBostonTest {
 
         Map<String, String> row = Map.of("OCCURRED_ON_DATE", "2020-12-31 20:30:00");
 
-        String value = ParserStrategyConfigBoston.REPORTED_AT_CSV_CRIME_BOSTON(row);
+        String value = ParserStrategyConfigBoston.REPORTED_AT_CSV_CRIME_BOSTON(row, null);
         assertThat(value).isEqualTo("2020-12-31T20:30:00");
 
         // ensure it's parseable downstream
@@ -39,7 +39,7 @@ public class ParserStrategyConfigBostonTest {
 
         Map<String, String> row = Map.of("OCCURRED_ON_DATE", "2020-12-31 20:30:00+00");
 
-        String value = ParserStrategyConfigBoston.REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON(row);
+        String value = ParserStrategyConfigBoston.REPORTED_AT_CSV_CRIME_TIMEZONE_OFFSET_BOSTON(row, null);
         assertThat(value).isEqualTo("2020-12-31T20:30:00");
 
         // ensure it's parseable downstream

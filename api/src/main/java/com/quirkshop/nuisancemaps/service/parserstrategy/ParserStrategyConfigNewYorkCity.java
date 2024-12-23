@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class ParserStrategyConfigNewYorkCity {
 
     // LocalDateTime.parse requires ISO format but field is a simple date
     // (MM/DD/YYYY) - only for CSV (but not JSON)
-    public static String REPORTED_AT_CSV_CRIME_NEW_YORK_CITY(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_NEW_YORK_CITY(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("RPT_DT");
@@ -42,7 +43,7 @@ public class ParserStrategyConfigNewYorkCity {
         return dateStr;
     }
 
-    public static String REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY(Map<String, String> row) {
+    public static String REPORTED_AT2_CSV_CRIME_NEW_YORK_CITY(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("CMPLNT_FR_DT");
@@ -65,7 +66,7 @@ public class ParserStrategyConfigNewYorkCity {
     }
 
     // 09/18/2024 02:24:09 AM
-    public static String REPORTED_AT_CSV_311_NEW_YORK_CITY(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_NEW_YORK_CITY(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Created Date");
