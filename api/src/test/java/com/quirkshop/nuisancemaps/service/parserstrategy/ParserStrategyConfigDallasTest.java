@@ -30,7 +30,7 @@ public class ParserStrategyConfigDallasTest {
         String jsonStr = "{\"lat_location\": \"(32.77937339624264000,-96.85251201839743000)\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
 
-        String value = ParserStrategyConfigDallas.LATITUDE_311_DALLAS(item);
+        String value = ParserStrategyConfigDallas.LATITUDE_311_DALLAS(item, null);
         assertThat(value).isEqualTo("32.77937339624264000");
     }
 
@@ -42,7 +42,7 @@ public class ParserStrategyConfigDallasTest {
         String jsonStr = "{\"lat_location\": \"(32.77937339624264000,-96.85251201839743000)\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
 
-        String value = ParserStrategyConfigDallas.LONGITUDE_311_DALLAS(item);
+        String value = ParserStrategyConfigDallas.LONGITUDE_311_DALLAS(item, null);
         assertThat(value).isEqualTo("-96.85251201839743000");
     }
 
@@ -53,7 +53,7 @@ public class ParserStrategyConfigDallasTest {
 
         Map<String, String> row = Map.of("Location1", "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)");
 
-        String value = ParserStrategyConfigDallas.LATITUDE_CSV_CRIME_DALLAS(row);
+        String value = ParserStrategyConfigDallas.LATITUDE_CSV_CRIME_DALLAS(row, null);
         assertThat(value).isEqualTo("32.87309");
     }
 
@@ -64,7 +64,7 @@ public class ParserStrategyConfigDallasTest {
 
         Map<String, String> row = Map.of("Location1", "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)");
 
-        String value = ParserStrategyConfigDallas.LONGITUDE_CSV_CRIME_DALLAS(row);
+        String value = ParserStrategyConfigDallas.LONGITUDE_CSV_CRIME_DALLAS(row, null);
         assertThat(value).isEqualTo("-96.75785");
     }
 
@@ -75,7 +75,7 @@ public class ParserStrategyConfigDallasTest {
 
         Map<String, String> row = Map.of("Lat_Long Location", "(32.71777362108976000,-96.80840102118572000)");
 
-        String value = ParserStrategyConfigDallas.LATITUDE_CSV_311_DALLAS(row);
+        String value = ParserStrategyConfigDallas.LATITUDE_CSV_311_DALLAS(row, null);
         assertThat(value).isEqualTo("32.71777362108976000");
     }
 
@@ -86,7 +86,7 @@ public class ParserStrategyConfigDallasTest {
 
         Map<String, String> row = Map.of("Lat_Long Location", "(32.71777362108976000,-96.80840102118572000)");
 
-        String value = ParserStrategyConfigDallas.LONGITUDE_CSV_311_DALLAS(row);
+        String value = ParserStrategyConfigDallas.LONGITUDE_CSV_311_DALLAS(row, null);
         assertThat(value).isEqualTo("-96.80840102118572000");
     }
 
@@ -97,7 +97,7 @@ public class ParserStrategyConfigDallasTest {
 
         Map<String, String> row = Map.of("Date of Report", "2022-11-09 07:03:00.0000000");
 
-        String value = ParserStrategyConfigDallas.REPORTED_AT_CSV_CRIME_DALLAS(row);
+        String value = ParserStrategyConfigDallas.REPORTED_AT_CSV_CRIME_DALLAS(row, null);
         assertThat(value).isEqualTo("2022-11-09T07:03:00");
 
         // ensure it's parseable downstream
@@ -112,7 +112,7 @@ public class ParserStrategyConfigDallasTest {
 
         Map<String, String> row = Map.of("Date1 of Occurrence", "2016-09-16 00:00:00.0000000");
 
-        String value = ParserStrategyConfigDallas.REPORTED_AT2_CSV_CRIME_DALLAS(row);
+        String value = ParserStrategyConfigDallas.REPORTED_AT2_CSV_CRIME_DALLAS(row, null);
         assertThat(value).isEqualTo("2016-09-16T00:00:00");
 
         // ensure it's parseable downstream
@@ -128,7 +128,7 @@ public class ParserStrategyConfigDallasTest {
         String jsonStr = "{\"reporteddate\":\"2016-07-19 17:22:00.0000000\",\"date1\":\"2016-07-19 00:00:00.0000000\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
 
-        String value = ParserStrategyConfigDallas.REPORTED_AT_CRIME_DALLAS(item);
+        String value = ParserStrategyConfigDallas.REPORTED_AT_CRIME_DALLAS(item, null);
         assertThat(value).isEqualTo("2016-07-19T17:22:00");
 
         // ensure it's parseable downstream
@@ -143,7 +143,7 @@ public class ParserStrategyConfigDallasTest {
         String jsonStr = "{\"reporteddate\":\"2016-07-19 17:22:00.0000000\",\"date1\":\"2016-07-19 00:00:00.0000000\"}";
         JsonNode item = objectMapper.readTree(jsonStr);
 
-        String value = ParserStrategyConfigDallas.REPORTED_AT2_CRIME_DALLAS(item);
+        String value = ParserStrategyConfigDallas.REPORTED_AT2_CRIME_DALLAS(item, null);
         assertThat(value).isEqualTo("2016-07-19T00:00:00");
 
         // ensure it's parseable downstream

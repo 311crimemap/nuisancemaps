@@ -41,7 +41,7 @@ public class ParserStrategyConfigAustinTest {
         JsonNode items = objectMapper.readTree(inputstream);
         // System.out.println(items);
         JsonNode item = items.at("/features/2");
-        String value = ParserStrategyConfigAustin.STREET_NAME_ERSI_AUSTIN(item);
+        String value = ParserStrategyConfigAustin.STREET_NAME_ERSI_AUSTIN(item, null);
         assertThat(value).isEqualTo("8800 NORTH PLZ");
     }
 
@@ -59,7 +59,7 @@ public class ParserStrategyConfigAustinTest {
 
         // date: 1705276800000
         // time: 1136
-        String value = ParserStrategyConfigAustin.OCCURRENCE_DATE_ERSI_AUSTIN(item);
+        String value = ParserStrategyConfigAustin.OCCURRENCE_DATE_ERSI_AUSTIN(item, null);
         assertThat(value).isEqualTo("2024-01-15T11:36:00");
     }
 
@@ -70,7 +70,7 @@ public class ParserStrategyConfigAustinTest {
 
         Map<String, String> row = Map.of("Occurred Date Time", "09/21/2023 07:18:00 AM");
 
-        String value = ParserStrategyConfigAustin.REPORTED_AT_CSV_AUSTIN(row);
+        String value = ParserStrategyConfigAustin.REPORTED_AT_CSV_AUSTIN(row, null);
         assertThat(value).isEqualTo("2023-09-21T07:18:00");
 
         // ensure it's parseable downstream
@@ -85,7 +85,7 @@ public class ParserStrategyConfigAustinTest {
 
         Map<String, String> row = Map.of("Report Date Time", "04/15/2016 01:09:00 PM");
 
-        String value = ParserStrategyConfigAustin.REPORTED_AT2_CSV_AUSTIN(row);
+        String value = ParserStrategyConfigAustin.REPORTED_AT2_CSV_AUSTIN(row, null);
         assertThat(value).isEqualTo("2016-04-15T13:09:00");
 
         // ensure it's parseable downstream

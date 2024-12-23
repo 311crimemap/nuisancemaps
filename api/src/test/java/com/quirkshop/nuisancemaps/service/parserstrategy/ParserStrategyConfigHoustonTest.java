@@ -27,7 +27,7 @@ public class ParserStrategyConfigHoustonTest {
 
         Map<String, String> row = Map.of("SR CREATE DATE", "2021-01-08 00:45:40");
 
-        String value = ParserStrategyConfigHouston.REPORTED_AT_CSV2_311_HOUSTON(row);
+        String value = ParserStrategyConfigHouston.REPORTED_AT_CSV2_311_HOUSTON(row, null);
         assertThat(value).isEqualTo("2021-01-08T00:45:40");
     }
 

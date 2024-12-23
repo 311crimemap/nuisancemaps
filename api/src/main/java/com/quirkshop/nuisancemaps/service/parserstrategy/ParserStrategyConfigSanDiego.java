@@ -3,11 +3,9 @@ package com.quirkshop.nuisancemaps.service.parserstrategy;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +19,9 @@ public class ParserStrategyConfigSanDiego {
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     // 2021-07-11 20:45:00
-    public static String REPORTED_AT_CSV_CRIME_SAN_DIEGO(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_SAN_DIEGO(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
+
         try {
             String text = row.get("occured_on");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

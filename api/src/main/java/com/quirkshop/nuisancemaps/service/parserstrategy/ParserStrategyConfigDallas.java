@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class ParserStrategyConfigDallas {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
-    public static String LATITUDE_311_DALLAS(JsonNode item) {
+    public static String LATITUDE_311_DALLAS(JsonNode item, MappingField mappingField) {
         // {..., "lat_location": (32.77937339624264000,-96.85251201839743000), ...}
         String latitude = null;
 
@@ -35,7 +36,7 @@ public class ParserStrategyConfigDallas {
         return latitude;
     }
 
-    public static String LONGITUDE_311_DALLAS(JsonNode item) {
+    public static String LONGITUDE_311_DALLAS(JsonNode item, MappingField mappingField) {
         // {..., "lat_location": (32.77937339624264000,-96.85251201839743000), ...}
         String longitude = null;
 
@@ -50,7 +51,7 @@ public class ParserStrategyConfigDallas {
         return longitude;
     }
 
-    public static String LATITUDE_CSV_311_DALLAS(Map<String, String> row) {
+    public static String LATITUDE_CSV_311_DALLAS(Map<String, String> row, MappingField mappingField) {
         // (32.71777362108976000,-96.80840102118572000)
         String latitude = null;
 
@@ -73,7 +74,7 @@ public class ParserStrategyConfigDallas {
         return latitude;
     }
 
-    public static String LONGITUDE_CSV_311_DALLAS(Map<String, String> row) {
+    public static String LONGITUDE_CSV_311_DALLAS(Map<String, String> row, MappingField mappingField) {
         // (32.71777362108976000,-96.80840102118572000)
         String longitude = null;
 
@@ -96,7 +97,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // 05/11/2023 07:56:33 AM
-    public static String REPORTED_AT_CSV_311_DALLAS(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_DALLAS(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Created Date");
@@ -110,7 +111,7 @@ public class ParserStrategyConfigDallas {
         return dateStr;
     }
 
-    public static String LATITUDE_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String LATITUDE_CSV_CRIME_DALLAS(Map<String, String> row, MappingField mappingField) {
         // "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)"
         String latitude = null;
 
@@ -133,7 +134,7 @@ public class ParserStrategyConfigDallas {
         return latitude;
     }
 
-    public static String LONGITUDE_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String LONGITUDE_CSV_CRIME_DALLAS(Map<String, String> row, MappingField mappingField) {
         // "7152 FAIR OAKS AVE DALLAS, TX 75231 (32.87309, -96.75785)"
         String longitude = null;
 
@@ -153,7 +154,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTED_AT_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_DALLAS(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Date of Report");
@@ -168,7 +169,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTED_AT2_CSV_CRIME_DALLAS(Map<String, String> row) {
+    public static String REPORTED_AT2_CSV_CRIME_DALLAS(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Date1 of Occurrence");
@@ -183,7 +184,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTED_AT_CRIME_DALLAS(JsonNode item) {
+    public static String REPORTED_AT_CRIME_DALLAS(JsonNode item, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = item.at("/reporteddate").asText();
@@ -198,7 +199,7 @@ public class ParserStrategyConfigDallas {
     }
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
-    public static String REPORTED_AT2_CRIME_DALLAS(JsonNode item) {
+    public static String REPORTED_AT2_CRIME_DALLAS(JsonNode item, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = item.at("/date1").asText();

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class ParserStrategyConfigAustin {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
-    public static String STREET_NAME_ERSI_AUSTIN(JsonNode item) {
+    public static String STREET_NAME_ERSI_AUSTIN(JsonNode item, MappingField mappingField) {
         String value = null;
 
         try {
@@ -31,7 +32,7 @@ public class ParserStrategyConfigAustin {
         return value;
     }
 
-    public static String OCCURRENCE_DATE_ERSI_AUSTIN(JsonNode item) {
+    public static String OCCURRENCE_DATE_ERSI_AUSTIN(JsonNode item, MappingField mappingField) {
         String dateStr = null;
 
         try {
@@ -55,7 +56,7 @@ public class ParserStrategyConfigAustin {
     }
 
     // '09/21/2023 07:18:00 AM'
-    public static String CREATED_DATE_CSV_AUSTIN(Map<String, String> row) {
+    public static String CREATED_DATE_CSV_AUSTIN(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Created Date");
@@ -72,7 +73,7 @@ public class ParserStrategyConfigAustin {
     }
 
     // '09/21/2023 07:18:00 AM'
-    public static String REPORTED_AT_CSV_AUSTIN(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_AUSTIN(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Occurred Date Time");
@@ -89,7 +90,7 @@ public class ParserStrategyConfigAustin {
     }
 
     // '09/21/2023 07:18:00 AM'
-    public static String REPORTED_AT2_CSV_AUSTIN(Map<String, String> row) {
+    public static String REPORTED_AT2_CSV_AUSTIN(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Report Date Time");

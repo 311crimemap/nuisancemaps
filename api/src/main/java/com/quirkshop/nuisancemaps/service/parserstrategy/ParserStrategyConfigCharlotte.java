@@ -1,6 +1,5 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class ParserStrategyConfigCharlotte {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
-    public static String ADDRESS_CSV_CRIME_CHARLOTTE(Map<String, String> row) {
+    public static String ADDRESS_CSV_CRIME_CHARLOTTE(Map<String, String> row, MappingField mappingField) {
         String address = null;
         try {
             String location = row.get("LOCATION");
@@ -38,7 +38,7 @@ public class ParserStrategyConfigCharlotte {
 
     // 2023/08/17 00:00:00+00
     // contains timezone offset - need OffsetDateTime
-    public static String REPORTED_AT_CSV_CRIME_CHARLOTTE(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_CRIME_CHARLOTTE(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("DATE_REPORTED");
@@ -57,7 +57,7 @@ public class ParserStrategyConfigCharlotte {
     }
 
     // 2017/05/16 14:09:00+00
-    public static String REPORTED_AT_CSV_311_CHARLOTTE(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_CHARLOTTE(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("RECEIVED_DATE");

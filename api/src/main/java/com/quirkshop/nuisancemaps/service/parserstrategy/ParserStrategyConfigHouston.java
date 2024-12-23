@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
+import com.quirkshop.nuisancemaps.model.MappingField;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class ParserStrategyConfigHouston {
 
     // LocalDateTime.parse has ISO defaults that cannot handle nanosecond precision
     // 2024-12-12 06:11:02.0000000
-    public static String REPORTED_AT_CSV_311_HOUSTON(Map<String, String> row) {
+    public static String REPORTED_AT_CSV_311_HOUSTON(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("Created Date Local");
@@ -35,7 +36,7 @@ public class ParserStrategyConfigHouston {
     }
 
     // 2021-01-01 00:40:43
-    public static String REPORTED_AT_CSV2_311_HOUSTON(Map<String, String> row) {
+    public static String REPORTED_AT_CSV2_311_HOUSTON(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("SR CREATE DATE");
@@ -51,7 +52,7 @@ public class ParserStrategyConfigHouston {
 
     // 1/1/24 or also possibly 1/1/2024 given excel variability
     // hour: 0
-    public static String REPORTED_AT_XLS_CRIME_HOUSTON(Map<String, String> row) {
+    public static String REPORTED_AT_XLS_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("RMSOccurrenceDate");
@@ -81,7 +82,7 @@ public class ParserStrategyConfigHouston {
         return dateStr;
     }
 
-    public static String ADDRESS_XLS_CRIME_HOUSTON(Map<String, String> row) {
+    public static String ADDRESS_XLS_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
         String address = null;
         try {
             String streetNo = row.get("StreetNo");
