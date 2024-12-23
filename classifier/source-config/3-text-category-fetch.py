@@ -19,15 +19,12 @@ args = parser.parse_args()
 DIR=f"{args.data}"
 META_FILE=f"./{DIR}/meta.json"
 CSV_FILE=f"{DIR}/data-full.csv"
+JSON_FILE=f"{DIR}/data-full.json"
 TEXTCAT_FILE=f"{DIR}/text_categories.txt"
 
 # build url
 def get_source_config(dataTypeParser):
     SOURCE_CONFIG_FILE = f"./{DIR}/source_config.json"
-
-    if (dataParserType == "JSON"):
-        SOURCE_CONFIG_FILE = f"./{DIR}/data.json.out.json"
-
     with open(SOURCE_CONFIG_FILE, 'r') as file:
         source_config = json.loads(file.read())
     return source_config
@@ -36,7 +33,7 @@ with open(META_FILE, 'r') as file:
     meta = json.loads(file.read())
 
 url = meta['url']
-dataParserType = meta['dataParserType']
+dataParserType = meta['dataParserType'] #JSON / CSV
 source_config = get_source_config(dataParserType)
 mapping = source_config['mapping']
 dataParserDelimeter = mapping.get("dataParserDelimeter", ",")
@@ -74,7 +71,6 @@ if (dataParserType == "XLS"):
     with open(TEXTCAT_FILE, mode='w') as outfile:
         for item in sorted_items:
             outfile.write(item + '\n')
-
 
 if (dataParserType in ["CSV", "CSVCUSTOM"]):
     command = f"curl -L -C - '{url}' > {CSV_FILE}"

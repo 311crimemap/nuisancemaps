@@ -21,7 +21,7 @@ with open(SOURCE_CONFIG_FILE, 'r') as file:
     source_config = json.loads(file.read())
 
 mapping = source_config['mapping']
-
+dataParserType = source_config['dataParserType']
 
 fields = [
     'reportNum',
@@ -35,7 +35,15 @@ fields = [
     'reportedAt2'
 ]
 
-mappedFields = [mapping[field]['field'] for field in fields if mapping[field]['field']]
-csvFields = ",".join(mappedFields)
-command = f"csvcut -c '{csvFields}' {DIR}/data.csv | csvlook -"
+if (dataParserType == 'JSON'):
+    mappedFields = [mapping[field]['field'] for field in fields if mapping[field]['field']]
+    jsonFields = "{" + ",".join(mappedFields) + "}"
+    command = f"jq 'map({jsonFields})' {DIR}/data.json"
+
+else:
+    mappedFields = [mapping[field]['field'] for field in fields if mapping[field]['field']]
+    csvFields = ",".join(mappedFields)
+    command = f"csvcut -c '{csvFields}' {DIR}/data.csv | csvlook -"
+
+
 result = subprocess.run(command, shell=True, check=True)

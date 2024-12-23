@@ -16,5 +16,5 @@ python 1-generate-source-config.py $DIR
 python 2-generate-source-methods.py $DIR
 
 echo "copying $DIR/source_config.json"
-cp $DIR/data.csv.out.json $DIR/source_config.json
+cp $DIR/data.*.out.json $DIR/source_config.json
 
