@@ -39,6 +39,9 @@ def format_str(str):
               .replace("\\xa0", "")
 
 
+with open(META_FILE, 'r') as file:
+    meta = json.loads(file.read())
+
 with open(TEXTCAT_FILE, 'r') as file:
     text_categories = file.readlines()
 
@@ -78,11 +81,16 @@ while (OFFSET < len(text_categories)):
         presence_penalty = 0
     )
 
+    category = meta['category']
     content = format_str(chat_completion.choices[0].message.content)
     examples = json.loads(content)['examples']
     for example in examples:
         try:
-            res = {"text": example['text'].strip(), "index": example['index']}
+            res = {
+                "dataType": meta['category'],
+                "text": example['text'].strip(),
+                "label": example['index']
+            }
             results.append(res)
         except Exception as e:
             print("[ERR]: ", e)
