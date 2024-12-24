@@ -85,7 +85,7 @@ if (dataParserType in ["CSV", "CSVCUSTOM"]):
         encoding = result['encoding']
         print(f"Detected chardet: {encoding}")
         #encoding = "utf-8"
-        encoding = encoding.lower() if encoding.lower() in ["utf-8", "utf-8-sig"] else "latin1"
+        encoding = encoding.lower() if encoding.lower() in ["utf-8", "utf-8-sig", "windows-1252"] else "latin1"
         print(f"Using Encoding: {encoding}")
 
     print("filter unique and sort")
