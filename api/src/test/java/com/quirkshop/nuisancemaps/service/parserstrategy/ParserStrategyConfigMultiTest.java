@@ -79,4 +79,52 @@ public class ParserStrategyConfigMultiTest {
         assertThat(value).isEqualTo("2022-05-04T00:00:00");
     }
 
+    // (37.7348199929233°, -122.2006649756992°)
+    @Test
+    @Transactional
+    public void LATITUDE_CSV_COORDS_DEGREE_MULTI_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.LATITUDE_CSV_COORDS_DEGREE_MULTI).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "(37.7348199929233°, -122.2006649756992°)");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.LATITUDE_CSV_COORDS_DEGREE_MULTI(row, mappingField);
+        assertThat(value).isEqualTo("37.7348199929233");
+    }
+
+    // (37.7348199929233°, -122.2006649756992°)
+    @Test
+    @Transactional
+    public void LONGITUDE_CSV_COORDS_DEGREE_MULTI_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.LONGITUDE_CSV_COORDS_DEGREE_MULTI).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "(37.7348199929233°, -122.2006649756992°)");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.LONGITUDE_CSV_COORDS_DEGREE_MULTI(row, mappingField);
+        assertThat(value).isEqualTo("-122.2006649756992");
+    }
+
+    // (37.7348199929233, -122.2006649756992)
+    @Test
+    @Transactional
+    public void LONGITUDE_CSV_COORDS_NODEGREE_MULTI_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.LONGITUDE_CSV_COORDS_DEGREE_MULTI).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "(37.7348199929233, -122.2006649756992)");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.LONGITUDE_CSV_COORDS_DEGREE_MULTI(row, mappingField);
+        assertThat(value).isEqualTo("-122.2006649756992");
+    }
+
 }

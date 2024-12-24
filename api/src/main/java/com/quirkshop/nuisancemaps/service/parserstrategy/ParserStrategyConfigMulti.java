@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.MappingField;
@@ -89,6 +91,78 @@ public class ParserStrategyConfigMulti {
         }
 
         return dateStr;
+    }
+
+    /* POINT */
+
+    // POINT (-94.44111 39.04642)
+    public static String LATITUDE_CSV_POINT_MULTI(Map<String, String> row, MappingField mappingField) {
+        String latitude = null;
+
+        try {
+            String field = mappingField.getField();
+            String location = row.get(field);
+            if (location != null && location.contains("POINT")) {
+                String[] coords = location.replace("POINT (", "").replace(")", "").split(" ");
+                latitude = coords[1];
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return latitude;
+    }
+
+    // POINT (-94.44111 39.04642)
+    public static String LONGITUDE_CSV_POINT_MULTI(Map<String, String> row, MappingField mappingField) {
+        String longitude = null;
+
+        try {
+            String field = mappingField.getField();
+            String location = row.get(field);
+            if (location != null && location.contains("POINT")) {
+                String[] coords = location.replace("POINT (", "").replace(")", "").split(" ");
+                longitude = coords[0];
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return longitude;
+    }
+
+    // (37.7348199929233°, -122.2006649756992°)
+    public static String LATITUDE_CSV_COORDS_DEGREE_MULTI(Map<String, String> row, MappingField mappingField) {
+        return _CSV_COORDS_DEGREE_MULTI(row, mappingField, 1);
+    }
+
+    // (37.7348199929233°, -122.2006649756992°)
+    public static String LONGITUDE_CSV_COORDS_DEGREE_MULTI(Map<String, String> row, MappingField mappingField) {
+        return _CSV_COORDS_DEGREE_MULTI(row, mappingField, 2);
+    }
+
+    public static String _CSV_COORDS_DEGREE_MULTI(Map<String, String> row, MappingField mappingField, int coordIndex) {
+        String coord = null;
+
+        try {
+            String field = mappingField.getField();
+            String location = row.get(field);
+
+            if (location.isEmpty())
+                return null;
+
+            Pattern pattern = Pattern.compile("\\(([-+]?[0-9]*\\.?[0-9]+)°?,\\s*(-?\\d*\\.?\\d+)°?\\)");
+            Matcher matcher = pattern.matcher(location);
+
+            if (matcher.find()) {
+                coord = matcher.group(coordIndex);
+            }
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return coord;
     }
 
 }

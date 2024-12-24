@@ -48,6 +48,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.ADDRESS_JSON_CRIME_KANSAS_CITY,
                 ParserStrategyConfigKansasCity::ADDRESS_JSON_CRIME_KANSAS_CITY);
 
+        // oakland
+        parsingFunctions.put(ParserStrategy.ADDRESS_JSON_311_OAKLAND,
+                ParserStrategyConfigOakland::ADDRESS_JSON_311_OAKLAND);
+
         return parsingFunctions;
     }
 
@@ -71,6 +75,20 @@ public class ParserStrategyConfig {
         // 2024-02-01
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyy_SLASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_MMddyyyy_SLASH);
+
+        // POINT(-80.12312, 37.12312)
+        parsingFunctions.put(ParserStrategy.LATITUDE_CSV_POINT_MULTI,
+                ParserStrategyConfigMulti::LATITUDE_CSV_POINT_MULTI);
+
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_POINT_MULTI,
+                ParserStrategyConfigMulti::LONGITUDE_CSV_POINT_MULTI);
+
+        // (37.7348199929233°, -122.2006649756992°)
+        parsingFunctions.put(ParserStrategy.LATITUDE_CSV_COORDS_DEGREE_MULTI,
+                ParserStrategyConfigMulti::LATITUDE_CSV_COORDS_DEGREE_MULTI);
+
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_COORDS_DEGREE_MULTI,
+                ParserStrategyConfigMulti::LONGITUDE_CSV_COORDS_DEGREE_MULTI);
 
         // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN,
@@ -193,6 +211,14 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigKansasCity::LATITUDE_CSV_CRIME_KANSAS_CITY);
         parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_CRIME_KANSAS_CITY,
                 ParserStrategyConfigKansasCity::LONGITUDE_CSV_CRIME_KANSAS_CITY);
+
+        // oakland
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_OAKLAND,
+                ParserStrategyConfigOakland::ADDRESS_CSV_CRIME_OAKLAND);
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_OAKLAND_FULL,
+                ParserStrategyConfigOakland::ADDRESS_CSV_CRIME_OAKLAND_FULL);
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_311_OAKLAND,
+                ParserStrategyConfigOakland::ADDRESS_CSV_311_OAKLAND);
 
         return parsingFunctions;
     }
