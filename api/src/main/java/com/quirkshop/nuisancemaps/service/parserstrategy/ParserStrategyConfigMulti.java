@@ -35,4 +35,39 @@ public class ParserStrategyConfigMulti {
         return dateStr;
     }
 
+    // 2019/07/12 19:04:00+00
+    // slash and + timezone
+    public static String REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String field = mappingField.getField();
+            String text = row.get(field);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ssx");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 5/4/2022 5:54:30 PM
+    public static String REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String field = mappingField.getField();
+            String text = row.get(field);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
 }

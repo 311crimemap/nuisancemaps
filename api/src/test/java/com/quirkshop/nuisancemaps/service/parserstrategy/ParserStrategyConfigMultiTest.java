@@ -34,4 +34,34 @@ public class ParserStrategyConfigMultiTest {
         assertThat(value).isEqualTo("2022-01-09T13:18:38");
     }
 
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "2022/07/12 19:04:00+00");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ(row, mappingField);
+        assertThat(value).isEqualTo("2022-07-12T19:04:00");
+    }
+
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "5/4/2022 5:54:30 PM");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH(row, mappingField);
+        assertThat(value).isEqualTo("2022-05-04T17:54:30");
+    }
+
 }

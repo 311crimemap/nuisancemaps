@@ -53,10 +53,18 @@ public class ParserStrategyConfig {
         Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctions = new HashMap<>();
 
         // multi
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ);
 
         // 01/09/2022 01:18:38 AM
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyyhhmmssa,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_MMddyyyyhhmmssa);
+
+        // 5/4/2022 5:54:30 PM
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH);
+
+
 
         // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN,

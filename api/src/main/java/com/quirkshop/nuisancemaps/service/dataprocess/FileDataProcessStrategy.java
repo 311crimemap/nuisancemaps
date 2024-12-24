@@ -78,33 +78,41 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             if (fileExists(filePath) && !dataJob.isForceDownload()) {
                 File file = new File(filePath);
                 long fileSizeInBytes = file.length();
-                log.info(String.format("File Detected: %s | %d bytes", filePath, fileSizeInBytes));
+                log.info(String.format("[fetchData] File Detected: %s | %d bytes", filePath, fileSizeInBytes));
 
-                dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
-                dataJobRepository.save(dataJob);
-                return null;
+                if (fileSizeInBytes > 0) {
+                    dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
+                    dataJobRepository.save(dataJob);
+                    return null;
+                } else {
+                    // orphaned 0 byte file, clean it up
+                    file.delete();
+                }
             }
 
             // otherwise fetch
+            log.info("[fetchData] request execute");
             Response response = client.newCall(request).execute();
 
             // 202 accept: typically indicates start of background job, requires
             // periodic poll check for generated requested file. Set status and
             // defer back to queue.
+
             if (response.code() == 202) {
+                log.info("[fetchData] code 202 detected");
                 dataJob.setStatus(DataJobStatus.POLL_WAIT);
                 dataJobRepository.save(dataJob);
                 return null;
             }
 
             if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
+                throw new IOException("[fetchData] Unexpected code " + response);
             }
 
             inputStream = response.body().byteStream();
 
         } catch (IOException e) {
-            System.err.println("Error fetchData: " + e.getMessage());
+            System.err.println("[fetchData] Error: " + e.getMessage());
             dataJob.setStatus(DataJobStatus.FETCH_ERROR);
             dataJobRepository.save(dataJob);
             e.printStackTrace();

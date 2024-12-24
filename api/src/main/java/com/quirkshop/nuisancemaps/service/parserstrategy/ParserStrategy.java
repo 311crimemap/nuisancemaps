@@ -2,8 +2,10 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 public enum ParserStrategy {
-    /* GENERAL */
+    /* Multi */
     REPORTED_AT_CSV_MMddyyyyhhmmssa,
+    REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
+    REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
 
     /* austin */
     STREET_NAME_ERSI_AUSTIN,
