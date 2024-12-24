@@ -6,6 +6,7 @@ public enum ParserStrategy {
     REPORTED_AT_CSV_MMddyyyyhhmmssa,
     REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
     REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
+    REPORTED_AT_CSV_MMddyyyy_SLASH,
 
     /* austin */
     STREET_NAME_ERSI_AUSTIN,
@@ -87,7 +88,13 @@ public enum ParserStrategy {
 
     /* montgomery country */
     ADDRESS_CSV_CRIME_MONTGOMERY_COUNTY,
-    ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY
+    ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY,
+
+    /* kansas city */
+    ADDRESS_CSV_CRIME_KANSAS_CITY,
+    ADDRESS_JSON_CRIME_KANSAS_CITY,
+    LATITUDE_CSV_CRIME_KANSAS_CITY,
+    LONGITUDE_CSV_CRIME_KANSAS_CITY
 
 }
 

@@ -1,5 +1,6 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -63,6 +64,26 @@ public class ParserStrategyConfigMulti {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 02/01/2024
+    public static String REPORTED_AT_CSV_MMddyyyy_SLASH(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String field = mappingField.getField();
+            String text = row.get(field);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
         } catch (Exception e) {
             log.error(e.getMessage());
         }

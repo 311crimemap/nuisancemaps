@@ -44,6 +44,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY,
                 ParserStrategyConfigMontgomeryCounty::ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY);
 
+        // kansas city
+        parsingFunctions.put(ParserStrategy.ADDRESS_JSON_CRIME_KANSAS_CITY,
+                ParserStrategyConfigKansasCity::ADDRESS_JSON_CRIME_KANSAS_CITY);
+
         return parsingFunctions;
     }
 
@@ -64,7 +68,9 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH);
 
-
+        // 2024-02-01
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyy_SLASH,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_MMddyyyy_SLASH);
 
         // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN,
@@ -179,6 +185,14 @@ public class ParserStrategyConfig {
         // montgomery county
         parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_MONTGOMERY_COUNTY,
                 ParserStrategyConfigMontgomeryCounty::ADDRESS_CSV_CRIME_MONTGOMERY_COUNTY);
+
+        // kansas city
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_KANSAS_CITY,
+                ParserStrategyConfigKansasCity::ADDRESS_CSV_CRIME_KANSAS_CITY);
+        parsingFunctions.put(ParserStrategy.LATITUDE_CSV_CRIME_KANSAS_CITY,
+                ParserStrategyConfigKansasCity::LATITUDE_CSV_CRIME_KANSAS_CITY);
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_CRIME_KANSAS_CITY,
+                ParserStrategyConfigKansasCity::LONGITUDE_CSV_CRIME_KANSAS_CITY);
 
         return parsingFunctions;
     }
