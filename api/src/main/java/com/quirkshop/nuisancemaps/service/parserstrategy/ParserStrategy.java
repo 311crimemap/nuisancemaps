@@ -1,18 +1,23 @@
-
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
 public enum ParserStrategy {
+
     /* Multi */
+    REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH,
     REPORTED_AT_CSV_MMddyyyyhhmmssa,
     REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
     REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
     REPORTED_AT_CSV_MMddyyyy_SLASH,
+    REPORTED_AT_CSV_Mdyyyy_SLASH,
 
     // Multi Point
     LATITUDE_CSV_POINT_MULTI,
     LONGITUDE_CSV_POINT_MULTI,
     LATITUDE_CSV_COORDS_DEGREE_MULTI,
     LONGITUDE_CSV_COORDS_DEGREE_MULTI,
+    LATITUDE_CSV_EPSG_3857_TO_4326_MULTI,  // Y
+    LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI, // X
+
 
     /* austin */
     STREET_NAME_ERSI_AUSTIN,
@@ -107,5 +112,5 @@ public enum ParserStrategy {
     ADDRESS_CSV_CRIME_OAKLAND_FULL,
     ADDRESS_CSV_311_OAKLAND,
     ADDRESS_JSON_311_OAKLAND
-}
 
+}

@@ -61,6 +61,10 @@ public class ParserStrategyConfig {
         Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctions = new HashMap<>();
 
         // multi
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH);
+
+
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ);
 
@@ -76,6 +80,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyy_SLASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_MMddyyyy_SLASH);
 
+        // M-d-yyyy
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_Mdyyyy_SLASH,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_Mdyyyy_SLASH);
+
         // POINT(-80.12312, 37.12312)
         parsingFunctions.put(ParserStrategy.LATITUDE_CSV_POINT_MULTI,
                 ParserStrategyConfigMulti::LATITUDE_CSV_POINT_MULTI);
@@ -89,6 +97,15 @@ public class ParserStrategyConfig {
 
         parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_COORDS_DEGREE_MULTI,
                 ParserStrategyConfigMulti::LONGITUDE_CSV_COORDS_DEGREE_MULTI);
+
+        // X: -10047401.396
+        // Y: 4657180.874
+        parsingFunctions.put(ParserStrategy.LATITUDE_CSV_EPSG_3857_TO_4326_MULTI,
+                ParserStrategyConfigMulti::LATITUDE_CSV_EPSG_3857_TO_4326_MULTI);
+
+        parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI,
+                ParserStrategyConfigMulti::LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI);
+
 
         // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN,

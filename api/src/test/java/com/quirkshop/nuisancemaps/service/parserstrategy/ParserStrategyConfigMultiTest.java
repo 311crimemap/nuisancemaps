@@ -21,6 +21,29 @@ public class ParserStrategyConfigMultiTest {
 
     @Test
     @Transactional
+    public void REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH).isNotNull();
+
+        String field = "AnyDynamicField";
+        String field2 = "field2";
+        Map<String, String> row = Map.of(field, "2024-04-18 16:52:05.1974",
+                                         field2, "2024-01-01 05:04:51.0");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH(row, mappingField);
+        assertThat(value).isEqualTo("2024-04-18T16:52:05");
+
+        MappingField mappingField2 = new MappingField();
+        mappingField2.setField(field2);
+
+        String value2 = ParserStrategyConfigMulti.REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH(row, mappingField2);
+        assertThat(value2).isEqualTo("2024-01-01T05:04:51");
+    }
+
+    @Test
+    @Transactional
     public void REPORTED_AT_CSV_MMddyyyyhhmmssa_TEST() throws JsonMappingException, JsonProcessingException {
         assertThat(ParserStrategy.REPORTED_AT_CSV_MMddyyyyhhmmssa).isNotNull();
 
@@ -79,6 +102,27 @@ public class ParserStrategyConfigMultiTest {
         assertThat(value).isEqualTo("2022-05-04T00:00:00");
     }
 
+    // 1/3/2024
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_Mdyyyy_SLASH_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_Mdyyyy_SLASH).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "1/3/2024");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_CSV_Mdyyyy_SLASH(row, mappingField);
+        assertThat(value).isEqualTo("2024-01-03T00:00:00");
+    }
+
+
+    /*
+     * POINT
+     */
+
     // (37.7348199929233°, -122.2006649756992°)
     @Test
     @Transactional
@@ -125,6 +169,37 @@ public class ParserStrategyConfigMultiTest {
 
         String value = ParserStrategyConfigMulti.LONGITUDE_CSV_COORDS_DEGREE_MULTI(row, mappingField);
         assertThat(value).isEqualTo("-122.2006649756992");
+    }
+
+    // convert SRX (lng) / SRY (lat)
+    @Test
+    @Transactional
+    public void LATITUDE_CSV_EPSG_3857_TO_4326_MULTI_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.LATITUDE_CSV_EPSG_3857_TO_4326_MULTI).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "4672104.222");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.LATITUDE_CSV_EPSG_3857_TO_4326_MULTI(row, mappingField);
+        assertThat(value).isEqualTo("38.653113913413904");
+    }
+
+    @Test
+    @Transactional
+    public void LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "-10044683.634");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI(row, mappingField);
+        assertThat(value).isEqualTo("-90.23292832567417");
     }
 
 }
