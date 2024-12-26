@@ -23,6 +23,10 @@ public class ParserStrategyConfig {
 
         Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctions = new HashMap<>();
 
+        // multi
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_JSON_yyyyMMdd_DASH,
+                ParserStrategyConfigMulti::REPORTED_AT_JSON_yyyyMMdd_DASH);
+
         parsingFunctions.put(ParserStrategy.LATITUDE_311_DALLAS,
                 ParserStrategyConfigDallas::LATITUDE_311_DALLAS);
         parsingFunctions.put(ParserStrategy.LONGITUDE_311_DALLAS,
@@ -64,7 +68,6 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH);
 
-
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ);
 
@@ -76,13 +79,13 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH);
 
-        // 2024-02-01
+        // 02/01/2024
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyy_SLASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_MMddyyyy_SLASH);
 
-        // M-d-yyyy
-        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_Mdyyyy_SLASH,
-                ParserStrategyConfigMulti::REPORTED_AT_CSV_Mdyyyy_SLASH);
+        // 2024-12-04
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMdd_DASH,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMdd_DASH);
 
         // POINT(-80.12312, 37.12312)
         parsingFunctions.put(ParserStrategy.LATITUDE_CSV_POINT_MULTI,
@@ -105,7 +108,6 @@ public class ParserStrategyConfig {
 
         parsingFunctions.put(ParserStrategy.LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI,
                 ParserStrategyConfigMulti::LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI);
-
 
         // austin
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_AUSTIN,

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.MappingField;
 
@@ -130,6 +131,46 @@ public class ParserStrategyConfigMulti {
             String field = mappingField.getField();
             String text = row.get(field);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 2024-12-04
+    public static String REPORTED_AT_CSV_yyyyMMdd_DASH(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String field = mappingField.getField();
+            String text = row.get(field);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 2024-12-04
+    public static String REPORTED_AT_JSON_yyyyMMdd_DASH(JsonNode item, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String pointer = mappingField.getPointer();
+            String text = item.at(pointer).asText();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
             dateStr = LocalDate.parse(text, formatter)

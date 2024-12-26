@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.model.MappingField;
 
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ParserStrategyConfigMultiTest {
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
     @Transactional
     public void REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH_TEST() throws JsonMappingException, JsonProcessingException {
@@ -27,7 +30,7 @@ public class ParserStrategyConfigMultiTest {
         String field = "AnyDynamicField";
         String field2 = "field2";
         Map<String, String> row = Map.of(field, "2024-04-18 16:52:05.1974",
-                                         field2, "2024-01-01 05:04:51.0");
+                field2, "2024-01-01 05:04:51.0");
 
         MappingField mappingField = new MappingField();
         mappingField.setField(field);
@@ -118,6 +121,39 @@ public class ParserStrategyConfigMultiTest {
         assertThat(value).isEqualTo("2024-01-03T00:00:00");
     }
 
+    // 2024-12-04
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_yyyyMMdd_DASH_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_yyyyMMdd_DASH).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "2024-12-04");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_CSV_yyyyMMdd_DASH(row, mappingField);
+        assertThat(value).isEqualTo("2024-12-04T00:00:00");
+    }
+
+    // 2024-12-04
+    @Test
+    @Transactional
+    public void REPORTED_AT_JSON_yyyyMMdd_DASH_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_JSON_yyyyMMdd_DASH).isNotNull();
+
+        String field = "date_request_opened";
+        ObjectNode node = objectMapper.createObjectNode();
+        node.put(field, "2024-12-04");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+        mappingField.setPointer("/" + field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_JSON_yyyyMMdd_DASH(node, mappingField);
+        assertThat(value).isEqualTo("2024-12-04T00:00:00");
+    }
 
     /*
      * POINT
