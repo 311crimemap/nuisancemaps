@@ -56,6 +56,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.ADDRESS_JSON_311_OAKLAND,
                 ParserStrategyConfigOakland::ADDRESS_JSON_311_OAKLAND);
 
+        // buffalo
+        parsingFunctions.put(ParserStrategy.ADDRESS2_JSON_311_BUFFALO,
+                ParserStrategyConfigBuffalo::ADDRESS2_JSON_311_BUFFALO);
+
         return parsingFunctions;
     }
 
@@ -70,6 +74,10 @@ public class ParserStrategyConfig {
 
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ);
+
+        // 05/11/2024 19:47:00
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyyHHmmss_SLASH,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_MMddyyyyHHmmss_SLASH);
 
         // 01/09/2022 01:18:38 AM
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMddyyyyhhmmssa,
@@ -242,6 +250,13 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigOakland::ADDRESS_CSV_CRIME_OAKLAND_FULL);
         parsingFunctions.put(ParserStrategy.ADDRESS_CSV_311_OAKLAND,
                 ParserStrategyConfigOakland::ADDRESS_CSV_311_OAKLAND);
+
+        // buffalo
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_311_BUFFALO,
+                ParserStrategyConfigBuffalo::ADDRESS_CSV_311_BUFFALO);
+
+        parsingFunctions.put(ParserStrategy.ADDRESS2_CSV_311_BUFFALO,
+                ParserStrategyConfigBuffalo::ADDRESS2_CSV_311_BUFFALO);
 
         return parsingFunctions;
     }

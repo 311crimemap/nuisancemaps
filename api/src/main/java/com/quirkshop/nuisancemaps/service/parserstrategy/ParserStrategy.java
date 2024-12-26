@@ -4,6 +4,7 @@ public enum ParserStrategy {
 
     /* Multi */
     REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH,
+    REPORTED_AT_CSV_MMddyyyyHHmmss_SLASH,
     REPORTED_AT_CSV_MMddyyyyhhmmssa,
     REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
     REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
@@ -113,6 +114,11 @@ public enum ParserStrategy {
     ADDRESS_CSV_CRIME_OAKLAND,
     ADDRESS_CSV_CRIME_OAKLAND_FULL,
     ADDRESS_CSV_311_OAKLAND,
-    ADDRESS_JSON_311_OAKLAND
+    ADDRESS_JSON_311_OAKLAND,
+
+    /* buffalo */
+    ADDRESS_CSV_311_BUFFALO,
+    ADDRESS2_CSV_311_BUFFALO,
+    ADDRESS2_JSON_311_BUFFALO
 
 }

@@ -52,6 +52,31 @@ public class ParserStrategyConfigMulti {
         return dateStr;
     }
 
+    // 05/11/2024 19:47:00
+    public static String REPORTED_AT_CSV_MMddyyyyHHmmss_SLASH(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String field = mappingField.getField();
+            String text = row.get(field);
+            if (text == null)
+                return null;
+
+            int msIndex = text.indexOf(".");
+            if (msIndex != -1) {
+                text = text.substring(0, msIndex); // Remove ms part after '.'
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
     // 05/11/2023 07:56:33 AM
     // 01/09/2022 01:18:38 AM
     public static String REPORTED_AT_CSV_MMddyyyyhhmmssa(Map<String, String> row, MappingField mappingField) {
