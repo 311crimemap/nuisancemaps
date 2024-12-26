@@ -9,6 +9,7 @@ import os
 import json
 import subprocess
 import csv
+import re 
 import pandas as pd
 from pandas import json_normalize
 from openai import OpenAI
@@ -31,12 +32,22 @@ OUTPUT_FILE=f"./{DIR}/text_categories.txt.out.json"
 BATCH_SIZE=100
 OFFSET=0
 
+# clean up any malformed decoding
+def format_str(content):
+    # what else is there jesus
+    _content = content.replace("\\uFEFF", "")\
+                      .replace("\\u00A0", "")\
+                      .replace("\\u200B", "")\
+                      .replace("\\xa0", "")\
+                      .replace('Â\\x80ï¿½', "")\
+                      .replace("\x80�", "")
 
-def format_str(str):
-    return str.replace("\\uFEFF", "")\
-              .replace("\\u00A0", "")\
-              .replace("\\u200B", "")\
-              .replace("\\xa0", "")
+    re.sub(r'\\x[0-9A-Fa-f]{2}', '', _content)
+
+    cleaned_content = _content.encode('utf-8', errors='ignore')\
+                              .decode('utf-8', errors='ignore')
+
+    return cleaned_content
 
 
 with open(META_FILE, 'r') as file:
@@ -83,7 +94,14 @@ while (OFFSET < len(text_categories)):
 
     category = meta['category']
     content = format_str(chat_completion.choices[0].message.content)
-    examples = json.loads(content)['examples']
+
+    examples = []
+    try:
+        examples = json.loads(content)['examples']
+    except Exception as e:
+        print("[ERR]:", e)
+        print(content)
+
     for example in examples:
         try:
             res = {
