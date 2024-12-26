@@ -87,6 +87,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMdd_DASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMdd_DASH);
 
+        // Mar 31, 2017 08:21 AM
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE);
+
         // POINT(-80.12312, 37.12312)
         parsingFunctions.put(ParserStrategy.LATITUDE_CSV_POINT_MULTI,
                 ParserStrategyConfigMulti::LATITUDE_CSV_POINT_MULTI);

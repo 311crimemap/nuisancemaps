@@ -155,6 +155,22 @@ public class ParserStrategyConfigMultiTest {
         assertThat(value).isEqualTo("2024-12-04T00:00:00");
     }
 
+    // Mar 31, 2017 08:21 AM
+    @Test
+    @Transactional
+    public void REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE).isNotNull();
+
+        String field = "AnyDynamicField";
+        Map<String, String> row = Map.of(field, "Mar 31, 2017 08:21 AM");
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE(row, mappingField);
+        assertThat(value).isEqualTo("2017-03-31T08:21:00");
+    }
+
     /*
      * POINT
      */

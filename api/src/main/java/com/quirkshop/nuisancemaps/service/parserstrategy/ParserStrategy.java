@@ -11,6 +11,7 @@ public enum ParserStrategy {
     REPORTED_AT_CSV_Mdyyyy_SLASH,
     REPORTED_AT_CSV_yyyyMMdd_DASH,
     REPORTED_AT_JSON_yyyyMMdd_DASH,
+    REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE,
 
     // Multi Point
     LATITUDE_CSV_POINT_MULTI,

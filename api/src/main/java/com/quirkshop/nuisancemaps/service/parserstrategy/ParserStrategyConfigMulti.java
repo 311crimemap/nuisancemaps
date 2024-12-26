@@ -184,6 +184,23 @@ public class ParserStrategyConfigMulti {
         return dateStr;
     }
 
+    // Mar 31, 2017 08:21 AM
+    public static String REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String field = mappingField.getField();
+            String text = row.get(field);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
     /*
      * POINT
      */
