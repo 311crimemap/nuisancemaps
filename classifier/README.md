@@ -1,6 +1,6 @@
 # Source Config
 
-* Restart Jobs within past day: ` curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimemap.com/datajobs/restart`
+* Restart Jobs within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimemap.com/datajobs/restart`
 
 ## Quick Submit Prod
 
@@ -42,6 +42,23 @@ General rule, use csv if data is already broken up in yearly increments. JSON if
 repeat, or partial subset query is needed.
 
 Try on dev first if there's a custom method - breaks way too often.
+
+## Condensed
+
+#### Field Align
+
+* copy and fill `meta.json` to <DIR>
+* `./00-generate.sh <DIR>` (calls 0-3 python scripts)
+* `python fields.py <DIR>`
+* edit `source_config.json` for fields
+  * add any custom generated methods
+* create `locale.json` if needed
+
+#### Text Category
+
+* `./01-text-cat.sh`
+* view output `text_categories.txt.out.csv`, edit
+  `text_categories.txt.out.csv.final.json` for any changes.
 
 ## General Process
 
@@ -88,12 +105,12 @@ Try on dev first if there's a custom method - breaks way too often.
 
 12. Submit, test, verify worker on dev
 
-* submit text categories: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @text_categories.txt.out.csv.final.json localhost:8080/textcategories`
+* submit text categories: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: 1234' -d @text_categories.txt.out.csv.final.json localhost:8080/textcategories`
 
-* submit locales: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @locale.json localhost:8080/locales`
+* submit locales: `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: 1234' -d @locale.json localhost:8080/locales`
 
 * submit source config: what was `data.csv.out.json` (NB: triggers worker)
-  * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d @source_config.json 'localhost:8080/locales/{id}/sources'`
+  * `curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: 1234' -d @source_config.json 'localhost:8080/locales/{id}/sources'`
 
 13. Fixes and submit to prod
 
