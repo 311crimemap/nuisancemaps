@@ -19,5 +19,5 @@ curl -H 'content-type:application/json' \
 
 curl -H 'content-type:application/json' \
      -X POST \
-     -d @api/src/main/resources/data/source_config.json \
+     -d @api/src/main/resources/data/source_config_archive.json \
      $HOST/sources/batch

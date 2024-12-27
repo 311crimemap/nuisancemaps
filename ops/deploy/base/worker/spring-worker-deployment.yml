@@ -58,6 +58,11 @@ spec:
         - image: 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
           name: spring-worker
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1Gi"
+            limits:
+              memory: "3700Mi"
           envFrom:
           - configMapRef:
               name: postgresql-configmap
@@ -88,6 +93,8 @@ spec:
             value: "5000000000" #5gb
           - name: JAVA_OPTS
             value: "-Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication"
+          - name: JAVA_TOOL_OPTS
+            value: "Xms512m -Xmx3000m"
           - name: ASYNC_EXECUTOR_CORE_POOL_SIZE
             value: "4"
           - name: ASYNC_EXECUTOR_MAX_POOL_SIZE

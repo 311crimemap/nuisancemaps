@@ -1,5 +1,13 @@
 # main.tf
+#
+#
+# https://docs.hetzner.com/cloud/general/locations/#what-locations-are-there
+# location_zone:
+#  hil / us-west
+#  nbg1 / eu-central
+#
 
+#
 module "globals" {
   source ="../../globals"
 
@@ -17,8 +25,8 @@ module "firewall" {
   org_id = "web"
 
   location_zone = {
-    location: "hil",
-    network_zone: "us-west"
+    location: "nbg1",
+    network_zone: "eu-central"
   }
 
   http_source_ips = [
@@ -40,8 +48,8 @@ module "network" {
   network_name = "network-${var.env}-${var.env_group}"
 
   location_zone = {
-    location: "hil",
-    network_zone: "us-west"
+    location: "nbg1",
+    network_zone: "eu-central"
   }
 
 }
@@ -61,8 +69,8 @@ module "control-servers" {
   class_id = "cntrl"
 
   location_zone = {
-    location: "hil",
-    network_zone: "us-west"
+    location: "nbg1",
+    network_zone: "eu-central"
   }
 
   server_type = "cpx21"
@@ -90,8 +98,8 @@ module "app-servers" {
   class_id = "app"
 
   location_zone = {
-    location: "hil",
-    network_zone: "us-west"
+    location: "nbg1",
+    network_zone: "eu-central"
   }
 
   server_type = "cpx21"
@@ -122,11 +130,12 @@ module "worker-servers" {
   class_id = "worker"
 
   location_zone = {
-    location: "hil",
-    network_zone: "us-west"
+    location: "nbg1",
+    network_zone: "eu-central"
   }
 
-  server_type = "cpx11"
+  # min cpx21 needed to parse xls
+  server_type = "cpx21"
   server_count = 1
   ssh_key_name = var.ssh_key_name
 
@@ -151,8 +160,8 @@ module "db-servers" {
   class_id = "db"
 
   location_zone = {
-    location: "hil",
-    network_zone: "us-west"
+    location: "nbg1",
+    network_zone: "eu-central"
   }
 
   #

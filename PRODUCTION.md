@@ -45,24 +45,68 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 ### Daily Runs: production-blue ids
 
 
-| Source           | type  | source.id | locale | init submit | freq                         |
-|------------------|-------|-----------|--------|-------------|------------------------------|
-| Austin           | Crime | 2         | 1      | x           |                              |
-| Austin           | 311   | 35        | 1      | x           |                              |
-| Dallas           | Crime | 36        | 2      | x           |                              |
-| Dallas           | 311   | 37        | 2      | x           |                              |
-| Chicago          | Crime | 39        | 3      | x           |                              |
-| Chicago          | 311   | 34        | 3      | x           |                              |
-| NYC              | Crime | 11        | 4      | x           | quarterly last update Oct 21 |
-| NYC              | 311   | 32        | 4      | x           |                              |
-| SF               | Crime | 38        | 5      | x           |                              |
-| SF               | 311   | 33        | 5      | x           |                              |
-| Boston           | Crime | 13        | 6      | x           |                              |
-| Boston           | 311   | 22        | 6      | x           |                              |
-| Los Angeles      | Crime | 40        | 7      | x           | weekly (csv)                 |
-| Los Angeles 2024 | 311   | 41        | 7      | x           | daily                        |
-| Houston 2024     | Crime | 46        | 8      | x           | monthly                      |
-|                  |       |           |        |             |                              |
+| locale.id | Source                 | type  | source.id | locale | init | submit  freq | startReportedAt | Notes           |
+|-----------|------------------------|-------|-----------|--------|------|--------------|-----------------|-----------------|
+| 1         | Austin                 | Crime | 2         | 1      | x    | -            |                 |                 |
+| 1         | Austin                 | 311   | 35        | 1      | x    |              | 2024-09-01      |                 |
+| 2         | Dallas                 | Crime | 36        | 2      | x    |              | 2024-09-01      |                 |
+| 2         | Dallas                 | 311   | 37        | 2      | x    |              | 2024-09-01      |                 |
+| 3         | Chicago                | Crime | 38        | 3      | x    |              | 2024-09-01      |                 |
+| 3         | Chicago                | 311   | 34        | 3      | x    |              |                 |                 |
+| 4         | NYC (YTD)              | crime | 11        | 4      | x    | quarterly    |                 |                 |
+| 4         | NYC                    | 311   | 32        | 4      | x    |              | 2024-09-01      |                 |
+| 5         | SF                     | Crime | 39        | 5      | x    |              | 2024-09-01      |                 |
+| 5         | SF                     | 311   | 33        | 5      | x    |              | 2024-09-01      |                 |
+| 6         | Boston (2023-present)  | Crime | 13        | 6      | x    |              |                 |                 |
+| 6         | Boston 2024            | 311   | 22        | 6      | x    |              |                 |                 |
+| 7         | Los Angeles            | Crime | 40        | 7      | x    | weekly (csv) |                 | - make opendata |
+| 7         | Los Angeles 2024       | 311   | 41        | 7      | x    | daily        | 2024-01-01      |                 |
+| 8         | Houston 2024           | Crime | 47        | 8      | x    | monthly      |                 |                 |
+| 8         | Houston 2024           | 311   | 83        | 8      | x    | daily        |                 |                 |
+| 9         | Philadelphia 2024      | crime | 89        | 9      | x    | daily        |                 |                 |
+| 9         | Philadelphia 2024      | 311   | 94        | 9      | x    | daily        |                 |                 |
+| 10        | San Diego              | crime | 99        | 10     | x    | daily        |                 |                 |
+| 10        | San Diego 2024         | 311   | 100       | 10     | x    | daily        |                 |                 |
+| 11        | Charlotte              | crime | 105       | 11     | x    | daily        |                 |                 |
+| 11        | Charlotte              | 311   | 106       | 11     | x    | daily        |                 |                 |
+| 12        | Denver                 | crime | 107       | 12     | x    | daily        |                 |                 |
+| 12        | Denver                 | 311   | 108       | 12     | x    | daily        |                 |                 |
+| 13        | Detroit                | crime | 109       | 13     | x    | daily        |                 |                 |
+| 13        | Detroit                | 311   | 110       | 13     | x    | daily        |                 |                 |
+| 14        | Memphis                | crime | 113       | 14     | x    | daily        | 2024-12-01      |                 |
+| 14        | Memphis                | 311   | 114       | 14     | x    | daily        | 2024-09-01      |                 |
+| 15        | Montgomery County      | crime | 117       | 15     | x    | daily        | 2024-12-01      |                 |
+| 16        | Nashville              | crime | 118       | 16     | x    | daily        |                 |                 |
+| 16        | Nashville (YTD)        | 311   | 120       | 16     | x    | daily        |                 |                 |
+| 17        | Kansas City            | crime | 123       | 17     | x    | daily        | 2024-12-01      |                 |
+| 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |                 |
+| 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |                 |
+| 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |                 |
+| 19        | Minneapolis 2024       | crime | 129       | 19     | x    | daily (year) |                 |                 |
+| 19        | Minneapolis 2024       | 311   | 134       | 19     | x    | daily (year) |                 |                 |
+| 20        | Cleveland              | crime | 139       | 20     | x    | daily (full) |                 |                 |
+| 20        | Cleveland              | 311   | 140       | 20     | x    | daily (full) |                 |                 |
+| 21        | Cincinnatti            | crime | 141       | 21     | x    | daily        |                 |                 |
+| 21        | Cincinnatti            | 311   | 142       | 21     | x    | daily        |                 |                 |
+| 22        | St. Louis 2024         | crime | 145       | 22     | x    | daily (year) |                 |                 |
+| 22        | St. Louis              | 311   | 149       | 22     | x    | daily (year) |                 |                 |
+| 23        | Baltimore              | crime | 154       | 23     | x    | daily (full) |                 |                 |
+| 23        | Baltimore 2024         | 311   | 155       | 23     | x    | daily (year) |                 |                 |
+| 24        | Washington DC 2024     | crime | 160       | 24     | x    | daily        |                 |                 |
+| 24        | Washington DC 2024     | 311   | 165       | 24     | x    | daily        |                 |                 |
+| 25        | Prince George's        | crime | 170       | 25     | x    | daily (full) |                 |                 |
+| 25        | Prince George's        | 311   | 172       | 25     | x    | daily        |                 |                 |
+| 26        | Baton Rouge            | crime | 175       | 26     | x    | daily        |                 |                 |
+| 26        | Baton Rouge            | 311   | 176       | 26     | x    | daily        |                 |                 |
+| 27        | Buffalo, NY            | crime | 180       | 27     | x    | daily        | 2024-12-01      |                 |
+| 27        | Buffalo, NY            | 311   | 181       | 27     | x    | daily        | 2024-12-01      |                 |
+| 28        | Chattanooga            | crime | 184       | 28     | x    | daily        | 2024-12-01      |                 |
+| 28        | Chattanooga            | 311   | 185       | 28     | x    | daily        | 2024-12-01      |                 |
+
+
+
+TODO: verify source.id's are id and not source_config_id - i think some are mixed
+
 
 #### Submit New Worker Task
 

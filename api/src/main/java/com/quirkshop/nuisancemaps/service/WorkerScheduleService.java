@@ -63,8 +63,8 @@ public class WorkerScheduleService {
      * SCHEDULED TASKS
      */
 
-    // schedule every 20 minutes, initial 5 min delay (avoid initial hanging on deploy, restarts)
-    @Scheduled(fixedRate = 20 * 60 * 1000, initialDelay = 5 * 60 * 1000)
+    // schedule every 12 hours, initial 5 min delay (avoid initial hanging on deploy, restarts)
+    @Scheduled(fixedRate = 4 * 60 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     @Transactional
     public void refreshMaterializedView() {
         log.info("Materialized view start refresh");

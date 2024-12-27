@@ -67,6 +67,7 @@ helm repo update
 
 # /monitor
 # calls helm, assigns password, sets labels to assign pods to control node.
+# is slow the first time (d/l containers, just be patient)
 #
 ./create-kube-prometheus-stack.sh
 
@@ -455,18 +456,18 @@ helm upgrade --install haproxy haproxytech/kubernetes-ingress -f spring-api-ingr
 haproxy with gzip enabled and no cloudflare is significantly worse than nginx.
 ```
 siege -f stage.txt -c 20 -t 300s
-{	"transactions":			        3529,
-	"availability":			      100.00,
-	"elapsed_time":			      299.62,
-	"data_transferred":		     2624.40,
-	"response_time":		        1.48,
-	"transaction_rate":		       11.78,
-	"throughput":			        8.76,
-	"concurrency":			       17.48,
-	"successful_transactions":	        3529,
-	"failed_transactions":		           0,
-	"longest_transaction":		      148.08,
-	"shortest_transaction":		        0.32
+{	"transactions":                 3529,
+    "availability":               100.00,
+    "elapsed_time":               299.62,
+    "data_transferred":          2624.40,
+    "response_time":                1.48,
+    "transaction_rate":            11.78,
+    "throughput":                   8.76,
+    "concurrency":                 17.48,
+    "successful_transactions":          3529,
+    "failed_transactions":                 0,
+    "longest_transaction":            148.08,
+    "shortest_transaction":             0.32
 }
 ```
 
@@ -478,18 +479,18 @@ over.
 siege -f stage.txt -c 20 -t 300s
 
 
-{	"transactions":			        6940,
-	"availability":			       99.97,
-	"elapsed_time":			      299.64,
-	"data_transferred":		     2175.60,
-	"response_time":		        0.84,
-	"transaction_rate":		       23.16,
-	"throughput":			        7.26,
-	"concurrency":			       19.39,
-	"successful_transactions":	        6940,
-	"failed_transactions":		           2,
-	"longest_transaction":		        8.19,
-	"shortest_transaction":		        0.25
+{	"transactions":                 6940,
+    "availability":                99.97,
+    "elapsed_time":               299.64,
+    "data_transferred":          2175.60,
+    "response_time":                0.84,
+    "transaction_rate":            23.16,
+    "throughput":                   7.26,
+    "concurrency":                 19.39,
+    "successful_transactions":          6940,
+    "failed_transactions":                 2,
+    "longest_transaction":              8.19,
+    "shortest_transaction":             0.25
 }
 
 ```
@@ -644,7 +645,7 @@ gunzip -c nuisancemaps_prod.sql.gz | psql -U postgres -d nuisancemaps
 pg_restore -U <dev_db_user> -j 4 -c -d nuisancemaps nuisancemaps_prod.dump
 ```
 
-### PGBackrest Backup 
+### PGBackrest Backup
 
 Backups jobs use a kubectl container executed on control node with hostNetwork
 enabled. They execute `kubectl exec -it <pod>` using mounted KUBECONFIG on the
@@ -672,7 +673,7 @@ PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap --log-level-cons
 * General process:
   1. stop postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0`
   2. job: `pgbackrest-db-restore-job.yml` -retrieve backup on to filesystem
-  ~~3. job: `postgres-db-recovery-job.yml` - postgres toggle recovery mode via
+  ~~ Not with postgresql-ha 3. job: `postgres-db-recovery-job.yml` - postgres toggle recovery mode via
      touched recovery.signal file~~
   3. restart postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1`
      postgresql-ha container will auto recover.
@@ -691,17 +692,18 @@ not just bash in container)
 ```
 kubectl exec -it postgres-0 -- bash
 
-pgbackrest --stanza=311crimemap stanza-create
+PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap stanza-create
 pgbackrest check
 ```
 
 
 2. Run restore job
 
-Need to shutdown pg statefulset, and run `pgbackrest-db-restore` job which
-mounts the volume and executes restore.
+Need to shutdown pg statefulset (scale 0), and run `pgbackrest-db-restore` job
+which mounts the volume and executes restore.
 
-`kubectl apply -f jobs/pgbackrest-db-restore-job.yml`
+* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0`
+* `kubectl apply -f jobs/pgbackrest-db-restore-job.yml`
 
 For initial restore to different environment, may need to specify the latest
 backup set, and modify the job command:
@@ -718,8 +720,19 @@ pgbackrest --stanza=311crimemap --repo=2 --delta \
 
 ```
 
-3. Run postgres in recovery mode
+3. Run postgres recovery mode then live
 
+For postgresql-ha: initial pod launches recovery and standby mode; have to scale
+down and back up to toggle into master.
+
+* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1` (recovery)
+* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0` (down for restart)
+* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1` (live)
+
+
+---
+
+(DEPRECATED) For postgreql vanilla:
 
 `kubectl apply jobs/postgres-db-recovery-job.yml`
 
@@ -734,14 +747,14 @@ pgbackrest --stanza=311crimemap stanza-upgrade
 
 ```
 
-Terminate postgres recovery container
+
+Terminate postgres recovery container (hangs)
 
 `kubectl delete -f jobs/postgres-db-recovery-job.yml`
 
 4. Restart postgres as normal service
 
 `kubectl apply -f /postgresql`
-
 
 5. [Deprecated] no longer storing local copy
 
@@ -752,6 +765,8 @@ kubectl exec -it postgresql-0 -- bash
 PGPASSWORD=xxxx pgbackrest --stanza=311crimemap --repo=1 --log-level-console=detail --type=full backup
 
 ```
+
+---
 
 
 #### Bitnami Postgresql StatefulSet
