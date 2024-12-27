@@ -80,11 +80,21 @@ public class CSVCustomDataParser extends DataParser {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
+        /*
+         * Escape char :'\0' is null doesn't appear in csv
+         * case where csv parsing hangs because a quote is escaped: \", this
+         * turns the row into an endless open string. Avoid this by deliberately
+         * changing the escape character to something else (null) so it
+         * maintains parse-ability.
+         */
         try (CSVReader csvReader = new CSVReaderBuilder(reader)
                 .withCSVParser(new CSVParserBuilder()
                         .withSeparator(delimeter)
-                        .withQuoteChar(CSVWriter.NO_QUOTE_CHARACTER)
+                        .withQuoteChar('"')
+                        .withEscapeChar('\0')
                         .build())
+                .withMultilineLimit(2)
+
                 .build()) {
 
             if (initialNumSkip > 0) {
