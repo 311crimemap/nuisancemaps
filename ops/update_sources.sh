@@ -1,20 +1,67 @@
 #!/usr/bin/bash
+#
+# see PRODUCTION.md
+#
+
 source '../.env'
 
 API_HOST=https://api.311crimemap.com
 IDS=(
-    2  # austin police incident report
-    3  # austin 311
-    4  # dallas police
-    5  # dallas 311
-    6  # chicago crime
-    7  # chicago 311
-    8  # sf crime
-    9  # sf 311
-    11 # nyc ytd
-    13 # boston crime 2023 to present
-    22 # boston 2024 ->
-    # 12 # nyc 311 (large file) check for free space
+    2
+    35
+    36
+    37
+    38
+    34
+    11
+    32
+    39
+    33
+    13
+    22
+    40
+    41
+    47
+    83
+    89
+    94
+    99
+    100
+    105
+    106
+    107
+    108
+    109
+    110
+    113
+    114
+    117
+    118
+    120
+    123
+    124
+    125
+    128
+    129
+    134
+    139
+    140
+    141
+    142
+    145
+    149
+    154
+    155
+    160
+    165
+    170
+    172
+    175
+    176
+    180
+    181
+    184
+    185
 )
 for source_id in "${IDS[@]}"
 do
