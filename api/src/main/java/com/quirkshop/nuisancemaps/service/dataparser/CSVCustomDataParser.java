@@ -229,10 +229,13 @@ public class CSVCustomDataParser extends DataParser {
                 dataJob.getId(), numBatch, numRows));
 
         log.info(String.format(
-                "[CSVCustomDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
+                "[CSVCustomDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, numMissing: %d, numExceedThreshold: %d, numRowErrors: %d, skipLines: %d, multiLineLimit: %d",
                 dataJob.getId(),
                 csvReader.getLinesRead(),
                 csvReader.getRecordsRead(),
+                parseCounter.getNumMissing(),
+                parseCounter.getNumExceededThreshold(),
+                parseCounter.getNumRowErrors(),
                 csvReader.getSkipLines(),
                 csvReader.getMultilineLimit()));
 

@@ -156,10 +156,13 @@ public class CSVDataParser extends DataParser {
                 dataJob.getId(), numBatch, numRows));
 
         log.info(String.format(
-                "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
+                "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, numMissing: %d, numExceedThreshold: %d, numRowErrors: %d, skipLines: %d, multiLineLimit: %d",
                 dataJob.getId(),
                 csvReader.getLinesRead(),
                 csvReader.getRecordsRead(),
+                parseCounter.getNumMissing(),
+                parseCounter.getNumExceededThreshold(),
+                parseCounter.getNumRowErrors(),
                 csvReader.getSkipLines(),
                 csvReader.getMultilineLimit()));
 
