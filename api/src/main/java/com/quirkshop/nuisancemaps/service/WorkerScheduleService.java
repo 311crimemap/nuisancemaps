@@ -102,7 +102,9 @@ public class WorkerScheduleService {
 
         log.info(String.format("[Fetching] %s", logDetails));
 
-        // FETCH
+        /*
+         * FETCH
+         */
         DataProcessStrategy dataProcessStrategy = dataProcessStrategyFactory
                 .getDataProcessStrategy(source.getDataProcessType());
 
@@ -114,7 +116,15 @@ public class WorkerScheduleService {
             return;
         }
 
-        // CREATE RECORDS
+        if (datajob.getStatus() == DataJobStatus.POLL_WAIT) {
+            log.info(String.format("[Poll Wait] %s", logDetails));
+            return;
+        }
+
+
+        /*
+         * CREATE RECORDS
+         */
         log.info(String.format("[FetchComplete] %s", logDetails));
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
