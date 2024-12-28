@@ -56,6 +56,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
     @Override
     public InputStream fetchData(DataJob dataJob) {
         InputStream inputStream = null;
+        Response response = null;
 
         String url = dataJob.getUrl();
         Source source = dataJob.getSource();
@@ -92,7 +93,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
 
             // otherwise fetch
             log.info("[fetchData] request execute");
-            Response response = client.newCall(request).execute();
+            response = client.newCall(request).execute();
 
             // 202 accept: typically indicates start of background job, requires
             // periodic poll check for generated requested file. Set status and
@@ -102,6 +103,9 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
                 log.info("[fetchData] code 202 detected");
                 dataJob.setStatus(DataJobStatus.POLL_WAIT);
                 dataJobRepository.save(dataJob);
+                if (response != null) {
+                    response.close();
+                }
                 return null;
             }
 
@@ -116,6 +120,9 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             dataJob.setStatus(DataJobStatus.FETCH_ERROR);
             dataJobRepository.save(dataJob);
             e.printStackTrace();
+            if (response != null) {
+                response.close();
+            }
             return null;
         }
 
