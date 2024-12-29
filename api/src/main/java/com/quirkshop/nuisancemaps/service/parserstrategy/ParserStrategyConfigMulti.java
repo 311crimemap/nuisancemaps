@@ -33,7 +33,7 @@ public class ParserStrategyConfigMulti {
         try {
             String field = mappingField.getField();
             String text = row.get(field);
-            if (text == null)
+            if (text == null || text.isEmpty())
                 return null;
 
             int msIndex = text.indexOf(".");
@@ -71,7 +71,7 @@ public class ParserStrategyConfigMulti {
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("[REPORTED_AT_CSV_MMddyyyyHHmmss_SLASH] " + e.getMessage());
         }
 
         return dateStr;
@@ -283,7 +283,7 @@ public class ParserStrategyConfigMulti {
             String field = mappingField.getField();
             String location = row.get(field);
 
-            if (location.isEmpty())
+            if (location == null || location.isEmpty())
                 return null;
 
             Pattern pattern = Pattern.compile("\\(([-+]?[0-9]*\\.?[0-9]+)°?,\\s*(-?\\d*\\.?\\d+)°?\\)");
@@ -294,7 +294,7 @@ public class ParserStrategyConfigMulti {
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("[CSV_COORDS_DEGREE_MULTI] " + e.getMessage());
         }
 
         return coord;
@@ -313,6 +313,8 @@ public class ParserStrategyConfigMulti {
         try {
             String field = mappingField.getField();
             String X = row.get(field);
+            if (X == null || X.isEmpty())
+                return null;
 
             double x = Double.parseDouble(X);
             double longitudeRadians = x / EARTH_RADIUS;
@@ -322,7 +324,7 @@ public class ParserStrategyConfigMulti {
             return longitudeDegrees.toString();
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("[LONGITUDE_CSV_EPSG_3857_TO_4326_MULTI] " + e.getMessage());
         }
 
         return null;
@@ -335,6 +337,9 @@ public class ParserStrategyConfigMulti {
         try {
             String field = mappingField.getField();
             String Y = row.get(field);
+            if (Y == null || Y.isEmpty())
+                return null;
+
             double y = Double.parseDouble(Y);
 
             // Convert to latitude in radians using the arctan of sinh(y / R)
@@ -344,7 +349,7 @@ public class ParserStrategyConfigMulti {
             Double latitudeDegrees = Math.toDegrees(latitudeRadians);
             return latitudeDegrees.toString();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("[LATITUDE_CSV_EPSG_3857_TO_4326_MULTI] " + e.getMessage());
         }
 
         return null;

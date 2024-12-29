@@ -47,7 +47,7 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 
 | locale.id | Source                 | type  | source.id | locale | init | submit  freq | startReportedAt | Notes           |
 |-----------|------------------------|-------|-----------|--------|------|--------------|-----------------|-----------------|
-| 1         | Austin                 | Crime | 2         | 1      | x    | -            |                 |                 |
+| 1         | Austin                 | Crime | 2         | 1      | x    | -            | 2024-07-01      |                 |
 | 1         | Austin                 | 311   | 35        | 1      | x    |              | 2024-09-01      |                 |
 | 2         | Dallas                 | Crime | 36        | 2      | x    |              | 2024-09-01      |                 |
 | 2         | Dallas                 | 311   | 37        | 2      | x    |              | 2024-09-01      |                 |

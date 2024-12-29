@@ -71,7 +71,15 @@ public class CSVCustomDataParser extends DataParser {
         setTypes(source);
 
         Mapping mapping = source.getMapping();
+
+        /*
+         * default delimeter: ,
+         * default quotechar: "
+         * NB: '\\0' is a placeholder since we can't store null in psql
+         */
         Character delimeter = mapping.getDataParserDelimeter().charAt(0);
+        String dataParserQuote = mapping.getDataParserQuote();
+        Character quote = dataParserQuote.equals("NULL") ? '\u0000' : dataParserQuote.charAt(0);
         Integer initialNumSkip = mapping.getDataParserNumSkip();
 
         textCategoryService.refreshTextCategoryIdMap();
@@ -86,15 +94,20 @@ public class CSVCustomDataParser extends DataParser {
          * turns the row into an endless open string. Avoid this by deliberately
          * changing the escape character to something else (null) so it
          * maintains parse-ability.
+         *
+         * withQuoteChar: default '"', alt using unicode null '\u0000
+         * some csv's are missing closing quote to also creating endless string
+         * (not only escaped like above) so can sometimes succesfully parse by
+         * ignoring quotes.
          */
+
         try (CSVReader csvReader = new CSVReaderBuilder(reader)
                 .withCSVParser(new CSVParserBuilder()
                         .withSeparator(delimeter)
-                        .withQuoteChar('"')
+                        .withQuoteChar(quote)
                         .withEscapeChar('\0')
                         .build())
                 .withMultilineLimit(2)
-
                 .build()) {
 
             if (initialNumSkip > 0) {
@@ -229,10 +242,13 @@ public class CSVCustomDataParser extends DataParser {
                 dataJob.getId(), numBatch, numRows));
 
         log.info(String.format(
-                "[CSVCustomDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, skipLines: %d, multiLineLimit: %d",
+                "[CSVCustomDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, numMissing: %d, numExceedThreshold: %d, numRowErrors: %d, skipLines: %d, multiLineLimit: %d",
                 dataJob.getId(),
                 csvReader.getLinesRead(),
                 csvReader.getRecordsRead(),
+                parseCounter.getNumMissing(),
+                parseCounter.getNumExceededThreshold(),
+                parseCounter.getNumRowErrors(),
                 csvReader.getSkipLines(),
                 csvReader.getMultilineLimit()));
 
