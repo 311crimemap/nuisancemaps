@@ -46,6 +46,7 @@ public class Mapping {
     private String startReportedAt;
 
     private String dataParserDelimeter = ",";
+    private String dataParserQuote = "\"";
     private Integer dataParserNumSkip = 0;
 
     @Embedded
@@ -134,6 +135,7 @@ public class Mapping {
     public Mapping(MappingField reportNum, MappingField reportCategory, String rootPath, String orderKey,
             String startReportedAt,
             String dataParserDelimeter,
+            String dataParserQuote,
             Integer dataParserNumSkip,
             MappingField description, MappingField address,
             MappingField location, MappingField latitude,
@@ -144,6 +146,7 @@ public class Mapping {
         this.orderKey = orderKey;
         this.startReportedAt = startReportedAt;
         this.dataParserDelimeter = dataParserDelimeter;
+        this.dataParserQuote = dataParserQuote;
         this.dataParserNumSkip = dataParserNumSkip;
         this.description = description;
         this.address = address;
@@ -254,6 +257,14 @@ public class Mapping {
 
     public void setDataParserDelimeter(String dataParserDelimeter) {
         this.dataParserDelimeter = dataParserDelimeter;
+    }
+
+    public String getDataParserQuote() {
+        return dataParserQuote;
+    }
+
+    public void setDataParserQuote(String dataParserQuote) {
+        this.dataParserQuote = dataParserQuote;
     }
 
     public Integer getDataParserNumSkip() {
