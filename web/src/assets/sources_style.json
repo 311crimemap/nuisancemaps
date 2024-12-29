@@ -1,8 +1,40 @@
 [
     {
+        "id": "cluster-circle-sources",
+        "type": "circle",
+        "source": "sources",
+        "filter": ["has", "point_count"],
+        "paint": {
+            "circle-radius": 16,
+            "circle-color": "yellow",
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#000000",
+            "circle-stroke-opacity": 0.75
+        }
+    },
+    {
+        "id": "cluster-sources",
+        "type": "symbol",
+        "source": "sources",
+        "filter": ["has", "point_count"],
+        "layout": {
+            "text-field": "\uf1ad",
+            "text-font": ["Font Awesome 6 Free Solid"],
+            "text-allow-overlap": true,
+            "text-size": 18,
+            "text-anchor": "center"
+        },
+        "paint": {
+            "text-color": "#000000",
+            "text-halo-color": "#f0f0f0",
+            "text-halo-width": 1
+        }
+    },
+    {
         "id": "point-circle-sources",
         "type": "circle",
         "source": "sources",
+        "filter": ["!", ["has", "point_count"]],
         "maxzoom": 10,
         "paint": {
             "circle-radius": 16,
@@ -16,19 +48,14 @@
         "id": "point-sources",
         "type": "symbol",
         "source": "sources",
+        "filter": ["!", ["has", "point_count"]],
         "maxzoom": 10,
         "layout": {
-            "text-field": [
-                "get",
-                "iconUnicode"
-            ],
-            "text-font": [
-                "Font Awesome 6 Free Solid"
-            ],
+            "text-field": ["get", "iconUnicode"],
+            "text-font": ["Font Awesome 6 Free Solid"],
             "text-allow-overlap": true,
             "text-size": 18,
-            "text-anchor": "center",
-            "text-justify": "center"
+            "text-anchor": "center"
         },
         "paint": {
             "text-color": "#000000",

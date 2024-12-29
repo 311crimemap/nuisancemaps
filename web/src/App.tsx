@@ -50,7 +50,10 @@ function App() {
   const dataSources: DataSourcesMap = {
     [DATASOURCES.Sources]: {
       type: "geojson",
-      data: sources, // zoomed out city points
+        data: sources, // zoomed out city points
+        cluster:true,
+        clusterMaxZoom: 14,
+        clusterRadius: 20
     },
     [DATASOURCES.Data311s]: {
       type: "geojson",
