@@ -117,7 +117,7 @@ export default function useMap({
       Log.log({ msg: "onLoad", ...Log.data });
     });
 
-    //source points zoom in
+    ///init individual source circle zoom in click
     _map.on(
       "click",
       "point-circle-sources",
@@ -132,6 +132,25 @@ export default function useMap({
         _map.flyTo({
           center: new LngLat(coordinates[0], coordinates[1]),
           zoom: 10,
+        });
+      }
+    );
+
+    //init clustered source circle click zoom in click
+    _map.on(
+      "click",
+      "cluster-circle-sources",
+      async (e: maplibregl.MapLayerMouseEvent) => {
+        Log.log({ msg: "click clustered", params: { e }, ...Log.data });
+        if (!e.features) return;
+
+        const feature: MapGeoJSONFeature = e.features[0];
+        const geometry = feature.geometry as GeoJSON.Point;
+        const coordinates = geometry.coordinates;
+
+        _map.flyTo({
+          center: new LngLat(coordinates[0], coordinates[1]),
+          zoom: 7,
         });
       }
     );
