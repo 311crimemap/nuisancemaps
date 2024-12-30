@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Meta from "../../Meta";
 import StatesMenu from "./SidebarStatesMenu";
 import StateCities from "./StateCities";
 import { getData } from "../../Util";
@@ -48,26 +49,29 @@ export default function Locations() {
   const stateCityMap: StateCityMap = buildStateCityMap(sources);
 
   return (
-    <div className="container mx-auto mt-16">
-      <div className="flex flex-col sm:flex-row py-1 justify-center">
-        <div id="menu" className="sm:mt-8 pr-4 z-10">
-          <StatesMenu states={Object.keys(stateCityMap)} />
-        </div>
+    <>
+      <Meta pageName="Locations" />
+      <div className="container mx-auto mt-16">
+        <div className="flex flex-col sm:flex-row py-1 justify-center">
+          <div id="menu" className="sm:mt-8 pr-4 z-10">
+            <StatesMenu states={Object.keys(stateCityMap)} />
+          </div>
 
-        <div id="content" className="sm:ml-60 px-4 mt-6 sm:-mt-2">
-          {/* spacer */}
-          <article className="prose sm:w-[39ch] md:w-[53ch] lg:w-[65ch]">
-            <a
-              id="311CrimeMap"
-              className="block relative invisible -top-64"
-            ></a>
-            <h2>Locations</h2>
-            <div className="divider"></div>
-          </article>
+          <div id="content" className="sm:ml-60 px-4 mt-6 sm:-mt-2">
+            {/* spacer */}
+            <article className="prose sm:w-[39ch] md:w-[53ch] lg:w-[65ch]">
+              <a
+                id="311CrimeMap"
+                className="block relative invisible -top-64"
+              ></a>
+              <h2>Locations</h2>
+              <div className="divider"></div>
+            </article>
 
-          <StateCities stateCityMap={stateCityMap} />
+            <StateCities stateCityMap={stateCityMap} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
