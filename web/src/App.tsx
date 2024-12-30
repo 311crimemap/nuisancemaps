@@ -1,5 +1,7 @@
 import { useState, useEffect, useReducer } from "react";
+import { useParams } from "react-router-dom";
 import "./App.css";
+import Meta from "./Meta";
 import Categories from "./components/Map/categories";
 import useMap from "./components/Map/useMap";
 import { ControlBar } from "./components/ControlBar";
@@ -9,7 +11,7 @@ import categoryCheckBoxReducer from "./components/ControlBar/CategoryDropDown/Ca
 import dateFilterReducer from "./components/ControlBar/DateDropDown/DateFilterReducer";
 import { DATASOURCES, DataSourcesMap } from "./types/datasources.ts";
 import { DATASTATUS } from "./types/datastatus.ts";
-import { calcMaxLatLngBounds } from "./Util";
+import { calcMaxLatLngBounds, deslugify } from "./Util";
 import { getData } from "./Util";
 import { defaultData } from "./types/datafeatures.ts";
 import { defaultDateRange } from "./types/daterange";
@@ -24,7 +26,7 @@ function App() {
     msg: "ENV",
     params: { env: { DEV, MODE, PROD } },
   });
-
+  const { city } = useParams();
   const featureZoomLevel = 17;
 
   const [position, setPosition] = useState<MapPosition>(defaultMapPosition);
@@ -50,10 +52,10 @@ function App() {
   const dataSources: DataSourcesMap = {
     [DATASOURCES.Sources]: {
       type: "geojson",
-        data: sources, // zoomed out city points
-        cluster:true,
-        clusterMaxZoom: 14,
-        clusterRadius: 20
+      data: sources, // zoomed out city points
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 20,
     },
     [DATASOURCES.Data311s]: {
       type: "geojson",
@@ -243,6 +245,7 @@ function App() {
 
   return (
     <>
+      <Meta pageName={deslugify(city)} />
       <div className="mt-16">
         {map && mapController && (
           <ControlBar
