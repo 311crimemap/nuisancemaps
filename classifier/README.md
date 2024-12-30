@@ -227,7 +227,8 @@ OpenAI Crime Example
 
 Submit
 
-`curl -X POST -d @labeled_crime.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
+`curl -X POST -d @text_categories.txt.out.csv.final.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
+
 
 
 ## Helpful Queries

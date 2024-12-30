@@ -157,7 +157,11 @@ pgpool:
   configurationCM: pgpool-configmap
   nodeSelector:
     node.kubernetes.io/class_instance: db-0
-
+  resources:
+    requests:
+      memory: "512Mi"
+    limits:
+      memory: "1.25Gi"
 # local-path storageClass and pod scheduling rules
 # automatically provisions PV and PVC; one per each node
 persistence:
