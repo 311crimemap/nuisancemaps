@@ -104,7 +104,8 @@ public class DataEntityMappingService {
 
         return input
                 .replaceAll("\u00A0", " ")
-                .replaceAll("\\s+", " ");
+                .replaceAll("\\s+", " ")
+                .trim();
     }
 
     private void setDataEntityFields(DataEntity dataEntity, String report_num, String reportCategory,

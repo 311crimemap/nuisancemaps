@@ -73,7 +73,7 @@ public class CSVDataParser extends DataParser {
                     row = csvReader.readMap();
                 } catch (CsvException | IOException e) {
                     // handle bad row; improper number of columns vs. headers, etc.
-                    log.info("[CSVDataParser]: " + e.getMessage());
+                    //log.info("[CSVDataParser]: " + e.getMessage());
                     parseCounter.numRowErrorsIncrement();
                     continue;
                 }

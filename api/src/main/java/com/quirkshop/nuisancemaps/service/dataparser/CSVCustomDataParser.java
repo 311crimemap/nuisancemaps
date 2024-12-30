@@ -127,7 +127,7 @@ public class CSVCustomDataParser extends DataParser {
                 try {
                     row = csvIter.next();
                 } catch (Exception e) {
-                    log.error("[CSVCustomDataParser] Iterator Row Parse ERR: " + e.getMessage());
+                    //log.error("[CSVCustomDataParser] Iterator Row Parse ERR: " + e.getMessage());
                     parseCounter.numRowErrorsIncrement();
                     continue;
                 }
