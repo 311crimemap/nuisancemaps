@@ -30,8 +30,8 @@ endDate.setDate(endDate.getDate() - 1);
 // T - 3 months
 // nyc publishes quarterly - want some data available on default
 // request
-const startDate = new Date();
-startDate.setMonth(endDate.getMonth() - 3)
+const startDate = new Date(endDate);
+startDate.setMonth(startDate.getMonth() - 3)
 
 
 export const defaultDateRange: DateRange = {
