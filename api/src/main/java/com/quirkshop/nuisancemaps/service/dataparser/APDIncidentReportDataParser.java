@@ -71,6 +71,10 @@ public class APDIncidentReportDataParser extends DataParser {
 
         List<Map<String, String>> rows = parseToRowMaps(elements);
 
+        if (rows.size() == 0) {
+            log.info("[APDIncidentReportDataParser] parseToRowMaps() return 0 rows - likely parsing change / error");
+        }
+
         geocode(source, rows);
 
         // send to buildDataEntity
@@ -206,6 +210,14 @@ public class APDIncidentReportDataParser extends DataParser {
             int reportNumCounter = 1;
             Elements offensesTD = element.select("tr:nth-of-type(5) td:nth-of-type(2) td");
 
+            // log.info(element.html());
+            // log.info(reportNum);
+            // log.info(reportDate);
+            // log.info(offenseDate);
+            // log.info(address);
+            // log.info(offensesTD.html());
+            // log.info("----------------------");
+
             for (int i = 0; i < offensesTD.size(); i++) {
 
                 Map<String, String> row = new HashMap<String, String>();
@@ -228,7 +240,6 @@ public class APDIncidentReportDataParser extends DataParser {
                 reportNumCounter++;
 
                 rows.add(row);
-                // System.out.println(row);
             }
 
         } catch (Exception e) {
@@ -261,12 +272,22 @@ public class APDIncidentReportDataParser extends DataParser {
                 return elements;
             }
 
-            // first element nested outlier - needs additional selector
-            Element firstNestedTable = tables.get(0).selectFirst("tr table");
-            elements.add(firstNestedTable);
+            /*
+             * // first element nested outlier - needs additional selector
+             * Element firstNestedTable = tables.get(0).selectFirst("tr table");
+             * elements.add(firstNestedTable);
+             *
+             * // remainder seem to follow every 3rd table
+             * for (int i = 1; i < tables.size(); i += 3) {
+             * Element table = tables.get(i).select("tbody").first();
+             * elements.add(table);
+             * }
+             */
 
-            // remainder seem to follow every 3rd table
-            for (int i = 1; i < tables.size(); i += 3) {
+            // NB: 2025-01-02: first element nested outlier seems to have been
+            // removed from output. Replaced with consistent loop below.
+
+            for (int i = 0; i < tables.size(); i += 3) {
                 Element table = tables.get(i).select("tbody").first();
                 elements.add(table);
             }
