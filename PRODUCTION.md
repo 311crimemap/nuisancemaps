@@ -102,7 +102,7 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 27        | Buffalo, NY            | 311   | 181       | 27     | x    | daily        | 2024-12-01      |       |
 | 28        | Chattanooga            | crime | 184       | 28     | x    | daily        | 2024-12-01      |       |
 | 28        | Chattanooga            | 311   | 185       | 28     | x    | daily        | 2024-12-01      |       |
-
+| 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2024-12-01      |       |
 
 
 TODO: verify source.id's are id and not source_config_id - i think some are mixed

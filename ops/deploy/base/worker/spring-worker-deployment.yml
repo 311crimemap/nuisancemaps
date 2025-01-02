@@ -62,7 +62,7 @@ spec:
             requests:
               memory: "1Gi"
             limits:
-              memory: "3700Mi"
+              memory: "3200Mi"
           envFrom:
           - configMapRef:
               name: postgresql-configmap
