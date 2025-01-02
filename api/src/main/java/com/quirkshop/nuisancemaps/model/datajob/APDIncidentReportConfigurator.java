@@ -1,9 +1,11 @@
 package com.quirkshop.nuisancemaps.model.datajob;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /*
@@ -23,8 +25,13 @@ public class APDIncidentReportConfigurator implements DataJobConfigurator {
             parameters = new HashMap<String, Object>();
         }
 
+        String sourceURL = dataJob.getSourceURL();
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString(sourceURL).build();
+
         // defaults
-        String startDate = "07/01/2024"; // last csv contains data from 07/06/2024
+        // String startDate = "07/01/2024"; // last csv contains data from 07/06/2024
+        String startDate = uriComponents.getQueryParams().getFirst("startdate");
+
         parameters.putIfAbsent("paramStartDate", startDate);
         parameters.putIfAbsent("paramNumDays", 6);
 
