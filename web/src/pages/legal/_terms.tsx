@@ -3,7 +3,7 @@
 export default function Terms() {
   return (
     <article className="prose">
-      <a id="terms" className="block relative invisible -top-28"></a>
+      <a id="terms" className="block relative invisible -top-36"></a>
       <h2> Terms of Service </h2>
 
       <h3>AGREEMENT TO OUR LEGAL TERMS</h3>

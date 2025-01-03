@@ -15,7 +15,7 @@ export default function Attribution({ sources }: AttributionProps) {
 
   return (
     <article className="prose">
-      <a id="attribution" className="block relative invisible -top-28"></a>
+      <a id="attribution" className="block relative invisible -top-36 md:-top-28"></a>
       <h2> Data Attribution </h2>
 
       <table className="table">
