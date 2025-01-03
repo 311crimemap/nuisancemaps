@@ -1,8 +1,11 @@
 /* Generated via Termly.io */
 export default function Privacy() {
   return (
-    <article  className="prose">
-      <a id="privacy"  className="block relative invisible -top-28"></a>
+    <article className="prose">
+      <a
+        id="privacy"
+        className="block relative invisible -top-36 md:-top-28"
+      ></a>
       <h2> Privacy Policy </h2>
 
       <p>

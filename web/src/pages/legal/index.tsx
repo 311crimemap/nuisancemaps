@@ -1,16 +1,28 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Meta from "../../Meta";
-import Description from "./_description";
+import Attribution from "./_attribution";
+import Terms from "./_terms";
+import Privacy from "./_privacy";
 import { getData } from "../../Util";
 import { FeatureCollection } from "../../types/features";
 
-export default function About() {
+export default function Legal() {
   const [sources, setSources] = useState<FeatureCollection>({
     type: "FeatureCollection",
     features: [],
   });
   const [isLoaded, setIsLoaded] = useState(false);
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView();
+      }
+    }
+  }, [hash, isLoaded]);
 
   useEffect(() => {
     const initURL: string = `${import.meta.env.VITE_API_SERVER_URL}/init`;
@@ -46,8 +58,13 @@ export default function About() {
           </div>
 
           <div id="content" className="sm:ml-60 px-4 mt-6 sm:-mt-2">
-            <Description />
+            <Terms />
             <div className="divider"></div>
+
+            <Privacy />
+            <div className="divider"></div>
+
+            <Attribution sources={sources} />
           </div>
         </div>
       </div>

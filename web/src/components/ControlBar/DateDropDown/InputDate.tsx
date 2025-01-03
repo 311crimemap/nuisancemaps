@@ -37,7 +37,7 @@ export default function InputDate({
 
     const isValid =
       validator.isDate(controlDate) &&
-      validator.isAfter(controlDate, minDate) &&
+      (validator.isDate(minDate) || validator.isAfter(controlDate, minDate)) &&
       validator.isBefore(controlDate, maxDate);
 
     if (isValid) {
