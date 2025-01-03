@@ -1,27 +1,8 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Meta from "../../Meta";
 import Description from "./_description";
-import { getData } from "../../Util";
-import { FeatureCollection } from "../../types/features";
 
 export default function About() {
-  const [sources, setSources] = useState<FeatureCollection>({
-    type: "FeatureCollection",
-    features: [],
-  });
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const initURL: string = `${import.meta.env.VITE_API_SERVER_URL}/init`;
-
-    Promise.all([getData(initURL)]).then(([dataSourceCategories]) => {
-      setSources(dataSourceCategories.data.sources);
-      setIsLoaded(true);
-    });
-  }, []);
-
-  if (!isLoaded) return;
 
   return (
     <>
