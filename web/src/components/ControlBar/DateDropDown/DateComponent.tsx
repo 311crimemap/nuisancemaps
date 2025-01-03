@@ -30,8 +30,8 @@ export function DateComponent({
     },
   });
 
-  const min = new Date();
-  min.setDate(min.getDate() - 365);
+  // data sets by policy don't start before 2020
+  const min = new Date(2020, 0, 1);
   const max = new Date();
   max.setDate(max.getDate() - 1);
 
@@ -41,6 +41,7 @@ export function DateComponent({
   const endMinDate = min.toLocaleDateString("en-CA");
   const endMaxDate = max.toLocaleDateString("en-CA");
 
+  console.log(startMinDate, startMaxDate);
   const debounceFilterDateDispatcher = useMemo(() => {
     return debounce(filterDateDispatcher, 350);
   }, []);
