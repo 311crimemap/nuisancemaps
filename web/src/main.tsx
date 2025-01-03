@@ -6,6 +6,7 @@ import Navbar from "./Navbar.tsx";
 import App from "./App.tsx";
 import Locations from "./pages/locations/index.tsx";
 import About from "./pages/about/index.tsx";
+import Legal from "./pages/legal/index.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -45,6 +46,15 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <About />
+      </>
+    ),
+  },
+  {
+    path: "/legal",
+    element: (
+      <>
+        <Navbar />
+        <Legal />
       </>
     ),
   },
