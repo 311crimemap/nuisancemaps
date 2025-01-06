@@ -62,7 +62,7 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 7         | Los Angeles            | Crime | 187       | 7      | x    | weekly       | 2024-12-01      |       |
 | 7         | Los Angeles 2024       | 311   | 41        | 7      | x    | daily        |                 |       |
 | 8         | Houston 2024           | Crime | 47        | 8      | x    | monthly      |                 |       |
-| 8         | Houston 2024           | 311   | 83        | 8      | x    | daily        |                 |       |
+| 8         | Houston MTD            | 311   | 191       | 8      | x    | daily        |                 |       |
 | 9         | Philadelphia 2024      | crime | 89        | 9      | x    | daily        |                 |       |
 | 9         | Philadelphia 2024      | 311   | 94        | 9      | x    | daily        |                 |       |
 | 10        | San Diego              | crime | 99        | 10     | x    | daily        |                 |       |
