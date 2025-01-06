@@ -8,7 +8,7 @@ export default function CityData({ cityData }: any) {
   const catMinMaxReport = (cityData: StateCity) => {
     const categories: { [key: string]: CategoryMinMaxReportedAt } = {};
 
-    for (const cat of cityData.categoryMinMaxReportedAt) {
+    for (const cat of (cityData.categoryMinMaxReportedAt || [])) {
       categories[cat.category] = cat;
     }
     return categories;
