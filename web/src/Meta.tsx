@@ -1,8 +1,7 @@
-import { Helmet, HelmetData } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 interface MetaProps {
   pageName: string;
-  path: string;
+  path: string | undefined;
 }
 
 export default function Meta({ pageName, path }: MetaProps) {
