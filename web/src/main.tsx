@@ -1,5 +1,7 @@
+
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page";
 import Navbar from "./Navbar.tsx";
@@ -61,7 +63,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+    <React.StrictMode>
+        <HelmetProvider>
+          <RouterProvider router={router} />
+        </HelmetProvider>
+    </React.StrictMode>
 );
