@@ -3,10 +3,9 @@ import Meta from "../../Meta";
 import Description from "./_description";
 
 export default function About() {
-
   return (
     <>
-      <Meta pageName="About" />
+      <Meta pageName="About" path="about" />
       <div className="container mx-auto mt-16">
         <div className="flex flex-col sm:flex-row py-1 justify-center">
           <div id="menu" className="sm:mt-8 pr-4">

@@ -245,7 +245,7 @@ function App() {
 
   return (
     <>
-      <Meta pageName={deslugify(city)} />
+      <Meta pageName={deslugify(city)} path={city} />
       <div className="mt-16">
         {map && mapController && (
           <ControlBar
