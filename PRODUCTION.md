@@ -63,8 +63,8 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 7         | Los Angeles 2024       | 311   | 41        | 7      | x    | daily        |                 |       |
 | 8         | Houston 2024           | Crime | 47        | 8      | x    | monthly      |                 |       |
 | 8         | Houston MTD            | 311   | 191       | 8      | x    | daily        |                 |       |
-| 9         | Philadelphia 2024      | crime | 89        | 9      | x    | daily        |                 |       |
-| 9         | Philadelphia 2024      | 311   | 94        | 9      | x    | daily        |                 |       |
+| 9         | Philadelphia 2025      | crime | 193       | 9      | x    | daily        |                 |       |
+| 9         | Philadelphia 2025      | 311   | 194       | 9      | x    | daily        |                 |       |
 | 10        | San Diego              | crime | 99        | 10     | x    | daily        |                 |       |
 | 10        | San Diego 2025         | 311   | 192       | 10     | x    | daily        |                 |       |
 | 11        | Charlotte              | crime | 105       | 11     | x    | daily        |                 |       |
