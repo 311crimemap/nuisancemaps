@@ -4,7 +4,7 @@ export interface StateCity {
     name: string;
     city: string;
     state: string;
-    categoryMinMaxReportedAt: CategoryMinMaxReportedAt[];
+    categoryMinMaxReportedAt: CategoryMinMaxReportedAt[] | null;
 }
 
 export interface StateCityMap {
