@@ -66,7 +66,7 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 9         | Philadelphia 2024      | crime | 89        | 9      | x    | daily        |                 |       |
 | 9         | Philadelphia 2024      | 311   | 94        | 9      | x    | daily        |                 |       |
 | 10        | San Diego              | crime | 99        | 10     | x    | daily        |                 |       |
-| 10        | San Diego 2024         | 311   | 100       | 10     | x    | daily        |                 |       |
+| 10        | San Diego 2025         | 311   | 192       | 10     | x    | daily        |                 |       |
 | 11        | Charlotte              | crime | 105       | 11     | x    | daily        |                 |       |
 | 11        | Charlotte              | 311   | 106       | 11     | x    | daily        |                 |       |
 | 12        | Denver                 | crime | 107       | 12     | x    | daily        |                 |       |
