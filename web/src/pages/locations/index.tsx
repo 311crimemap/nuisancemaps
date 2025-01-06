@@ -50,7 +50,7 @@ export default function Locations() {
 
   return (
     <>
-      <Meta pageName="Locations" />
+      <Meta pageName="Locations" path="locations" />
       <div className="container mx-auto mt-16">
         <div className="flex flex-col sm:flex-row py-1 justify-center">
           <div id="menu" className="sm:mt-8 pr-4 z-10">
