@@ -21,6 +21,7 @@ with open(SOURCE_CONFIG_FILE, 'r') as file:
     source_config = json.loads(file.read())
 
 mapping = source_config['mapping']
+dataParserDelimeter = mapping.get('dataParserDelimeter', ",")
 dataParserType = source_config['dataParserType']
 
 fields = [
@@ -43,7 +44,7 @@ if (dataParserType == 'JSON'):
 else:
     mappedFields = [mapping[field]['field'] for field in fields if mapping[field]['field']]
     csvFields = ",".join(mappedFields)
-    command = f"csvcut -c '{csvFields}' {DIR}/data.csv | csvlook -"
+    command = f"csvcut -d '{dataParserDelimeter}' -c '{csvFields}' {DIR}/data.csv | csvlook -"
 
 
 result = subprocess.run(command, shell=True, check=True)
