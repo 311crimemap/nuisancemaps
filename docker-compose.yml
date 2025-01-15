@@ -1,4 +1,3 @@
-version: '3.4'
 services:
   # these are currently setup as "dev" first.
   # Will need to build standalone executable containers.
