@@ -77,6 +77,7 @@ helm repo update
 
 * `kubectl apply -f base/postgresql/`
 * `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f base/postgresql/values.yml`
+  * Pin versions - Chart v. 14.3.1, App v. 16.4.0 (Repmgr update bug keep at 5.4)
 * `kubectl apply -f base/api/`
 * `kubectl apply -f base/worker/`
 
