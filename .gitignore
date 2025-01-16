@@ -6,3 +6,5 @@ db/pgbackrest_bkup/*
 ops/benchmark/*.txt
 ops/benchmark/*.out
 temp
+data
+
