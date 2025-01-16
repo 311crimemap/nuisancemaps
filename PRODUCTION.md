@@ -11,8 +11,8 @@
 
 ### API
 
-1. `aws ecr get-login-password --region us-east-2 --profile 311crimemap | \
-docker login --username AWS --password-stdin 058264272856.dkr.ecr.us-east-2.amazonaws.com`
+1. `aws ecr get-login-password --region $AWS_SYNC_REGION --profile $AWS_SYNC_PROFILE | \
+docker login --username AWS --password-stdin $IMAGE_REPO`
 
 2. `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher` (not in container)
    * might need to remove /target via sudo
