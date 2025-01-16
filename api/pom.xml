@@ -144,7 +144,7 @@
           <mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
           -->
           <image>
-              <name>058264272856.dkr.ecr.us-east-2.amazonaws.com/${project.name}/${project.artifactId}:${project.version}</name>
+              <name>${env.IMAGE_REPO}/${project.name}/${project.artifactId}:${project.version}</name>
           </image>
 
         </configuration>
