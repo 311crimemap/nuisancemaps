@@ -78,8 +78,8 @@ helm repo update
 * `kubectl apply -f base/postgresql/`
 * `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f base/postgresql/values.yml`
   * Pin versions - Chart v. 14.3.1, App v. 16.4.0 (Repmgr update bug keep at 5.4)
-* `kubectl apply -f base/api/`
-* `kubectl apply -f base/worker/`
+* `deploy-api.sh`
+* `deploy-worker.sh`
 
 
 #### Logical Restore
@@ -854,10 +854,12 @@ export KUBECONFIG=~/.kube/config
 Add docker ECR secret (named `regcred` in this example):
 
 ```
+# see .env
+
 kubectl create secret docker-registry regcred \
-    --docker-server=058264272856.dkr.ecr.us-east-2.amazonaws.com \
+    --docker-server=$IMAGE_REPO \
     --docker-username=AWS \
-    --docker-password=`aws ecr get-login-password --profile 311crimemap --region us-east-2` \
+    --docker-password=`aws ecr get-login-password --profile $AWS_SYNC_PROFILE --region $AWS_SYNC_REGION` \
     --docker-email=abc@abc.com
 ```
 
@@ -866,11 +868,11 @@ docker image push
 # 1. Reauth if necessary
 
 aws ecr get-login-password --region us-east-2 --profile 311crimemap | \
-docker login --username AWS --password-stdin 058264272856.dkr.ecr.us-east-2.amazonaws.com
+docker login --username AWS --password-stdin $IMAGE_REPO
 
 # 2. Push
 
-docker push 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
+docker push $IMAGE_REPO/311crimemap/api:0.0.1-SNAPSHOT
 
 ```
 
