@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -88,18 +89,24 @@ public class GeocodeRepositoryTest {
         Geocode g1 = new Geocode(s, addresses.get(0), 30.000, 50.000);
         Geocode g2 = new Geocode(s, addresses.get(1), 31.000, 51.000);
         Geocode g3 = new Geocode(s, addresses.get(3), 32.000, 52.000);
+        Geocode g4 = new Geocode(s, addresses.get(2), 32.000, null);
+        Geocode g5 = new Geocode(s, addresses.get(4), null, 52.000);
 
-        geocodeRepository.saveAll(List.of(g1, g2, g3));
-        assertThat(geocodeRepository.count()).isEqualTo(3);
+        geocodeRepository.saveAll(List.of(g1, g2, g3, g4, g5));
+        assertThat(geocodeRepository.count()).isEqualTo(5);
 
-        // skip the non-existent
+        // verify repository query skips any non-existent lat/lngs
         List<Geocode> results = geocodeRepository
                 .findBySourceAndAddressInAndLatitudeIsNotNullAndLongitudeIsNotNull(s, addresses);
+        assertThat(results.size()).isEqualTo(3);
+
+        // NB: query doesn't guarantee order but order by id asc is assumed below,
+        // need to sort
+        results.sort(Comparator.comparing(Geocode::getId));
 
         assertThat(results.get(0).getAddress()).isEqualTo(addresses.get(0));
         assertThat(results.get(1).getAddress()).isEqualTo(addresses.get(1));
         assertThat(results.get(2).getAddress()).isEqualTo(addresses.get(3));
-
     }
 
     @Test
