@@ -1,10 +1,9 @@
-# nuisancemaps
+[![311crimemap Test
+Runner](https://github.com/311crimemap/nuisancemaps/actions/workflows/ci.yml/badge.svg)](https://github.com/311crimemap/nuisancemaps/actions/workflows/ci.yml)
+
+# 311CrimeMap
 
 ## Setup Local Environment Base DB (easiest)
-
-* Download
-  [dump.sq.gz](https://311crimemap-data.s3.us-east-2.amazonaws.com/dump.sql.gz)
-  (easiest to get signed url)
 
 * Import latest db dump
 
@@ -17,7 +16,8 @@ docker-compose run db bash
 
 ## Setup Local Environment Scratch
 
-* Create database, install postgis extension:
+* Create database; make sure postgis and btree_gist extensions are installed:
+* Should be auto init on first run `./db/01_enabled_postgis.sql`.
 
 ```
 docker-compose run db bash
@@ -29,10 +29,12 @@ psql -U postgres
 create database nuisancemaps;
 \c nuisancemaps
 create extension postgis;
+create extension btree_gist;
 
 create database nuisancemaps_test;
 \c nuisancemaps_test
 create extension postgis;
+create extension btree_gist;
 ```
 
 * Run database migrations
@@ -43,14 +45,14 @@ docker-compose run api ash  # yes 'ash'
 ./mvnw liquibase:update -P test -Dspring.profiles.active=test
 ```
 
-* Disable archive mode
+* Disable archive mode in dev
 
 ```
 # db/archive.conf
 archive_mode=off   # change
 ```
 
-#### Setup Local Environment Pgbackrest db restore (if db archive available)
+#### Note: Setup Local Environment Pgbackrest db restore (if db archive enabled)
 
 ````
 # 1. create stanza (database is running)
