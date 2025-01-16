@@ -37,8 +37,11 @@ configmap files (pgbackrest)
   * Verify: `kubectl get pods -A`
 * Ensure Cloudflare dashboard domain A records point to correct server IP address
   * prod cert-manager retries take > 1 hr
-* `kubectl apply -f production/cert-manager-issuer.yml`  # PRODUCTION
-* `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
+
+* `export $(grep -E '^(CERT_MANAGER_EMAIL)' ../../.env | xargs)`
+* `envsubst '${CERT_MANAGER_EMAIL}' < production/cert-manager-issuer.yml | kubectl apply -f -`  # PRODUCTION
+* `envsubst '${CERT_MANAGER_EMAIL}' < staging/cert-manager-issuer.yml | kubectl apply -f -`     # STAGING
+
     * Verify: `kubectl describe clusterissuer`
 * `kubectl apply -f <env>/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"

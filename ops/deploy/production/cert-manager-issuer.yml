@@ -8,7 +8,7 @@ spec:
     # The ACME server URL
     server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: admin@311crimemap.com
+    email: ${CERT_MANAGER_EMAIL}
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-cluster-issuer-secret
