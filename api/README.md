@@ -545,7 +545,7 @@ Custom main commands below, and then in more detail as to how these came about.
   * `java "-Dloader.main=com.quirkshop.nuisancemaps.WorkerApplication" -jar /home/vergeman/dev/nuisancemaps/api/target/nuisancemaps-0.0.1-SNAPSHOT.jar`
   * `LOADER_MAIN=com.quirkshop.nuisancemaps.WorkerApplication java -jar /home/vergeman/dev/nuisancemaps/api/target/nuisancemaps-0.0.1-SNAPSHOT.jar`
 * Docker image via `spring-boot:build-iamge`
-  * `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
+  * `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env | xargs)`
 * Run Docker container with custom main (default executable is `PropertiesLauncher`):
 
 ```
@@ -690,7 +690,7 @@ docker run --rm --entrypoint launcher -it nuisancemaps:0.0.1-SNAPSHOT \
 
 https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/htmlsingle/#build-image.customization
 
-* build image: `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
+* build image: `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env | xargs)`
 * updated standalone run w/ db on command line:
 ```
 docker run \
