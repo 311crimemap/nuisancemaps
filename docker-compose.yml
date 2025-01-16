@@ -1,4 +1,3 @@
-version: '3.4'
 services:
   # these are currently setup as "dev" first.
   # Will need to build standalone executable containers.
@@ -108,7 +107,8 @@ services:
       retries: 5
 
   pg-0:
-    image: bitnami/postgresql-repmgr:16
+    #bitnami/postgresql-repmgr:16 - need to pin version to prevent auto update hang
+    image: bitnami/postgresql-repmgr@sha256:b402f29d68aad57c9c17dcc637e211e6dc1576d73ab892efb79530d24b7b108e
     # logging:
     #   driver: none
     volumes:

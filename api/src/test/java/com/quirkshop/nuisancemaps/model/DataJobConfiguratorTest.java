@@ -141,7 +141,7 @@ public class DataJobConfiguratorTest {
         dataJob = apdIncidentReportConfigurator.initialize(dataJob);
 
         assertThat(dataJob.getUrl()).isEqualTo(
-                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/01/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
+                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=08/01/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
     }
 
     @Test
@@ -151,24 +151,24 @@ public class DataJobConfiguratorTest {
 
         // set dataJob parameters to end sooner than .now()
         HashMap<String, Object> parameters = dataJob.getParameters();
-        parameters.put("paramEndDate", "08/01/2024");
+        parameters.put("paramEndDate", "09/01/2024");
 
         // NB: numDays is inclusive
         // numDays + 1 -> (7 days) is next start date
         APDIncidentReportConfigurator apdIncidentReportConfigurator = new APDIncidentReportConfigurator();
-        dataJob = apdIncidentReportConfigurator.initialize(dataJob); // startdate: 7/01/2024
-        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/08/2024
-        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/15/2024
-        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/22/2024
+        dataJob = apdIncidentReportConfigurator.initialize(dataJob); // startdate: 8/01/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/08/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/15/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/22/2024
 
         assertThat(dataJob.getUrl()).isEqualTo(
-                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=07/22/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
+                "https://services.austintexas.gov/police/reports/search2.cfm?startdate=08/22/2024&numdays=6&address=&rucrext=&tract_num=&zipcode=&zone=&district=&city=&choice=criteria&Submit=Submit");
 
-        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 7/29/2024
-        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/6/2024 X end
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/29/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 9/5/2024 X end
 
         //this should also be null (null input, null output)
-        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 8/13/2024
+        dataJob = apdIncidentReportConfigurator.next(dataJob); // + 6 + 1 -> 9/12/2024
 
         assertThat(dataJob).isNull();
     }
