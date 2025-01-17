@@ -1,8 +1,0 @@
-#
-# terraform.tfvars.example
-# template to use for terraform.tfvars
-
-ssh_key_name = ""       # hetzner identifier
-product = ""            # project name
-env = ""                # deploy environment: production, staging
-env_group = ""          # environment id: red, blue, green
