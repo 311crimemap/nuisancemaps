@@ -19,7 +19,8 @@ kubectl get nodes -l "node.kubernetes.io/enablelb=true" -o name | xargs -I {} ku
 kubectl apply -f production/postgresql/postgresql-configmap.yml
 
 # pgbackrest
-kubectl apply -f production/postgresql/pgbackrest-configmap.yml
+export $(grep -E '^(PGBACKREST_REPO2_S3_(REGION|ENDPOINT|BUCKET))' ../../.env | xargs)
+envsubst '${PGBACKREST_REPO2_S3_REGION} ${PGBACKREST_REPO2_S3_ENDPOINT} ${PGBACKREST_REPO2_S3_BUCKET}' < production/postgresql/pgbackrest-configmap.yml | kubectl apply -f -
 
 # liquibase (migrations)
 kubectl delete configmap liquibase-properties-configmap --ignore-not-found=true

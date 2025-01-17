@@ -55,7 +55,7 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - image: 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
+        - image: ${IMAGE_REPO}/311crimemap/api:0.0.1-SNAPSHOT
           name: spring-worker
           imagePullPolicy: Always
           resources:

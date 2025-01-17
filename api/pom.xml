@@ -22,6 +22,7 @@
     <liquibase.username>${env.POSTGRESQL_USER}</liquibase.username>
     <liquibase.password>${env.POSTGRESQL_PASSWORD}</liquibase.password>
 
+    <imageRepo>${IMAGE_REPO}</imageRepo>
     <!-- <start-class>com.quirkshop.nuisancemaps.WorkerApplication</start-class> -->
   </properties>
   <dependencies>
@@ -143,8 +144,10 @@
           <mainClass>org.springframework.boot.loader.launch.PropertiesLauncher</mainClass>
           <mainClass>com.quirkshop.nuisancemaps.NuisancemapsApplication</mainClass>
           -->
+
+          <!-- NB: imageRepo not available via .env during build runtime, passed as command line property -->
           <image>
-              <name>058264272856.dkr.ecr.us-east-2.amazonaws.com/${project.name}/${project.artifactId}:${project.version}</name>
+              <name>${imageRepo}/${project.name}/${project.artifactId}:${project.version}</name>
           </image>
 
         </configuration>
@@ -171,6 +174,9 @@
           </dependency>
         </dependencies>
       </plugin>
+
+      <!-- to load .env -->
+
     </plugins>
   </build>
 

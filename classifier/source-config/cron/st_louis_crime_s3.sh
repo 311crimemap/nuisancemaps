@@ -7,8 +7,6 @@
 # see `crontab -l` for usage
 #
 
-AWS_PROFILE=311crimemap
-REGION=us-east-2
 URL=https://www.stlouis-mo.gov/data/upload/data-files/csb.zip
 FILE=2024.csv
 
@@ -24,6 +22,6 @@ unzip -o $WORKDIR/csb.zip $FILE
 
 echo "[st_lousi_crime_s3] Uploading to AWS"
 # Example: Use AWS CLI to upload the file to S3
-aws s3 cp --profile $AWS_PROFILE --region $REGION \
+aws s3 cp --profile $AWS_PROFILE --region $AWS_REGION \
     $WORKDIR/2024.csv $BUCKET_ST_LOUS
 date

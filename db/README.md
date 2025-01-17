@@ -207,15 +207,15 @@ Types: Full (`full`), Diff (`diff)`), Incremental (`incr`)
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::058264272856:root"
+                "AWS": "arn:aws:iam::<AWS_ACCT>:root"
             },
             "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::311crimemap-dev-db"
+            "Resource": "arn:aws:s3:::<S3_BUCKET"
         },
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::058264272856:root"
+                "AWS": "arn:aws:iam::<AWS_ACCT>:root"
             },
             "Action": [
                 "s3:PutObject",
@@ -223,7 +223,7 @@ Types: Full (`full`), Diff (`diff)`), Incremental (`incr`)
                 "s3:GetObject",
                 "s3:DeleteObject"
             ],
-            "Resource": "arn:aws:s3:::311crimemap-dev-db/*"
+            "Resource": "arn:aws:s3:::<S3_BUCKET>/*"
         }
     ]
 }

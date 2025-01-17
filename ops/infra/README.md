@@ -58,9 +58,9 @@ terraform apply
 
 # auth for private ECR
 
-aws ecr get-login-password --profile 311crimemap --region us-east-2 | \
+aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | \
     docker login --username AWS --password-stdin \
-    058264272856.dkr.ecr.us-east-2.amazonaws.com
+    $IMAGE_REPO
 
 ```
 
