@@ -48,3 +48,9 @@ variable https_source_ips {
     "10.0.0.0/8"
   ]
 }
+
+variable server_ips {
+  type = list(string)
+  description = "list of server ips"
+  default =  []
+}
