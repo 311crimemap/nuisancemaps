@@ -12,6 +12,14 @@ packer {
     }
 }
 
+variable "ssh_username" {
+  type = string
+}
+
+variable "ssh_keys" {
+  type = list(string)
+}
+
 source "hcloud" "basic_ubuntu" {
     image       = "ubuntu-22.04"
     location    = "hil"
@@ -25,8 +33,8 @@ source "hcloud" "basic_ubuntu" {
       "name": "packer_base_311crimemap_1.0"
     }
 
-    ssh_username = "root"
-    ssh_keys     = ["admin@311crimemap.com"]
+    ssh_username = var.ssh_username
+    ssh_keys     = var.ssh_keys
 }
 
 build {
