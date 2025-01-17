@@ -23,7 +23,6 @@ resource "hcloud_server" "db" {
   location    = var.location_zone.location
 
   ssh_keys = [data.hcloud_ssh_key.ssh_key.id]
-  firewall_ids = [var.firewall_id]
 
   public_net {
     ipv4_enabled = true

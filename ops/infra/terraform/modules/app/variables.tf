@@ -81,8 +81,3 @@ variable network_subnet_id {
   type = string
   description = "hcloud network subnet id"
 }
-
-variable firewall_id {
-  type = number
-  description = "firewall id"
-}
