@@ -12,7 +12,7 @@ From completed / verified dev to prod:
 
 1. Did you build latest image and deploy?
 
-* `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env | xargs)`
+* `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env)`
 * `docker push $IMAGE_REPO/311crimemap/api:<TAG>`
 
 * `kubectl rollout restart deployment/spring-worker`

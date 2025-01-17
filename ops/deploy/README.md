@@ -38,7 +38,7 @@ configmap files (pgbackrest)
 * Ensure Cloudflare dashboard domain A records point to correct server IP address
   * prod cert-manager retries take > 1 hr
 
-* `export $(grep -E '^(CERT_MANAGER_EMAIL)' ../../.env | xargs)`
+* `export $(grep -E '^(CERT_MANAGER_EMAIL)' ../../.env)`
 * `envsubst '${CERT_MANAGER_EMAIL}' < production/cert-manager-issuer.yml | kubectl apply -f -`  # PRODUCTION
 * `envsubst '${CERT_MANAGER_EMAIL}' < staging/cert-manager-issuer.yml | kubectl apply -f -`     # STAGING
 
