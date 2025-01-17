@@ -862,7 +862,7 @@ Add docker ECR secret (named `regcred` in this example):
 kubectl create secret docker-registry regcred \
     --docker-server=$IMAGE_REPO \
     --docker-username=AWS \
-    --docker-password=`aws ecr get-login-password --profile $AWS_SYNC_PROFILE --region $AWS_SYNC_REGION` \
+    --docker-password=`aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION` \
     --docker-email=abc@abc.com
 ```
 

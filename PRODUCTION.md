@@ -11,7 +11,7 @@
 
 ### API
 
-1. `aws ecr get-login-password --region $AWS_SYNC_REGION --profile $AWS_SYNC_PROFILE | \
+1. `aws ecr get-login-password --region $AWS_REGION --profile $AWS_PROFILE | \
 docker login --username AWS --password-stdin $IMAGE_REPO`
 
 2. `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env)` (not in container)

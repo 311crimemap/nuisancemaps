@@ -58,7 +58,7 @@ terraform apply
 
 # auth for private ECR
 
-aws ecr get-login-password --profile $AWS_SYNC_PROFILE --region $AWS_SYNC_REGION | \
+aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | \
     docker login --username AWS --password-stdin \
     $IMAGE_REPO
 
