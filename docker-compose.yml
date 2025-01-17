@@ -2,7 +2,7 @@ services:
   # these are currently setup as "dev" first.
   # Will need to build standalone executable containers.
   web:
-    image: "${IMAGE_REPO}/311crimemap/web"
+    image: "${IMAGE_REPO:-$USER}/311crimemap/web"
     build: "./web"
     volumes:
       - ./web:/web
@@ -14,7 +14,7 @@ services:
       - .env.dev
 
   classifier:
-    image: "${IMAGE_REPO}/311crimemap/classifier"
+    image: "${IMAGE_REPO:-$USER}/311crimemap/classifier"
     user: "1000:1000"
     build: "./classifier"
     volumes:
