@@ -15,9 +15,13 @@
 docker login --username AWS --password-stdin $IMAGE_REPO`
 
 2. `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env)` (not in container)
-   * might need to remove /target via sudo
 
-3. docker push <image>
+3. `docker push $IMAGE_REPO/311crimemap/api:<TAG>`
+
+4. Replace containers
+  * `kubectl rollout restart deployment/spring-worker`
+  * `kubectl rollout restart deployment/spring-api`
+
 
 
 ## Operations
@@ -41,6 +45,8 @@ Instructions on daily operations to run.
 curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 -d @source.json localhost:8080/locales/{id}/sources
 ```
+
+Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimemap.com/datajobs/restart`
 
 ### Daily Runs: production-blue ids
 

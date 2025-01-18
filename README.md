@@ -80,23 +80,25 @@ docker-compose up db
 
 ## Docs
 
+
+#### Adding Cities: Sources
+
+* [./classifier/README.md](Source Creation and Category Classification): steps
+  to add cities, label incidents.
+
 #### API
 
 #### Web
 
 #### Ops
 
+
 ##### Data Jobs
 
 * [./docs/datajobs.md](DataJobs)
-
-#### Sources and Classifier
 
 #### Database
 
 * [./db/README.md](Database Files and Backup / Restore Settings)
 * [./docs/database.md](Database Commands on postgresql-ha: pgpool / repmgr)
 * [./docs/database_query_index_exploration.md](Postgres Spatial Query and Index Notes)
-
-
-
