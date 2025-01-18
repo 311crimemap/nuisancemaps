@@ -16,32 +16,6 @@ module "globals" {
   cloudflare_api_token = var.CLOUDFLARE_API_TOKEN
 }
 
-module "firewall" {
-  source = "../../modules/firewall"
-
-  product = var.product
-  env = var.env
-  env_group = var.env_group
-  org_id = "web"
-
-  location_zone = {
-    location: "nbg1",
-    network_zone: "eu-central"
-  }
-
-  http_source_ips = [
-#    "0.0.0.0/0",
-#    "::/0",
-    "10.0.0.0/8"
-  ]
-
-  https_source_ips = [
-#    "0.0.0.0/0",
-#    "::/0",
-    "10.0.0.0/8"
-  ]
-}
-
 module "network" {
   source ="../../modules/network"
 
@@ -84,7 +58,6 @@ module "control-servers" {
 
   network_id   = module.network.hcloud_network_id
   network_subnet_id = module.network.hcloud_network_subnet_id
-  firewall_id = module.firewall.hcloud_firewall_id
 }
 
 module "app-servers" {
@@ -116,7 +89,6 @@ module "app-servers" {
 
   network_id   = module.network.hcloud_network_id
   network_subnet_id = module.network.hcloud_network_subnet_id
-  firewall_id = module.firewall.hcloud_firewall_id
 }
 
 module "worker-servers" {
@@ -146,7 +118,6 @@ module "worker-servers" {
 
   network_id   = module.network.hcloud_network_id
   network_subnet_id = module.network.hcloud_network_subnet_id
-  firewall_id = module.firewall.hcloud_firewall_id
 }
 
 module "db-servers" {
@@ -184,5 +155,33 @@ module "db-servers" {
 
   network_id   = module.network.hcloud_network_id
   network_subnet_id = module.network.hcloud_network_subnet_id
-  firewall_id = module.firewall.hcloud_firewall_id
+}
+
+
+module "firewall" {
+  source = "../../modules/firewall"
+
+  product = var.product
+  env = var.env
+  env_group = var.env_group
+  org_id = "web"
+
+  location_zone = {
+    location: "nbg1",
+    network_zone: "eu-central"
+  }
+
+  http_source_ips = [
+    "10.0.0.0/8"
+  ]
+
+  https_source_ips = [
+    "10.0.0.0/8"
+  ]
+
+  server_ips = flatten(compact(concat(module.control-servers.ipv4_address,
+    module.app-servers.ipv4_address,
+    module.worker-servers.ipv4_address,
+    module.db-servers.ipv4_address
+    )))
 }
