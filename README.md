@@ -88,6 +88,14 @@ docker-compose up db
 
 #### API
 
+* [./api/README.md](API)
+* [./docs/spring.md](Spring Boot Notes)
+* [./docs/spring_persistence.md](Spring Persistence Notes)
+* [./docs/liquibase.md](Liquibase Notes)
+* [./docs/java_jar.md](Building a Jar Notes)
+* [./docs/java.md](Java Notes)
+
+
 #### Web
 
 #### Ops
