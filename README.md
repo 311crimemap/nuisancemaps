@@ -98,6 +98,10 @@ docker-compose up db
 
 #### Web
 
+* [./web/README.md](Web) - TODO
+* [./docs/typescript.md](Typescript Notes)
+
+
 #### Ops
 
 
