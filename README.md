@@ -80,7 +80,6 @@ docker-compose up db
 
 ## Docs
 
-
 #### Adding Cities: Sources
 
 * [./classifier/README.md](Source Creation and Category Classification): steps
@@ -95,12 +94,10 @@ docker-compose up db
 * [./docs/java_jar.md](Building a Jar Notes)
 * [./docs/java.md](Java Notes)
 
-
 #### Web
 
-* [./web/README.md](Web) - TODO
+* [./web/README.md](Web)
 * [./docs/typescript.md](Typescript Notes)
-
 
 #### Ops / Deploy
 
@@ -109,7 +106,6 @@ docker-compose up db
 [./ops/deploy/README.md](K3S Deploy Sequence)
 [./docs/ops_cloudflare.md](Cloudflare Notes)
 [./docs/ops_traefik.md](Traefik Notes)
-
 
 ##### Data Jobs
 
