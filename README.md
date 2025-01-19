@@ -102,7 +102,13 @@ docker-compose up db
 * [./docs/typescript.md](Typescript Notes)
 
 
-#### Ops
+#### Ops / Deploy
+
+[./ops/README.md](Ops Overview)
+[./ops/infra/README.md](Infra Overview: Packer, Terraform, Ansible)
+[./ops/deploy/README.md](K3S Deploy Sequence)
+[./docs/ops_cloudflare.md](Cloudflare Notes)
+[./docs/ops_traefik.md](Traefik Notes)
 
 
 ##### Data Jobs
