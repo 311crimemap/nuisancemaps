@@ -1,28 +1,35 @@
 # Production Operations
 
-## Build
+## Build / Deploy STeps
 
 ### Web
 
-1. verify `npm run build` passess
+1. verify `npm run compile` passes (typescript tsc check - will stop deploy on
+   Cloudflare pages)
 
 2. merge `master` in `deploy/staging`, `deploy/production` branch, Cloudflare
    Pages takes over build
 
 ### API
 
-1. `aws ecr get-login-password --region $AWS_REGION --profile $AWS_PROFILE | \
+1. Setup ECR:
+
+`aws ecr get-login-password --region $AWS_REGION --profile $AWS_PROFILE | \
 docker login --username AWS --password-stdin $IMAGE_REPO`
 
-2. `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env)` (not in container)
-   * might need to remove /target via sudo
+2. Build api and worker container (fat jar) for deploy (not in container):
 
-3. docker push <image>
+`./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env)`
+
+3. `docker push $IMAGE_REPO/311crimemap/api:<TAG>`
+
+4. Replace containers:
+
+* `kubectl rollout restart deployment/spring-worker`
+* `kubectl rollout restart deployment/spring-api`
 
 
-## Operations
-
-Instructions on daily operations to run.
+## Sources
 
 * To build list of source ids for daily update:
   * `curl -H 'X-API-KEY: <KEY>' -H 'content-type:application/json'  api.311crimemap.com/sources | jq`
@@ -36,11 +43,13 @@ Instructions on daily operations to run.
 * Add to source_config.json, and submit individual source id:
 
 ```
-# add new source
+# add new source to locale
 
 curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
--d @source.json localhost:8080/locales/{id}/sources
+-d @source.json localhost:8080/locales/{locale_id}/sources
 ```
+
+Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimemap.com/datajobs/restart`
 
 ### Daily Runs: production-blue ids
 
@@ -105,42 +114,18 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2024-12-01      |       |
 
 
-TODO: verify source.id's are id and not source_config_id - i think some are mixed
-
-
 #### Submit New Worker Task
 
-For each source.id above, submit to create new api task:
+ `./ops/update_sources.sh`: has current list of sources; submits new jobs.
 
-* `source.id`: `curl -H 'content-type:application/json' -H 'X-API-KEY:<API-KEY>' localhost:8080/sources`
-* `curl  -X POST -H 'content-type:application/json' -H 'X-API-KEY: <API-KEY>' localhost:8080/datajobs/sources/:source.id`
+* For each source.id above, submit to create new api task:
+  * `source.id`: `curl -H 'content-type:application/json' -H 'X-API-KEY:<API-KEY>' localhost:8080/sources`
+  * `curl  -X POST -H 'content-type:application/json' -H 'X-API-KEY: <API-KEY>' localhost:8080/datajobs/sources/:source.id`
 
----
 
+## Create New Source / Locale / TextCategories Operations
 
-## Create New Source / Locale / TextCategories
-
-see `./classifer/README.md`. Broad strokes below.
-
-### New Locale
-
-* copy `classifier/source-config/data/locale_template.json` -> `data/<dir>/locale.json`
-* Fill in fields
-
-### New Source
-
-Follow `./classifier/source-config/` sequence:
-
-* `0-download.py`
-* `1-generate-source-config.py`
-* `2-generate-source-methods.py`
-
-### For Text Categories (continued):
-
-* `3-text-category-fetch.py`
-* `4-text-category-classifier.py`
-  * * EXCEL Verify and relable columns: `| dataType | text | label |`
-* `5-text-category-to-json-for-submit.py`
+See `./classifer/README.md` for locale -> source -> textcategory sequence.
 
 ### Update Errant Source
 
@@ -149,30 +134,9 @@ Follow `./classifier/source-config/` sequence:
   * `curl -X PATCH -H 'content-type:application/json' -H 'X-API-KEY: <key>' -d @source_config.json api.311crimemap.com/sources/<id>`
   * submit full source (updates all) object not single fields
 
-
 ##### Mapping
 
 Mapping has optional fields that can be ignored for most types, but required for
 specific `dataParserType`:
 
 * `CSVCUSTOM`: `dataParserDelimeter`, `dataParserNumSkip`
-
-
----
-
-## Pending Text Category -> Text Category
-
-see `./classifer/source-config`: similar steps but from `/pendingtextcategories`
-endpoint, becomes source agnostic.
-
-1. Extract data to particular `pending_crime_<date>` / `pending_311_<date>`
-   directory to `text_categories.txt`:
-
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=crime | jq -r '.data[].text' > text_categories.txt`
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=3131 | jq -r '.data[].text' > text_categories.txt`
-
-2. Follow text category sequence:
-
-* `4-text-category-classifier.py`
-  * * EXCEL Verify and relable columns: `| dataType | text | label |`
-* `5-text-category-to-json-for-submit.py`

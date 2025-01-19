@@ -119,7 +119,7 @@ Depending on infra changes, may also need to delete `pvc` / `pv` if spinning dow
 * `kubectl apply -f base/jobs/spring-db-migration-job.yml`
 
 
-#### Boostrap Data
+#### Bootstrap Data
 
 1. Build Locales: `curl -X POST -H 'X-API-KEY: <KEY>' -H 'content-type:application/json' -d @locale_config.json http://<API_HOST>/locales/batch`
 
