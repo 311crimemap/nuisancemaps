@@ -16,9 +16,41 @@ public interface DataProcessStrategy {
 
     public static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
+    /**
+     * Fetches data from the specified URL in the provided DataJob, checking for
+     * existing files and handling download logic.
+     *
+     * @param dataJob The DataJob containing the URL and associated metadata.
+     * @return An InputStream to the fetched data, or null if fetch was not
+     *         successful or data already exists.
+     */
     public InputStream fetchData(DataJob dataJob);
 
+    /**
+     * Processes the data from the provided InputStream, given the DataJob and
+     * specified DataParser. This process typically includes writing the
+     * InputStream to memory, a file; any preprocessing steps and data
+     * extraction.
+     *
+     * This method is expected to break into three main stepss:
+     * 1. Stream Handling -> file, or noop
+     * 2. Preprocessing (e.g. unzip)
+     * 3. parse(): execute dataParser.parse() to create records
+     *
+     * Updates the data job status along the way.
+     *
+     * @param dataJob     The DataJob that contains details for processing.
+     * @param inputStream The InputStream of data to process.
+     * @param dataParser  The parser used to parse the data file after processing.
+     */
     public void process(DataJob dataJob, InputStream inputStream, DataParser dataParser);
+
+    /**
+     * Cleans up resources associated with the specified DataJob.
+     * Can include deleting temporary files created during processing.
+     *
+     * @param dataJob.
+     */
 
     public void cleanup(DataJob dataJob);
 

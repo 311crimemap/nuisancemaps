@@ -16,17 +16,17 @@ import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
-import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataEntity;
-import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.PendingTextCategory;
+import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+import com.quirkshop.nuisancemaps.repository.DataEntityRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
-import com.quirkshop.nuisancemaps.repository.DataEntityRepository;
 import com.quirkshop.nuisancemaps.service.DataEntityMappingService;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
@@ -219,16 +219,15 @@ public class DataParser {
         List<String> pending = new ArrayList<String>(pendingReportCategories);
 
         Set<String> existingTextCategories = pendingTextCategoryRepository
-            .findByDataTypeAndTextIn(source.getCategory(), pending)
-            .stream()
-            .map(PendingTextCategory::getText)
-            .collect(Collectors.toSet());
-
+                .findByDataTypeAndTextIn(source.getCategory(), pending)
+                .stream()
+                .map(PendingTextCategory::getText)
+                .collect(Collectors.toSet());
 
         // filter out existing and save only new
         List<PendingTextCategory> pendingTextCategories = new ArrayList<>();
 
-        for (String reportCategory: pendingReportCategories ) {
+        for (String reportCategory : pendingReportCategories) {
             if (!existingTextCategories.contains(reportCategory)) {
                 PendingTextCategory ptc = new PendingTextCategory(dataJob, source.getCategory(), reportCategory);
                 pendingTextCategories.add(ptc);

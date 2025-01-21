@@ -2,7 +2,6 @@ package com.quirkshop.nuisancemaps.service.dataprocess;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
@@ -16,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.Request.Builder;
+import okhttp3.Response;
 
 @Service
 public class MemoryDataProcessStrategy implements DataProcessStrategy {
@@ -90,6 +89,6 @@ public class MemoryDataProcessStrategy implements DataProcessStrategy {
 
     @Override
     public void cleanup(DataJob dataJob) {
-        return; //no-op
+        return; // no-op
     }
 }

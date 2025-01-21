@@ -35,7 +35,6 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
 
     private static final String GEOAPIFY_API_KEY = System.getenv("GEOAPIFY_API_KEY");
 
-    // private static final int GEOAPIFY_API_BATCH_SIZE = 1000;
     private static final int GEOAPIFY_API_BATCH_SIZE = 50;
     private static final double GEOAPIFY_API_RELEVANCE_SCORE = .75;
 

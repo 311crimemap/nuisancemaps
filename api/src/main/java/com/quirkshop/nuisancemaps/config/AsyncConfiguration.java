@@ -46,10 +46,15 @@ class ConcurrentQueueRejectedExecutionHandler implements RejectedExecutionHandle
 
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-        // no-op task
-        // async scheduled tasks w/ threads can take random amount of time.
-        // The scheduler will continue to submit jobs, eventually exceeding Spring's task queue size.
-        // At that point the jobs are handled here with a no-op.
+
+        /*
+         * No-op task
+         * Async scheduled tasks with threads can take a random amount of time.
+         * Scheduler begins to submit jobs that may exceed defined task queue size.
+         * (see env values above)
+         * At that point, jobs that cannot be queued are handled here as a "no-op".
+         */
+
         log.debug("[ConcurrentQueueHandler] Queue exceed task rejected: " + r.toString());
     }
 }

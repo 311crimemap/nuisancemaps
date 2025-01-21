@@ -13,7 +13,6 @@ import java.util.Map;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.opencsv.CSVWriter;
 import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
 import com.quirkshop.nuisancemaps.config.MissingCoordinateException;
@@ -44,6 +43,7 @@ public class CSVCustomDataParser extends DataParser {
 
     /*
      * Parsing Notes:
+     *
      * &
      * NO_QUOTE_CHARACTER: don't care about properly enclosed quotes - it breaks
      * parsing, just keep rows consistent
@@ -127,7 +127,7 @@ public class CSVCustomDataParser extends DataParser {
                 try {
                     row = csvIter.next();
                 } catch (Exception e) {
-                    //log.error("[CSVCustomDataParser] Iterator Row Parse ERR: " + e.getMessage());
+                    // log.error("[CSVCustomDataParser] Iterator Row Parse ERR: " + e.getMessage());
                     parseCounter.numRowErrorsIncrement();
                     continue;
                 }

@@ -22,7 +22,6 @@ import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
 import com.quirkshop.nuisancemaps.repository.DataJobRepository;
-import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +72,7 @@ public class CSVDataParser extends DataParser {
                     row = csvReader.readMap();
                 } catch (CsvException | IOException e) {
                     // handle bad row; improper number of columns vs. headers, etc.
-                    //log.info("[CSVDataParser]: " + e.getMessage());
+                    // log.info("[CSVDataParser]: " + e.getMessage());
                     parseCounter.numRowErrorsIncrement();
                     continue;
                 }

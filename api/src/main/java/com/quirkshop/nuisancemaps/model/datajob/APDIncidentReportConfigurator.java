@@ -1,6 +1,5 @@
 package com.quirkshop.nuisancemaps.model.datajob;
 
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class APDIncidentReportConfigurator implements DataJobConfigurator {
 
         String startDate = (String) parameters.getOrDefault("paramStartDate", "07/01/2024");
         String endDate = (String) parameters.getOrDefault("paramEndDate",
-                                                          LocalDate.now().format(formatter));
+                LocalDate.now().format(formatter));
         int numDays = (int) parameters.getOrDefault("paramNumDays", 6);
 
         LocalDate _startDate = LocalDate.parse(startDate, formatter);

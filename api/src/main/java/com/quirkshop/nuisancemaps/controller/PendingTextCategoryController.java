@@ -17,14 +17,28 @@ public class PendingTextCategoryController {
     @Autowired
     PendingTextCategoryRepository pendingTextCategoryRepository;
 
-    // curl -H 'X-API-KEY: <>' localhost:8080/pendingtextcategories
-    //
-    // curl -H 'X-API-KEY: <>' localhost:8080/pendingtextcategories?type=crime |
-    // jq -r '.data[].text'
-    //
-    // curl -H 'X-API-KEY: <>' localhost:8080/pendingtextcategories?type=311 |
-    // jq -r '.data[].text'
-
+    /**
+     * Retrieves a list of pending text categories.
+     *
+     * `type`: ["311", "crime"] - matching categories are sorted by ID in
+     * descending order.
+     *
+     * Examples:
+     *
+     * curl -H 'X-API-KEY: <>' localhost:8080/pendingtextcategories?type=crime |
+     * jq -r '.data[].text'
+     *
+     * curl -H 'X-API-KEY: <>' localhost:8080/pendingtextcategories?type=311 |
+     * jq -r '.data[].text'
+     *
+     *
+     * @param type an optional parameter to filter pending text categories by
+     *             their data type. If null, all pending text categories will be
+     *             returned.
+     *
+     * @return a ResponseEntity containing a JSendDTO object with a status of
+     *         "success" and the list of pending text categories.
+     */
     @GetMapping("/pendingtextcategories")
     public ResponseEntity<?> getIndex(
             @RequestParam(name = "type", required = false) String type) {

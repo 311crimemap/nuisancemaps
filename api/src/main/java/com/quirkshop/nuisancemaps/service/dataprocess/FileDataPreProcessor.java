@@ -32,6 +32,15 @@ public class FileDataPreProcessor {
     @Autowired
     private DataJobRepository dataJobRepository;
 
+    /**
+     * Preprocesses the given DataJob by building the filename, updating status,
+     * and invoking ZIP preprocessing.
+     *
+     * @param dataJob       the DataJob to preprocess
+     * @param enableProcess flag indicating whether to perform the preprocessing
+     * @return the path of the preprocessed file, or null if an error occurs
+     */
+
     public String preProcess(DataJob dataJob, boolean enableProcess) {
 
         String preProcessFilePath = null;
@@ -56,7 +65,19 @@ public class FileDataPreProcessor {
 
     }
 
-    // unzip
+    /**
+     * Extracts specific file from ZIP archive from the given DataJob.
+     *
+     * @param dataJob       the DataJob with details of .zip file
+     * @param inputFilePath the path of zip file
+     * @param enableProcess flag indicating whether to perform extraction
+     *
+     * @return the output file path after extraction (or input path if no
+     *         extraction)
+     *
+     * @throws MalformedURLException if the URL is malformed
+     * @throws IOException           if an I/O error occurs during processing
+     */
     public String preProcessZIP(DataJob dataJob, String inputFilePath, boolean enableProcess)
             throws MalformedURLException, IOException {
         String outputFilePath = inputFilePath;
@@ -128,6 +149,13 @@ public class FileDataPreProcessor {
 
         return outputFilePath;
     }
+
+    /**
+     * Cleans up resources associated with a given DataJob by deleting the
+     * preprocessed file if it exists.
+     *
+     * @param dataJob
+     */
 
     public void cleanup(DataJob dataJob) {
 
