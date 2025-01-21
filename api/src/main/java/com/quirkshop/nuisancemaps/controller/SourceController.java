@@ -3,6 +3,7 @@ package com.quirkshop.nuisancemaps.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -62,17 +63,17 @@ public class SourceController {
         JSendDTO jSendDTO;
         Locale locale = localeRepository.findById(locale_id).orElse(null);
         if (locale == null) {
-            jSendDTO = new JSendDTO("not found", null);
+            jSendDTO = new JSendDTO<String>("not found", null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
         }
 
         try {
             source.setLocale(locale);
             source = sourceLoaderService.saveTransaction(source);
-            jSendDTO = new JSendDTO("success", source.toDTO());
+            jSendDTO = new JSendDTO<SourceDTO>("success", source.toDTO());
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
-            jSendDTO = new JSendDTO("error", e.getMessage());
+            jSendDTO = new JSendDTO<String>("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
         }
 
@@ -94,7 +95,7 @@ public class SourceController {
         List<SourceDTO> res = new ArrayList<SourceDTO>();
         Locale locale = localeRepository.findById(locale_id).orElse(null);
         if (locale == null) {
-            jSendDTO = new JSendDTO("not found", null);
+            jSendDTO = new JSendDTO<String>("not found", null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
         }
 
@@ -110,9 +111,9 @@ public class SourceController {
         }
 
         if (res.size() > 0) {
-            jSendDTO = new JSendDTO("success", res);
+            jSendDTO = new JSendDTO<List<SourceDTO>>("success", res);
         } else {
-            jSendDTO = new JSendDTO("nothing saved", res);
+            jSendDTO = new JSendDTO<List<SourceDTO>>("nothing saved", res);
         }
 
         return ResponseEntity.ok().body(res);
@@ -132,7 +133,8 @@ public class SourceController {
             res.add(source.toDTO());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new JSendDTO<List<SourceDTO>>("success", res));
     }
 
     /**
@@ -146,13 +148,13 @@ public class SourceController {
         JSendDTO jSendDTO;
         Locale locale = localeRepository.findById(id).orElse(null);
         if (locale == null) {
-            jSendDTO = new JSendDTO("not found", null);
+            jSendDTO = new JSendDTO<String>("not found", null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
         }
 
         List<Source> source = sourceRepository.findAllByLocaleId(id);
         List<SourceDTO> sourceDTOs = source.stream().map(Source::toDTO).collect(Collectors.toList());
-        jSendDTO = new JSendDTO("success", sourceDTOs);
+        jSendDTO = new JSendDTO<List<SourceDTO>>("success", sourceDTOs);
 
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
@@ -165,12 +167,15 @@ public class SourceController {
      */
     @GetMapping("/sources/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
-        Source source = sourceRepository.findById(id).orElse(null);
-        if (source != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(source.toDTO());
+        Optional<Source> source = sourceRepository.findById(id);
+
+        if (source.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new JSendDTO<SourceDTO>("success", source.get().toDTO()));
         }
 
-        return ResponseEntity.status(404).body(null);
+        return ResponseEntity.status(404)
+                .body(new JSendDTO<String>("not found", null));
     }
 
     /**
@@ -189,11 +194,11 @@ public class SourceController {
             updatedSource = sourceLoaderService.updateSource(id, updates);
         } catch (JsonMappingException e) {
             e.printStackTrace();
-            jSendDTO = new JSendDTO("error", e.getMessage());
+            jSendDTO = new JSendDTO<String>("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
         }
 
-        jSendDTO = new JSendDTO("success", updatedSource.toDTO());
+        jSendDTO = new JSendDTO<SourceDTO>("success", updatedSource.toDTO());
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
 
     }

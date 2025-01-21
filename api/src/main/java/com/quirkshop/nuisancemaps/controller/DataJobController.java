@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.quirkshop.nuisancemaps.dto.JSendDTO;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
@@ -48,25 +49,24 @@ public class DataJobController {
      *
      * @param page  the page number to retrieve (optional)
      * @param limit the number of items per page (optional, defaults to 50)
-     * @return a list of DataJob objects
+     * @return a ResponseEntity list of DataJob objects
      */
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datajobs")
-    public List<DataJob> getIndex(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "limit", required = false) Integer limit) {
+    public ResponseEntity<?> getIndex(
+            @RequestParam(name = "page", required = false) Integer pageParam,
+            @RequestParam(name = "limit", required = false) Integer limitParam) {
 
         final int LIMIT = 50;
 
-        if (page != null && limit != null) {
-            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, limit));
-        } else if (page != null) {
-            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, LIMIT));
-        } else if (limit != null) {
-            return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(0, limit));
-        }
+        int page = pageParam != null ? pageParam : 0;
+        int limit = limitParam != null ? limitParam : LIMIT;
 
-        return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(0, LIMIT));
+        List<DataJob> dataJobs = dataJobRepository
+                .findAllByOrderByUpdatedAtDesc(PageRequest.of(page, limit));
+
+        JSendDTO<List<DataJob>> jSendDTO = new JSendDTO<List<DataJob>>("success", dataJobs);
+        return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
 
     /**
@@ -85,29 +85,38 @@ public class DataJobController {
             @RequestBody com.fasterxml.jackson.databind.JsonNode payload) {
 
         Map<String, String> response = new HashMap<String, String>();
+        response.put("id", Integer.toString(id));
+
         Optional<DataJob> dataJob = dataJobRepository.findById(id);
 
-        if (dataJob.isPresent()) {
-            String status = payload.get("status").asText();
-            try {
-                DataJob d = dataJob.get();
-                d.setStatus(DataJobStatus.valueOf(status));
-                if (d.getParameters() == null) {
-                    d.setParameters(new HashMap<>()); // Initialize if null
-                }
-                d = dataJobRepository.save(d);
-                return ResponseEntity.ok(d);
-            } catch (IllegalArgumentException e) {
-                response.put("id", Integer.toString(id));
-                response.put("error", "illegal Parameter");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
+        if (!dataJob.isPresent()) {
+            response.put("msg", "not found");
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new JSendDTO<Map<String, String>>("error", response));
         }
 
-        response.put("id", Integer.toString(id));
-        response.put("error", "not found");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        String status = payload.get("status").asText();
 
+        try {
+            DataJob d = dataJob.get();
+            d.setStatus(DataJobStatus.valueOf(status));
+            if (d.getParameters() == null) {
+                d.setParameters(new HashMap<>()); // Initialize if null
+            }
+            d = dataJobRepository.save(d);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new JSendDTO<DataJob>("success", d));
+
+        } catch (IllegalArgumentException e) {
+            response.put("msg", "illegal Parameter");
+        } catch (Exception e) {
+            response.put("msg", e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new JSendDTO<Map<String, String>>("error", response));
     }
 
     /**
@@ -124,22 +133,33 @@ public class DataJobController {
 
         Map<String, String> response = new HashMap<String, String>();
         DataJob dataJob;
-        Source source = sourceRepository.findById(sourceId).orElse(null);
+        Optional<Source> source = sourceRepository.findById(sourceId);
 
-        if (source == null) {
+        if (!source.isPresent()) {
             response.put("sourceId", Integer.toString(sourceId));
-            response.put("error", "source does not exist");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            response.put("msg", "source does not exist");
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new JSendDTO<Map<String, String>>("error", response));
         }
 
         try {
-            dataJob = dataJobService.createNewDataJob(source, null);
-        } catch (UnsupportedEncodingException e) {
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            dataJob = dataJobService.createNewDataJob(source.get(), null);
+            if (dataJob == null) {
+                response.put("msg", "No next job");
+                return ResponseEntity.ok()
+                        .body(new JSendDTO<Map<String, String>>("success", response));
+            }
+
+            return ResponseEntity.ok()
+                    .body(new JSendDTO<DataJob>("success", dataJob));
+
+        } catch (Exception e) {
+            response.put("msg", e.getMessage());
         }
 
-        return ResponseEntity.ok().body(dataJob);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new JSendDTO<Map<String, String>>("error", response));
     }
 
     /*
@@ -160,10 +180,8 @@ public class DataJobController {
                 DataJobStatus.ERROR);
 
         List<DataJob> dataJobs = dataJobRepository.findAllInStatuses(statuses);
-
-        Map<String, List<DataJob>> response = new HashMap<String, List<DataJob>>();
-        response.put("data", dataJobs);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok()
+                .body(new JSendDTO<List<DataJob>>("success", dataJobs));
     }
 
     /**
@@ -189,7 +207,8 @@ public class DataJobController {
 
         Map<String, String> response = new HashMap<String, String>();
         response.put("numUpdated", Integer.toString(numUpdated));
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok()
+                .body(new JSendDTO<Map<String, String>>("success", response));
     }
 
     /**
@@ -215,6 +234,7 @@ public class DataJobController {
 
         Map<String, String> response = new HashMap<String, String>();
         response.put("numUpdated", Integer.toString(numUpdated));
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok()
+                .body(new JSendDTO<Map<String, String>>("success", response));
     }
 }

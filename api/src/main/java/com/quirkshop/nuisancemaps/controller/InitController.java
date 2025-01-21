@@ -92,11 +92,11 @@ public class InitController {
 
             InitDTO initDTO = new InitDTO(localeFeatureCollectionDTO, categories);
 
-            jSendDTO = new JSendDTO("success", initDTO);
+            jSendDTO = new JSendDTO<InitDTO>("success", initDTO);
 
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
-            jSendDTO = new JSendDTO("error", e.getMessage());
+            jSendDTO = new JSendDTO<String>("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
         }
 

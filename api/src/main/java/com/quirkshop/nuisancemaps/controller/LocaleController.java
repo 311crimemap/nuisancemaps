@@ -2,7 +2,10 @@ package com.quirkshop.nuisancemaps.controller;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
@@ -57,11 +60,18 @@ public class LocaleController {
      */
     @GetMapping("/locales/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
-        Locale locale = localeRepository.findById(id).orElse(null);
-        if (locale != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(locale.toDTO());
+        Map<String, String> response = new HashMap<String, String>();
+        Optional<Locale> locale = localeRepository.findById(id);
+
+        if (locale.isPresent()) {
+            LocaleDTO localeDTO = locale.get().toDTO();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new JSendDTO<LocaleDTO>("success", localeDTO));
         }
-        return ResponseEntity.status(404).body(null);
+
+        response.put("msg", "not found");
+        return ResponseEntity.status(404)
+                .body(new JSendDTO<Map<String, String>>("error", response));
     }
 
     /**
@@ -79,7 +89,8 @@ public class LocaleController {
             localeDTOs.add(locale.toDTO());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(localeDTOs);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new JSendDTO<List<LocaleDTO>>("success", localeDTOs));
     }
 
     /**
@@ -92,16 +103,21 @@ public class LocaleController {
      */
     @PostMapping("/locales")
     public ResponseEntity<?> create(@RequestBody Locale locale) {
-        JSendDTO jSendDTO;
+
+        LocaleDTO localeDTO = null;
+
         try {
             Locale localeSaved = localeRepository.save(locale);
-            jSendDTO = new JSendDTO("success", localeSaved.toDTO());
+            localeDTO = localeSaved.toDTO();
 
         } catch (Exception e) {
-            jSendDTO = new JSendDTO("error", null);
-            return ResponseEntity.badRequest().body(jSendDTO);
+
+            return ResponseEntity.badRequest()
+                .body(new JSendDTO<String>("error", null););
         }
-        return ResponseEntity.ok().body(jSendDTO);
+
+        return ResponseEntity.ok()
+            .body(new JSendDTO<LocaleDTO>("success", localeDTO));
     }
 
     /**
@@ -125,12 +141,13 @@ public class LocaleController {
                 localeDTOs.add(locale.toDTO());
             }
 
-            jSendDTO = new JSendDTO("success", localeDTOs);
+            jSendDTO = new JSendDTO<List<LocaleDTO>>("success", localeDTOs);
 
         } catch (Exception e) {
-            jSendDTO = new JSendDTO("error", e.getMessage());
+            jSendDTO = new JSendDTO<String>("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
         }
+
         return ResponseEntity.ok().body(jSendDTO);
     }
 
@@ -185,11 +202,11 @@ public class LocaleController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            jSendDTO = new JSendDTO("error", e.getMessage());
+            jSendDTO = new JSendDTO<String>("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
         }
 
-        jSendDTO = new JSendDTO("success", locale.toDTO());
+        jSendDTO = new JSendDTO<LocaleDTO>("success", locale.toDTO());
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
 
     }
