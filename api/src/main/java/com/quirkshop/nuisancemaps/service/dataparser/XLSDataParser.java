@@ -39,6 +39,8 @@ import org.springframework.stereotype.Service;
  * DEPRECATED
  * This parser consumes insane amounts of memory (heap) for even reasonably
  * sized workbooks (e.g. 25MB)
+ *
+ * See XLSSAXDataParser.java
  */
 
 @Service

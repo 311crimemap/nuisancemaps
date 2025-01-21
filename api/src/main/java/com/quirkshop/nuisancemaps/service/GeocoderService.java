@@ -34,13 +34,30 @@ public class GeocoderService {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
+    /**
+     * Geocode a list of addresses using the configured geocoding providers.
+     *
+     * @param source    Source instance
+     * @param addresses A list of addresses to geocode.
+     * @return A list of arrays containing latitude and longitude coordinates for
+     *         each address.
+     */
     public List<double[]> geocode(Source source, List<String> addresses) {
         List<double[]> results = geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
         results = geocodeBatchRequest(geoApifyGeocoderProvider, source, addresses);
         return results;
     }
 
-    // batchRequest
+    /**
+     * Sends a batch of addresses to the specified geocoding provider and retrieves
+     * their coordinates.
+     *
+     * @param geocoderProvider The geocoding provider to fetch coordinates from.
+     * @param source           The Source instance of the addresses.
+     * @param addresses        A list of addresses to geocode.
+     * @return A list of arrays containing latitude and longitude coordinates for
+     *         the provided addresses.
+     */
     public List<double[]> geocodeBatchRequest(GeocoderProvider geocoderProvider, Source source,
             List<String> addresses) {
 

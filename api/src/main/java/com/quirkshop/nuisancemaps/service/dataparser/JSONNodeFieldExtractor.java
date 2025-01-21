@@ -6,10 +6,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.quirkshop.nuisancemaps.service.parserstrategy.ParserStrategy;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.service.parserstrategy.ParserStrategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,8 @@ public class JSONNodeFieldExtractor implements FieldExtractor<JsonNode> {
     private final Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctionsJSON;
 
     @Autowired
-    public JSONNodeFieldExtractor(Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctionsJSON) {
+    public JSONNodeFieldExtractor(
+            Map<ParserStrategy, BiFunction<JsonNode, MappingField, String>> parsingFunctionsJSON) {
         this.parsingFunctionsJSON = parsingFunctionsJSON;
     }
 

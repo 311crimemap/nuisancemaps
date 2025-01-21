@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
-import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.model.datajob.DataJobStatus;
@@ -26,6 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.annotation.PostConstruct;
+
+/*
+ * Entry point for Worker
+ */
 
 @Service
 public class WorkerScheduleService {
@@ -53,17 +56,17 @@ public class WorkerScheduleService {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
-    @PostConstruct // method called once after beans all loaded
+    @PostConstruct
     public void initialize() throws UnsupportedEncodingException {
-        // init seed
-        // log.info("Init");
+        // init; any seed stuff
     }
 
     /*
      * SCHEDULED TASKS
      */
 
-    // schedule every 12 hours, initial 5 min delay (avoid initial hanging on deploy, restarts)
+    // schedule every 12 hours, initial 5 min delay (avoid initial hanging on
+    // deploy, restarts)
     @Scheduled(fixedRate = 4 * 60 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     @Transactional
     public void refreshMaterializedView() {
@@ -120,7 +123,6 @@ public class WorkerScheduleService {
             log.info(String.format("[Poll Wait] %s", logDetails));
             return;
         }
-
 
         /*
          * CREATE RECORDS

@@ -12,13 +12,9 @@ import com.quirkshop.nuisancemaps.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class SourceLoaderService {
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
     MappingRepository mappingRepository;
@@ -29,6 +25,19 @@ public class SourceLoaderService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    /**
+     * Updates an existing Source entity identified by the given ID with the
+     * specified updates. It will also update the associated Mapping entity if
+     * mapping updates are provided.
+     *
+     * @param id      the ID of the Source entity
+     * @param updates a map containing the fields to update in the Source and
+     *                Mapping
+     *
+     * @return the updated Source entity
+     *
+     * @throws JsonMappingException
+     */
     public Source updateSource(int id, Map<String, Object> updates) throws JsonMappingException {
         Source source = sourceRepository.findById(id).orElse(null);
         Mapping mapping = source.getMapping();
@@ -40,9 +49,17 @@ public class SourceLoaderService {
         return sourceRepository.save(source);
     }
 
-    // wrap this so @Transactional throws error inside
-    // the API controller scope (versus @Transactional on the controller action)
-    // which would need handling outside
+    /**
+     * Saves a Source entity and its associated Mapping entity within a
+     * transaction.
+     *
+     * @Transactional in service so throws error inside service scope versus
+     *                controller action
+     *
+     * @param source the Source entity to save
+     * @return the saved Source entity
+     */
+
     @Transactional
     public Source saveTransaction(Source source) {
         mappingRepository.save(source.getMapping());

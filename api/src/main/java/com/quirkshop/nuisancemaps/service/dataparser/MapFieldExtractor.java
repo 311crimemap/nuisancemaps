@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import com.quirkshop.nuisancemaps.service.parserstrategy.ParserStrategy;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.MappingField;
 import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.service.parserstrategy.ParserStrategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,8 @@ public class MapFieldExtractor implements FieldExtractor<Map<String, String>> {
     private final Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctionsMap;
 
     @Autowired
-    public MapFieldExtractor(Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctionsMap) {
+    public MapFieldExtractor(
+            Map<ParserStrategy, BiFunction<Map<String, String>, MappingField, String>> parsingFunctionsMap) {
         this.parsingFunctionsMap = parsingFunctionsMap;
     }
 

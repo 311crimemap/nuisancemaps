@@ -27,18 +27,18 @@ public class DataParserFactory {
     public DataParser getDataParser(DataParserType dataParserType) {
 
         switch (dataParserType) {
-        case CSV:
-            return csvDataParserFactory.getObject();
-        case JSON:
-            return jsonDataParserFactory.getObject();
-        case APDINCIDENTREPORT:
-            return apdHTMLDataParserFactory.getObject();
-        case XLS:
-            return xlsDataParserFactory.getObject();
-        case CSVCUSTOM:
-            return csvCustomDataParserFactory.getObject();
-        default:
-            throw new IllegalArgumentException("Unsupported DataParserType: " + dataParserType);
+            case CSV:
+                return csvDataParserFactory.getObject();
+            case JSON:
+                return jsonDataParserFactory.getObject();
+            case APDINCIDENTREPORT:
+                return apdHTMLDataParserFactory.getObject();
+            case XLS:
+                return xlsDataParserFactory.getObject();
+            case CSVCUSTOM:
+                return csvCustomDataParserFactory.getObject();
+            default:
+                throw new IllegalArgumentException("Unsupported DataParserType: " + dataParserType);
 
         }
     }
