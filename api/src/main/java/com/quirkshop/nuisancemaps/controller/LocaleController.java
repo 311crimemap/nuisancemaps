@@ -113,7 +113,7 @@ public class LocaleController {
         } catch (Exception e) {
 
             return ResponseEntity.badRequest()
-                .body(new JSendDTO<String>("error", null););
+                .body(new JSendDTO<String>("error", null));
         }
 
         return ResponseEntity.ok()
