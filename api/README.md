@@ -92,8 +92,8 @@ These require auth key:
 
 ## Related Docs
 
-* [../docs/spring.md](Spring Boot Notes)
-* [../docs/spring_persistence.md](Spring Persistence Notes)
-* [../docs/liquibase.md](Liquibase Notes)
-* [../docs/java_jar.md](Building a Jar Notes)
-* [../docs/java.md](Java Notes)
+* [Spring Boot Notes](../docs/spring.md)
+* [Spring Persistence Notes](../docs/spring_persistence.md)
+* [Liquibase Notes](../docs/liquibase.md)
+* [Building a Jar Notes](../docs/java_jar.md)
+* [Java Notes](../docs/java.md)

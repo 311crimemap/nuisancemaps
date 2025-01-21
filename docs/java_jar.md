@@ -142,7 +142,7 @@ unzipped into a docker image.
 Empty config (`spring-boot:build-image`) leaves custom main config to runtime.
 
 Maven will download a
-[https://buildpacks.io/docs/app-developer-guide/run-an-app/#user-provided-shell-process](build-pack)
+[build-pack](https://buildpacks.io/docs/app-developer-guide/run-an-app/#user-provided-shell-process)
 to generate the proper image.
 
 We just override the entrypoint with the `launcher` binary that's built into the

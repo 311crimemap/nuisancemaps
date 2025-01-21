@@ -21,13 +21,13 @@ npm run preview
 ## Important Component Overview
 
 * `/web`: static page build and deployed by Cloudflare.
-* [./src/App.tsx](`App.tsx`): loads map, controlbar, etc.
-* [./src/components/Map/useMap.tsx](`useMap.tsx`): wrapper
+* [`App.tsx`](./src/App.tsx): loads map, controlbar, etc.
+* [`useMap.tsx`](./src/components/Map/useMap.tsx): wrapper
   hook for maplibre
-* [./src/components/ControlBar](ControlBar component): control bar component;
+* [ControlBar component](./src/components/ControlBar): control bar component;
   drop down, selectors.
-* [./src/components/FeatureList](FeatureList): pop up with incident details
-* [./pages](Static pages): misc static pages
+* [FeatureList](./src/components/FeatureList): pop up with incident details
+* [Static pages](./pages): misc static pages
 
 
 ## Layers

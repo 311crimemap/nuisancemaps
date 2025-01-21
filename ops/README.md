@@ -4,10 +4,10 @@ Ops contains info to spin up servers, create k3s cluster, and deploy containers.
 
 ## Contents
 
-* [./benchmark](benchmark): benchmark for testing api, db capacity
-* [./infra](infra): Packer, Terraform, Ansible infra deployment
-* [./deploy](deploy): k3s cluster deployment config
-* [./update_sources.sh](update_sources.sh): update data script to submit a new round of jobs
+* [Benchmark](./benchmark): benchmark for testing api, db capacity
+* [Infra](./infra): Packer, Terraform, Ansible infra deployment
+* [Deploy](./deploy): k3s cluster deployment config
+* [update_sources.sh](./update_sources.sh): update data script to submit a new round of jobs
 
 
 ### Infra

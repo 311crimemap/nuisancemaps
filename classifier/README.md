@@ -24,7 +24,7 @@ source url, field mappings, etc.
 Typically use dev environment to verify proper data and mappings.
 
 Try on **dev** environment first especially when there are custom data
-[../api/src/main/java/com/quirkshop/nuisancemaps/service/parserstrategy/](`ParserStrategy`)
+[`ParserStrategy`](../api/src/main/java/com/quirkshop/nuisancemaps/service/parserstrategy/)
 mappings as it is a locus of errors.
 
 Convenience copy-paste:

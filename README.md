@@ -82,37 +82,37 @@ docker-compose up db
 
 #### Adding Cities: Sources
 
-* [./classifier/README.md](Source Creation and Category Classification): steps
+* [Source Creation and Category Classification](./classifier/README.md): steps
   to add cities, label incidents.
 
 #### API
 
-* [./api/README.md](API)
-* [./docs/spring.md](Spring Boot Notes)
-* [./docs/spring_persistence.md](Spring Persistence Notes)
-* [./docs/liquibase.md](Liquibase Notes)
-* [./docs/java_jar.md](Building a Jar Notes)
-* [./docs/java.md](Java Notes)
+* [API](./api/README.md)
+* [Spring Boot Notes](./docs/spring.md)
+* [Spring Persistence Notes](./docs/spring_persistence.md)
+* [Liquibase Notes](./docs/liquibase.md)
+* [Building a Jar Notes](./docs/java_jar.md)
+* [Java Notes](./docs/java.md)
 
 #### Web
 
-* [./web/README.md](Web)
-* [./docs/typescript.md](Typescript Notes)
+* [Web](./web/README.md)
+* [Typescript Notes](./docs/typescript.md)
 
 #### Ops / Deploy
 
-[./ops/README.md](Ops Overview)
-[./ops/infra/README.md](Infra Overview: Packer, Terraform, Ansible)
-[./ops/deploy/README.md](K3S Deploy Sequence)
-[./docs/ops_cloudflare.md](Cloudflare Notes)
-[./docs/ops_traefik.md](Traefik Notes)
+* [Ops Overview](./ops/README.md)
+* [Infra Overview: Packer, Terraform, Ansible](./ops/infra/README.md)
+* [K3S Deploy Sequence](./ops/deploy/README.md)
+* [Cloudflare Notes](./docs/ops_cloudflare.md)
+* [Traefik Notes](./docs/ops_traefik.md)
 
 ##### Data Jobs
 
-* [./docs/datajobs.md](DataJobs)
+* [DataJobs](./docs/datajobs.md)
 
 #### Database
 
-* [./db/README.md](Database Files and Backup / Restore Settings)
-* [./docs/database.md](Database Commands on postgresql-ha: pgpool / repmgr)
-* [./docs/database_query_index_exploration.md](Postgres Spatial Query and Index Notes)
+* [Database Files and Backup / Restore Settings](./db/README.md)
+* [Database Commands on postgresql-ha: pgpool / repmgr](./docs/database.md)
+* [Postgres Spatial Query and Index Notes](./docs/database_query_index_exploration.md)
