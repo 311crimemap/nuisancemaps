@@ -50,7 +50,8 @@ public class TextCategory {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public TextCategory() {}
+    public TextCategory() {
+    }
 
     public TextCategory(String dataType, String text, Category category) {
         this.dataType = dataType;

@@ -3,8 +3,6 @@ package com.quirkshop.nuisancemaps.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -22,7 +20,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -36,13 +33,13 @@ public class Locale {
     @SequenceGenerator(name = "locale_seq", allocationSize = 1)
     private Integer id;
 
-    private String name; // display name (city, state)
-    private String description; // full description
-    private String city; // city name
-    private String state; // state name
+    private String name;             // display name (city, state)
+    private String description;      // full description
+    private String city;             // city name
+    private String state;            // state name
 
     @Column(length = 4096)
-    private String attribution; // text for attribution
+    private String attribution;      // text for attribution
 
     private boolean enabled = false; // activates locale for display (allows for prep sources, data)
 
