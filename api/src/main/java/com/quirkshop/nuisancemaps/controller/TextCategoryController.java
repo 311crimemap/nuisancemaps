@@ -53,11 +53,13 @@ public class TextCategoryController {
 
         try {
             List<TextCategory> res = textCategoryService.createTextCategories(textLabelDTOs);
+
+            String msg = "nothing saved";
             if (res.size() > 0) {
-                jSendDTO = new JSendDTO<List<TextCategory>>("success", res);
-            } else {
-                jSendDTO = new JSendDTO<List<TextCategory>>("nothing saved", res);
+                msg = "success";
             }
+
+            jSendDTO = new JSendDTO<List<TextCategory>>(msg, res);
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -76,21 +78,16 @@ public class TextCategoryController {
      */
     @GetMapping("/textcategories")
     public ResponseEntity<?> getIndex(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "limit", required = false) Integer limit) {
+            @RequestParam(name = "page", required = false) Integer pageParam,
+            @RequestParam(name = "limit", required = false) Integer limitParam) {
+
         final int LIMIT = 50;
 
-        Iterable<TextCategory> textCategoriesIter = null;
+        int page = pageParam != null ? pageParam : 0;
+        int limit = limitParam != null ? limitParam : LIMIT;
 
-        if (page != null && limit != null) {
-            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, limit));
-        } else if (page != null) {
-            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, LIMIT));
-        } else if (limit != null) {
-            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, limit));
-        } else {
-            textCategoriesIter = textCategoryRepository.findAllByOrderByCreatedAtDesc(null);
-        }
+        Iterable<TextCategory> textCategoriesIter = textCategoryRepository
+                .findAllByOrderByCreatedAtDesc(PageRequest.of(page, limit));
 
         JSendDTO<Iterable<TextCategory>> jSendDTO = new JSendDTO<Iterable<TextCategory>>("success",
                 textCategoriesIter);
