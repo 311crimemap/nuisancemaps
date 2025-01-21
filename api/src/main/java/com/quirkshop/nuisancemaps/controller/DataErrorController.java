@@ -18,6 +18,16 @@ public class DataErrorController {
     @Autowired
     DataErrorRepository dataErrorRepository;
 
+    /**
+     * Handles HTTP GET requests to fetch a list of DataError entries.
+     *
+     * @param page  the page number to retrieve, or null to retrieve the first page.
+     * @param limit the maximum number of DataError entries to return, or null to
+     *              use a default limit.
+     * @return a list of DataError objects, ordered by their last updated timestamp
+     *         in descending order.
+     *
+     */
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/dataerrors")
     public List<DataError> getIndex(

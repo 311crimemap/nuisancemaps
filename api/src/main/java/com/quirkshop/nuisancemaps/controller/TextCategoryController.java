@@ -1,11 +1,6 @@
 package com.quirkshop.nuisancemaps.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.JSendDTO;
@@ -14,6 +9,8 @@ import com.quirkshop.nuisancemaps.model.TextCategory;
 import com.quirkshop.nuisancemaps.repository.TextCategoryRepository;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -37,10 +34,18 @@ public class TextCategoryController {
     @Autowired
     TextCategoryService textCategoryService;
 
-    // curl -H 'content-type:application/json' -X POST -d '[{"dataType": "crime",
-    // "text":"Animal bite rawr",
-    // "label": 0}]' localhost:8080/textcategories
-
+    /**
+     * Creates new text categories based on the provided list of text labels.
+     *
+     * curl -H 'content-type:application/json' -X POST \
+     * -d '[{"dataType": "crime", "text":"Animal bite rawr", "label": 0}]' \
+     * localhost:8080/textcategories
+     * 
+     * @param textLabelDTOs a list of TextLabelDTO objects representing the text
+     *                      categories to be created
+     * @return ResponseEntity<?> return status of the operation with the created
+     *         TextCategory objects or an error message.
+     */
     @PostMapping("/textcategories")
     public ResponseEntity<?> create(@RequestBody List<TextLabelDTO> textLabelDTOs) {
         JSendDTO<List<TextCategory>> jSendDTO;
@@ -62,6 +67,13 @@ public class TextCategoryController {
         return ResponseEntity.ok().body(jSendDTO);
     }
 
+    /**
+     * Retrieves a paginated list of text categories.
+     *
+     * @param page  the page number to retrieve (optional)
+     * @param limit the number of text categories to return per page (optional)
+     * @return ResponseEntity<?> a JSendDTO with a list of TextCategory objects
+     */
     @GetMapping("/textcategories")
     public ResponseEntity<?> getIndex(
             @RequestParam(name = "page", required = false) Integer page,
@@ -86,7 +98,16 @@ public class TextCategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
 
-    // curl -X DELETE localhost:8080/textcategories/<id>
+    /**
+     * Deletes a text category by its ID.
+     *
+     * curl -X DELETE localhost:8080/textcategories/<id>
+     *
+     * @param id the ID of the text category to be deleted
+     * @return ResponseEntity<?> indicates status of the delete operation: Success,
+     *         Error, Not Found
+     */
+
     @DeleteMapping("/textcategories/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") final int id) {
 

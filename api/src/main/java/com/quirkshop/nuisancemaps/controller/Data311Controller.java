@@ -6,11 +6,11 @@ import java.util.Optional;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
+import com.quirkshop.nuisancemaps.model.DataURLCache;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.service.Data311Service;
-import com.quirkshop.nuisancemaps.util.DataParamValidator;
-import com.quirkshop.nuisancemaps.model.DataURLCache;
 import com.quirkshop.nuisancemaps.service.DataURLCacheService;
+import com.quirkshop.nuisancemaps.util.DataParamValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +40,31 @@ public class Data311Controller {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
+    /**
+     * Retrieves GeoJSON data for 311 service requests within a specified
+     * bounding box and optional date range. This endpoint supports cross-origin
+     * requests and caches results based on query parameters to optimize
+     * performance.
+     *
+     * @param startDate Optional parameter representing the start date in the format
+     *                  "yyyy-MM-dd".
+     *                  Defaults to the date three months prior to the current date.
+     * @param endDate   Optional parameter representing the end date in the format
+     *                  "yyyy-MM-dd".
+     *                  Defaults to the current date.
+     * @param sw_lat    Required parameter for the southwest latitude of the
+     *                  bounding box.
+     * @param sw_lng    Required parameter for the southwest longitude of the
+     *                  bounding box.
+     * @param ne_lat    Required parameter for the northeast latitude of the
+     *                  bounding box.
+     * @param ne_lng    Required parameter for the northeast longitude of the
+     *                  bounding box.
+     * @return A ResponseEntity containing the GeoJSON data, or a bad request
+     *         response
+     *         if the input values are invalid.
+     * @throws IllegalArgumentException if latitude or longitude values are invalid.
+     */
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/data311s.geojson")
     @Cacheable(value = "data311ControllerCache", key = "#startDate + '-' + #endDate + '-' + #sw_lat + '-' + #sw_lng + '-' + #ne_lat + '-' + #ne_lng")
@@ -74,11 +99,11 @@ public class Data311Controller {
             String logStr = String.format("Data311 %d: %s %s %s %s: ", count, _sw_lat, _sw_lng, _ne_lat, _ne_lng);
             log.info(logStr);
 
-            // NB: cached requests won't reach here, so only fetched queries will be recorded here.
+            // cached requests won't reach here, so only fetched queries will be
+            // recorded here.
             DataURLCache dataURLCache = new DataURLCache("/data311s.json", startDateTime, endDateTime,
-                                                         _sw_lat, _sw_lng, _ne_lat, _ne_lng);
+                    _sw_lat, _sw_lng, _ne_lat, _ne_lng);
             dataURLCacheService.increment(dataURLCache);
-
 
             FeatureCollectionDTO results = data311Service
                     .findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,

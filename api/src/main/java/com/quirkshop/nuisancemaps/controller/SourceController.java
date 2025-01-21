@@ -47,9 +47,16 @@ public class SourceController {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
-    // curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d
-    // @source.json localhost:8080/locales/{id}/sources
-
+    /**
+     * Creates a new source for the specified locale.
+     *
+     * curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
+     * -d @source.json localhost:8080/locales/{id}/sources
+     *
+     * @param locale_id the ID of the locale to which the source is associated
+     * @param source    the source object to be created
+     * @return a response entity containing the Source DTO
+     */
     @PostMapping("/locales/{id}/sources")
     public ResponseEntity<?> create(@PathVariable("id") Integer locale_id, @RequestBody Source source) {
         JSendDTO jSendDTO;
@@ -72,6 +79,13 @@ public class SourceController {
         return ResponseEntity.ok().body(jSendDTO);
     }
 
+    /**
+     * Creates a batch of sources for the specified locale.
+     *
+     * @param locale_id the ID of the locale to which the sources are associated
+     * @param sources   a list of source objects to be created
+     * @return a response entity containing Source DTO objects.
+     */
     @PostMapping("/locales/{id}/sources/batch")
     @Transactional
     public ResponseEntity<?> createBatch(@PathVariable("id") Integer locale_id,
@@ -104,6 +118,11 @@ public class SourceController {
         return ResponseEntity.ok().body(res);
     }
 
+    /**
+     * Retrieves a list of all sources.
+     *
+     * @return a response entity containing a list of all sources
+     */
     @GetMapping("/sources")
     public ResponseEntity<?> index() {
         Iterable<Source> sourceIter = sourceRepository.findAll();
@@ -116,6 +135,12 @@ public class SourceController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
+    /**
+     * Retrieves a specific source by its ID.
+     *
+     * @param id the ID of the source to retrieve
+     * @return a response entity containing the source, or a 404 error
+     */
     @GetMapping("/locales/{id}/sources")
     public ResponseEntity<?> getLocaleSources(@PathVariable(value = "id") final int id) {
         JSendDTO jSendDTO;
@@ -132,6 +157,12 @@ public class SourceController {
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
 
+    /**
+     * Retrieves a specific source by its ID.
+     *
+     * @param id the ID of the source to retrieve
+     * @return a response entity containing the source, or a 404 error
+     */
     @GetMapping("/sources/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
         Source source = sourceRepository.findById(id).orElse(null);
@@ -142,6 +173,13 @@ public class SourceController {
         return ResponseEntity.status(404).body(null);
     }
 
+    /**
+     * Updates a specific source identified by its ID using the provided updates.
+     *
+     * @param id      the ID of the source to be updated
+     * @param updates a map containing the fields to be updated and their new values
+     * @return a response entity with the updated source or an error message
+     */
     @PatchMapping("/sources/{id}")
     public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
             @RequestBody Map<String, Object> updates) {

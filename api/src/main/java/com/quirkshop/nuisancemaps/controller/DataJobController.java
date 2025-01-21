@@ -42,6 +42,14 @@ public class DataJobController {
 
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
+    /**
+     * Retrieves a paginated list of data jobs, ordered by their updated
+     * timestamp.
+     *
+     * @param page  the page number to retrieve (optional)
+     * @param limit the number of items per page (optional, defaults to 50)
+     * @return a list of DataJob objects
+     */
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datajobs")
     public List<DataJob> getIndex(
@@ -61,9 +69,16 @@ public class DataJobController {
         return dataJobRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(0, LIMIT));
     }
 
-    // only want to toggle Status for now
-    // curl -H "content-type: application/json" -X PATCH -d '{"status":"QUEUED"}'
-    // localhost:8080/datajobs/1124
+    /**
+     * Updates (only) the status of a specific data job identified by its ID.
+     *
+     * curl -H "content-type: application/json" -X PATCH -d '{"status":"QUEUED"}'
+     * localhost:8080/datajobs/1124
+     *
+     * @param id      the ID of the data job to update
+     * @param payload a JSON payload containing the new status
+     * @return ResponseEntity containing the updated DataJob or an error message
+     */
 
     @PatchMapping(path = "/datajobs/{id}")
     public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
@@ -95,9 +110,15 @@ public class DataJobController {
 
     }
 
-    // new session per source
-    // this is where we initiate a new crawl session
-    // curl -H 'X-API-KEY: <API-KEY>' -X POST localhost:8080/datajobs/sources/1
+    /**
+     * Initiates a new crawl session for a given Source.
+     *
+     * curl -H 'X-API-KEY: <API-KEY>' -X POST localhost:8080/datajobs/sources/1
+     *
+     * @param sourceId the ID of the source to create a new session for
+     * @return ResponseEntity containing the newly created DataJob or an error
+     *         message
+     */
     @PostMapping("/datajobs/sources/{sourceId}")
     public ResponseEntity<?> createNewSession(@PathVariable(value = "sourceId") final int sourceId) {
 
@@ -121,13 +142,22 @@ public class DataJobController {
         return ResponseEntity.ok().body(dataJob);
     }
 
-    // list all non completes
+    /*
+     * Error and Restarts
+     */
+
+    /**
+     * Retrieves a list of all data jobs with non-completed statuses (errors).
+     *
+     * @return ResponseEntity containing a list of DataJob objects in error
+     *         statuses
+     */
     @GetMapping("/datajobs/errors")
     public ResponseEntity<?> findAllErrorJobs() {
 
         List<DataJobStatus> statuses = Arrays.asList(DataJobStatus.FETCH_ERROR,
-                                                     DataJobStatus.PARSE_ERROR,
-                                                     DataJobStatus.ERROR);
+                DataJobStatus.PARSE_ERROR,
+                DataJobStatus.ERROR);
 
         List<DataJob> dataJobs = dataJobRepository.findAllInStatuses(statuses);
 
@@ -136,13 +166,18 @@ public class DataJobController {
         return ResponseEntity.ok().body(response);
     }
 
-    // restart all dangling jobs
-    // dayAgo guard - typically only want to restart recently broken jobs
+    /**
+     * Restarts all dangling data jobs that have not been completed within the last
+     * day. Only want recently broken jobs (e.g. per that crawl session)
+     *
+     * @return ResponseEntity containing the number of jobs updated to 'QUEUED'
+     *         status
+     */
     @GetMapping("/datajobs/restartAll")
     public ResponseEntity<?> restartAllDangling() {
 
         List<DataJobStatus> excludedStatuses = Arrays.asList(DataJobStatus.COMPLETED,
-                                                             DataJobStatus.QUEUED);
+                DataJobStatus.QUEUED);
 
         LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
 
@@ -157,22 +192,26 @@ public class DataJobController {
         return ResponseEntity.ok().body(response);
     }
 
-    // restart all error jobs
-    // dayAgo guard - typically only want to restart recently broken jobs
+    /**
+     * Restarts all data jobs that are in error states from the last day.
+     *
+     * @return ResponseEntity containing the number of jobs updated to 'QUEUED'
+     *         status
+     */
     @GetMapping("/datajobs/restart")
     public ResponseEntity<?> restartErrors() {
 
         List<DataJobStatus> statuses = Arrays.asList(DataJobStatus.FETCH_ERROR,
-                                                     DataJobStatus.PARSE_ERROR,
-                                                     DataJobStatus.ERROR);
+                DataJobStatus.PARSE_ERROR,
+                DataJobStatus.ERROR);
 
         LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
 
         int numUpdated = dataJobRepository
                 .updateAllErrorsToQueuedBefore(DataJobStatus.QUEUED,
-                                               LocalDateTime.now(),
-                                               statuses,
-                                               dayAgo);
+                        LocalDateTime.now(),
+                        statuses,
+                        dayAgo);
 
         Map<String, String> response = new HashMap<String, String>();
         response.put("numUpdated", Integer.toString(numUpdated));
