@@ -68,7 +68,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 5         | SF                     | Crime | 39        | 5      | x    |              | 2024-09-01      |       |
 | 5         | SF                     | 311   | 33        | 5      | x    |              | 2024-09-01      |       |
 | 6         | Boston (2023-present)  | Crime | 13        | 6      | x    |              |                 |       |
-| 6         | Boston 2024            | 311   | 22        | 6      | x    |              |                 |       |
+| 6         | Boston 2025            | 311   | 200       | 6      | x    |              |                 |       |
 | 7         | Los Angeles            | Crime | 187       | 7      | x    | weekly       | 2024-12-01      |       |
 | 7         | Los Angeles 2024       | 311   | 41        | 7      | x    | daily        |                 |       |
 | 8         | Houston 2024           | Crime | 47        | 8      | x    | monthly      |                 |       |
@@ -92,8 +92,8 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |       |
 | 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |       |
 | 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |       |
-| 19        | Minneapolis 2024       | crime | 129       | 19     | x    | daily (year) |                 |       |
-| 19        | Minneapolis 2024       | 311   | 134       | 19     | x    | daily (year) |                 |       |
+| 19        | Minneapolis 2025       | crime | 201       | 19     | x    | daily (year) |                 |       |
+| 19        | Minneapolis 2025       | 311   | 202       | 19     | x    | daily (year) |                 |       |
 | 20        | Cleveland              | crime | 139       | 20     | x    | daily (full) |                 |       |
 | 20        | Cleveland              | 311   | 140       | 20     | x    | daily (full) |                 |       |
 | 21        | Cincinnatti            | crime | 143       | 21     | x    | daily        |                 |       |
@@ -101,9 +101,9 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 22        | St. Louis 2024         | crime | 145       | 22     | x    | daily (year) |                 |       |
 | 22        | St. Louis              | 311   | 149       | 22     | x    | daily (year) |                 |       |
 | 23        | Baltimore              | crime | 154       | 23     | x    | daily (full) |                 |       |
-| 23        | Baltimore 2024         | 311   | 155       | 23     | x    | daily (year) |                 |       |
-| 24        | Washington DC 2024     | crime | 160       | 24     | x    | daily        |                 |       |
-| 24        | Washington DC 2024     | 311   | 165       | 24     | x    | daily        |                 |       |
+| 23        | Baltimore 2025         | 311   | 203       | 23     | x    | daily (year) |                 |       |
+| 24        | Washington DC 2025     | crime | 204       | 24     | x    | daily        |                 |       |
+| 24        | Washington DC 2025     | 311   | 205       | 24     | x    | daily        |                 |       |
 | 25        | Prince George's        | crime | 188       | 25     | x    | daily        | 2024-12-01      |       |
 | 25        | Prince George's        | 311   | 172       | 25     | x    | daily        |                 |       |
 | 26        | Baton Rouge            | crime | 175       | 26     | x    | daily        |                 |       |
