@@ -102,7 +102,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 22        | St. Louis              | 311   | 149       | 22     | x    | daily (year) |                 |       |
 | 23        | Baltimore              | crime | 154       | 23     | x    | daily (full) |                 |       |
 | 23        | Baltimore 2025         | 311   | 203       | 23     | x    | daily (year) |                 |       |
-| 24        | Washington DC 2024     | crime | 160       | 24     | x    | daily        |                 |       |
+| 24        | Washington DC 2025     | crime | 204       | 24     | x    | daily        |                 |       |
 | 24        | Washington DC 2024     | 311   | 165       | 24     | x    | daily        |                 |       |
 | 25        | Prince George's        | crime | 188       | 25     | x    | daily        | 2024-12-01      |       |
 | 25        | Prince George's        | 311   | 172       | 25     | x    | daily        |                 |       |
