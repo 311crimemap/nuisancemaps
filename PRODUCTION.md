@@ -92,7 +92,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |       |
 | 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |       |
 | 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |       |
-| 19        | Minneapolis 2024       | crime | 129       | 19     | x    | daily (year) |                 |       |
+| 19        | Minneapolis 2025       | crime | 201       | 19     | x    | daily (year) |                 |       |
 | 19        | Minneapolis 2024       | 311   | 134       | 19     | x    | daily (year) |                 |       |
 | 20        | Cleveland              | crime | 139       | 20     | x    | daily (full) |                 |       |
 | 20        | Cleveland              | 311   | 140       | 20     | x    | daily (full) |                 |       |
