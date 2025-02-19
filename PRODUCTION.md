@@ -57,7 +57,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 
 | locale.id | Source                 | type  | source.id | locale | init | submit  freq | startReportedAt | Notes |
 |-----------|------------------------|-------|-----------|--------|------|--------------|-----------------|-------|
-| 1         | Austin                 | Crime | 2         | 1      | x    | -            | 2024-07-01      |       |
+| 1         | Austin                 | Crime | 2         | 1      | x    | -            | 2024-12-01      |       |
 | 1         | Austin                 | 311   | 35        | 1      | x    |              | 2024-09-01      |       |
 | 2         | Dallas                 | Crime | 36        | 2      | x    |              | 2024-09-01      |       |
 | 2         | Dallas                 | 311   | 37        | 2      | x    |              | 2024-09-01      |       |
@@ -70,7 +70,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 6         | Boston (2023-present)  | Crime | 13        | 6      | x    |              |                 |       |
 | 6         | Boston 2025            | 311   | 200       | 6      | x    |              |                 |       |
 | 7         | Los Angeles            | Crime | 187       | 7      | x    | weekly       | 2024-12-01      |       |
-| 7         | Los Angeles 2024       | 311   | 41        | 7      | x    | daily        |                 |       |
+| 7         | Los Angeles 2025       | 311   | 206       | 7      | x    | daily        | 2025-01-01      |       |
 | 8         | Houston 2024           | Crime | 47        | 8      | x    | monthly      |                 |       |
 | 8         | Houston MTD            | 311   | 191       | 8      | x    | daily        |                 |       |
 | 9         | Philadelphia 2025      | crime | 193       | 9      | x    | daily        |                 |       |
@@ -98,7 +98,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 20        | Cleveland              | 311   | 140       | 20     | x    | daily (full) |                 |       |
 | 21        | Cincinnatti            | crime | 143       | 21     | x    | daily        |                 |       |
 | 21        | Cincinnatti            | 311   | 144       | 21     | x    | daily        |                 |       |
-| 22        | St. Louis 2024         | crime | 145       | 22     | x    | daily (year) |                 |       |
+| 22        | St. Louis 2025         | crime | 207       | 22     | x    | daily (year) |                 |       |
 | 22        | St. Louis              | 311   | 149       | 22     | x    | daily (year) |                 |       |
 | 23        | Baltimore              | crime | 154       | 23     | x    | daily (full) |                 |       |
 | 23        | Baltimore 2025         | 311   | 203       | 23     | x    | daily (year) |                 |       |
