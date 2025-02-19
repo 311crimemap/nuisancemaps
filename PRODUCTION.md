@@ -141,3 +141,27 @@ Mapping has optional fields that can be ignored for most types, but required for
 specific `dataParserType`:
 
 * `CSVCUSTOM`: `dataParserDelimeter`, `dataParserNumSkip`
+
+
+### Detect Remove Duplicates
+
+##### Detect
+
+* `select count(*), report_num, source_id from data_crime group by report_num, source_id having count(report_num) >= 2`
+* `select count(*) from (select count(*), report_num, source_id from data_crime group by report_num, source_id having count(report_num) >= 2);`
+* `select distinct(source_id) from (select count(*), report_num, source_id from data_crime group by report_num, source_id having count(report_num) >= 2);`
+
+#### DELETE
+
+Best to filter via `source_id` grabbed from distinct query above to speed things
+up. Replace 'X' with `source_id`.
+
+```
+DELETE FROM data_crime
+WHERE source_id = X AND id NOT IN (
+    SELECT MIN(id)
+    FROM data_crime WHERE source_id = X
+    GROUP BY report_num, source_id
+);
+```
+
