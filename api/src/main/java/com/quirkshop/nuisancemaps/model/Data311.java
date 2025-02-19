@@ -10,6 +10,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,6 +31,8 @@ import org.locationtech.jts.geom.GeometryFactory;
         @Index(name = "idx_reported_at_desc_data_311", columnList = "reportedAt DESC"),
         // Combined Spatial GIST + Vanilla index uses btree_gist extension
         @Index(name = "idx_gist_point_reported_at_data_311", columnList = "point, reportedAt")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uc_data_311_source_id_report_num", columnNames = { "source_id", "reportNum" })
 })
 public class Data311 implements DataEntity {
     // TODO: status update, other fields
@@ -48,7 +51,7 @@ public class Data311 implements DataEntity {
     private String reportCategory;
     private String description;
 
-    @Column(length=512)
+    @Column(length = 512)
     private String address;
     private String location;
 
@@ -78,7 +81,8 @@ public class Data311 implements DataEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Data311() {}
+    public Data311() {
+    }
 
     public Data311(Source source) {
         this.setSource(source);
