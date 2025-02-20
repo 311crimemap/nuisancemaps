@@ -8,7 +8,7 @@
 #
 
 URL=https://www.stlouis-mo.gov/data/upload/data-files/csb.zip
-FILE=2024.csv
+FILE=2025.csv
 
 date
 echo "[st_louis_crime_s3] Downloading File"
@@ -23,5 +23,5 @@ unzip -o $WORKDIR/csb.zip $FILE
 echo "[st_lousi_crime_s3] Uploading to AWS"
 # Example: Use AWS CLI to upload the file to S3
 aws s3 cp --profile $AWS_PROFILE --region $AWS_REGION \
-    $WORKDIR/2024.csv $BUCKET_ST_LOUS
+    $WORKDIR/2025.csv $BUCKET_ST_LOUIS
 date

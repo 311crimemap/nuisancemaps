@@ -88,7 +88,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 15        | Montgomery County      | crime | 117       | 15     | x    | daily        | 2024-12-01      |       |
 | 16        | Nashville              | crime | 118       | 16     | x    | daily        |                 |       |
 | 16        | Nashville (YTD)        | 311   | 120       | 16     | x    | daily        |                 |       |
-| 17        | Kansas City            | crime | 123       | 17     | x    | daily        | 2024-12-01      |       |
+| 17        | Kansas City 2025       | crime | 208       | 17     | x    | daily        | 2025-01-01      |       |
 | 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |       |
 | 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |       |
 | 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |       |
@@ -99,8 +99,8 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 21        | Cincinnatti            | crime | 143       | 21     | x    | daily        |                 |       |
 | 21        | Cincinnatti            | 311   | 144       | 21     | x    | daily        |                 |       |
 | 22        | St. Louis 2025         | crime | 207       | 22     | x    | daily (year) |                 |       |
-| 22        | St. Louis              | 311   | 149       | 22     | x    | daily (year) |                 |       |
-| 23        | Baltimore              | crime | 154       | 23     | x    | daily (full) |                 |       |
+| 22        | St. Louis              | 311   | 210       | 22     | x    | daily (year) |                 |       |
+| 23        | Baltimore              | crime | 209       | 23     | x    | daily (full) |                 |       |
 | 23        | Baltimore 2025         | 311   | 203       | 23     | x    | daily (year) |                 |       |
 | 24        | Washington DC 2025     | crime | 204       | 24     | x    | daily        |                 |       |
 | 24        | Washington DC 2025     | 311   | 205       | 24     | x    | daily        |                 |       |
