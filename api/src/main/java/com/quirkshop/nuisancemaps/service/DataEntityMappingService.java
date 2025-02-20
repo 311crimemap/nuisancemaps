@@ -157,6 +157,21 @@ public class DataEntityMappingService {
                     REPORTED_AT_THRESHOLD.toString());
             throw new ThresholdReportedAtException(logStr);
         }
+
+        /*
+         * reportedAt incident should also not have occurred in the future -
+         * suggests bad data input. Set max date now + 1 day ahead to buffer and
+         * accommodate different timezone data.
+         */
+        final LocalDateTime REPORTED_AT_MAX = LocalDateTime.now().plusDays(1);
+
+        if (reportedAt.isAfter(REPORTED_AT_MAX)) {
+            String logStr = String.format("reportedAt %s: occurred in future after max allowed date %s",
+                    reportedAt.toString(),
+                    REPORTED_AT_MAX.toString());
+            throw new ThresholdReportedAtException(logStr);
+        }
+
     }
 
     private void validateReportCategory(Source source, String reportCategory) throws MissingReportCategoryException {
