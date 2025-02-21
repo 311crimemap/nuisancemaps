@@ -10,6 +10,7 @@ public class SourceDTO {
     private Integer sourceConfigId;
     private String category;
     private String description;
+    private Boolean recurring;
     private String url;
     private DataParserType dataParserType;
     private DataProcessType dataProcessType;
@@ -18,6 +19,7 @@ public class SourceDTO {
 
     public SourceDTO(Integer id,
             Integer sourceConfigId, String category, String url, String description,
+            Boolean recurring,
             DataParserType dataParserType, DataProcessType dataProcessType,
             DataJobConfiguratorType dataJobConfiguratorType,
             String startReportedAt) {
@@ -26,6 +28,7 @@ public class SourceDTO {
         this.category = category;
         this.url = url;
         this.description = description;
+        this.recurring = recurring;
         this.dataParserType = dataParserType;
         this.dataProcessType = dataProcessType;
         this.dataJobConfiguratorType = dataJobConfiguratorType;
@@ -62,6 +65,14 @@ public class SourceDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getRecurring() {
+        return recurring;
+    }
+
+    public void setRecurring(Boolean recurring) {
+        this.recurring = recurring;
     }
 
     public DataParserType getDataParserType() {
