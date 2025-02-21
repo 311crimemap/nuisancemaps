@@ -5,7 +5,7 @@ from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 import os
 import json
 
-API_HOST=https://api.311crimemap.com
+API_HOST="https://api.311crimemap.com"
 #API_HOST="http://localhost:8080"
 
 #
@@ -59,8 +59,9 @@ for source in recurringSources:
     sourcesURL = source['url']
     if "hub.arcgis.com" in sourcesURL:
         sourcesURL = add_update_cache_to_url(sourcesURL)
+        print(sourcesURL)
         res = requests.get(sourcesURL)
-        print(f"{sourcesURL}: f{res.status_code} | f{res.text}")
+        print(f"{sourcesURL}: {res.status_code} | {res.text}")
 
 print("--Submitting Data Jobs--")
 
@@ -70,5 +71,5 @@ print("--Submitting Data Jobs--")
 for source in recurringSources:
     sourceId = source['id']
     sourceURL = f"{API_HOST}/datajobs/sources/{sourceId}"
-    print(sourceURL)
-    #sourceResponse = requests.post(sourcesURL, headers=headers)
+    sourceResponse = requests.post(sourcesURL, headers=headers)
+    print(sourceResponse)
