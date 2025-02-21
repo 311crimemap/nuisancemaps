@@ -70,8 +70,11 @@ if (DATA_FILE.endswith("csv")):
     for (k,v) in mapping.items():
         if "pointer" in v:
             v['pointer'] = None
-
-# res: add meta (maintain ordering)
+#
+# res: add meta (maintain ordering) to output
+# typically new data is to be recurring
+#
+meta['recurring'] = True
 res = {**meta, **res}
 
 # write total output per iteration in case of error

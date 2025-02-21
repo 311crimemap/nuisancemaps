@@ -50,6 +50,9 @@ public class Source {
     private String category;
     private String description;
 
+    @Column(nullable = false)
+    private boolean recurring = false;
+
     @Column(length = 1024)
     private String url;
 
@@ -153,6 +156,14 @@ public class Source {
         this.description = description;
     }
 
+    public boolean isRecurring() {
+        return recurring;
+    }
+
+    public void setRecurring(boolean recurring) {
+        this.recurring = recurring;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -242,6 +253,7 @@ public class Source {
                 this.getCategory(),
                 this.getUrl(),
                 this.getDescription(),
+                this.isRecurring(),
                 this.getDataParserType(),
                 this.getDataProcessType(),
                 this.getDataJobConfiguratorType(),
