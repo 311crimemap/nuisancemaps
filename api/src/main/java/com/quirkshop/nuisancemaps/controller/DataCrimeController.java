@@ -82,7 +82,8 @@ public class DataCrimeController {
             @RequestParam(name = "ne_lng", required = true) String ne_lng) {
 
         String currentThreadName = Thread.currentThread().getName();
-        MDC.put("traceId", UUID.randomUUID().toString());
+        String uuid = UUID.randomUUID().toString();
+        MDC.put("traceId", uuid.substring(uuid.lastIndexOf('-') + 1));
         MDC.put("threadName", currentThreadName);
 
         try {

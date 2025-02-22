@@ -75,7 +75,8 @@ public class WorkerScheduleService {
     @Transactional
     public void refreshMaterializedView() {
         String currentThreadName = Thread.currentThread().getName();
-        MDC.put("traceId", UUID.randomUUID().toString());
+        String uuid = UUID.randomUUID().toString();
+        MDC.put("traceId", uuid.substring(uuid.lastIndexOf('-') + 1));
         MDC.put("threadName", currentThreadName);
 
         log.info("Materialized view start refresh");
@@ -87,7 +88,8 @@ public class WorkerScheduleService {
     @Scheduled(fixedDelay = 3500, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         String currentThreadName = Thread.currentThread().getName();
-        MDC.put("traceId", UUID.randomUUID().toString());
+        String uuid = UUID.randomUUID().toString();
+        MDC.put("traceId", uuid.substring(uuid.lastIndexOf('-') + 1));
         MDC.put("threadName", currentThreadName);
 
         // check for any DataJobStatus.POLL_WAIT from LocaleDateTime ago
