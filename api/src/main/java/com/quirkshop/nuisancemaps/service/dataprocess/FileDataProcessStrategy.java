@@ -299,9 +299,10 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return new TimerTask() {
             @Override
             public void run() {
+
                 Map<String, Object> logDetails = Map.of(
                         "filePath", filePath,
-                        "bytesRead", totalBytesRead.get());
+                        "bytesRead", totalBytesRead.toString());
 
                 log.info("[FileDataProcessStrategy process] Writing",
                         StructuredArguments.entries(Map.of("data", logDetails)));
