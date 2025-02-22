@@ -61,7 +61,7 @@ for source in recurringSources:
         sourcesURL = add_update_cache_to_url(sourcesURL)
         print(sourcesURL)
         res = requests.get(sourcesURL)
-        print(f"{sourcesURL}: {res.status_code} | {res.text}")
+        print(f"{sourcesURL}: {res.status_code}")
 
 print("--Submitting Data Jobs--")
 
@@ -71,5 +71,6 @@ print("--Submitting Data Jobs--")
 for source in recurringSources:
     sourceId = source['id']
     sourceURL = f"{API_HOST}/datajobs/sources/{sourceId}"
-    sourceResponse = requests.post(sourcesURL, headers=headers)
-    print(sourceResponse)
+    print(sourceURL)
+    sourceResponse = requests.post(sourceURL, headers=headers)
+    print(f"{sourceResponse.status_code} | {sourceResponse.text}" )
