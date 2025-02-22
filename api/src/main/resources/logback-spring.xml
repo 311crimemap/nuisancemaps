@@ -6,7 +6,7 @@
             <providers>
                 <timestamp>
                     <pattern>yyyy/MM/dd HH:mm:ss.SSS</pattern>
-                </timestamp>>
+                </timestamp>
                 <logLevel />
                 <!-- reduce output for now
                      <loggerName />
