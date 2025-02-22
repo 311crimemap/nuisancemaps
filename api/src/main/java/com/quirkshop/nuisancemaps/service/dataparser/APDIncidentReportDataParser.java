@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import net.logstash.logback.argument.StructuredArguments;
+
 @Service
 @Scope("prototype")
 public class APDIncidentReportDataParser extends DataParser {
@@ -51,7 +53,8 @@ public class APDIncidentReportDataParser extends DataParser {
     @Override
     public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
 
-        log.info(String.format("[APDIncidentReport] parse() | DataJob: %s", dataJob.getId()));
+        log.info("[APDIncidentReport] parse()",
+                 StructuredArguments.entries(Map.of("data", Map.of("dataJob", dataJob.getId()))));
 
         // sanity checks
         int numRows = 0;
@@ -123,7 +126,7 @@ public class APDIncidentReportDataParser extends DataParser {
 
     public List<Map<String, String>> parseToRowMaps(List<Element> elements) {
 
-        log.info(String.format("[APDIncidentReport] parseToRowMaps()"));
+        log.info("[APDIncidentReport] parseToRowMaps()");
 
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
@@ -141,7 +144,7 @@ public class APDIncidentReportDataParser extends DataParser {
 
     public void geocode(Source source, List<Map<String, String>> data) {
 
-        log.info(String.format("[APDIncidentReport] geocode()"));
+        log.info("[APDIncidentReport] geocode()");
 
         // batch send for geocoding
         List<String> addresses = new ArrayList<String>();
@@ -244,9 +247,11 @@ public class APDIncidentReportDataParser extends DataParser {
 
         } catch (Exception e) {
 
-            log.info("[APDHTMLDataParser] Parse Err: " + e.getMessage());
-            log.info(element.html());
-            log.info("--------\n");
+            Map<String, Object> logErr = Map.of("error", e.getMessage(),
+                    "html", element.html());
+            log.error("[APDHTMLDataParser] Parse Err",
+                    StructuredArguments.entries(Map.of("data", logErr)));
+
         }
 
         return rows;
@@ -303,8 +308,13 @@ public class APDIncidentReportDataParser extends DataParser {
 
         batchSave(dataJob.getSource(), parseCounter);
 
-        log.info(String.format("[APDIncidentReportDataParser] dataJob: %d | numBatch: %d | numRows: %d",
-                dataJob.getId(), numBatch, numRows));
+        Map<String, Object> logDetails = Map.of(
+                "dataJob", dataJob.getId(),
+                "numBatch", numBatch,
+                "numRows", numRows);
+
+        log.info("[APDIncidentReportDataParser] logSaveBatch",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         dataJobRepository.save(dataJob);
     }

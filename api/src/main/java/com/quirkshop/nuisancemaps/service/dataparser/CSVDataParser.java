@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import net.logstash.logback.argument.StructuredArguments;
+
 @Service
 @Scope("prototype")
 public class CSVDataParser extends DataParser {
@@ -59,8 +61,8 @@ public class CSVDataParser extends DataParser {
             csvReader.skip(dataJob.getParamOffset());
 
             if (dataJob.getParamOffset() > 0) {
-                log.info(String.format("[CSVDataParser]: offset detected skipping %d lines",
-                        dataJob.getParamOffset()));
+                log.info("[CSVDataParser]: offset detected skipping lines",
+                        StructuredArguments.entries(Map.of("data", Map.of("offset", dataJob.getParamOffset()))));
             }
 
             Map<String, String> row;
@@ -119,7 +121,8 @@ public class CSVDataParser extends DataParser {
                     parseCounter.numExceededThresholdIncrement();
                 } catch (Exception e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
-                    log.info("[CSVDataParser] row: " + numRows);
+                    log.info("[CSVDataParser]",
+                            StructuredArguments.entries(Map.of("data", Map.of("row", numRows))));
                     logException(dataJob, content, e);
                     parseCounter.numErrorsIncrement();
                 }
@@ -137,8 +140,10 @@ public class CSVDataParser extends DataParser {
             logSaveBatch(dataJob, parseCounter, csvReader, numBatch, numRows);
 
         } catch (Exception e) {
-            log.info("[CSVDataParser] parse ERR: " + e.getMessage());
-            e.printStackTrace();
+            Map<String, Object> logError = Map.of("error", e.getMessage(),
+                    "stackTrace", e.getStackTrace());
+            log.error("[CSVDataParser] parse ERR",
+                    StructuredArguments.entries(Map.of("data", logError)));
             dataJob.setStatus(DataJobStatus.ERROR);
             dataJobRepository.save(dataJob);
         }
@@ -150,20 +155,24 @@ public class CSVDataParser extends DataParser {
             int numBatch, int numRows) {
 
         batchSave(dataJob.getSource(), parseCounter);
+        Map<String, Object> logDetails1 = Map.of(
+                "dataJob", dataJob.getId(),
+                "numBatch", numBatch,
+                "numRows", numRows);
 
-        log.info(String.format("[CSVDataParser] dataJob: %d | numBatch: %d | numRows: %d",
-                dataJob.getId(), numBatch, numRows));
+        log.info("[CSVDataParser]", StructuredArguments.entries(Map.of("data", logDetails1)));
 
-        log.info(String.format(
-                "[CSVDataParser] dataJob: %d | linesRead: %d, recordsRead: %d, numMissing: %d, numExceedThreshold: %d, numRowErrors: %d, skipLines: %d, multiLineLimit: %d",
-                dataJob.getId(),
-                csvReader.getLinesRead(),
-                csvReader.getRecordsRead(),
-                parseCounter.getNumMissing(),
-                parseCounter.getNumExceededThreshold(),
-                parseCounter.getNumRowErrors(),
-                csvReader.getSkipLines(),
-                csvReader.getMultilineLimit()));
+        Map<String, Object> logDetails2 = Map.of(
+                "dataJob", dataJob.getId(),
+                "linesRead", csvReader.getLinesRead(),
+                "recordsRead", csvReader.getRecordsRead(),
+                "numMissing", parseCounter.getNumMissing(),
+                "numExceedThreshold", parseCounter.getNumExceededThreshold(),
+                "numRowErrors", parseCounter.getNumRowErrors(),
+                "skipLines", csvReader.getSkipLines(),
+                "multiLineLimit", csvReader.getMultilineLimit());
+
+        log.info("[CSVDataParser]", StructuredArguments.entries(Map.of("data", logDetails2)));
 
         // update offset for possible restart
         dataJob.setParamOffset((int) csvReader.getLinesRead());

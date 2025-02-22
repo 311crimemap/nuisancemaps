@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -21,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import net.logstash.logback.argument.StructuredArguments;
 
 @Component
 public class FileDataPreProcessor {
@@ -111,7 +114,9 @@ public class FileDataPreProcessor {
         if (!enableProcess)
             return outputFilePath;
 
-        log.info("[preProcessZip] Start extraction: " + inputFilePath);
+        Map<String, Object> logDetails = Map.of("inputFilePath", inputFilePath);
+        log.info("[preProcessZip] Start extraction",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         // unzip to outputFile
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(inputFilePath))) {
@@ -136,15 +141,18 @@ public class FileDataPreProcessor {
                         }
                     }
 
-                    log.info("Extracted: " + outputFile.getAbsolutePath());
+                    log.info("[preProcessZip] Extracted",
+                            StructuredArguments.entries(Map.of("data", Map.of("path", outputFile.getAbsolutePath()))));
+
                     return outputFilePath; // Stop after extracting the specific file
                 }
             }
         } catch (Exception e) {
+            Map<String, Object> logErr = Map.of("URL", dataJob.getUrl(),
+                    "inputFilePath", inputFilePath);
 
-            String logErr = String.format("[ERR] preProcessZip: DataJob ID: %s | URL: %s | inputFilePath: %s",
-                    dataJob.getId(), dataJob.getUrl(), inputFilePath);
-            log.info(logErr);
+            log.error("[preProcessZip] ERR Extracted",
+                    StructuredArguments.entries(Map.of("data", logErr)));
         }
 
         return outputFilePath;
@@ -167,7 +175,8 @@ public class FileDataPreProcessor {
 
             File file = new File(preProcessFilePath);
             if (file.exists()) {
-                log.info(String.format("Deleting: %s", preProcessFilePath));
+                log.info("[preProcessZip] Deleting",
+                        StructuredArguments.entries(Map.of("data", Map.of("filePath", preProcessFilePath))));
                 file.delete();
             }
 

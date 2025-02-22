@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import com.quirkshop.nuisancemaps.config.InvalidCoordinateException;
 import com.quirkshop.nuisancemaps.config.MissingCategoryException;
@@ -34,6 +35,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import net.logstash.logback.argument.StructuredArguments;
 
 /*
  * DEPRECATED
@@ -87,13 +90,14 @@ public class XLSDataParser extends DataParser {
             }
 
             if (dataJob.getParamOffset() > 0) {
-                log.info(String.format("[XLSDataParser]: offset detected skipping %d lines",
-                        dataJob.getParamOffset()));
+                Map<String, Object> logDetails = Map.of("offset", dataJob.getParamOffset());
+                log.info("[XLSDataParser]: offset detected skipping lines",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
             }
 
             // row iteration
             HashMap<String, String> row = new HashMap<String, String>();
-            log.info("Row Loop Start");
+            log.info("[XLSDataParser]: Row Loop Start");
             // skip header or skip to offset (plus 1 for header)
             for (int i = dataJob.getParamOffset() + 1; i <= sheet.getLastRowNum(); i++) {
 
@@ -125,7 +129,10 @@ public class XLSDataParser extends DataParser {
 
                 } catch (Exception e) {
                     // handle bad row; improper number of columns vs. headers, etc.
-                    log.info("[XLSDataParser] row error: " + e.getMessage());
+                    Map<String, Object> logError = Map.of("error", e.getMessage());
+                    log.error("[XLSDataParser]  row error",
+                            StructuredArguments.entries(Map.of("data", logError)));
+
                     parseCounter.numRowErrorsIncrement();
                     continue;
                 }
@@ -155,7 +162,9 @@ public class XLSDataParser extends DataParser {
                     parseCounter.numExceededThresholdIncrement();
                 } catch (Exception e) {
                     String content = StringUtils.substring(row.toString(), 0, 4096);
-                    log.info("[XLSDataParser] row: " + numRows);
+                    log.info("[XLSDataParser]",
+                            StructuredArguments.entries(Map.of("data", Map.of("row", numRows))));
+
                     logException(dataJob, content, e);
                     parseCounter.numErrorsIncrement();
                 }
@@ -175,8 +184,10 @@ public class XLSDataParser extends DataParser {
 
         } catch (Exception e) {
 
-            log.info("[XLSDataParser] parse ERR: " + e.getMessage());
-            e.printStackTrace();
+            Map<String, Object> logError = Map.of("error", e.getMessage(),
+                    "stackTrace", e.getStackTrace());
+            log.error("[XLSDataParser] parse ERR",
+                    StructuredArguments.entries(Map.of("data", logError)));
             dataJob.setStatus(DataJobStatus.ERROR);
             dataJobRepository.save(dataJob);
         }
@@ -188,8 +199,13 @@ public class XLSDataParser extends DataParser {
 
         batchSave(dataJob.getSource(), parseCounter);
 
-        log.info(String.format("[XLSDataParser] dataJob: %d | numBatch: %d | numRows: %d",
-                dataJob.getId(), numBatch, numRows));
+        Map<String, Object> logDetails = Map.of(
+                "dataJob", dataJob.getId(),
+                "numBatch", numBatch,
+                "numRows", numRows);
+
+        log.info("[XLSDataParser] logSaveBatch",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         // update offset for possible restart
         dataJob.setParamOffset(dataJob.getParamOffset() + numRows);

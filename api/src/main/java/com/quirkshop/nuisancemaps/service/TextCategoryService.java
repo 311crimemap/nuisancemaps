@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
@@ -19,6 +20,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+import net.logstash.logback.argument.StructuredArguments;
 
 @Service
 public class TextCategoryService {
@@ -169,7 +171,9 @@ public class TextCategoryService {
 
             category_id = mapping.getOrDefault(textLabelDTO.getLabel(), null);
             if (category_id == null) {
-                log.info("Missing category_id: " + textLabelDTO.getText());
+                Map<String, Object> logDetails = Map.of("categoryId", textLabelDTO.getText());
+                log.info("Missing category_id",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
                 continue;
             }
 
@@ -189,10 +193,14 @@ public class TextCategoryService {
             } catch (DataIntegrityViolationException e) {
                 // remove from PendingTextCategory on dupe (out of sync somehow, etc)
                 pendingTextCategoryRepository.deleteByDataTypeAndText(tc.getDataType(), tc.getText());
-                log.error(e.getMessage());
+                Map<String, Object> logError = Map.of("error", e.getMessage());
+                log.error("[TextCategoryService]",
+                        StructuredArguments.entries(Map.of("data", logError)));
 
             } catch (Exception e) {
-                log.error(e.getMessage());
+                Map<String, Object> logError = Map.of("error", e.getMessage());
+                log.error("[TextCategoryService]",
+                        StructuredArguments.entries(Map.of("data", logError)));
             }
 
         }

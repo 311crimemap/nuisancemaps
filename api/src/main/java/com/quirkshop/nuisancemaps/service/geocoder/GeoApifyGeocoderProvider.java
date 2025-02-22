@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import net.logstash.logback.argument.StructuredArguments;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -58,7 +60,10 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode items = objectMapper.readTree(inputStream);
 
-        log.info("[GeoApifyGeocoderProvider] parsing items: " + items.size());
+        Map<String, Object> logDetails = Map.of("itemsSize", items.size());
+        log.info("[GeoApifyGeocoderProvider] parsing items",
+                StructuredArguments.entries(Map.of("data", logDetails)));
+
         for (JsonNode item : items) {
 
             try {
@@ -87,7 +92,9 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
                 }
 
             } catch (Exception e) {
-                log.info("[GeoApifyGeocoderProvider] parseResponse ERR: " + e.getMessage());
+                Map<String, Object> logErr = Map.of("error", e.getMessage());
+                log.error("[GeoApifyGeocoderProvider] parseResponse ERR",
+                        StructuredArguments.entries(Map.of("data", logErr)));
             }
 
             // need a placeholder to maintain alignment with batch; if
@@ -134,7 +141,11 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
             log.info("[GeoApifyGeocoderProvider] jobURL: " + _jobURL);
 
         } catch (Exception e) {
-            log.error("[GeoApifyGeocoderProvider] fetchJobURL: " + e.getMessage());
+
+            Map<String, Object> logErr = Map.of("error", e.getMessage(),
+                    "jobURL", jobURL);
+            log.error("[GeoApifyGeocoderProvider] fetchJobURL",
+                    StructuredArguments.entries(Map.of("data", logErr)));
             return null;
         }
 
@@ -144,7 +155,10 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
 
     public List<double[]> fetchBatch(Source source, List<String> addresses) {
         int numFetch = 1;
-        log.info("[GeoApifyGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
+
+        Map<String, Object> logDetails = Map.of("totalNumFetch", addresses.size());
+        log.info("[GeoApifyGeocoderProvider] fetchBatch",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         List<double[]> results = new ArrayList<double[]>();
 
@@ -179,9 +193,12 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
                  * Poll Job
                  */
 
-                String fetchStatus = String.format("[GeoApifyGeocoderProvider] fetching batch: [%d / %d]",
-                        numFetch, (int) Math.ceil((double) addresses.size() / GEOAPIFY_API_BATCH_SIZE));
-                log.info(fetchStatus);
+                Map<String, Object> logFetchStatus = Map.of(
+                        "numFetch", numFetch,
+                        "totalBatches", (int) Math.ceil((double) addresses.size() / GEOAPIFY_API_BATCH_SIZE));
+
+                log.info("[GeoApifyGeocoderProvider] Fetching batch",
+                        StructuredArguments.entries(Map.of("data", logFetchStatus)));
 
                 jobResponse = makePollRequest(jobURL, GEOAPIFY_API_POLL_DELAY, GEOAPIFY_API_MAX_RETRY);
 
@@ -195,8 +212,13 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
                 results.addAll(coordinates);
 
             } catch (Exception e) {
-                log.info("[GeoApifyGeocoderProvider] fetchBatch: ERR" + e.getMessage());
-                e.printStackTrace();
+
+                Map<String, Object> logErr = Map.of(
+                        "error", e.getMessage(),
+                        "stackTrace", e.getStackTrace());
+
+                log.error("[GeoApifyGeocoderProvider] ERR fetchBatch",
+                        StructuredArguments.entries(Map.of("data", logErr)));
             } finally {
 
                 log.info("[GeoApifyGeocoderProvider] closing responses");
@@ -263,23 +285,34 @@ public class GeoApifyGeocoderProvider implements GeocoderProvider {
                 response = client.newCall(request).execute();
 
                 if (response.code() == 200) {
-                    log.info("[makePollRequest] 200 OK");
+                    log.info("[GeoApifyGeocoderProvider] makePollRequest() 200 OK");
                     return response;
 
                 } else if (response.code() == 202) {
-                    String logStr = String.format("[makePollRequest] 202 Accepted: retry in %d ms: attempt %d",
-                            sleepMS, retryCount + 1);
-                    log.info(logStr);
+
+                    Map<String, Object> logDetails = Map.of(
+                            "sleepMS", sleepMS,
+                            "retryAttempt", retryCount + 1);
+
+                    log.info("[GeoApifyGeocoderProvider] makePollRequest() 202 Accepted",
+                            StructuredArguments.entries(Map.of("data", logDetails)));
+
                     retryCount++;
                     TimeUnit.MILLISECONDS.sleep(sleepMS);
                 } else {
                     // NB: 404 means job hasn't propogated on server side
-                    log.error("[makePollRequest] status code: " + response.code());
-                    log.error(request.url().toString());
+                    Map<String, Object> logErr = Map.of(
+                            "statusCode", response.code(),
+                            "URL", request.url().toString());
+
+                    log.error("[GeoApifyGeocoderProvider] makePollRequest() ERR ",
+                            StructuredArguments.entries(Map.of("data", logErr)));
                     break;
                 }
             } catch (IOException e) {
-                log.error("[makePollRequest] Request failed: " + e.getMessage());
+                Map<String, Object> logErr = Map.of("error", e.getMessage());
+                log.error("[makePollRequest] Request failed: ",
+                        StructuredArguments.entries(Map.of("data", logErr)));
                 break;
             } finally {
 

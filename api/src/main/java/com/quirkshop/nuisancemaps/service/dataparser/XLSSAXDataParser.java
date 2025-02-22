@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -74,6 +75,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
+import net.logstash.logback.argument.StructuredArguments;
 
 /**
  * A rudimentary XLSX -&gt; CSV processor modeled on the
@@ -126,8 +129,9 @@ public class XLSSAXDataParser extends DataParser {
             this.source = dataJob.getSource();
 
             if (dataJob.getParamOffset() > 0) {
-                log.info(String.format("[XLSSAXDataParser]: offset detected skipping %d lines",
-                        dataJob.getParamOffset()));
+                Map<String, Object> logDetails = Map.of("offsetSkipped", dataJob.getParamOffset());
+                log.info("[XLSSAXDataParser] offset detected skipping lines",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
             }
         }
 
@@ -175,7 +179,8 @@ public class XLSSAXDataParser extends DataParser {
                 parseCounter.numExceededThresholdIncrement();
             } catch (Exception e) {
                 String content = StringUtils.substring(row.toString(), 0, 4096);
-                log.info("[XLSSAXDataParser] row: " + currentRow);
+                log.info("[XLSSAXDataParser]",
+                        StructuredArguments.entries(Map.of("data", Map.of("row", currentRow))));
                 logException(dataJob, content, e);
                 parseCounter.numErrorsIncrement();
             }
@@ -329,7 +334,6 @@ public class XLSSAXDataParser extends DataParser {
             p.revert();
         }
 
-
         logSaveBatch(dataJob, parseCounter); // finish remaining set less than batch
         savePendingTextCategories(dataJob, source, pendingReportCategories);
     }
@@ -339,8 +343,13 @@ public class XLSSAXDataParser extends DataParser {
 
         batchSave(dataJob.getSource(), parseCounter);
 
-        log.info(String.format("[XLSSAXDataParser] dataJob: %d | numBatch: %d | numRows: %d",
-                dataJob.getId(), parseCounter.getNumBatch(), numRows));
+        Map<String, Object> logDetails = Map.of(
+                "dataJob", dataJob.getId(),
+                "numBatch", parseCounter.getNumBatch(),
+                "numRows", numRows);
+
+        log.info("[XLSSAXDataParser] logSaveBatch",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         // update offset for possible restart
         dataJob.setParamOffset(numRows);

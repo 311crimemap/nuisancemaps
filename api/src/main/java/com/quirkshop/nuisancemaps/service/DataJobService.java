@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.logstash.logback.argument.StructuredArguments;
+
 @Service
 public class DataJobService {
 
@@ -64,9 +66,13 @@ public class DataJobService {
     public int resetElapsedPollWait(LocalDateTime duration) {
         int count = dataJobRepository.updateElapsedJobs(duration, DataJobStatus.POLL_WAIT, DataJobStatus.QUEUED);
         if (count > 0) {
-            String logStr = String.format("[resetElapsedPollWait] reset %d DataJobStatus.POLL_WAIT -> QUEUED",
-                    count);
-            log.info(logStr);
+            Map<String, Object> logDetails = Map.of(
+                    "resetElapsedPollWait", count,
+                    "previousStatus", "DataJobStatus.POLL_WAIT",
+                    "newStatus", "QUEUED");
+
+            log.info("[resetElapsedPollWait] reset",
+                    StructuredArguments.entries(Map.of("data", logDetails)));
         }
         return count;
     }
@@ -98,9 +104,9 @@ public class DataJobService {
             if (nextJob == null)
                 continue;
 
-            String logStr = String.format("[createNewJobs] next job: %s", nextJob.getUrl());
-
-            log.info(logStr);
+            Map<String, Object> logDetails = Map.of("nextJobUrl", nextJob.getUrl());
+            log.info("[createNewJobs]",
+                    StructuredArguments.entries(Map.of("data", logDetails)));
         }
 
     }
@@ -120,8 +126,6 @@ public class DataJobService {
             throws UnsupportedEncodingException {
 
         DataJob maxSessionIdOffsetDataJob = dataJobMap.getOrDefault(source.getId(), null);
-        // log.info("Source id: " + source.getId() + " maxSessionId: " +
-        // maxSessionIdOffsetDataJob);
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {

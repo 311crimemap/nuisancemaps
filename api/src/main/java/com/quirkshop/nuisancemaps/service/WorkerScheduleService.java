@@ -3,6 +3,8 @@ package com.quirkshop.nuisancemaps.service;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.UUID;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -18,6 +20,7 @@ import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.annotation.PostConstruct;
+import net.logstash.logback.argument.StructuredArguments;
 
 /*
  * Entry point for Worker
@@ -70,6 +74,11 @@ public class WorkerScheduleService {
     @Scheduled(fixedRate = 4 * 60 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     @Transactional
     public void refreshMaterializedView() {
+        String currentThreadName = Thread.currentThread().getName();
+        String uuid = UUID.randomUUID().toString();
+        MDC.put("traceId", uuid.substring(uuid.lastIndexOf('-') + 1));
+        MDC.put("threadName", currentThreadName);
+
         log.info("Materialized view start refresh");
         localeCategoryMinMaxReportedAtRepository.refreshMaterializedView();
         log.info("Materialized view end refresh");
@@ -79,7 +88,9 @@ public class WorkerScheduleService {
     @Scheduled(fixedDelay = 3500, initialDelay = 3000)
     public void checkDataJobQueue() throws UnsupportedEncodingException {
         String currentThreadName = Thread.currentThread().getName();
-        // log.info("[checkDataJobQueue] " + currentThreadName);
+        String uuid = UUID.randomUUID().toString();
+        MDC.put("traceId", uuid.substring(uuid.lastIndexOf('-') + 1));
+        MDC.put("threadName", currentThreadName);
 
         // check for any DataJobStatus.POLL_WAIT from LocaleDateTime ago
         dataJobService.resetElapsedPollWait(LocalDateTime.now().minusSeconds(10));
@@ -94,16 +105,16 @@ public class WorkerScheduleService {
         }
 
         Source source = datajob.getSource();
-        String prefixLog = String.format("%s | dataJob: %s | %s - %s",
-                currentThreadName,
-                datajob.getId(),
-                source.getCategory(),
-                source.getDescription());
 
-        String logDetails = String.format("%s | offset: %s | %s",
-                prefixLog, datajob.getParamOffset(), datajob.getUrl());
+        MDC.put("datajobId", datajob.getId().toString());
+        Map<String, Object> logDetails = Map.of(
+                "category", source.getCategory(),
+                "description", source.getDescription(),
+                "offset", datajob.getParamOffset(),
+                "url", datajob.getUrl());
 
-        log.info(String.format("[Fetching] %s", logDetails));
+        log.info("[Fetching]",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         /*
          * FETCH
@@ -114,24 +125,27 @@ public class WorkerScheduleService {
         InputStream inputStream = dataProcessStrategy.fetchData(datajob);
 
         if (datajob.getStatus() == DataJobStatus.FETCH_ERROR) {
-            log.info(String.format("[FetchError] %s", logDetails));
+            log.info("[FetchError]",
+                    StructuredArguments.entries(Map.of("data", logDetails)));
             dataJobRepository.save(datajob);
             return;
         }
 
         if (datajob.getStatus() == DataJobStatus.POLL_WAIT) {
-            log.info(String.format("[Poll Wait] %s", logDetails));
+            log.info("[Poll Wait]",
+                    StructuredArguments.entries(Map.of("data", logDetails)));
             return;
         }
 
         /*
          * CREATE RECORDS
          */
-        log.info(String.format("[FetchComplete] %s", logDetails));
+
         datajob.setStatus(DataJobStatus.PENDING);
         dataJobRepository.save(datajob);
 
-        log.info(String.format("createData() %s", prefixLog));
+        log.info("[checkDataJobQueue] createData()",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         DataParser dataParser = dataParserFactory
                 .getDataParser(source.getDataParserType());
@@ -143,9 +157,14 @@ public class WorkerScheduleService {
                 datajob.getStatus() == DataJobStatus.PARSE_ERROR) {
 
             dataJobRepository.save(datajob);
-            String logError = String.format("[checkDataJobQueue] ERROR | %s | Done: %s | fetched: %s | processed: %s",
-                    currentThreadName, datajob.getId(), datajob.getNumFetched(), datajob.getNumProcessed());
-            log.info(logError);
+
+            Map<String, Object> fetchDetails = Map.of(
+                    "datajobId", datajob.getId(),
+                    "fetched", datajob.getNumFetched(),
+                    "processed", datajob.getNumProcessed());
+
+            log.info("[checkDataJobQueue] ERROR",
+                    StructuredArguments.entries(Map.of("data", fetchDetails)));
             return;
         }
 
@@ -157,11 +176,14 @@ public class WorkerScheduleService {
         // COMPLETED
         datajob.setStatus(DataJobStatus.COMPLETED);
         dataJobRepository.save(datajob);
-        String logDone = String.format("[checkDataJobQueue] %s | fetched: %s | processed: %s",
-                logDetails,
-                datajob.getNumFetched(),
-                datajob.getNumProcessed());
-        log.info(logDone);
+
+        Map<String, Object> fetchDetails = Map.of(
+                "datajobId", datajob.getId(),
+                "fetched", datajob.getNumFetched(),
+                "processed", datajob.getNumProcessed());
+
+        log.info("[checkDataJobQueue]", StructuredArguments.entries(Map.of("data", fetchDetails)));
+        MDC.clear();
     }
 
 }
