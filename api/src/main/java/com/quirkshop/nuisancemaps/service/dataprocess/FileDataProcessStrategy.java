@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.nio.file.FileStore;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.logstash.logback.argument.StructuredArguments;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
@@ -79,7 +81,13 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             if (fileExists(filePath) && !dataJob.isForceDownload()) {
                 File file = new File(filePath);
                 long fileSizeInBytes = file.length();
-                log.info(String.format("[fetchData] File Detected: %s | %d bytes", filePath, fileSizeInBytes));
+
+                Map<String, Object> logDetails = Map.of(
+                        "filePath", filePath,
+                        "fileSizeInBytes", fileSizeInBytes);
+
+                log.info("[FileDataProcessStrategy fetchData] File Detected",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
 
                 if (fileSizeInBytes > 0) {
                     dataJob.setStatus(DataJobStatus.FETCH_COMPLETE);
@@ -92,7 +100,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             }
 
             // otherwise fetch
-            log.info("[fetchData] request execute");
+            log.info("[FileDataProcessStrategy fetchData] request execute");
             response = client.newCall(request).execute();
 
             // 202 accept: typically indicates start of background job, requires
@@ -100,7 +108,7 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             // defer back to queue.
 
             if (response.code() == 202) {
-                log.info("[fetchData] code 202 detected");
+                log.info("[FileDataProcessStrategy fetchData] code 202 detected");
                 dataJob.setStatus(DataJobStatus.POLL_WAIT);
                 dataJobRepository.save(dataJob);
                 if (response != null) {
@@ -110,13 +118,16 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             }
 
             if (!response.isSuccessful()) {
-                throw new IOException("[fetchData] Unexpected code " + response);
+                throw new IOException("[FileDataProcessStrategy fetchData] Unexpected code " + response);
             }
 
             inputStream = response.body().byteStream();
 
         } catch (IOException e) {
-            System.err.println("[fetchData] Error: " + e.getMessage());
+            Map<String, Object> logDetails = Map.of("error", e.getMessage());
+            log.error("[FileDataProcessStrategy fetchData] Error",
+                    StructuredArguments.entries(Map.of("data", logDetails)));
+
             dataJob.setStatus(DataJobStatus.FETCH_ERROR);
             dataJobRepository.save(dataJob);
             e.printStackTrace();
@@ -155,7 +166,14 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             if (fileExists(filePath) && !dataJob.isForceDownload()) {
                 File file = new File(filePath);
                 bytesRead = file.length();
-                log.info(String.format("File Detected: %s | %d bytes", filePath, bytesRead));
+
+                Map<String, Object> logDetails = Map.of(
+                        "filePath", filePath,
+                        "bytesRead", bytesRead);
+
+                log.info("[FileDataProcessStrategy process] File Detected",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
+
             } else {
 
                 // write fetch inputStream to file
@@ -166,7 +184,12 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
                 }
 
                 bytesRead = writeToFile(filePath, inputStream);
-                log.info(String.format("Write Complete: %s | %d bytes", filePath, bytesRead));
+                Map<String, Object> logDetails = Map.of(
+                        "filePath", filePath,
+                        "bytesRead", bytesRead);
+
+                log.info("[FileDataProcessStrategy process] Write Complete",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
             }
 
         } catch (MalformedURLException e) {
@@ -231,7 +254,9 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
             filePath = buildFilePath(dataJob);
             File file = new File(filePath);
             if (file.exists()) {
-                log.info(String.format("Deleting: %s", filePath));
+                Map<String, Object> logDetails = Map.of("filePath", filePath);
+                log.info("[FileDataProcessStrategy process] Deleting",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
                 file.delete();
             }
 
@@ -274,7 +299,12 @@ public class FileDataProcessStrategy implements DataProcessStrategy {
         return new TimerTask() {
             @Override
             public void run() {
-                log.info(String.format("Writing: %s | %d", filePath, totalBytesRead.get()));
+                Map<String, Object> logDetails = Map.of(
+                        "filePath", filePath,
+                        "bytesRead", totalBytesRead.get());
+
+                log.info("[FileDataProcessStrategy process] Writing",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
             }
         };
     }

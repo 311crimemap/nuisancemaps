@@ -1,6 +1,8 @@
 package com.quirkshop.nuisancemaps.service.dataprocess;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.Source;
@@ -11,6 +13,8 @@ import com.quirkshop.nuisancemaps.util.ParseCounter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.logstash.logback.argument.StructuredArguments;
 
 public interface DataProcessStrategy {
 
@@ -68,20 +72,21 @@ public interface DataProcessStrategy {
         dataJob.setNumFetched(parseCounter.getNumFetched());
         dataJob.setNumProcessed(parseCounter.getNumProcessed());
 
-        String logStats = String.format(
-                "%s - %s: | Offset: %s | Fetched: %d | RowErrors: %d | Skipped: %d | Missing: %d | Built: %d | Processed: %d | Errors: %d | Duplicates: %d",
-                source.getCategory(),
-                source.getDescription(),
-                dataJob.getParamOffset(),
-                parseCounter.getNumFetched(),
-                parseCounter.getNumRowErrors(),
-                parseCounter.getNumSkipped(),
-                parseCounter.getNumMissing(),
-                parseCounter.getNumBuilt(),
-                parseCounter.getNumProcessed(),
-                parseCounter.getNumErrors(),
-                parseCounter.getNumDuplicates());
-        log.info(logStats);
+        HashMap<String, Object> logDetails = new HashMap<>();
+        logDetails.put("Category", source.getCategory());
+        logDetails.put("Description", source.getDescription());
+        logDetails.put("Offset", dataJob.getParamOffset());
+        logDetails.put("Fetched", parseCounter.getNumFetched());
+        logDetails.put("RowErrors", parseCounter.getNumRowErrors());
+        logDetails.put("Skipped", parseCounter.getNumSkipped());
+        logDetails.put("Missing", parseCounter.getNumMissing());
+        logDetails.put("Built", parseCounter.getNumBuilt());
+        logDetails.put("Processed", parseCounter.getNumProcessed());
+        logDetails.put("Errors", parseCounter.getNumErrors());
+        logDetails.put("Duplicates", parseCounter.getNumDuplicates());
+
+        log.info("[DataProcessStrategy] JobStatus",
+                StructuredArguments.entries(Map.of("data", logDetails)));
     }
 
 }
