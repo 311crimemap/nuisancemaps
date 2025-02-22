@@ -60,7 +60,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 1         | Austin                 | Crime | 2         | 1      | x    | -            | 2024-12-01      |       |
 | 1         | Austin                 | 311   | 35        | 1      | x    |              | 2024-09-01      |       |
 | 2         | Dallas                 | Crime | 36        | 2      | x    |              | 2024-09-01      |       |
-| 2         | Dallas                 | 311   | 37        | 2      | x    |              | 2024-09-01      |       |
+| 2         | Dallas t-90 days       | 311   | 211       | 2      | x    |              | 2024-11-22      |       |
 | 3         | Chicago                | Crime | 38        | 3      | x    |              | 2024-09-01      |       |
 | 3         | Chicago                | 311   | 34        | 3      | x    |              |                 |       |
 | 4         | NYC (YTD)              | crime | 186       | 4      | x    | quarterly    |                 |       |
