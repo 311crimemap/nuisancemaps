@@ -4,9 +4,13 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
-                <timestamp />
+                <timestamp>
+                    <pattern>yyyy/MM/dd HH:mm:ss.SSS</pattern>
+                </timestamp>>
                 <logLevel />
-                <loggerName />
+                <!-- reduce output for now
+                     <loggerName />
+                -->
                 <mdc />
                 <message />
                 <arguments />
