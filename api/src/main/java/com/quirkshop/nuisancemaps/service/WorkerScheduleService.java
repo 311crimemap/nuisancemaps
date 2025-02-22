@@ -74,6 +74,10 @@ public class WorkerScheduleService {
     @Scheduled(fixedRate = 4 * 60 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     @Transactional
     public void refreshMaterializedView() {
+        String currentThreadName = Thread.currentThread().getName();
+        MDC.put("traceId", UUID.randomUUID().toString());
+        MDC.put("threadName", currentThreadName);
+
         log.info("Materialized view start refresh");
         localeCategoryMinMaxReportedAtRepository.refreshMaterializedView();
         log.info("Materialized view end refresh");
