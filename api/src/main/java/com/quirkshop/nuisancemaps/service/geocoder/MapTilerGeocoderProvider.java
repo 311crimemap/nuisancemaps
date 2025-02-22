@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import net.logstash.logback.argument.StructuredArguments;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
@@ -72,7 +74,9 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
             arrayNode.add(items);
         }
 
-        log.info("[MapTilerGeocoderProvider] parsing items: " + arrayNode.size());
+        Map<String, Object> logDetails = Map.of("parsingItemsSize", arrayNode.size());
+        log.info("[MapTilerGeocoderProvider] parsing items",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         for (JsonNode item : arrayNode) {
 
@@ -121,7 +125,10 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                 }
 
             } catch (Exception e) {
-                log.info("[MapTilerGeocoderProvider] parseResponse ERR: " + e.getMessage());
+                Map<String, Object> logErr = Map.of("error", e.getMessage());
+                log.error("[MapTilerGeocoderProvider] parseResponse ERR",
+                        StructuredArguments.entries(Map.of("data", logErr)));
+
             }
 
             // need a placeholder to maintain alignment with batch; if
@@ -135,7 +142,10 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
     public List<double[]> fetchBatch(Source source, List<String> addresses)
             throws InterruptedException, UnsupportedEncodingException {
         int numFetch = 1;
-        log.info("[MapTilerGeocoderProvider] fetchBatch: total num fetch: " + addresses.size());
+
+        Map<String, Object> logDetails = Map.of("totalNumFetch", addresses.size());
+        log.info("[MapTilerGeocoderProvider] fetchBatch",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         List<double[]> results = new ArrayList<double[]>();
 
@@ -172,10 +182,13 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
 
                     retry = false;
 
-                    String fetchStatus = String.format(
-                            "[MapTilerGeocoderProvider] addresses index: %d, fetching batch: [%d / %d]",
-                            i, numFetch, (int) Math.ceil((double) addresses.size() / MAPTILER_API_BATCH_SIZE));
-                    log.info(fetchStatus);
+                    Map<String, Object> logFetchStatus = Map.of(
+                            "addressesIndex", i,
+                            "fetchingBatch", Map.of("current", numFetch, "total",
+                                    (int) Math.ceil((double) addresses.size() / MAPTILER_API_BATCH_SIZE)));
+
+                    log.info("[MapTilerGeocoderProvider] Addresses Fetch Status",
+                            StructuredArguments.entries(Map.of("data", logFetchStatus)));
 
                     // response
                     InputStream inputStream = response.body().byteStream();
@@ -184,7 +197,13 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                     results.addAll(coordinates);
 
                 } catch (Exception e) {
-                    log.info("[MapTilerGeocoderProvider] numRetry: " + numRetry + " | geocode: " + e.getMessage());
+
+                    Map<String, Object> logRetry = Map.of(
+                            "numRetry", numRetry,
+                            "geocodeMessage", e.getMessage());
+
+                    log.info("[MapTilerGeocoderProvider] Retry ERR",
+                            StructuredArguments.entries(Map.of("data", logRetry)));
 
                     // sometimes receive a 404 response so retry job
                     TimeUnit.MILLISECONDS.sleep(sleepMS);
@@ -192,7 +211,7 @@ public class MapTilerGeocoderProvider implements GeocoderProvider {
                     numRetry++;
                     if (numRetry > 2) {
                         retry = false;
-                        log.info("[MapTilerGeocoderProvider] geocode: End retries");
+                        log.error("[MapTilerGeocoderProvider] geocode: Exceeded retries - ending");
                     }
 
                 }
