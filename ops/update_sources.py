@@ -59,7 +59,6 @@ for source in recurringSources:
     sourcesURL = source['url']
     if "hub.arcgis.com" in sourcesURL:
         sourcesURL = add_update_cache_to_url(sourcesURL)
-        print(sourcesURL)
         res = requests.get(sourcesURL)
         print(f"{sourcesURL}: {res.status_code}")
 
