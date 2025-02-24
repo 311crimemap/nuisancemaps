@@ -3,6 +3,9 @@
 # see PRODUCTION.md
 #
 
+echo "Did you mean update_sources.py"
+exit
+
 source '../.env'
 
 API_HOST=https://api.311crimemap.com
