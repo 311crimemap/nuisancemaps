@@ -1,7 +1,6 @@
 package com.quirkshop.nuisancemaps.dto;
 
 import java.util.List;
-import java.util.Set;
 
 import com.quirkshop.nuisancemaps.model.LocaleCategoryMinMaxReportedAt;
 
@@ -36,7 +35,8 @@ public class LocaleDTO {
     }
 
     public LocaleDTO(Integer id, String name, String description, String city, String state, String attribution,
-                     boolean enabled, Double[] location, String iconName, String iconUnicode, List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt) {
+            boolean enabled, Double[] location, String iconName, String iconUnicode,
+            List<LocaleCategoryMinMaxReportedAt> categoryMinMaxReportedAt) {
         this.id = id;
         this.name = name;
         this.city = city;

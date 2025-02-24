@@ -2,11 +2,11 @@ package com.quirkshop.nuisancemaps.repository;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
 import com.quirkshop.nuisancemaps.model.Category;
 
+import org.springframework.data.repository.CrudRepository;
+
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
-    // auto implemented
 
     List<Category> findAllByDataType(String dataType);
 

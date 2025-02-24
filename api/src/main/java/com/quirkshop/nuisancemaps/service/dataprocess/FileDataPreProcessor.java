@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -22,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import net.logstash.logback.argument.StructuredArguments;
+
 @Component
 public class FileDataPreProcessor {
 
@@ -31,6 +34,15 @@ public class FileDataPreProcessor {
 
     @Autowired
     private DataJobRepository dataJobRepository;
+
+    /**
+     * Preprocesses the given DataJob by building the filename, updating status,
+     * and invoking ZIP preprocessing.
+     *
+     * @param dataJob       the DataJob to preprocess
+     * @param enableProcess flag indicating whether to perform the preprocessing
+     * @return the path of the preprocessed file, or null if an error occurs
+     */
 
     public String preProcess(DataJob dataJob, boolean enableProcess) {
 
@@ -56,7 +68,19 @@ public class FileDataPreProcessor {
 
     }
 
-    // unzip
+    /**
+     * Extracts specific file from ZIP archive from the given DataJob.
+     *
+     * @param dataJob       the DataJob with details of .zip file
+     * @param inputFilePath the path of zip file
+     * @param enableProcess flag indicating whether to perform extraction
+     *
+     * @return the output file path after extraction (or input path if no
+     *         extraction)
+     *
+     * @throws MalformedURLException if the URL is malformed
+     * @throws IOException           if an I/O error occurs during processing
+     */
     public String preProcessZIP(DataJob dataJob, String inputFilePath, boolean enableProcess)
             throws MalformedURLException, IOException {
         String outputFilePath = inputFilePath;
@@ -90,7 +114,9 @@ public class FileDataPreProcessor {
         if (!enableProcess)
             return outputFilePath;
 
-        log.info("[preProcessZip] Start extraction: " + inputFilePath);
+        Map<String, Object> logDetails = Map.of("inputFilePath", inputFilePath);
+        log.info("[preProcessZip] Start extraction",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         // unzip to outputFile
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(inputFilePath))) {
@@ -115,19 +141,29 @@ public class FileDataPreProcessor {
                         }
                     }
 
-                    log.info("Extracted: " + outputFile.getAbsolutePath());
+                    log.info("[preProcessZip] Extracted",
+                            StructuredArguments.entries(Map.of("data", Map.of("path", outputFile.getAbsolutePath()))));
+
                     return outputFilePath; // Stop after extracting the specific file
                 }
             }
         } catch (Exception e) {
+            Map<String, Object> logErr = Map.of("URL", dataJob.getUrl(),
+                    "inputFilePath", inputFilePath);
 
-            String logErr = String.format("[ERR] preProcessZip: DataJob ID: %s | URL: %s | inputFilePath: %s",
-                    dataJob.getId(), dataJob.getUrl(), inputFilePath);
-            log.info(logErr);
+            log.error("[preProcessZip] ERR Extracted",
+                    StructuredArguments.entries(Map.of("data", logErr)));
         }
 
         return outputFilePath;
     }
+
+    /**
+     * Cleans up resources associated with a given DataJob by deleting the
+     * preprocessed file if it exists.
+     *
+     * @param dataJob
+     */
 
     public void cleanup(DataJob dataJob) {
 
@@ -139,7 +175,8 @@ public class FileDataPreProcessor {
 
             File file = new File(preProcessFilePath);
             if (file.exists()) {
-                log.info(String.format("Deleting: %s", preProcessFilePath));
+                log.info("[preProcessZip] Deleting",
+                        StructuredArguments.entries(Map.of("data", Map.of("filePath", preProcessFilePath))));
                 file.delete();
             }
 

@@ -225,7 +225,8 @@ public class DataEntityMappingServiceTest {
 
     @Test
     @Transactional
-    public void buildDataEntityThresholdReportedAtException() throws IOException, NoSuchMethodException, SecurityException {
+    public void buildDataEntityThresholdReportedAtException()
+            throws IOException, NoSuchMethodException, SecurityException {
 
         Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
         Source s = sourceRepository.findOneBySourceConfigId(2);
@@ -243,6 +244,35 @@ public class DataEntityMappingServiceTest {
         // set date to before threshold (2020) to trigger exception
         ObjectNode node = (ObjectNode) rootNode.get(0);
         node.put("sr_created_date", "2010-01-24T23:52:32.000");
+
+        GeometryFactory geometryFactory = new GeometryFactory();
+        assertThrows(ThresholdReportedAtException.class, () -> {
+            dataEntityMappingService.buildDataEntity(Data311.class, s, node, geometryFactory, jsonNodeFieldExtractor);
+        });
+    }
+
+    @Test
+    @Transactional
+    public void buildDataEntityThresholdReportedAtMaxException()
+            throws IOException, NoSuchMethodException, SecurityException {
+
+        Resource jsonResource = resourceLoader.getResource("classpath:data/311-atx.json");
+        Source s = sourceRepository.findOneBySourceConfigId(2);
+
+        // DataJob to crawl: stub job and fetch with json fixture response
+        // Read the content of the JSON file vs actual fetch
+        DataJob d = new DataJob(LocalDateTime.now(), s, "sr_number");
+        dataJobRepository.save(d);
+        textCategoryService.refreshTextCategoryIdMap();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(jsonResource.getInputStream());
+
+        // NB: jsonNode is immutable, use objectNode
+        // set date after now + 1 to trigger max exception
+        ObjectNode node = (ObjectNode) rootNode.get(0);
+        LocalDateTime now = LocalDateTime.now().plusDays(5);
+        node.put("sr_created_date", now.toString());
 
         GeometryFactory geometryFactory = new GeometryFactory();
         assertThrows(ThresholdReportedAtException.class, () -> {

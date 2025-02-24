@@ -241,7 +241,7 @@ public class DataProcessTest {
         assertThat(dataErrors.size()).isEqualTo(2);
         assertThat(dataErrors.get(0).getContent()).isEqualTo(objectMapperResponse);
         assertThat(dataErrors.get(1).getContent()).isEqualTo(objectMapperResponse);
-        assertThat(dataErrors.get(1).getErrorMsg()).contains("[DataParser] error");
+        assertThat(dataErrors.get(1).getErrorMsg()).contains("[DataParser] ERR");
         assertThat(d.getStatus()).isEqualTo(DataJobStatus.ERROR);
     }
 }

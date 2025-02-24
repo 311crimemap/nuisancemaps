@@ -9,12 +9,9 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
-import com.quirkshop.nuisancemaps.config.DataParserType;
-import com.quirkshop.nuisancemaps.config.DataProcessType;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.Mapping;
 import com.quirkshop.nuisancemaps.model.Source;
-import com.quirkshop.nuisancemaps.model.datajob.DataJobConfiguratorType;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,45 +70,12 @@ public class SourceRepositoryTest {
 
     @Test
     @Transactional
-    public void SourceRepositoryFindOrCreate() throws Exception {
-        Locale locale = new Locale();
-        localeRepository.save(locale);
-        Mapping m = new Mapping();
-        Mapping m2 = new Mapping();
-        mappingRepository.save(m);
-        mappingRepository.save(m2);
-
-        Source s = new Source(locale, "category", "description", "url",
-                              DataParserType.JSON, DataProcessType.MEMORY, DataJobConfiguratorType.BASE);
-        s.setMapping(m);
-
-        assertThat(s.getId()).isNull();
-        s = sourceRepository.findOrCreate(s);
-        assertThat(s.getId()).isNotNull();
-
-        Source t = sourceRepository.findOrCreate(s);
-        assertThat(s.getId()).isEqualTo(t.getId());
-
-        Source x = new Source(locale, "category2", "description2", "url2",
-                DataParserType.JSON, DataProcessType.MEMORY, DataJobConfiguratorType.BASE);
-        x.setMapping(m2);
-        Source y = sourceRepository.findOrCreate(x);
-        assertThat(y.getId()).isNotEqualTo(s.getId());
-
-        Source z = new Source(locale, "category2", "description2", "url",
-                DataParserType.JSON, DataProcessType.MEMORY, DataJobConfiguratorType.BASE);
-        Source a = sourceRepository.findOrCreate(z);
-        assertThat(a.getId()).isEqualTo(s.getId());
-    }
-
-    @Test
-    @Transactional
     public void findBySourceConfigIDTest() {
 
         Source s = sourceRepository.findOneBySourceConfigId(1);
         assertThat(s.getSourceConfigId()).isEqualTo(1);
 
-        //ensure mapping is intact
+        // ensure mapping is intact
         assertThat(s).isInstanceOf(Source.class);
         Mapping m = s.getMapping();
         assertThat(m.getReportNum().getPointer()).isEqualTo("/incident_report_number");

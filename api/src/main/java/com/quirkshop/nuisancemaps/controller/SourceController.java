@@ -3,6 +3,7 @@ package com.quirkshop.nuisancemaps.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -47,31 +48,45 @@ public class SourceController {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
-    // curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' -d
-    // @source.json localhost:8080/locales/{id}/sources
-
+    /**
+     * Creates a new source for the specified locale.
+     *
+     * curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
+     * -d @source.json localhost:8080/locales/{id}/sources
+     *
+     * @param locale_id the ID of the locale to which the source is associated
+     * @param source    the source object to be created
+     * @return a response entity containing the Source DTO
+     */
     @PostMapping("/locales/{id}/sources")
     public ResponseEntity<?> create(@PathVariable("id") Integer locale_id, @RequestBody Source source) {
         JSendDTO jSendDTO;
         Locale locale = localeRepository.findById(locale_id).orElse(null);
         if (locale == null) {
-            jSendDTO = new JSendDTO("not found", null);
+            jSendDTO = new JSendDTO<String>("not found", null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
         }
 
         try {
             source.setLocale(locale);
             source = sourceLoaderService.saveTransaction(source);
-            jSendDTO = new JSendDTO("success", source.toDTO());
+            jSendDTO = new JSendDTO<SourceDTO>("success", source.toDTO());
         } catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
-            jSendDTO = new JSendDTO("error", e.getMessage());
+            jSendDTO = new JSendDTO<String>("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
         }
 
         return ResponseEntity.ok().body(jSendDTO);
     }
 
+    /**
+     * Creates a batch of sources for the specified locale.
+     *
+     * @param locale_id the ID of the locale to which the sources are associated
+     * @param sources   a list of source objects to be created
+     * @return a response entity containing Source DTO objects.
+     */
     @PostMapping("/locales/{id}/sources/batch")
     @Transactional
     public ResponseEntity<?> createBatch(@PathVariable("id") Integer locale_id,
@@ -80,7 +95,7 @@ public class SourceController {
         List<SourceDTO> res = new ArrayList<SourceDTO>();
         Locale locale = localeRepository.findById(locale_id).orElse(null);
         if (locale == null) {
-            jSendDTO = new JSendDTO("not found", null);
+            jSendDTO = new JSendDTO<String>("not found", null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
         }
 
@@ -96,14 +111,19 @@ public class SourceController {
         }
 
         if (res.size() > 0) {
-            jSendDTO = new JSendDTO("success", res);
+            jSendDTO = new JSendDTO<List<SourceDTO>>("success", res);
         } else {
-            jSendDTO = new JSendDTO("nothing saved", res);
+            jSendDTO = new JSendDTO<List<SourceDTO>>("nothing saved", res);
         }
 
         return ResponseEntity.ok().body(res);
     }
 
+    /**
+     * Retrieves a list of all sources.
+     *
+     * @return a response entity containing a list of all sources
+     */
     @GetMapping("/sources")
     public ResponseEntity<?> index() {
         Iterable<Source> sourceIter = sourceRepository.findAll();
@@ -113,35 +133,58 @@ public class SourceController {
             res.add(source.toDTO());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new JSendDTO<List<SourceDTO>>("success", res));
     }
 
+    /**
+     * Retrieves a specific source by its ID.
+     *
+     * @param id the ID of the source to retrieve
+     * @return a response entity containing the source, or a 404 error
+     */
     @GetMapping("/locales/{id}/sources")
     public ResponseEntity<?> getLocaleSources(@PathVariable(value = "id") final int id) {
         JSendDTO jSendDTO;
         Locale locale = localeRepository.findById(id).orElse(null);
         if (locale == null) {
-            jSendDTO = new JSendDTO("not found", null);
+            jSendDTO = new JSendDTO<String>("not found", null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jSendDTO);
         }
 
         List<Source> source = sourceRepository.findAllByLocaleId(id);
         List<SourceDTO> sourceDTOs = source.stream().map(Source::toDTO).collect(Collectors.toList());
-        jSendDTO = new JSendDTO("success", sourceDTOs);
+        jSendDTO = new JSendDTO<List<SourceDTO>>("success", sourceDTOs);
 
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
     }
 
+    /**
+     * Retrieves a specific source by its ID.
+     *
+     * @param id the ID of the source to retrieve
+     * @return a response entity containing the source, or a 404 error
+     */
     @GetMapping("/sources/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") final int id) {
-        Source source = sourceRepository.findById(id).orElse(null);
-        if (source != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(source.toDTO());
+        Optional<Source> source = sourceRepository.findById(id);
+
+        if (source.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new JSendDTO<SourceDTO>("success", source.get().toDTO()));
         }
 
-        return ResponseEntity.status(404).body(null);
+        return ResponseEntity.status(404)
+                .body(new JSendDTO<String>("not found", null));
     }
 
+    /**
+     * Updates a specific source identified by its ID using the provided updates.
+     *
+     * @param id      the ID of the source to be updated
+     * @param updates a map containing the fields to be updated and their new values
+     * @return a response entity with the updated source or an error message
+     */
     @PatchMapping("/sources/{id}")
     public ResponseEntity<?> patch(@PathVariable(value = "id") final int id,
             @RequestBody Map<String, Object> updates) {
@@ -151,11 +194,11 @@ public class SourceController {
             updatedSource = sourceLoaderService.updateSource(id, updates);
         } catch (JsonMappingException e) {
             e.printStackTrace();
-            jSendDTO = new JSendDTO("error", e.getMessage());
+            jSendDTO = new JSendDTO<String>("error", e.getMessage());
             return ResponseEntity.badRequest().body(jSendDTO);
         }
 
-        jSendDTO = new JSendDTO("success", updatedSource.toDTO());
+        jSendDTO = new JSendDTO<SourceDTO>("success", updatedSource.toDTO());
         return ResponseEntity.status(HttpStatus.OK).body(jSendDTO);
 
     }

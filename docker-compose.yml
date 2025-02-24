@@ -1,9 +1,8 @@
-version: '3.4'
 services:
   # these are currently setup as "dev" first.
   # Will need to build standalone executable containers.
   web:
-    image: '058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/web'
+    image: "${IMAGE_REPO:-$USER}/311crimemap/web"
     build: "./web"
     volumes:
       - ./web:/web
@@ -15,12 +14,11 @@ services:
       - .env.dev
 
   classifier:
-    image: "058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/classifier"
+    image: "${IMAGE_REPO:-$USER}/311crimemap/classifier"
     user: "1000:1000"
     build: "./classifier"
     volumes:
       - ./classifier:/classifier
-      # - ./api/src/main/resources/data/classifier_categories.json:/classifier/classifier_categories.json
     env_file:
       - .env.dev
 
@@ -108,7 +106,8 @@ services:
       retries: 5
 
   pg-0:
-    image: bitnami/postgresql-repmgr:16
+    #bitnami/postgresql-repmgr:16 - need to pin version to prevent auto update hang
+    image: bitnami/postgresql-repmgr@sha256:b402f29d68aad57c9c17dcc637e211e6dc1576d73ab892efb79530d24b7b108e
     # logging:
     #   driver: none
     volumes:

@@ -10,9 +10,9 @@ Install any required plugins:
 
 Validate and build
 
-`packer validate ubuntu.pkr.hcl`
+`packer validate -var-file="ubuntu.pkrvars.hcl"  ubuntu.pkr.hcl`
 
-`packer build ubuntu.pkr.hcl`
+`packer build -var-file="ubuntu.pkrvars.hcl" ubuntu.pkr.hcl`
 
 ### Access
 

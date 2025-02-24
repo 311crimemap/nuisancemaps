@@ -14,11 +14,7 @@ kind: ConfigMap
 metadata:
   name: postgresql-configmap
 data:
-  # POSTGRESQL_INITSCRIPTS_USERNAME: "postgres"
-  # # POSTGRESQL_INITSCRIPTS_PASSWORD: loaded as secret (superuser)
   POSTGRESQL_USER: "postgres"
-  # # POSTGRESQL_PASSWORD: loaded as secret
-  # POSTGRESQL_DATABASE: "nuisancemaps"
   POSTGRESQL_URL: "jdbc:postgresql://db:5432/nuisancemaps"
 
   custom_postgresql.conf: |

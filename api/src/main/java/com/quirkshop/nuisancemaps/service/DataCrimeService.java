@@ -23,6 +23,21 @@ public class DataCrimeService {
     @Autowired
     private DataCrimeRepository dataCrimeRepository;
 
+    /**
+     * Retrieves a collection of FeatureDTO based on geographical bounds and
+     * date range. Ordered by reportedAt descending.
+     *
+     * @param sw_lat    The southwest latitude boundary.
+     * @param sw_lng    The southwest longitude boundary.
+     * @param ne_lat    The northeast latitude boundary.
+     * @param ne_lng    The northeast longitude boundary.
+     * @param startDate The start date for filtering reports.
+     * @param endDate   The end date for filtering reports.
+     * @param limit     The maximum number of results to return.
+     *
+     * @return A FeatureCollectionDTO: meta and list of featureDTOs.
+     */
+
     public FeatureCollectionDTO findAllByBoundsOrderByReportedAtDescGeoJSON(double sw_lat, double sw_lng,
             double ne_lat,
             double ne_lng, LocalDateTime startDate, LocalDateTime endDate, int limit) {

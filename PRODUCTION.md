@@ -1,28 +1,36 @@
 # Production Operations
 
-## Build
+## Build / Deploy STeps
 
 ### Web
 
-1. verify `npm run build` passess
+1. verify `npm run compile` passes (typescript tsc check - will stop deploy on
+   Cloudflare pages)
 
 2. merge `master` in `deploy/staging`, `deploy/production` branch, Cloudflare
    Pages takes over build
 
 ### API
 
-1. `aws ecr get-login-password --region us-east-2 --profile 311crimemap | \
-docker login --username AWS --password-stdin 058264272856.dkr.ecr.us-east-2.amazonaws.com`
+1. Setup ECR:
 
-2. `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher` (not in container)
-   * might need to remove /target via sudo
+`aws ecr get-login-password --region $AWS_REGION --profile $AWS_PROFILE | \
+docker login --username AWS --password-stdin $IMAGE_REPO`
 
-3. docker push <image>
+2. Build api and worker container (fat jar) for deploy (not in container) - need
+   IMAGE_REPO for build variable:
+
+`./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env)`
+
+3. `docker push $IMAGE_REPO/311crimemap/api:<TAG>`
+
+4. Replace containers:
+
+* `kubectl rollout restart deployment/spring-worker`
+* `kubectl rollout restart deployment/spring-api`
 
 
-## Operations
-
-Instructions on daily operations to run.
+## Sources
 
 * To build list of source ids for daily update:
   * `curl -H 'X-API-KEY: <KEY>' -H 'content-type:application/json'  api.311crimemap.com/sources | jq`
@@ -36,21 +44,23 @@ Instructions on daily operations to run.
 * Add to source_config.json, and submit individual source id:
 
 ```
-# add new source
+# add new source to locale
 
 curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
--d @source.json localhost:8080/locales/{id}/sources
+-d @source.json localhost:8080/locales/{locale_id}/sources
 ```
+
+Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimemap.com/datajobs/restart`
 
 ### Daily Runs: production-blue ids
 
 
 | locale.id | Source                 | type  | source.id | locale | init | submit  freq | startReportedAt | Notes |
 |-----------|------------------------|-------|-----------|--------|------|--------------|-----------------|-------|
-| 1         | Austin                 | Crime | 2         | 1      | x    | -            | 2024-07-01      |       |
+| 1         | Austin                 | Crime | 2         | 1      | x    | -            | 2024-12-01      |       |
 | 1         | Austin                 | 311   | 35        | 1      | x    |              | 2024-09-01      |       |
 | 2         | Dallas                 | Crime | 36        | 2      | x    |              | 2024-09-01      |       |
-| 2         | Dallas                 | 311   | 37        | 2      | x    |              | 2024-09-01      |       |
+| 2         | Dallas t-90 days       | 311   | 211       | 2      | x    |              | 2024-11-22      |       |
 | 3         | Chicago                | Crime | 38        | 3      | x    |              | 2024-09-01      |       |
 | 3         | Chicago                | 311   | 34        | 3      | x    |              |                 |       |
 | 4         | NYC (YTD)              | crime | 186       | 4      | x    | quarterly    |                 |       |
@@ -58,9 +68,9 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 5         | SF                     | Crime | 39        | 5      | x    |              | 2024-09-01      |       |
 | 5         | SF                     | 311   | 33        | 5      | x    |              | 2024-09-01      |       |
 | 6         | Boston (2023-present)  | Crime | 13        | 6      | x    |              |                 |       |
-| 6         | Boston 2024            | 311   | 22        | 6      | x    |              |                 |       |
+| 6         | Boston 2025            | 311   | 200       | 6      | x    |              |                 |       |
 | 7         | Los Angeles            | Crime | 187       | 7      | x    | weekly       | 2024-12-01      |       |
-| 7         | Los Angeles 2024       | 311   | 41        | 7      | x    | daily        |                 |       |
+| 7         | Los Angeles 2025       | 311   | 206       | 7      | x    | daily        | 2025-01-01      |       |
 | 8         | Houston 2024           | Crime | 47        | 8      | x    | monthly      |                 |       |
 | 8         | Houston MTD            | 311   | 191       | 8      | x    | daily        |                 |       |
 | 9         | Philadelphia 2025      | crime | 193       | 9      | x    | daily        |                 |       |
@@ -78,22 +88,22 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 15        | Montgomery County      | crime | 117       | 15     | x    | daily        | 2024-12-01      |       |
 | 16        | Nashville              | crime | 118       | 16     | x    | daily        |                 |       |
 | 16        | Nashville (YTD)        | 311   | 120       | 16     | x    | daily        |                 |       |
-| 17        | Kansas City            | crime | 123       | 17     | x    | daily        | 2024-12-01      |       |
+| 17        | Kansas City 2025       | crime | 208       | 17     | x    | daily        | 2025-01-01      |       |
 | 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |       |
 | 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |       |
 | 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |       |
-| 19        | Minneapolis 2024       | crime | 129       | 19     | x    | daily (year) |                 |       |
-| 19        | Minneapolis 2024       | 311   | 134       | 19     | x    | daily (year) |                 |       |
+| 19        | Minneapolis 2025       | crime | 201       | 19     | x    | daily (year) |                 |       |
+| 19        | Minneapolis 2025       | 311   | 202       | 19     | x    | daily (year) |                 |       |
 | 20        | Cleveland              | crime | 139       | 20     | x    | daily (full) |                 |       |
 | 20        | Cleveland              | 311   | 140       | 20     | x    | daily (full) |                 |       |
 | 21        | Cincinnatti            | crime | 143       | 21     | x    | daily        |                 |       |
 | 21        | Cincinnatti            | 311   | 144       | 21     | x    | daily        |                 |       |
-| 22        | St. Louis 2024         | crime | 145       | 22     | x    | daily (year) |                 |       |
-| 22        | St. Louis              | 311   | 149       | 22     | x    | daily (year) |                 |       |
-| 23        | Baltimore              | crime | 154       | 23     | x    | daily (full) |                 |       |
-| 23        | Baltimore 2024         | 311   | 155       | 23     | x    | daily (year) |                 |       |
-| 24        | Washington DC 2024     | crime | 160       | 24     | x    | daily        |                 |       |
-| 24        | Washington DC 2024     | 311   | 165       | 24     | x    | daily        |                 |       |
+| 22        | St. Louis 2025         | crime | 207       | 22     | x    | daily (year) |                 |       |
+| 22        | St. Louis              | 311   | 210       | 22     | x    | daily (year) |                 |       |
+| 23        | Baltimore              | crime | 209       | 23     | x    | daily (full) |                 |       |
+| 23        | Baltimore 2025         | 311   | 203       | 23     | x    | daily (year) |                 |       |
+| 24        | Washington DC 2025     | crime | 204       | 24     | x    | daily        |                 |       |
+| 24        | Washington DC 2025     | 311   | 205       | 24     | x    | daily        |                 |       |
 | 25        | Prince George's        | crime | 188       | 25     | x    | daily        | 2024-12-01      |       |
 | 25        | Prince George's        | 311   | 172       | 25     | x    | daily        |                 |       |
 | 26        | Baton Rouge            | crime | 175       | 26     | x    | daily        |                 |       |
@@ -105,42 +115,18 @@ curl -X POST -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' \
 | 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2024-12-01      |       |
 
 
-TODO: verify source.id's are id and not source_config_id - i think some are mixed
-
-
 #### Submit New Worker Task
 
-For each source.id above, submit to create new api task:
+ `./ops/update_sources.sh`: has current list of sources; submits new jobs.
 
-* `source.id`: `curl -H 'content-type:application/json' -H 'X-API-KEY:<API-KEY>' localhost:8080/sources`
-* `curl  -X POST -H 'content-type:application/json' -H 'X-API-KEY: <API-KEY>' localhost:8080/datajobs/sources/:source.id`
+* For each source.id above, submit to create new api task:
+  * `source.id`: `curl -H 'content-type:application/json' -H 'X-API-KEY:<API-KEY>' localhost:8080/sources`
+  * `curl  -X POST -H 'content-type:application/json' -H 'X-API-KEY: <API-KEY>' localhost:8080/datajobs/sources/:source.id`
 
----
 
+## Create New Source / Locale / TextCategories Operations
 
-## Create New Source / Locale / TextCategories
-
-see `./classifer/README.md`. Broad strokes below.
-
-### New Locale
-
-* copy `classifier/source-config/data/locale_template.json` -> `data/<dir>/locale.json`
-* Fill in fields
-
-### New Source
-
-Follow `./classifier/source-config/` sequence:
-
-* `0-download.py`
-* `1-generate-source-config.py`
-* `2-generate-source-methods.py`
-
-### For Text Categories (continued):
-
-* `3-text-category-fetch.py`
-* `4-text-category-classifier.py`
-  * * EXCEL Verify and relable columns: `| dataType | text | label |`
-* `5-text-category-to-json-for-submit.py`
+See `./classifer/README.md` for locale -> source -> textcategory sequence.
 
 ### Update Errant Source
 
@@ -148,7 +134,6 @@ Follow `./classifier/source-config/` sequence:
 * Submit to update route:
   * `curl -X PATCH -H 'content-type:application/json' -H 'X-API-KEY: <key>' -d @source_config.json api.311crimemap.com/sources/<id>`
   * submit full source (updates all) object not single fields
-
 
 ##### Mapping
 
@@ -158,21 +143,25 @@ specific `dataParserType`:
 * `CSVCUSTOM`: `dataParserDelimeter`, `dataParserNumSkip`
 
 
----
+### Detect Remove Duplicates
 
-## Pending Text Category -> Text Category
+##### Detect
 
-see `./classifer/source-config`: similar steps but from `/pendingtextcategories`
-endpoint, becomes source agnostic.
+* `select count(*), report_num, source_id from data_crime group by report_num, source_id having count(report_num) >= 2`
+* `select count(*) from (select count(*), report_num, source_id from data_crime group by report_num, source_id having count(report_num) >= 2);`
+* `select distinct(source_id) from (select count(*), report_num, source_id from data_crime group by report_num, source_id having count(report_num) >= 2);`
 
-1. Extract data to particular `pending_crime_<date>` / `pending_311_<date>`
-   directory to `text_categories.txt`:
+#### DELETE
 
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=crime | jq -r '.data[].text' > text_categories.txt`
-* `curl -H 'X-API-KEY: <KEY>' api.311crimemap.com/pendingtextcategories?type=3131 | jq -r '.data[].text' > text_categories.txt`
+Best to filter via `source_id` grabbed from distinct query above to speed things
+up. Replace 'X' with `source_id`.
 
-2. Follow text category sequence:
+```
+DELETE FROM data_crime
+WHERE source_id = X AND id NOT IN (
+    SELECT MIN(id)
+    FROM data_crime WHERE source_id = X
+    GROUP BY report_num, source_id
+);
+```
 
-* `4-text-category-classifier.py`
-  * * EXCEL Verify and relable columns: `| dataType | text | label |`
-* `5-text-category-to-json-for-submit.py`

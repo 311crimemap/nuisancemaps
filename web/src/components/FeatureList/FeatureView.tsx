@@ -58,7 +58,7 @@ export default function FeatureView({
     >
       <div>
         {/* head */}
-        <div className="min-h-8 flex justify-between items-center text-sm mb-2 cursor-pointer">
+        <div className="py-3 flex justify-between text-sm cursor-pointer">
           <div className="flex gap-3">
             <span style={iconStyle}>{properties.category.iconUnicode}</span>
             <span className="uppercase ml-2">
@@ -66,7 +66,7 @@ export default function FeatureView({
             </span>
           </div>
 
-          <div className="w-24 text-sm text-right">{reportedAtDate}</div>
+          <div className="w-32 text-sm text-right">{reportedAtDate}</div>
         </div>
 
         {listMode && !isLast && <hr className="mb-2" />}
@@ -93,8 +93,8 @@ export default function FeatureView({
                   </>
                 )}
               </dl>
-              <dl>
-                <dt className="text-neutral-content">Report Type</dt>
+              <dl className="min-w-24">
+                <dt className="text-neutral-content text-right">Report Type</dt>
                 <dd className="text-neutral text-right mb-4">
                   {properties.category.dataType}
                 </dd>

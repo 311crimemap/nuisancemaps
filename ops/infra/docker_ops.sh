@@ -5,7 +5,8 @@
 #
 export TF_LOG=1
 
-DOCKER_IMAGE="058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/ops"
+IMAGE_REPO=$(grep -E '^(IMAGE_REPO)' .env | awk -F'=' '{print $2}')
+DOCKER_IMAGE="$IMAGE_REPO/311crimemap/ops"
 INFRA_DIR="infra"
 
 # Default values

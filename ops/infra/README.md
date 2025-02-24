@@ -8,12 +8,9 @@
 On Hetzner, Access Token is generated per project, and determines which project
 infra resides.
 
-
 ## k3s spin worker up/download
 
-
 ```
-
 #
 # k3s
 #
@@ -43,8 +40,8 @@ module "worker app-server" {
 }
 
 terraform apply
-
 ```
+
 
 ### Quirks:
 
@@ -58,9 +55,9 @@ terraform apply
 
 # auth for private ECR
 
-aws ecr get-login-password --profile 311crimemap --region us-east-2 | \
+aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | \
     docker login --username AWS --password-stdin \
-    058264272856.dkr.ecr.us-east-2.amazonaws.com
+    $IMAGE_REPO
 
 ```
 
@@ -158,11 +155,3 @@ export KUBECONFIG=~/.kube/config
 #### ssh
 
 Hetzner ubuntu uses default `root` login.
-
-##### k3s cluster run
-
-For example demos, see
-[https://github.com/vergeman/k3s-demo](https://github.com/vergeman/k3s-demo)
-repository.
-
-

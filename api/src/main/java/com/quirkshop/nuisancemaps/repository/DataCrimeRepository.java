@@ -27,20 +27,22 @@ public interface DataCrimeRepository extends DataEntityRepository<DataCrime>, Cr
 
     List<DataCrime> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
-    // https://stackoverflow.com/questions/58342156/spring-jpa-query-is-not-recognizing-spatial-types
-    // need to escape '::' double instances otherwise query parser thinks it's
-    // inserting a variable (single ':')
-    //
-    // NB: distance * 1609.34 calculation can overflow ~ max 5700 miles
-    //
-    // CrudRepository knows to appropriately serialize renamed cat.id -> cat_id
-    // field
-    // but it doesn't know to serialization the nested Category parent
-    // which is why its wrapped with a CategoryDTO model
-    //
-    // cat.id needs to be renamed in the sql to prevent initial conflict
-    // e.g. can't "SELECT dc.*, cat.*" with both having "id" columns.
-
+    /**
+     * Reference: Spring JPA query handling of spatial types:
+     * https://stackoverflow.com/questions/58342156/spring-jpa-query-is-not-recognizing-spatial-types.
+     *
+     * Need to escape '::' double instances in the query; otherwise, the query
+     * parser may interpret it incorrectly as a variable (single ':').
+     *
+     * The distance * 1609.34 calculation may overflow at approximately 5700 miles.
+     *
+     * The CrudRepository correctly serializes the renamed `cat.id` to `cat_id`.
+     * However, it does not know to serialize the nested Category parent object,
+     * which is why it is wrapped in a CategoryDTO model.
+     *
+     * Renaming `cat.id` in the SQL query is needed to avoid naming conflicts,
+     * e.g., you cannot have "SELECT dc.*, cat.*" when both columns have "id".
+     */
     @Query(value = "SELECT dc.id AS dc_id, dc.report_num, dc.report_category, dc.address, dc.location, dc.latitude, dc.longitude, dc.reported_at, "
             +
             "cat.id AS cat_id, cat.data_type, cat.text, cat.label, cat.icon_name, cat.icon_unicode " +

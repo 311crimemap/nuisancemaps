@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.logstash.logback.argument.StructuredArguments;
+
 @Service
 public class DataJobService {
 
@@ -34,7 +36,13 @@ public class DataJobService {
 
     private static final int PARAM_LIMIT = Integer.parseInt(System.getenv("WORKER_QUERY_LIMIT"));
 
-    // "earliest" QUEUED job (regardless of source or session)
+    /**
+     * Retrieves the next "earliest" QUEUED job with the specified status;
+     * updates its status to START, and persists the change.
+     *
+     * @param status the current status of the data job to retrieve
+     * @return the updated DataJob if found, otherwise null
+     */
     @Transactional
     public DataJob getNextDataJob(DataJobStatus status) {
         DataJob dataJob = dataJobRepository.findTopByStatusOrderByIdAsc(status);
@@ -45,17 +53,36 @@ public class DataJobService {
         return dataJob;
     }
 
+    /**
+     * Resets the status of all DataJobs currently in POLL_WAIT to QUEUED that
+     * have elapsed for the specified duration.
+     *
+     * @param duration the time duration to check against the elapsed time of
+     *                 data jobs
+     * @return the number of jobs that were reset
+     */
+
     @Transactional
     public int resetElapsedPollWait(LocalDateTime duration) {
         int count = dataJobRepository.updateElapsedJobs(duration, DataJobStatus.POLL_WAIT, DataJobStatus.QUEUED);
         if (count > 0) {
-            String logStr = String.format("[resetElapsedPollWait] reset %d DataJobStatus.POLL_WAIT -> QUEUED",
-                    count);
-            log.info(logStr);
+            Map<String, Object> logDetails = Map.of(
+                    "resetElapsedPollWait", count,
+                    "previousStatus", "DataJobStatus.POLL_WAIT",
+                    "newStatus", "QUEUED");
+
+            log.info("[resetElapsedPollWait] reset",
+                    StructuredArguments.entries(Map.of("data", logDetails)));
         }
         return count;
     }
 
+    /**
+     * Creates new data jobs if any new jobs can be created. Logs the URLs of
+     * newly created jobs.
+     *
+     * @throws UnsupportedEncodingException
+     */
     public void createNewJobs() throws UnsupportedEncodingException {
 
         // get all Sources
@@ -77,20 +104,28 @@ public class DataJobService {
             if (nextJob == null)
                 continue;
 
-            String logStr = String.format("[createNewJobs] next job: %s", nextJob.getUrl());
-
-            log.info(logStr);
+            Map<String, Object> logDetails = Map.of("nextJobUrl", nextJob.getUrl());
+            log.info("[createNewJobs]",
+                    StructuredArguments.entries(Map.of("data", logDetails)));
         }
 
     }
 
+    /**
+     * Creates the next data job for a given source based on the previously created
+     * jobs.
+     *
+     * @param source     the source instance to create a new data job
+     * @param dataJobMap a lookup map of existing jobs tied to their respective
+     *                   source IDs
+     * @return the newly created DataJob, or null
+     * @throws UnsupportedEncodingException
+     */
     @Transactional
     private DataJob createNextDataJob(Source source, Map<Integer, DataJob> dataJobMap)
             throws UnsupportedEncodingException {
 
         DataJob maxSessionIdOffsetDataJob = dataJobMap.getOrDefault(source.getId(), null);
-        // log.info("Source id: " + source.getId() + " maxSessionId: " +
-        // maxSessionIdOffsetDataJob);
 
         // no job for source has ever existed, start fresh 0
         if (maxSessionIdOffsetDataJob == null) {
@@ -113,6 +148,17 @@ public class DataJobService {
         // all caught up, last job had num_fetched == 0 -> no new jobs
         return null;
     }
+
+    /**
+     * Creates and persists a new DataJob for a given source, optionally based on a
+     * previous job.
+     *
+     * @param source      the source instance to create a new data job
+     * @param prevDataJob the previously created DataJob to base the new job on, or
+     *                    null to start fresh
+     * @return the newly created DataJob, or null if it cannot be created
+     * @throws UnsupportedEncodingException
+     */
 
     @Transactional
     public DataJob createNewDataJob(Source source, DataJob prevDataJob)

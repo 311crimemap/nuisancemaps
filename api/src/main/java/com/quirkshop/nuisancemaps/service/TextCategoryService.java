@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.quirkshop.nuisancemaps.dto.TextLabelDTO;
@@ -19,6 +20,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+import net.logstash.logback.argument.StructuredArguments;
 
 @Service
 public class TextCategoryService {
@@ -54,6 +56,11 @@ public class TextCategoryService {
         skipSet = new ConcurrentHashMap<Integer, Boolean>();
     }
 
+    /**
+     * Initializes the maps used for category lookups.
+     * Ensures method is called after the service is created to populate
+     * the category label maps and text category ID maps.
+     */
     @PostConstruct
     public void initMaps() {
         log.info("[TextCategoryService] initMap");
@@ -68,7 +75,27 @@ public class TextCategoryService {
         refreshTextCategoryIdMap();
     }
 
-    public void initCategoryLabelMap(ConcurrentHashMap<Integer, Integer> map, String dataType) {
+    /**
+     * Refreshes the text category ID maps and the skip set; loads the current
+     * mappings.
+     */
+    public void refreshTextCategoryIdMap() {
+        loadTextCategoryIdMap(dataCrimeTextToCategoryIdMap, "crime");
+        loadTextCategoryIdMap(data311TextToCategoryIdMap, "311");
+        loadCategorySkipSet("SKIP");
+    }
+
+    /**
+     * Clears all maps used for category and text lookups.
+     */
+    public void clearAllMaps() {
+        dataCrimeCategoryLabelToIdMap.clear();
+        data311CategoryLabelToIdMap.clear();
+        dataCrimeTextToCategoryIdMap.clear();
+        data311TextToCategoryIdMap.clear();
+    }
+
+    private void initCategoryLabelMap(ConcurrentHashMap<Integer, Integer> map, String dataType) {
         List<Category> data = categoryRepository.findAllByDataType(dataType);
 
         for (Category category : data) {
@@ -76,19 +103,6 @@ public class TextCategoryService {
                 continue;
             map.put(category.getLabel(), category.getId());
         }
-    }
-
-    public void refreshTextCategoryIdMap() {
-        loadTextCategoryIdMap(dataCrimeTextToCategoryIdMap, "crime");
-        loadTextCategoryIdMap(data311TextToCategoryIdMap, "311");
-        loadCategorySkipSet("SKIP");
-    }
-
-    public void clearAllMaps() {
-        dataCrimeCategoryLabelToIdMap.clear();
-        data311CategoryLabelToIdMap.clear();
-        dataCrimeTextToCategoryIdMap.clear();
-        data311TextToCategoryIdMap.clear();
     }
 
     private void loadTextCategoryIdMap(ConcurrentHashMap<String, Integer> map, String dataType) {
@@ -105,6 +119,14 @@ public class TextCategoryService {
         }
     }
 
+    /**
+     * Looks up a category by its data type and text, returning the associated
+     * Category object.
+     *
+     * @param dataType the type of data to lookup (311, crime)
+     * @param text     the category text
+     * @return corresponding Category object, or null
+     */
     public Category lookupCategory(String dataType, String text) {
 
         Integer id = null;
@@ -125,9 +147,13 @@ public class TextCategoryService {
         return c;
     }
 
-    // takes (text, label) array,
-    // look up each label to get associated category id
-    // save in TextCategory (text, cat_id)
+    /**
+     * Creates and saves text categories based on the provided list of text-label
+     * DTOs: (text, label) list. Handles duplicates
+     *
+     * @param textLabelDTOs the list of text-label DTO tuples
+     * @return a list of created TextCategory objects
+     */
     public List<TextCategory> createTextCategories(List<TextLabelDTO> textLabelDTOs) {
 
         List<TextCategory> res = new ArrayList<TextCategory>();
@@ -145,7 +171,9 @@ public class TextCategoryService {
 
             category_id = mapping.getOrDefault(textLabelDTO.getLabel(), null);
             if (category_id == null) {
-                log.info("Missing category_id: " + textLabelDTO.getText());
+                Map<String, Object> logDetails = Map.of("categoryId", textLabelDTO.getText());
+                log.info("Missing category_id",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
                 continue;
             }
 
@@ -165,10 +193,14 @@ public class TextCategoryService {
             } catch (DataIntegrityViolationException e) {
                 // remove from PendingTextCategory on dupe (out of sync somehow, etc)
                 pendingTextCategoryRepository.deleteByDataTypeAndText(tc.getDataType(), tc.getText());
-                log.error(e.getMessage());
+                Map<String, Object> logError = Map.of("error", e.getMessage());
+                log.error("[TextCategoryService]",
+                        StructuredArguments.entries(Map.of("data", logError)));
 
             } catch (Exception e) {
-                log.error(e.getMessage());
+                Map<String, Object> logError = Map.of("error", e.getMessage());
+                log.error("[TextCategoryService]",
+                        StructuredArguments.entries(Map.of("data", logError)));
             }
 
         }

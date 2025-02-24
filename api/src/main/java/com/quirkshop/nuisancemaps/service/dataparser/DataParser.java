@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,17 +17,17 @@ import com.google.common.collect.Iterables;
 import com.quirkshop.nuisancemaps.model.Category;
 import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
-import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.DataEntity;
-import com.quirkshop.nuisancemaps.model.Source;
+import com.quirkshop.nuisancemaps.model.DataError;
 import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.PendingTextCategory;
+import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
 import com.quirkshop.nuisancemaps.repository.Data311Repository;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
+import com.quirkshop.nuisancemaps.repository.DataEntityRepository;
 import com.quirkshop.nuisancemaps.repository.DataErrorRepository;
 import com.quirkshop.nuisancemaps.repository.PendingTextCategoryRepository;
-import com.quirkshop.nuisancemaps.repository.DataEntityRepository;
 import com.quirkshop.nuisancemaps.service.DataEntityMappingService;
 import com.quirkshop.nuisancemaps.service.TextCategoryService;
 import com.quirkshop.nuisancemaps.util.ParseCounter;
@@ -37,6 +38,8 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import net.logstash.logback.argument.StructuredArguments;
 
 public class DataParser {
     @Autowired
@@ -128,33 +131,36 @@ public class DataParser {
 
     public void logException(DataJob dataJob, String content, Exception e) {
         Source source = dataJob.getSource();
-        String logStr = String.format("[DataParser] error: %s | %s | id: %s", e.getClass(),
-                source.getDescription(), source.getId());
 
-        log.info(logStr);
+        Map<String, Object> logDetails = Map.of(
+                "id", source.getId(),
+                "errorClass", e.getClass(),
+                "description", source.getDescription(),
+                "content", content);
+
+        String message = "[DataParser] ERR";
+        log.error(message, StructuredArguments.entries(Map.of("data", logDetails)));
+
         sw.getBuffer().setLength(0);
         e.printStackTrace(pw);
 
         String error_msg = StringUtils
-                .substring(String.join(" - ", logStr, sw.toString()),
+                .substring(String.join(" - ", message, logDetails.toString(), sw.toString()),
                         0, 4096);
 
         DataError dataError = new DataError(dataJob, content, error_msg);
         dataErrorRepository.save(dataError);
-
-        log.info(content);
-        log.info(error_msg);
     }
 
     public void batchSave(Source source, ParseCounter parseCounter) {
-        String logStr = String.format("[DataParser:batchSave ] sourceId: %s | numSaved: %d",
-                source.getId(),
-                parseNewDataMap.size());
+        Map<String, Object> logDetails = Map.of(
+                "sourceId", source.getId(),
+                "numSaved", parseNewDataMap.size());
 
         replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
         saveAll(parseCounter, parseNewDataMap);
 
-        log.info(logStr);
+        log.info("[DataParser:batchSave]", StructuredArguments.entries(Map.of("data", logDetails)));
 
         reportNums.clear();
         parseNewDataMap.clear();
@@ -193,7 +199,8 @@ public class DataParser {
                     }
 
                 } catch (Exception e) {
-                    log.info("[DataParser] field err: " + e.getMessage());
+                    log.error("[DataParser] field err",
+                            StructuredArguments.entries(Map.of("data", Map.of("error", e.getMessage()))));
                 }
             }
 
@@ -219,16 +226,15 @@ public class DataParser {
         List<String> pending = new ArrayList<String>(pendingReportCategories);
 
         Set<String> existingTextCategories = pendingTextCategoryRepository
-            .findByDataTypeAndTextIn(source.getCategory(), pending)
-            .stream()
-            .map(PendingTextCategory::getText)
-            .collect(Collectors.toSet());
-
+                .findByDataTypeAndTextIn(source.getCategory(), pending)
+                .stream()
+                .map(PendingTextCategory::getText)
+                .collect(Collectors.toSet());
 
         // filter out existing and save only new
         List<PendingTextCategory> pendingTextCategories = new ArrayList<>();
 
-        for (String reportCategory: pendingReportCategories ) {
+        for (String reportCategory : pendingReportCategories) {
             if (!existingTextCategories.contains(reportCategory)) {
                 PendingTextCategory ptc = new PendingTextCategory(dataJob, source.getCategory(), reportCategory);
                 pendingTextCategories.add(ptc);
@@ -238,12 +244,15 @@ public class DataParser {
         try {
 
             if (pendingTextCategories.size() > 0) {
-                log.info("[DataParser] savePendingTextCategories() num: " + pendingTextCategories.size());
+                Map<String, Object> logDetails = Map.of("num", pendingTextCategories.size());
+                log.info("[DataParser] savePendingTextCategories()",
+                        StructuredArguments.entries(Map.of("data", logDetails)));
                 pendingTextCategoryRepository.saveAll(pendingTextCategories);
             }
 
         } catch (Exception e) {
-            log.error("[DataParser] " + e.getMessage());
+            log.error("[DataParser] ",
+                    StructuredArguments.entries(Map.of("data", Map.of("error", e.getMessage()))));
         }
     }
 

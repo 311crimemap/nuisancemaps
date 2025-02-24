@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.quirkshop.nuisancemaps.WorkerApplication;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import net.logstash.logback.argument.StructuredArguments;
+
 @Service
 public class GeocoderService {
 
@@ -34,13 +37,30 @@ public class GeocoderService {
 
     private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
+    /**
+     * Geocode a list of addresses using the configured geocoding providers.
+     *
+     * @param source    Source instance
+     * @param addresses A list of addresses to geocode.
+     * @return A list of arrays containing latitude and longitude coordinates for
+     *         each address.
+     */
     public List<double[]> geocode(Source source, List<String> addresses) {
         List<double[]> results = geocodeBatchRequest(mapTilerGeocoderProvider, source, addresses);
         results = geocodeBatchRequest(geoApifyGeocoderProvider, source, addresses);
         return results;
     }
 
-    // batchRequest
+    /**
+     * Sends a batch of addresses to the specified geocoding provider and retrieves
+     * their coordinates.
+     *
+     * @param geocoderProvider The geocoding provider to fetch coordinates from.
+     * @param source           The Source instance of the addresses.
+     * @param addresses        A list of addresses to geocode.
+     * @return A list of arrays containing latitude and longitude coordinates for
+     *         the provided addresses.
+     */
     public List<double[]> geocodeBatchRequest(GeocoderProvider geocoderProvider, Source source,
             List<String> addresses) {
 
@@ -67,11 +87,14 @@ public class GeocoderService {
 
         List<double[]> newCoordinates = geocoderProvider.fetch(source, newAddresses);
 
-        String logSizes = String.format(
-                "[GeocoderService] geocodeMap: %d | missingCoordinates: %d | newAddresses: %d | newCoordinates: %d",
-                geocodeMap.size(), missingCoordinates.size(), newAddresses.size(), newCoordinates.size());
+        Map<String, Object> logDetails = Map.of(
+                "geocodeMap", geocodeMap.size(),
+                "missingCoordinates", missingCoordinates.size(),
+                "newAddresses", newAddresses.size(),
+                "newCoordinates", newCoordinates.size());
 
-        log.info(logSizes);
+        log.info("[GeocodingService]",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         // update geocodeMap with fetched new coordinates
         HashMap<String, Geocode> newGeocodes = new HashMap<String, Geocode>();
@@ -100,7 +123,9 @@ public class GeocoderService {
         try {
             geocodeRepository.saveAll(newGeocodes.values()); // add to Geocode cache table
         } catch (DataIntegrityViolationException e) {
-            log.info("[GeocoderService] duplicate: " + e.getMessage());
+            Map<String, Object> logErr = Map.of("error", e.getMessage());
+            log.error("[GeocoderService] duplicate",
+                    StructuredArguments.entries(Map.of("data", logErr)));
         }
 
         // collect addresses with coords
@@ -159,11 +184,14 @@ public class GeocoderService {
             }
         }
 
-        String logRecords = String.format(
-                "[GeocoderService] Batch Dataset: numInitial: %d | numCached: %d | numFiltered: %d | " +
-                        "numQuery: %d | (NB: does not count dupes)",
-                addresses.size(), geocodeMap.size(), missingCoordinates.size(), addressSet.size());
-        log.info(logRecords);
+        Map<String, Object> logDetails = Map.of(
+                "numInitial", addresses.size(),
+                "numCached", geocodeMap.size(),
+                "numFiltered", missingCoordinates.size(),
+                "numQuery", addressSet.size());
+
+        log.info("[GeocoderService] Batch Dataset",
+                StructuredArguments.entries(Map.of("data", logDetails)));
 
         // convert to list for ordered manipulation
         return new ArrayList<String>(addressSet);

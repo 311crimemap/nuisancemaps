@@ -27,7 +27,7 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
 
     List<DataJob> findAllByOrderByUpdatedAtDesc(PageRequest n);
 
-    /* return highest offset job from most recent session per source */
+    // return highest offset job from most recent session per source
     DataJob findTopBySourceIdOrderBySessionIdDescParamOffsetDescIdDesc(Integer sourceId);
 
     DataJob findTopBySourceIdOrderBySessionIdDescParamOffsetDesc(Integer sourceId);
@@ -52,8 +52,8 @@ public interface DataJobRepository extends CrudRepository<DataJob, Integer> {
             """, nativeQuery = true)
     List<DataJob> findMaxSessionIdOffsetDataJobs();
 
-    // NB: JPQL doesn't support enums as params
-    // but is allowed in queries (e.g. where)
+    // NB: JPQL doesn't support enums as params but is allowed in queries
+    // (e.g. WHERE)
     @Transactional
     @Modifying
     @Query("UPDATE DataJob SET status = :status, updatedAt = :updatedAt WHERE status NOT IN :statuses AND updatedAt >= :cutOffTime")

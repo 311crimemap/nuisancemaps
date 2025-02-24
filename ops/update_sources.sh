@@ -3,6 +3,9 @@
 # see PRODUCTION.md
 #
 
+echo "Did you mean update_sources.py"
+exit
+
 source '../.env'
 
 API_HOST=https://api.311crimemap.com
@@ -10,7 +13,7 @@ IDS=(
     2
     35
     36
-    37
+    # 37 # dallas 311 replace
     38
     34
     186
@@ -18,9 +21,9 @@ IDS=(
     39
     33
     13
-    22
+    200
     187
-    41
+    206
     47
     191
     193
@@ -38,22 +41,22 @@ IDS=(
     117
     118
     120
-    123
+    208
     124
     125
-    128
-    129
-    134
+    #128 oakland 311 bad lat/lng
+    201
+    202
     139
     140
     143
     144
-    145
-    149
-    154
-    155
-    160
-    165
+    207
+    210
+    209
+    203
+    204
+    205
     188
     172
     175

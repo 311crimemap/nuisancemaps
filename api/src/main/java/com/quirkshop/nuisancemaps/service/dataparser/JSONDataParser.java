@@ -62,7 +62,8 @@ public class JSONDataParser extends DataParser {
                         pendingReportCategories.add(e.getReportCategory());
                         parseCounter.numMissingIncrement();
 
-                    } catch (InvalidCoordinateException | MissingCoordinateException | MissingReportCategoryException e) {
+                    } catch (InvalidCoordinateException | MissingCoordinateException
+                            | MissingReportCategoryException e) {
 
                         String content = StringUtils.substring(item.toString(), 0, 4096);
                         logMissingException(source, content, e);

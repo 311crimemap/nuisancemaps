@@ -28,6 +28,28 @@ public class DataEntityMappingService {
     @Autowired
     private TextCategoryService textCategoryService;
 
+    /**
+     * Constructs a DataEntity from provided item data.
+     *
+     * @param dataEntityClass the class of the DataEntity [Data311, DataCrime ]
+     * @param source          the Source class instance
+     * @param item            the item e.g. row (csv, json) containing the relevant
+     *                        data
+     * @param geometryFactory the factory for creating geometric points
+     * @param extractor       mapper of field values from the item rows
+     *
+     * @return an instance of DataEntity populated with extracted data
+     *
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws InvocationTargetException
+     * @throws MissingCategoryException
+     * @throws MissingReportCategoryException
+     * @throws InvalidCoordinateException
+     * @throws MissingCoordinateException
+     * @throws ThresholdReportedAtException
+     */
     public <T> DataEntity buildDataEntity(Class<? extends DataEntity> dataEntityClass, Source source,
             T item,
             GeometryFactory geometryFactory,
@@ -56,7 +78,7 @@ public class DataEntityMappingService {
         Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
         Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
 
-        // format
+        // Proper String formatting
         reportCategory = formatString(reportCategory);
         address = formatString(address);
         location = formatString(location);
@@ -88,16 +110,20 @@ public class DataEntityMappingService {
     }
 
     /*
-     * helpers
+     * Helpers
      */
 
-    // consistent format for Strings:
-    // - remove any nbsp;
-    // - collapse any additional spaces like html
-    //
-    // For address, location and reportCategory: used in other lookups /
-    // "caches" so ensure consistent match is important (location / Geocode,
-    // reportCategory / TextCategory)
+    /**
+     * Formats a string by removing non-breaking spaces and collapsing
+     * additional spaces (html).
+     *
+     * For address, location and reportCategory: used in other lookups /
+     * "caches" so ensure consistent match is important (location / Geocode,
+     * reportCategory / TextCategory)
+     *
+     * @param input the string to format
+     * @return the formatted string, or null if input is null
+     */
     private String formatString(String input) {
         if (input == null)
             return input;
@@ -131,6 +157,21 @@ public class DataEntityMappingService {
                     REPORTED_AT_THRESHOLD.toString());
             throw new ThresholdReportedAtException(logStr);
         }
+
+        /*
+         * reportedAt incident should also not have occurred in the future -
+         * suggests bad data input. Set max date now + 1 day ahead to buffer and
+         * accommodate different timezone data.
+         */
+        final LocalDateTime REPORTED_AT_MAX = LocalDateTime.now().plusDays(1);
+
+        if (reportedAt.isAfter(REPORTED_AT_MAX)) {
+            String logStr = String.format("reportedAt %s: occurred in future after max allowed date %s",
+                    reportedAt.toString(),
+                    REPORTED_AT_MAX.toString());
+            throw new ThresholdReportedAtException(logStr);
+        }
+
     }
 
     private void validateReportCategory(Source source, String reportCategory) throws MissingReportCategoryException {
@@ -143,15 +184,31 @@ public class DataEntityMappingService {
 
     }
 
+    /**
+     * Builds a valid geometric point from latitude and longitude, checking for
+     * validity.
+     *
+     * @param source          the Source instance
+     * @param geometryFactory the geometry factory used to create the point
+     * @param latitude        the latitude to validate and convert to a point
+     * @param longitude       the longitude to validate and convert to a point
+     *
+     * @return a valid geometric point
+     *
+     * @throws InvalidCoordinateException if the coordinates are out of valid bounds
+     * @throws MissingCoordinateException if the coordinates are missing
+     */
     private Point buildValidPoint(Source source, GeometryFactory geometryFactory, Double latitude, Double longitude)
             throws InvalidCoordinateException, MissingCoordinateException {
         Point point = null;
 
         if (latitude != null && longitude != null) {
 
-            // Add sanity check for bad coordinate data - USA extent
-            // Latitude: 18.91° N to 71.39° N
-            // Longitude: (-) 172.90° W to (-) 66.95° W
+            /*
+             * Add sanity check for bad coordinate data - USA extent
+             * Latitude: 18.91° N to 71.39° N
+             * Longitude: (-) 172.90° W to (-) 66.95° W
+             */
             if (latitude < 18 || latitude > 72 ||
                     longitude < -173 || longitude > -65) {
                 String errString = String
@@ -177,11 +234,26 @@ public class DataEntityMappingService {
         return point;
     }
 
-    // categories clarification nomenclature
-    //
-    // source.category: crime / 311 / etc
-    // dataEntity.report_category: data report instance from raw data
-    // Category: our created, labeled categories
+    /*
+     * Categories clarification nomenclature:
+     *
+     * Source.category: crime / 311 / etc
+     * DataEntity.report_category: data report instance from raw data
+     * Category: our created, labeled categories
+     */
+
+    /**
+     * Validates the existence of a category based on the provided source and report
+     * category.
+     *
+     * @param source         the source of the data
+     * @param category       the category to validate
+     * @param reportCategory the associated report category
+     *
+     * @throws MissingCategoryException if the category is missing
+     *
+     * @return the validated category
+     */
     private Category validateCategory(Source source, Category category, String reportCategory)
             throws MissingCategoryException {
 

@@ -1,66 +1,80 @@
-# Source Config
+# Source Config and Category Classification
 
-* Restart Jobs within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimemap.com/datajobs/restart`
+## Overview: Source and Category creation
 
-## Quick Submit Prod
+* Source: a city or county data directory; contains metadata, locale info, data
+source url, field mappings, etc.
 
-From completed / verified dev to prod:
+* Category: crime and 311 incident reports are classified to a handful of
+  respective categories, requires data preparation steps for labeling.
 
-0. log worker
+1. [source] copy and fill `meta.json` to <DIR>
+2. [source] `./00-generate.sh <DIR>` (calls 0-3 python scripts)
+3. [source] `python fields.py <DIR>`
+4. [source] edit `source_config.json` for fields
+  * add any custom generated methods
+5. [source] create `locale.json` if needed
+6. [category] `./01-text-cat.sh`
+7. [category] view output `text_categories.txt.out.csv`
+   * edit `text_categories.txt.out.csv.final.json` for any changes.
 
-* `kubectl logs -f <worker pod>`
 
-1. Did you build latest image and deploy?
+## Source and Category Submission Commands
 
-* `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher`
-* `docker push 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:<TAG>`
+Typically use dev environment to verify proper data and mappings.
 
-* `kubectl rollout restart deployment/spring-worker`
-* `kubectl rollout restart deployment/spring-api`
+Try on **dev** environment first especially when there are custom data
+[`ParserStrategy`](../api/src/main/java/com/quirkshop/nuisancemaps/service/parserstrategy/)
+mappings as it is a locus of errors.
 
----
+Convenience copy-paste:
 
-1. submit text categories
+
+#### Development Environment Submission
+
+1. Submit text categories
+
+* `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @text_categories.txt.out.csv.final.json localhost:8080/textcategories`
+
+2. Submit locale
+
+* `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @locale.json localhost:8080/locales`
+
+3. Submit source (source_config.json)
+
+* `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @source_config.json localhost:8080/locales/{id}/sources`
+
+4. Restart Broken Job:
+
+`curl -X PATCH -H "content-type: application/json" -H "X-API-KEY: $ADMIN_API_KEY" -d '{"status":"QUEUED"}' localhost:8080/datajobs/<dataJobId>`
+
+
+#### Production Environment Submission
+
+1. Submit text categories
 
 * `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @text_categories.txt.out.csv.final.json https://api.311crimemap.com/textcategories`
 
-2. submit locale
+2. Submit locale
 
 * `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @locale.json https://api.311crimemap.com/locales`
 
-3. submit source (source_config.json)
+3. Submit source (source_config.json)
 
 * `curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @source_config.json https://api.311crimemap.com/locales/{id}/sources`
 
-Restart Job:
+4. Restart Broken Job:
 
 `curl -X PATCH -H "content-type: application/json" -H "X-API-KEY: $ADMIN_API_KEY" -d '{"status":"QUEUED"}' api.311crimemap.com/datajobs/<dataJobId>`
 
+
 ---
 
+
+## Detailed Steps: Source and Category Creation
+
 General rule, use csv if data is already broken up in yearly increments. JSON if
-repeat, or partial subset query is needed.
-
-Try on dev first if there's a custom method - breaks way too often.
-
-## Condensed
-
-#### Field Align
-
-* copy and fill `meta.json` to <DIR>
-* `./00-generate.sh <DIR>` (calls 0-3 python scripts)
-* `python fields.py <DIR>`
-* edit `source_config.json` for fields
-  * add any custom generated methods
-* create `locale.json` if needed
-
-#### Text Category
-
-* `./01-text-cat.sh`
-* view output `text_categories.txt.out.csv`, edit
-  `text_categories.txt.out.csv.final.json` for any changes.
-
-## General Process
+repeat, or partial subset query (`startReportedAt` date) is available.
 
 1. [spreadsheet] base url → determine downloadable json and/or csv url
 
@@ -122,71 +136,48 @@ Try on dev first if there's a custom method - breaks way too often.
 
 ---
 
-## Source urls pattern from id key
+## Adding PendingTextCategories -> TextCategories
 
-* CSV: https://data.buffalony.gov/api/views/d6g9-xbgu/rows.csv?accessType=DOWNLOAD
-* JSON: https://data.buffalony.gov/resource/d6g9-xbgu.json?$limit=2
+1. Make directory per 311 or crime batch submission
+
+* `mkdir pending_2024_12_30_crime_prod`
+
+2. Create meta.json stub:
+
+```
+{ "category": "crime" }
+```
+
+3. Download pending text categories
+
+`curl api.311crimemap.com/pendingtextcategories?type=crime | jq -r '.data[].text' > text_categories.txt`
+
+4. Start `./01-text-cat.sh <DIR>` classification process
+
+5. Submit generated `text_categories.txt.out.csv.final.json`
 
 
-## Template -> Source Config
+---
 
-### Download
+#### Obtaining Snippet User Data Examples and Notes
 
-`0-download.py <dir>` takes `meta.json` url and downloads sample
-`data.json` or `data.csv`.
-
-### Prompt
-
-`./prompt/.1-gen-source-config.txt`:
-
-#### Obtaining User Data
-
-Snippet of JSON or CSV data from url source e.g $?limit=3 (Example commands)
+`0-download.py`: extract Snippet of JSON or CSV data
 
 * JSON: `curl -s 'https://data.buffalony.gov/resource/d6g9-xbgu.json?$limit=3' > buffalo.json`
+  * from url param source e.g $?limit=3 (Example commands)
 * CSV: `curl -s 'https://data.buffalony.gov/api/views/d6g9-xbgu/rows.csv?accessType=DOWNLOAD' | awk 'NR > 3 { exit } { print }' > buffalo.csv`
-
-NB: use awk here since `curl | head -n 3` doesn't (OS Specific) always send
-SIGPIPE to indicate end of process, so curl could continue to download in
-background. Does seem to work in ubuntu, but using awk for robustness.
+  * For CSV, use awk exit here since `curl | head -n 3` doesn't (OS Specific)
+    always send `SIGPIPE` to indicate end of process, so curl could continue to
+    download in background. Does seem to work in ubuntu, but using awk for
+    robustness.
 
 Submit ~3 examples as user role.
 
----
-
-## Sample Data -> Source Config
-
-* `./1-generate-source_config.py <data_directory> <sample_data.json>`
-* e.g.: `./1-generate-source-config.py data/039-buffalo-crime/ data/039-buffalo-crime/buffalo.json`
-
-Requires correct `meta.json`.
-
-## Source Config -> Method Gen
-
-* `./2-generate-source-methods.py <data_directory> <sample_data.json>`
-* e.g.: `./2-generate-source-methods.py data/039-buffalo-crime/ data/039-buffalo-crime/buffalo.json`
-
-### Prompt
-
-`./prompt/.2=generate-source-methods.txt`:
-
-USER INPUT:
-
-1. source config json from previous step (`1-generate-source-config.py`)
-2. sample data Same as above snippet of json or csv data
+NB: Might have to adjust numbers if rows need to be skipped.
 
 ---
 
-## Verify; add any method gen, use in Source Config.
-
-* Determine if `*.json.methods.txt` has separate methods
-* add methods to api `service/parserstrategy/*.java` city methods page.
-* add source_config to source-config.json
-* submit and verify
-
----
-
-### Data Notes
+#### Data Notes
 
 `./data` contains downloads, scratch.
 
@@ -199,39 +190,7 @@ The data is valid, but they're the results of old extraction scripts
 From `040-*`, using the source-config process outlined above.
 
 
----
-
-
-## Adding Error TextCategories
-
-Reminder many error messages will end up being duplicates, so it's less intimidating than it looks.
-
-NB: if getting parse errors, proper json has no dangling ','.
-
-* Collect errors:
-  * ~~`curl -H 'X-API-KEY: <KEY>' localhost:8080/dataerrors | jq '.[].errorMsg`~~
-  * `curl -H 'X-API-KEY: <KEY>' localhost:8080/pendingtextcategories?type=crime | jq -r '.data[].text'`
-
-* Take each type, category and start label process for submission
-* Either manually label category, or submit to openAI
-
-Manual Example
-* `labeled_crime.json` -> copy to `missing_crime.json`, for example: add
-  category and label (and dataType) and submit.
-
-OpenAI Crime Example
-* add to `data_crime.txt`
-* `classifier.py`
-* review `out_crime.json` (jq to excel) -> `labeled_crime.csv`
-* `convert_csv_to_json.py` -> `labeled_crime.json`
-
-Submit
-
-`curl -X POST -d @text_categories.txt.out.csv.final.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`
-
-
-
-## Helpful Queries
+#### Helpful Queries
 
 Sometimes duplicate TextCategory records might occur (shouldn't with newly
 fixed constraints)...but just in case:
@@ -260,3 +219,32 @@ ORDER BY
     tc.text;
 
 ```
+
+---
+
+#### Deprecated: ~~Adding Error TextCategories~~
+
+Reminder many error messages will end up being duplicates, so it's less intimidating than it looks.
+
+NB: if getting parse errors, proper json has no dangling ','.
+
+* Collect errors:
+  * ~~`curl -H 'X-API-KEY: <KEY>' localhost:8080/dataerrors | jq '.[].errorMsg`~~
+  * `curl -H 'X-API-KEY: <KEY>' localhost:8080/pendingtextcategories?type=crime | jq -r '.data[].text'`
+
+* Take each type, category and start label process for submission
+* Either manually label category, or submit to openAI
+
+Manual Example
+* `labeled_crime.json` -> copy to `missing_crime.json`, for example: add
+  category and label (and dataType) and submit.
+
+OpenAI Crime Example
+* add to `data_crime.txt`
+* `classifier.py`
+* review `out_crime.json` (jq to excel) -> `labeled_crime.csv`
+* `convert_csv_to_json.py` -> `labeled_crime.json`
+
+Submit
+
+`curl -X POST -d @text_categories.txt.out.csv.final.json -H 'content-type: application/json' -H 'X-API-KEY: <KEY>' localhost:8080/textcategories`

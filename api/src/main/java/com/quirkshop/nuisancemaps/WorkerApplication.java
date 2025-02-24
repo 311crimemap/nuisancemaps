@@ -1,7 +1,5 @@
 package com.quirkshop.nuisancemaps;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @ConditionalOnProperty(value = "app.scheduling.enabled", matchIfMissing = true, havingValue = "true")
 @EnableScheduling
 public class WorkerApplication {
-    private static final Logger log = LoggerFactory.getLogger(WorkerApplication.class);
 
     public static void main(String args[]) {
         // disable Tomcat server loading in workers

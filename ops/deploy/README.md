@@ -37,8 +37,11 @@ configmap files (pgbackrest)
   * Verify: `kubectl get pods -A`
 * Ensure Cloudflare dashboard domain A records point to correct server IP address
   * prod cert-manager retries take > 1 hr
-* `kubectl apply -f production/cert-manager-issuer.yml`  # PRODUCTION
-* `kubectl apply -f staging/cert-manager-issuer.yml` # STAGING
+
+* `export $(grep -E '^(CERT_MANAGER_EMAIL)' ../../.env)`
+* `envsubst '${CERT_MANAGER_EMAIL}' < production/cert-manager-issuer.yml | kubectl apply -f -`  # PRODUCTION
+* `envsubst '${CERT_MANAGER_EMAIL}' < staging/cert-manager-issuer.yml | kubectl apply -f -`     # STAGING
+
     * Verify: `kubectl describe clusterissuer`
 * `kubectl apply -f <env>/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
@@ -77,8 +80,9 @@ helm repo update
 
 * `kubectl apply -f base/postgresql/`
 * `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f base/postgresql/values.yml`
-* `kubectl apply -f base/api/`
-* `kubectl apply -f base/worker/`
+  * Pin versions - Chart v. 14.3.1, App v. 16.4.0 (Repmgr update bug keep at 5.4)
+* `deploy-api.sh`
+* `deploy-worker.sh`
 
 
 #### Logical Restore
@@ -115,7 +119,7 @@ Depending on infra changes, may also need to delete `pvc` / `pv` if spinning dow
 * `kubectl apply -f base/jobs/spring-db-migration-job.yml`
 
 
-#### Boostrap Data
+#### Bootstrap Data
 
 1. Build Locales: `curl -X POST -H 'X-API-KEY: <KEY>' -H 'content-type:application/json' -d @locale_config.json http://<API_HOST>/locales/batch`
 
@@ -853,10 +857,12 @@ export KUBECONFIG=~/.kube/config
 Add docker ECR secret (named `regcred` in this example):
 
 ```
+# see .env
+
 kubectl create secret docker-registry regcred \
-    --docker-server=058264272856.dkr.ecr.us-east-2.amazonaws.com \
+    --docker-server=$IMAGE_REPO \
     --docker-username=AWS \
-    --docker-password=`aws ecr get-login-password --profile 311crimemap --region us-east-2` \
+    --docker-password=`aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION` \
     --docker-email=abc@abc.com
 ```
 
@@ -865,11 +871,11 @@ docker image push
 # 1. Reauth if necessary
 
 aws ecr get-login-password --region us-east-2 --profile 311crimemap | \
-docker login --username AWS --password-stdin 058264272856.dkr.ecr.us-east-2.amazonaws.com
+docker login --username AWS --password-stdin $IMAGE_REPO
 
 # 2. Push
 
-docker push 058264272856.dkr.ecr.us-east-2.amazonaws.com/311crimemap/api:0.0.1-SNAPSHOT
+docker push $IMAGE_REPO/311crimemap/api:0.0.1-SNAPSHOT
 
 ```
 
@@ -919,9 +925,9 @@ kubectl apply -f spring-db-mgration-job.yml
 ```
 docker run -it \
        --network nuisancemaps_default \
-       -v /home/vergeman/dev/nuisancemaps/api/src/main/resources/db/changelogs:/liquibase/db/changelogs \
-       -v /home/vergeman/dev/nuisancemaps/api/src/main/resources/liquibase.properties:/liquibase/db/liquibase.properties \
-       -v /home/vergeman/dev/nuisancemaps/api/src/main/resources/db/changelog-master.yml:/liquibase/db/changelog-master.yml \
+       -v ./api/src/main/resources/db/changelogs:/liquibase/db/changelogs \
+       -v ./api/src/main/resources/liquibase.properties:/liquibase/db/liquibase.properties \
+       -v ./api/src/main/resources/db/changelog-master.yml:/liquibase/db/changelog-master.yml \
        liquibase/liquibase:4.25 update \
        --defaults-file=/liquibase/db/liquibase.properties
 ```

@@ -2,18 +2,21 @@ package com.quirkshop.nuisancemaps.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
+import com.quirkshop.nuisancemaps.model.DataURLCache;
 import com.quirkshop.nuisancemaps.repository.DataCrimeRepository;
 import com.quirkshop.nuisancemaps.service.DataCrimeService;
-import com.quirkshop.nuisancemaps.util.DataParamValidator;
-import com.quirkshop.nuisancemaps.model.DataURLCache;
 import com.quirkshop.nuisancemaps.service.DataURLCacheService;
+import com.quirkshop.nuisancemaps.util.DataParamValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import net.logstash.logback.argument.StructuredArguments;
 
 @RestController
 public class DataCrimeController {
@@ -40,6 +45,31 @@ public class DataCrimeController {
 
     private static final Logger log = LoggerFactory.getLogger(NuisancemapsApplication.class);
 
+    /**
+     * Retrieves GeoJSON data for reported crimes within a specified bounding
+     * box and date range. This endpoint supports cross-origin requests and
+     * caches results based on query parameters to optimize performance.
+     *
+     * @param startDate Optional parameter representing the start date in the format
+     *                  "yyyy-MM-dd".
+     *                  Defaults to the date three months prior to the current date.
+     * @param endDate   Optional parameter representing the end date in the format
+     *                  "yyyy-MM-dd".
+     *                  Defaults to the current date.
+     * @param sw_lat    Required parameter for the southwest latitude of the
+     *                  bounding box.
+     * @param sw_lng    Required parameter for the southwest longitude of the
+     *                  bounding box.
+     * @param ne_lat    Required parameter for the northeast latitude of the
+     *                  bounding box.
+     * @param ne_lng    Required parameter for the northeast longitude of the
+     *                  bounding box.
+     * @return A ResponseEntity containing the GeoJSON data, or a bad request
+     *         response if the input values are invalid.
+     * @throws IllegalArgumentException if latitude or longitude values are invalid.
+     *
+     */
+
     @CrossOrigin(origins = "${CORS_ORIGINS}")
     @GetMapping("/datacrimes.geojson")
     @Cacheable(value = "dataCrimeControllerCache", key = "#startDate + '-' + #endDate + '-' + #sw_lat + '-' + #sw_lng + '-' + #ne_lat + '-' + #ne_lng")
@@ -50,6 +80,11 @@ public class DataCrimeController {
             @RequestParam(name = "sw_lng", required = true) String sw_lng,
             @RequestParam(name = "ne_lat", required = true) String ne_lat,
             @RequestParam(name = "ne_lng", required = true) String ne_lng) {
+
+        String currentThreadName = Thread.currentThread().getName();
+        String uuid = UUID.randomUUID().toString();
+        MDC.put("traceId", uuid.substring(uuid.lastIndexOf('-') + 1));
+        MDC.put("threadName", currentThreadName);
 
         try {
 
@@ -71,22 +106,33 @@ public class DataCrimeController {
                     .orElse(LocalDateTime.now());
 
             count++;
-            String logStr = String.format("DataCrime %d: %s %s %s %s: ", count, _sw_lat, _sw_lng, _ne_lat, _ne_lng);
-            log.info(logStr);
+            Map<String, Object> logDetails = Map.of(
+                    "count", count,
+                    "sw_lat", _sw_lat,
+                    "sw_lng", _sw_lng,
+                    "ne_lat", _ne_lat,
+                    "ne_lng", _ne_lng);
 
-            // NB: cached requests won't reach here, so only fetched queries will be recorded here.
+            log.info("DataCrime", StructuredArguments.entries(Map.of("data", logDetails)));
+
+            // NB: cached requests won't reach here, so only fetched queries will be
+            // recorded here.
             DataURLCache dataURLCache = new DataURLCache("/datacrimes.json", startDateTime, endDateTime,
-                                                         _sw_lat, _sw_lng, _ne_lat, _ne_lng);
+                    _sw_lat, _sw_lng, _ne_lat, _ne_lng);
             dataURLCacheService.increment(dataURLCache);
 
             FeatureCollectionDTO results = dataCrimeService
                     .findAllByBoundsOrderByReportedAtDescGeoJSON(_sw_lat, _sw_lng, _ne_lat, _ne_lng,
                             startDateTime, endDateTime, MAX_LIMIT);
 
+            MDC.clear();
             return ResponseEntity.ok().body(results);
 
         } catch (Exception e) {
-            log.error("[DataCrimeController ERR]: " + e.getMessage());
+            Map<String, Object> logErr = Map.of("error", e.getMessage());
+            log.error("[DataCrimeController ERR]", StructuredArguments.entries(Map.of("data", logErr)));
+
+            MDC.clear();
             return ResponseEntity.badRequest().body(null);
         }
     }
