@@ -30,6 +30,7 @@ data:
     repo2-s3-region=${PGBACKREST_REPO2_S3_REGION}
     repo2-s3-endpoint=${PGBACKREST_REPO2_S3_ENDPOINT}
     repo2-s3-bucket=${PGBACKREST_REPO2_S3_BUCKET}
+    repo2-retention-diff=2
     repo2-retention-full=2
 
     # creds are set in respective .env.*

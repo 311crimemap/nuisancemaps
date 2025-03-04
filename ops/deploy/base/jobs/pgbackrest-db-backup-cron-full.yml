@@ -1,0 +1,61 @@
+#
+# kubectl getcronjobs
+#
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pgbackrest-db-backup-cron-full
+  annotations:
+    description: Pod run on control node to run kubectl commands
+spec:
+  schedule: "0 22 * * 5"  # run every Fri at 10 PM. [s, h, day of m, m, Day]
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostNetwork: true
+          nodeSelector:
+            node.kubernetes.io/class_instance: cntrl-0
+
+          # Need to enable hostPath access
+          securityContext:
+            runAsUser: 0
+
+          containers:
+          - name: k3s-kubectl
+            image: bitnami/kubectl:latest
+            command: ["bin/bash", "-c"]
+            args:
+              - |
+                kubectl exec -it crimemap-db-postgresql-ha-postgresql-0 -- \
+                env PGPASSWORD="$PGPASSWORD" pgbackrest --stanza=311crimemap --log-level-console=detail --repo=2 \
+                --archive-timeout=1d --type=full backup
+            envFrom:
+              - configMapRef:
+                  name: pgbackrest-configmap
+
+            env:
+              - name: KUBECONFIG
+                value: /config/.kube/config
+
+              - name: PGPASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: pgbackrest-secrets
+                    key: PGPASSWORD
+
+            volumeMounts:
+              - name: kube-config-file
+                mountPath: /config/.kube/config
+
+          volumes:
+            - name: pgbackrest-configmap-volume
+              configMap:
+                name: pgbackrest-configmap
+
+            - name: kube-config-file
+              hostPath:
+                path: /root/.kube/config
+                type: File
+
+          restartPolicy: OnFailure
