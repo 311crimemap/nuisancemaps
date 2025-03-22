@@ -154,6 +154,8 @@ repeat, or partial subset query (`startReportedAt` date) is available.
 
 4. Start `./01-text-cat.sh <DIR>` classification process
 
+NB: ignore missing `source_config.json` in text cat (not needed)
+
 5. Submit generated `text_categories.txt.out.csv.final.json`
 
 
