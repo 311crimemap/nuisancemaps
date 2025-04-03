@@ -31,11 +31,11 @@ endDate.setDate(endDate.getDate() - 1);
 // nyc publishes quarterly - want some data available on default
 // request
 const startDate = new Date(endDate);
-startDate.setMonth(startDate.getMonth() - 3)
+startDate.setMonth(startDate.getMonth() - 1)
 
 
 export const defaultDateRange: DateRange = {
-    label: "3 Months",
+    label: "1 Month",
     date: {
         startDate: startDate.toLocaleDateString("en-CA"),
         endDate: endDate.toLocaleDateString("en-CA"),

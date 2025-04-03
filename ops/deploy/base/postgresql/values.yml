@@ -131,6 +131,11 @@ postgresql:
         type: DirectoryOrCreate
 
 
+  #
+  # NB: k8s doesn't update _subPath_ mounts when changed
+  # subPath are files cpoied in
+  # other mounts are based on symlink, so get updated
+  #
   extraVolumeMounts:
     - name: pgbackrest-shared-init-volume
       mountPath: /usr/local/bin # mount for pgbackrest

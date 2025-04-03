@@ -657,6 +657,11 @@ control node.
 
 * full backup: `kubectl apply -f base/jobs/pgbackrest-db-backup-full-job.yml`
 * scheduled cron incremental diff: `kubectl apply -f base/jobs/pgbackrest-db-backup-cron-diff.yml`
+* scheduled cron full diff: `kubectl apply -f base/jobs/pgbackrest-db-backup-cron-full.yml`
+
+NB: want a limit for both full and diff backups; otherwise storage can run away.
+By regularly running backups, the /archive and /backup directories will expire.
+Smaller backup footprint, and more up to date.
 
 Job check:
 
