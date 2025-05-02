@@ -75,8 +75,10 @@ public class DataEntityMappingService {
         if (reported_at2 == null || reported_at2.isEmpty())
             reported_at2 = null;
 
-        Double latitude = (lat == null || lat.isEmpty()) ? null : Double.parseDouble(lat);
-        Double longitude = (lng == null || lng.isEmpty()) ? null : Double.parseDouble(lng);
+        Double latitude = (lat == null || lat.isEmpty() || lat.toLowerCase().equals("null")) ? null
+                : Double.parseDouble(lat);
+        Double longitude = (lng == null || lng.isEmpty() || lng.toLowerCase().equals("null")) ? null
+                : Double.parseDouble(lng);
 
         // Proper String formatting
         reportCategory = formatString(reportCategory);
