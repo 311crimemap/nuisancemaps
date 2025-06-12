@@ -71,7 +71,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 6         | Boston 2025            | 311   | 200       | 6      | x    |              |                 |       |
 | 7         | Los Angeles            | Crime | 187       | 7      | x    | weekly       | 2024-12-01      |       |
 | 7         | Los Angeles 2025       | 311   | 206       | 7      | x    | daily        | 2025-01-01      |       |
-| 8         | Houston 2025           | Crime | 180       | 8      | x    | monthly      |                 |       |
+| 8         | Houston 2025           | Crime | 212       | 8      | x    | monthly      | 2025-01-01      |       |
 | 8         | Houston MTD            | 311   | 191       | 8      | x    | daily        |                 |       |
 | 9         | Philadelphia 2025      | crime | 193       | 9      | x    | daily        |                 |       |
 | 9         | Philadelphia 2025      | 311   | 194       | 9      | x    | daily        |                 |       |
@@ -113,7 +113,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 28        | Chattanooga            | crime | 184       | 28     | x    | daily        | 2024-12-01      |       |
 | 28        | Chattanooga            | 311   | 185       | 28     | x    | daily        | 2024-12-01      |       |
 | 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2024-12-01      |       |
-| 30        | Portland, OR           | crime | 214       | 30     | x    | daily       | 2025-01-01      |       |
+| 30        | Portland, OR           | crime | 214       | 30     | x    | daily        | 2025-01-01      |       |
 
 
 #### Submit New Worker Task

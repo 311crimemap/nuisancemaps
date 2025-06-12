@@ -6,6 +6,13 @@ source ../../.env
 kubectl delete secret hcloud --ignore-not-found=true --namespace=kube-system
 kubectl create secret generic hcloud --namespace=kube-system --from-literal=token=$HCLOUD_TOKEN
 
+# Cloudflare
+kubectl delete secret cloudflare-api-token-secrets \
+        --ignore-not-found=true --namespace=cert-manager
+kubectl create secret generic cloudflare-api-token-secrets \
+        --namespace=cert-manager \
+        --from-literal=api-token=$CLOUDFLARE_API_TOKEN
+
 # ECR
 kubectl delete secret regcred --ignore-not-found=true
 kubectl create secret docker-registry regcred \

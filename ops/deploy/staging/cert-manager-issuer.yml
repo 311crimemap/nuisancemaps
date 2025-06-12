@@ -14,8 +14,19 @@ spec:
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-cluster-issuer-secret
-    # Enable the HTTP-01 challenge provider
+    # Enable the DNS-01 challenge provider
+    # w/ fallback HTTP-01 challenge provider
     solvers:
+      - dns01:
+          cloudflare:
+            email: ${CERT_MANAGER_EMAIL}
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secrets
+              key: api-token
+        selector:
+          dnsNames:
+            - 'staging-api.311crimemap.com'
+            - 'staging-grafana.311crimemap.com'
       - http01:
           ingress:
             class: traefik

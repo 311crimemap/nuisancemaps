@@ -618,7 +618,7 @@
         "parsingStrategy": null
       },
       "reportCategory": {
-        "field": "NIBRSDescription",
+        "field": "NIBRS Description",
         "pointer": null,
         "parsingStrategy": null
       },
@@ -628,9 +628,9 @@
         "parsingStrategy": null
       },
       "address": {
-        "field": "StreetName",
+        "field": "No / Block Range",
         "pointer": null,
-        "parsingStrategy": null
+        "parsingStrategy": "ADDRESS_XLS_CRIME_HOUSTON"
       },
       "location": {
         "field": "Premise",
@@ -638,17 +638,17 @@
         "parsingStrategy": null
       },
       "latitude": {
-        "field": "MapLatitude",
+        "field": "Map Latitude",
         "pointer": null,
         "parsingStrategy": null
       },
       "longitude": {
-        "field": "MapLongitude",
+        "field": "Map Longitude",
         "pointer": null,
         "parsingStrategy": null
       },
       "reportedAt": {
-        "field": "RMSOccurrenceDate",
+        "field": "Occurrence Date",
         "pointer": null,
         "parsingStrategy": "REPORTED_AT_XLS_CRIME_HOUSTON"
       },

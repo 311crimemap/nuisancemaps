@@ -34,7 +34,7 @@ public class ParserStrategyConfigDenver {
     public static String REPORTED_AT_CSV_311_DENVER(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
-            String text = row.get("Case_Created_dttm");
+            String text = row.get("Case Created dttm");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);

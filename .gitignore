@@ -6,5 +6,6 @@ db/pgbackrest_bkup/*
 ops/benchmark/*.txt
 ops/benchmark/*.out
 temp
-data
+source_config/data
+!/test/resources/data
 

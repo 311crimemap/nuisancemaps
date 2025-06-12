@@ -156,7 +156,10 @@ repeat, or partial subset query (`startReportedAt` date) is available.
 
 NB: ignore missing `source_config.json` in text cat (not needed)
 
-5. Submit generated `text_categories.txt.out.csv.final.json`
+5. Submit generated `text_categories.txt.out.csv.final.json` (same process for
+   any new textcategory, pending will be removed automatically)
+
+`curl -X POST -H 'content-type: application/json' -H "X-API-KEY: $ADMIN_API_KEY" -d @text_categories.txt.out.csv.final.json localhost:8080/textcategories`
 
 
 ---

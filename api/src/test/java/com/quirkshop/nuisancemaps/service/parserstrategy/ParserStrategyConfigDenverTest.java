@@ -38,7 +38,7 @@ public class ParserStrategyConfigDenverTest {
     public void REPORTED_AT_CSV_311_DENVER_TEST() throws JsonMappingException, JsonProcessingException {
         assertThat(ParserStrategy.REPORTED_AT_CSV_311_DENVER).isNotNull();
 
-        Map<String, String> row = Map.of("Case_Created_dttm", "12/6/2023 10:40:02 AM");
+        Map<String, String> row = Map.of("Case Created dttm", "12/6/2023 10:40:02 AM");
 
         String value = ParserStrategyConfigDenver.REPORTED_AT_CSV_311_DENVER(row, null);
         assertThat(value).isEqualTo("2023-12-06T10:40:02");

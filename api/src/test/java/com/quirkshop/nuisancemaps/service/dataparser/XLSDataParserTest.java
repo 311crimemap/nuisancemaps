@@ -102,10 +102,11 @@ public class XLSDataParserTest {
 
         ArrayList<TextCategory> textCategories = new ArrayList<TextCategory>();
         textCategories.add(new TextCategory("crime", "Destruction, damage, vandalism", cat));
-        textCategories.add(new TextCategory("crime", "Intimidation", cat));
-        textCategories.add(new TextCategory("crime", "Burglary, Breaking and Entering", cat));
-        textCategories.add(new TextCategory("crime", "Disorderly conduct", cat)); // 2
+        textCategories.add(new TextCategory("crime", "Intimidation", cat)); //3
+        textCategories.add(new TextCategory("crime", "Burglary, Breaking and Entering", cat)); //1
+        textCategories.add(new TextCategory("crime", "Disorderly conduct", cat));
         textCategories.add(new TextCategory("crime", "All other offenses", cat));
+        textCategories.add(new TextCategory("crime", "All other larceny", cat)); //2
 
         textCategoryRepository.saveAll(textCategories);
 
@@ -122,43 +123,19 @@ public class XLSDataParserTest {
         pendingTextCategoryRepository.deleteAll();
     }
 
-    /*
-    @Test
-    @Transactional
-    public void parseTest() throws IOException {
-
-        // DEPRECATED
-        // xls has 6 records total
-        Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2023.xlsx");
-        InputStream inputstream = csvResource.getInputStream();
-        File file = csvResource.getFile();
-        ParseCounter parseCounter = new ParseCounter();
-
-        Source s = sourceRepository.findOneBySourceConfigId(21);
-        DataJob d = new DataJob(LocalDateTime.now(), s, "Incident");
-        dataJobRepository.save(d);
-
-        assertThat(dataCrimeRepository.count()).isEqualTo(0);
-
-        xlsDataParser.parse(d, file, inputstream, parseCounter);
-
-        assertThat(dataCrimeRepository.count()).isEqualTo(6);
-    }
-    */
-
     @Test
     @Transactional
     public void XLSSAXDataParserTest() throws Exception {
 
         // xlsx has 6 records total
-        Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2024.xlsx");
+        Resource csvResource = resourceLoader.getResource("classpath:data/NIBRSPublicView2025.xlsx");
         InputStream inputStream = csvResource.getInputStream();
         File file = csvResource.getFile();
         ParseCounter parseCounter = new ParseCounter();
 
         Source s = sourceRepository.findOneBySourceConfigId(21);
         DataJob d = new DataJob(LocalDateTime.now(), s, "Incident");
-        //d.setParamOffset(3);
+
         dataJobRepository.save(d);
 
         assertThat(dataCrimeRepository.count()).isEqualTo(0);
