@@ -55,8 +55,8 @@ public class ParserStrategyConfigHouston {
     public static String REPORTED_AT_XLS_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
-            String text = row.get("RMSOccurrenceDate");
-            Integer hour = Integer.parseInt(row.getOrDefault("RMSOccurrenceHour", "0"));
+            String text = row.get("Occurrence Date");
+            Integer hour = Integer.parseInt(row.getOrDefault("Occurrence Hour", "0"));
 
             List<DateTimeFormatter> formatters = Arrays.asList(DateTimeFormatter.ofPattern("M/d/yy"),
                                                                DateTimeFormatter.ofPattern("M/d/yyyy"));
@@ -85,10 +85,10 @@ public class ParserStrategyConfigHouston {
     public static String ADDRESS_XLS_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
         String address = null;
         try {
-            String streetNo = row.get("StreetNo");
+            String streetNo = row.get("No / Block Range");
             String suffix = row.get("Suffix");
-            String streetName = row.get("StreetName");
-            String streetType = row.get("StreetType");
+            String streetName = row.get("Street Name");
+            String streetType = row.get("Street Type");
             String city = row.get("City");
             String zipcode = row.get("ZIPCode");
 
