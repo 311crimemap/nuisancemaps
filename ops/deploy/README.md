@@ -32,7 +32,7 @@ configmap files (pgbackrest)
 
 ##### Certs
 
-* `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
+* `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml`
   * wait until webhook error resolves (~ 1min)
   * Verify: `kubectl get pods -A`
 * Ensure Cloudflare dashboard domain A records point to correct server IP address
@@ -181,12 +181,21 @@ Typically do reverse of spinning up: `kubectl delete -f <thing>`
 
 ### Certs
 
+#### Firewall
+
+Hetzner Firewall rule for "K3s supervisor and Kubernetes API Server" (6443)
+needs to be temporarily opened to IP's for cert renewal. Starter pods (injector,
+webhook) aren't communicating otherwise (seem to reference nodes using public ip).
+
+TODO: move to [DNS01](https://cert-manager.io/docs/configuration/acme/dns01/)
+
+
 #### 1. Get Cert Manager:
 
 [Reference:
 https://cert-manager.io/docs/installation/kubectl/](https://cert-manager.io/docs/installation/kubectl/)
 
-`kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
+`kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml`
 
 Installs to `cert-manager` namespace.
 
@@ -200,11 +209,10 @@ cert-manager   cert-manager-webhook-5f594df789-tcqfl      1/1     Running     0 
 Make sure `cert-manager-webhook` is ready, or subsequent ClusterIssuer manifest will fail (Internal error occurred: failed calling webhook "webhook.cert-manager.io": failed to call webhook...). Just wait.
 
 
-Uninstall: `kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml`
+Uninstall: `kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml`
 * error possibilities:
   * terminating namespace: `kubectl delete apiservice v1beta1.webhook.cert-manager.io`
   * pending challenge
-
 
 
 

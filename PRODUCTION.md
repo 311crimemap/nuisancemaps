@@ -113,7 +113,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 28        | Chattanooga            | crime | 184       | 28     | x    | daily        | 2024-12-01      |       |
 | 28        | Chattanooga            | 311   | 185       | 28     | x    | daily        | 2024-12-01      |       |
 | 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2024-12-01      |       |
-| 30        | Portland, OR           | crime | 214       | 30     | x    | daily       | 2025-01-01      |       |
+| 30        | Portland, OR           | crime | 214       | 30     | x    | daily        | 2025-01-01      |       |
 
 
 #### Submit New Worker Task
