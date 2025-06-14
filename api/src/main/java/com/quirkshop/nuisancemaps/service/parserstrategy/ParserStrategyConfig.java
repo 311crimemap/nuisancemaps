@@ -60,6 +60,13 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.ADDRESS2_JSON_311_BUFFALO,
                 ParserStrategyConfigBuffalo::ADDRESS2_JSON_311_BUFFALO);
 
+        // seattle
+        parsingFunctions.put(ParserStrategy.LATITUDE_JSON_CRIME_SEATTLE,
+                ParserStrategyConfigSeattle::LATITUDE_JSON_CRIME_SEATTLE);
+
+        parsingFunctions.put(ParserStrategy.LONGITUDE_JSON_CRIME_SEATTLE,
+                ParserStrategyConfigSeattle::LONGITUDE_JSON_CRIME_SEATTLE);
+
         return parsingFunctions;
     }
 
