@@ -76,7 +76,7 @@ postgresql:
   initdbScriptsCM: init-postgresql-configmap
   initContainers:
     - name: copy-pgbackrest
-      image: bitnami/postgresql:16  # contains pgbackrest
+      image: bitnamilegacy/postgresql:16  # contains pgbackrest
       securityContext:
         runAsUser: 0
       command: ["sh", "-c",

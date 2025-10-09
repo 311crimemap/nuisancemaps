@@ -26,6 +26,8 @@ public class ParserStrategyConfig {
         // multi
         parsingFunctions.put(ParserStrategy.REPORTED_AT_JSON_yyyyMMdd_DASH,
                 ParserStrategyConfigMulti::REPORTED_AT_JSON_yyyyMMdd_DASH);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_JSON_MMddyyyy_SLASH,
+                ParserStrategyConfigMulti::REPORTED_AT_JSON_MMddyyyy_SLASH);
 
         parsingFunctions.put(ParserStrategy.LATITUDE_311_DALLAS,
                 ParserStrategyConfigDallas::LATITUDE_311_DALLAS);
@@ -59,6 +61,17 @@ public class ParserStrategyConfig {
         // buffalo
         parsingFunctions.put(ParserStrategy.ADDRESS2_JSON_311_BUFFALO,
                 ParserStrategyConfigBuffalo::ADDRESS2_JSON_311_BUFFALO);
+
+        // seattle
+        parsingFunctions.put(ParserStrategy.LATITUDE_JSON_CRIME_SEATTLE,
+                ParserStrategyConfigSeattle::LATITUDE_JSON_CRIME_SEATTLE);
+
+        parsingFunctions.put(ParserStrategy.LONGITUDE_JSON_CRIME_SEATTLE,
+                ParserStrategyConfigSeattle::LONGITUDE_JSON_CRIME_SEATTLE);
+
+        // prince george's
+        parsingFunctions.put(ParserStrategy.ADDRESS_JSON_CRIME_PRINCE_GEORGES,
+                ParserStrategyConfigPrinceGeorges::ADDRESS_JSON_CRIME_PRINCE_GEORGES);
 
         return parsingFunctions;
     }

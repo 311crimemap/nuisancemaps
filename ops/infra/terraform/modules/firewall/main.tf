@@ -19,10 +19,11 @@ resource "hcloud_firewall" "firewall-311crimemap" {
     direction = "in"
     protocol  = "tcp"
     port      = "6443"
-    source_ips = [
-      "10.0.0.0/8",
-      data.http.bastion_ip.response_body
-    ]
+    source_ips = concat(var.server_ips,
+      [
+        "10.0.0.0/8",
+        data.http.bastion_ip.response_body
+      ])
   }
 
   rule {
@@ -40,7 +41,8 @@ resource "hcloud_firewall" "firewall-311crimemap" {
     protocol  = "tcp"
     port      = "10250"
     source_ips = [
-      "10.0.0.0/8"
+      "10.0.0.0/8",
+      data.http.bastion_ip.response_body
     ]
   }
 

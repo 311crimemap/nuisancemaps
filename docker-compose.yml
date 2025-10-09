@@ -88,7 +88,7 @@ services:
          condition: service_healthy
 
   db:
-    image: bitnami/pgpool:4
+    image: bitnamilegacy/pgpool:4
     logging:
       driver: none
     env_file:
@@ -107,7 +107,7 @@ services:
 
   pg-0:
     #bitnami/postgresql-repmgr:16 - need to pin version to prevent auto update hang
-    image: bitnami/postgresql-repmgr@sha256:b402f29d68aad57c9c17dcc637e211e6dc1576d73ab892efb79530d24b7b108e
+    image: bitnamilegacy/postgresql-repmgr@sha256:b402f29d68aad57c9c17dcc637e211e6dc1576d73ab892efb79530d24b7b108e
     # logging:
     #   driver: none
     volumes:
@@ -139,7 +139,7 @@ services:
       - REPMGR_NODE_NETWORK_NAME=pg-0
 
   # pg-1:
-  #   image: bitnami/postgresql-repmgr:16
+  #   image: bitnamilegacy/postgresql-repmgr:16
   #   shm_size: 1gb
   #   labels:
   #     - traefik.enable=false

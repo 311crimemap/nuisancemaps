@@ -15,7 +15,7 @@ spec:
 
       containers:
       - name: postgresql
-        image: bitnami/postgresql:16.1.0
+        image: bitnamilegacy/postgresql:16.1.0
         command: ["bin/bash", "-c"]
         args:
           - |

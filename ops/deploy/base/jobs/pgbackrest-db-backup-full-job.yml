@@ -18,7 +18,7 @@ spec:
 
       containers:
       - name: k3s-kubectl
-        image: bitnami/kubectl:latest
+        image: bitnamilegacy/kubectl:latest
         command: ["bin/bash", "-c"]
         args:
           - |
