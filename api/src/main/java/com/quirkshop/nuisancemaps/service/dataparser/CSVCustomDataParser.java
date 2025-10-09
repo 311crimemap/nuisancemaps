@@ -101,6 +101,9 @@ public class CSVCustomDataParser extends DataParser {
          * some csv's are missing closing quote to also creating endless string
          * (not only escaped like above) so can sometimes succesfully parse by
          * ignoring quotes.
+         *
+         * withMultiLineLimit(n): maximum number of lines allowed in a multiline record
+         * robust; helps with malformed csv lines
          */
 
         try (CSVReader csvReader = new CSVReaderBuilder(reader)
@@ -109,7 +112,7 @@ public class CSVCustomDataParser extends DataParser {
                         .withQuoteChar(quote)
                         .withEscapeChar('\0')
                         .build())
-                .withMultilineLimit(2)
+                .withMultilineLimit(10)
                 .build()) {
 
             if (initialNumSkip > 0) {

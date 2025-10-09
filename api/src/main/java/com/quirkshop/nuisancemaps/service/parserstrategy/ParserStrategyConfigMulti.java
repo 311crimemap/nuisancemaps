@@ -3,7 +3,6 @@ package com.quirkshop.nuisancemaps.service.parserstrategy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -196,6 +195,26 @@ public class ParserStrategyConfigMulti {
             String pointer = mappingField.getPointer();
             String text = item.at(pointer).asText();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDate.parse(text, formatter)
+                    .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 07/01/2023
+    public static String REPORTED_AT_JSON_MMddyyyy_SLASH(JsonNode item, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String pointer = mappingField.getPointer();
+            String text = item.at(pointer).asText();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
             dateStr = LocalDate.parse(text, formatter)
