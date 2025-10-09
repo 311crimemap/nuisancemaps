@@ -11,7 +11,7 @@ jobs:
 
     services:
       pg1:
-        image: bitnami/postgresql:13.5.0
+        image: bitnamilegacy/postgresql:13.5.0
         env:
           POSTGRESQL_USERNAME: postgres
           POSTGRESQL_PASSWORD: admin
@@ -40,7 +40,7 @@ jobs:
           --network host \
           -e PGPASSWORD=admin \
           -v ${{ github.workspace }}/db/01_enable_postgis.sql:/docker-entrypoint-initdb.d/01_enable_postgis.sql \
-          bitnami/postgresql:13.5.0 \
+          bitnamilegacy/postgresql:13.5.0 \
           psql -U postgres -d nuisancemaps_test -h localhost -f /docker-entrypoint-initdb.d/01_enable_postgis.sql
 
       #
