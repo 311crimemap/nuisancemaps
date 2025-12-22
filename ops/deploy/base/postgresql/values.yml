@@ -12,6 +12,8 @@ global:
 
 metrics:
   enabled: true
+  image:
+    repository: bitnamilegacy/postgres-exporter
   serviceMonitor:
     enabled: true
     # require label to helm install name to allow servicemonitor discovery
@@ -19,6 +21,9 @@ metrics:
       release: prometheus
 
 postgresql:
+  image:
+    repository: bitnamilegacy/postgresql-repmgr
+    pullPolicy: IfNotPresent
   replicaCount: 1
   resources:
     requests:
@@ -159,6 +164,8 @@ postgresql:
       mountPath: /mnt/tmp
 
 pgpool:
+  image:
+    repository: bitnamilegacy/pgpool
   configurationCM: pgpool-configmap
   nodeSelector:
     node.kubernetes.io/class_instance: db-0
@@ -179,3 +186,5 @@ persistentVolumeClaimRetentionPolicy:
 
 volumePermissions:
   enabled: true
+  image:
+    repository: bitnamilegacy/os-shell
