@@ -685,17 +685,23 @@ PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap --log-level-cons
 
 ### DB Recovery
 
-* [Deprecated] - no longer storing backup on local filesystem:
-  `/backup_db/pgbackrest`, but only on s3
 * General process:
   1. stop postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0`
   2. job: `pgbackrest-db-restore-job.yml` -retrieve backup on to filesystem
-  ~~ Not with postgresql-ha 3. job: `postgres-db-recovery-job.yml` - postgres toggle recovery mode via
-     touched recovery.signal file~~
-  3. restart postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1`
+  ~~ Not with postgresql-ha
+  3. job: `postgres-db-recovery-job.yml` - postgres toggle recovery mode via
+     touched `/bitnami/postgresql/data/recovery.signal` file
+  4. remove `recovery.signal`
+  5. restart postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1`
      postgresql-ha container will auto recover.
-  4. restart pgpool
-
+  6. restart pgpool
+  7. Verify pgbackrest is shutdown and not locked
+     * `ps aux | grep pgbackrest`; kill any active pgbackrest backing up process (not archive push)
+     * `rm -rf /tmp/pgbackrest`: remove lock files for process
+  7. Run `jobs/pgbackrest-db-backup-full-job.yml` to sync archive to ensure disk
+     space doesn't run away.
+  8. Generally pgbackrest job will spin another job pod automatically if
+     connection dropped, until finished
 
 1. Create Stanza
 
@@ -743,6 +749,7 @@ For postgresql-ha: initial pod launches recovery and standby mode; have to scale
 down and back up to toggle into master.
 
 * `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1` (recovery)
+  * might make noise about primary vs secondary, its ok, wait for loading to complete
 * `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0` (down for restart)
 * `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1` (live)
 
