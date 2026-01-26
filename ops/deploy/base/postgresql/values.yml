@@ -29,7 +29,7 @@ postgresql:
     requests:
       memory: "2Gi"
     limits:
-      memory: "6Gi"
+      memory: "5Gi"
   livenessProbe:
      # replica can be unresponsive on initial large db clone
      # can lead to repeated pod restart unless liveness delayed

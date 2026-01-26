@@ -60,7 +60,7 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "1Gi"
+              memory: "1400Mi"
             limits:
               memory: "3200Mi"
           envFrom:

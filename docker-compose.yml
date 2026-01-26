@@ -23,7 +23,7 @@ services:
       - .env.dev
 
   traefik:
-    image: "traefik:v2.11.8"
+    image: "traefik:v2.11.31"
     container_name: "traefik"
     command:
       - "--api.insecure=true"
@@ -32,7 +32,6 @@ services:
       - "--entrypoints.dashboard.address=:8081"
       - "--entrypoints.apiEntryPoint.address=:8000"
       - "--entrypoints.traefik.address=:9999"  # internal
-
     ports:
       - 8081:8081  # dashboard port
       - 8080:8000  # map traefik to api (apiEntryPoint address port)
