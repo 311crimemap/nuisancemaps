@@ -29,13 +29,20 @@ variable primary_server_type {
   type = string
   description = "server class / instance type on hetzner"
   #
-  # | name  | vCPU | RAM | SSD | Traffic | Price |
+  # | name  | vCPU | RAM | SSD | Traffic | Price $ |
   # | --------------------------------------------
-  # | cpx11 |  2   |  2  |  40 |   20    |  3.85 |
-  # | cpx21 |  3   |  4  |  80 |   20    |  7.05 |
-  # | cpx31 |  4   |  8  | 160 |   20    | 13.10 |
-  # | cpx41 |  8   |  16 | 240 |   20    | 24.70 |
+  # |
+  # |  shared
+  # |  CX33 |  4   |  8  |  80 |   20    |  7.99  |
+  # |  CX43 |  8   |  16 | 160 |   20    |  13.99 |
+  # |  CX53 |  16  |  32 | 320 |   20    |  26.99 |
+  # |
+  # |  newer
+  # |  CPX32|  4   |  8  | 160 |   20    |  15.99 |
+  # |  CPX42|  8   |  16 | 320 |   20    |  29.99 |
+  # |  CPX52|  12  |  24 | 480 |   20    |  42.99 |
   #
+
 }
 
 variable replica_server_type {
