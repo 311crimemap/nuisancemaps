@@ -78,9 +78,9 @@ NB: `SSH_KEY` likely has suffix `**-hetzner`.
 
 Validate and build image
 
-`packer validate ubuntu.pkr.hcl`
+`packer validate -var-file="ubuntu.pkrvars.hcl ubuntu.pkr.hcl`
 
-`packer build ubuntu.pkr.hcl`
+`packer build -var-file="ubuntu.pkrvars.hcl ubuntu.pkr.hcl`
 
 See [Packer](./infra/packer) for details, information re: using vagrant.
 
