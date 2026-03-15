@@ -30,4 +30,4 @@ spec:
         - key: node.kubernetes.io/class_id
           operator: In
           values:
-          - app
+          - gen

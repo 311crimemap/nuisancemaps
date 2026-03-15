@@ -6,25 +6,110 @@ global:
 
 alertmanager:
   alertmanagerSpec:
-    nodeSelector:
-      node.kubernetes.io/class_id: cntrl
+    affinity:
+      nodeAffinity:
+        # Preference: Prefer `node.kubernetes.io/class_id=cntrl`
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: node.kubernetes.io/class_id
+                  operator: In
+                  values:
+                    - cntrl
+          # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+          - weight: 10
+            preference:
+              matchExpressions:
+                - key: node.kubernetes.io/class_id
+                  operator: In
+                  values:
+                    - gen
 
 #works
 prometheusOperator:
-  nodeSelector:
-    node.kubernetes.io/class_id: cntrl
+  affinity:
+    nodeAffinity:
+      # Preference: Prefer `node.kubernetes.io/class_id=cntrl`
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/class_id
+                operator: In
+                values:
+                  - cntrl
+        # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+        - weight: 10
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/class_id
+                operator: In
+                values:
+                  - gen
 
 prometheus:
   prometheusSpec:
-    nodeSelector:
-      node.kubernetes.io/class_id: cntrl
+    affinity:
+      nodeAffinity:
+        # Preference: Prefer `node.kubernetes.io/class_id=cntrl`
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: node.kubernetes.io/class_id
+                  operator: In
+                  values:
+                    - cntrl
+          # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+          - weight: 10
+            preference:
+              matchExpressions:
+                - key: node.kubernetes.io/class_id
+                  operator: In
+                  values:
+                    - gen
 
 #work
 grafana:
-  nodeSelector:
-    node.kubernetes.io/class_id: cntrl
+  affinity:
+    nodeAffinity:
+      # Preference: Prefer `node.kubernetes.io/class_id=cntrl`
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/class_id
+                operator: In
+                values:
+                  - cntrl
+        # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+        - weight: 10
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/class_id
+                operator: In
+                values:
+                  - gen
 
 # works
 kube-state-metrics:
-  nodeSelector:
-    node.kubernetes.io/class_id: cntrl
+  affinity:
+    nodeAffinity:
+      # Preference: Prefer `node.kubernetes.io/class_id=cntrl`
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/class_id
+                operator: In
+                values:
+                  - cntrl
+        # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+        - weight: 10
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/class_id
+                operator: In
+                values:
+                  - gen

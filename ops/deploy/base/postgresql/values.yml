@@ -38,7 +38,7 @@ postgresql:
   labels:
     kind: statefulSet
   nodeSelector:
-    node.kubernetes.io/class_id: db
+    node.kubernetes.io/class_id: gen
 
     #
     # Attempt to pin statefulSets to node
@@ -178,7 +178,7 @@ pgpool:
 # automatically provisions PV and PVC; one per each node
 persistence:
   storageClass: local-path
-  size: 30Gi
+  size: 60Gi
 
 persistentVolumeClaimRetentionPolicy:
   enabled: true
