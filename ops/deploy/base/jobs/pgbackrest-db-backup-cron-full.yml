@@ -5,6 +5,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: pgbackrest-db-backup-cron-full
+  namespace: core-db
   annotations:
     description: Pod run on control node to run kubectl commands
 spec:

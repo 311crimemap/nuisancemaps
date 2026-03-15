@@ -5,6 +5,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: spring-api-restricted-ingress
+  namespace: crimemap
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: default-allow-internal@kubernetescrd
     traefik.ingress.kubernetes.io/router.entrypoints: websecure,web

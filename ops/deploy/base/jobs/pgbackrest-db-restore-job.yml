@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: pgbackrest-db-restore
+  namespace: core-db
 spec:
   template:
     spec:

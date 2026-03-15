@@ -23,11 +23,11 @@ export $(grep -E '^(PGBACKREST_REPO2_S3_(REGION|ENDPOINT|BUCKET))' ../../.env | 
 envsubst '${PGBACKREST_REPO2_S3_REGION} ${PGBACKREST_REPO2_S3_ENDPOINT} ${PGBACKREST_REPO2_S3_BUCKET}' < production/postgresql/pgbackrest-configmap.yml | kubectl apply -f -
 
 # liquibase (migrations)
-kubectl delete configmap liquibase-properties-configmap --ignore-not-found=true
-kubectl create configmap liquibase-properties-configmap --from-file=../../api/src/main/resources/liquibase.properties
+kubectl delete configmap liquibase-properties-configmap -n crimemap --ignore-not-found=true
+kubectl create configmap liquibase-properties-configmap -n crimemap --from-file=../../api/src/main/resources/liquibase.properties
 
-kubectl delete configmap liquibase-changelog-master-configmap --ignore-not-found=true
-kubectl create configmap liquibase-changelog-master-configmap --from-file=../../api/src/main/resources/db/changelog-master.yml
+kubectl delete configmap liquibase-changelog-master-configmap -n crimemap --ignore-not-found=true
+kubectl create configmap liquibase-changelog-master-configmap -n crimemap --from-file=../../api/src/main/resources/db/changelog-master.yml
 
-kubectl delete configmap liquibase-changelogs-configmap --ignore-not-found=true
-kubectl create configmap liquibase-changelogs-configmap --from-file=../../api/src/main/resources/db/changelogs
+kubectl delete configmap liquibase-changelogs-configmap -n crimemap --ignore-not-found=true
+kubectl create configmap liquibase-changelogs-configmap -n crimemap --from-file=../../api/src/main/resources/db/changelogs

@@ -5,6 +5,7 @@ metadata:
   labels:
     app: spring-worker
   name: spring-worker
+  namespace: crimemap
 spec:
   replicas: 1
   selector:
