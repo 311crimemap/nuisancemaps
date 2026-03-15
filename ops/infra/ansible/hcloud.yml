@@ -6,6 +6,7 @@ plugin: hcloud
 locations:
   - hil
   - nbg1
+  - fsn1
 #types:
   #- cpx11
 status:
