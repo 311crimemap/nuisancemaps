@@ -44,7 +44,7 @@ postgresql:
     # Attempt to pin statefulSets to node
     # statefulSets create pods in order (postgresql-0, postgresql-1..)
     #
-    # pod-0 is scheduled first and weighted to schedule on node db-0
+    # pod-0 is scheduled first and weighted to schedule on node gen-0
     #
     # pod-N: subsequent replica pods use podAntityAffinity to be scheduled
     # on all other nodes
@@ -52,7 +52,7 @@ postgresql:
     #
     #   no strict guarantee to exactly map replica pod to node ordinal
     #   but I think it's OK to have replicas on nodes > 0, as long as
-    #   primary can be placed on db-0.
+    #   primary can be placed on gen-0.
     #
 
   affinity:
@@ -64,7 +64,7 @@ postgresql:
           - key: node.kubernetes.io/class_instance
             operator: In
             values:
-              - "db-0"
+              - "gen-0"
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
@@ -168,7 +168,7 @@ pgpool:
     repository: bitnamilegacy/pgpool
   configurationCM: pgpool-configmap
   nodeSelector:
-    node.kubernetes.io/class_instance: db-0
+    node.kubernetes.io/class_instance: gen-0
   resources:
     requests:
       memory: "512Mi"

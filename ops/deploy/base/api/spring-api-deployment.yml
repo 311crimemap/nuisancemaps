@@ -36,14 +36,14 @@ spec:
                     operator: In
                     values:
                       - app
-            # Lower priority preference for `node.kubernetes.io=db-0`
+            # Lower priority preference for `node.kubernetes.io=gen-0`
             - weight: 10
               preference:
                 matchExpressions:
                   - key: node.kubernetes.io/class_instance
                     operator: In
                     values:
-                      - db-0
+                      - gen-0
       imagePullSecrets:
         - name: regcred
       containers:
