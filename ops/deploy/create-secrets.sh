@@ -17,6 +17,14 @@ kubectl create secret generic cloudflare-api-token-secrets \
         --from-literal=api-token=$CLOUDFLARE_API_TOKEN
 
 # ECR
+kubectl delete secret regcred -n crimemap --ignore-not-found=true
+kubectl create secret docker-registry regcred \
+        -n crimemap \
+        --docker-server=$IMAGE_REPO \
+        --docker-username=AWS \
+        --docker-password=`aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION` \
+        --docker-email=abc@abc.com
+
 kubectl delete secret regcred --ignore-not-found=true
 kubectl create secret docker-registry regcred \
         --docker-server=$IMAGE_REPO \
@@ -28,6 +36,15 @@ kubectl create secret docker-registry regcred \
 kubectl delete secret postgresql-secrets -n core-db --ignore-not-found=true
 kubectl create secret generic postgresql-secrets \
         -n core-db \
+        --from-literal=POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD \
+        --from-literal=POSTGRESQL_POSTGRES_PASSWORD=$POSTGRESQL_POSTGRES_PASSWORD \
+        --from-literal=password=$POSTGRESQL_PASSWORD \
+        --from-literal=repmgr-password=$REPMGR_PASSWORD \
+        --from-literal=admin-password=$PGPOOL_PASSWORD
+
+kubectl delete secret postgresql-secrets -n crimemap --ignore-not-found=true
+kubectl create secret generic postgresql-secrets \
+        -n crimemap \
         --from-literal=POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD \
         --from-literal=POSTGRESQL_POSTGRES_PASSWORD=$POSTGRESQL_POSTGRES_PASSWORD \
         --from-literal=password=$POSTGRESQL_PASSWORD \

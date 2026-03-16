@@ -23,7 +23,7 @@ spec:
         command: ["bin/bash", "-c"]
         args:
           - |
-            kubectl exec -it crimemap-db-postgresql-ha-postgresql-0 -- \
+            kubectl exec -it core-db-postgresql-ha-postgresql-0 -- \
             env PGPASSWORD="$PGPASSWORD" pgbackrest --stanza=311crimemap --log-level-console=detail --repo=2 \
             --archive-timeout=1d --type=full backup
         envFrom:
