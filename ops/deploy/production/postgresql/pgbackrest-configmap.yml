@@ -16,7 +16,7 @@ data:
     [global:archive-push]
     process-max=2
 
-    [311crimemap]
+    [${PGBACKREST_STANZA}]
     pg1-user=postgres
     pg1-path=/bitnami/postgresql/data
     pg1-database=nuisancemaps
@@ -41,7 +41,7 @@ data:
 
   archive.conf: |
     archive_mode = on
-    archive_command = 'pgbackrest --stanza=311crimemap archive-push %p'
+    archive_command = 'pgbackrest --stanza=${PGBACKREST_STANZA} archive-push %p'
 
   run.sh: |
     #!/bin/bash

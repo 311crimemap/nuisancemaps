@@ -24,7 +24,7 @@ spec:
         args:
           - |
             kubectl exec -it core-db-postgresql-ha-postgresql-0 -- \
-            env PGPASSWORD="$PGPASSWORD" pgbackrest --stanza=311crimemap --log-level-console=detail --repo=2 \
+            env PGPASSWORD="$PGPASSWORD" pgbackrest --stanza="$PGBACKREST_STANZA" --log-level-console=detail --repo=2 \
             --archive-timeout=1d --type=full backup
         envFrom:
           - configMapRef:

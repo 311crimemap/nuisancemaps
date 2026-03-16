@@ -682,7 +682,7 @@ kubectl get -n core-db cronjobs
 
 Raw command line
 ```
-PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap --log-level-console=detail --type=full --archive-timeout=1d backup
+PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza="$PGBACKREST_STANZA" --log-level-console=detail --type=full --archive-timeout=1d backup
 ```
 
 ### DB Recovery
@@ -717,7 +717,7 @@ not just bash in container)
 ```
 kubectl exec -n core-db -it postgres-0 -- bash
 
-PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap stanza-create
+PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza="$PGBACKREST_STANZA" stanza-create
 pgbackrest check
 ```
 
@@ -739,7 +739,7 @@ shorter ids)
 ```
 # restore from incremental backup
 
-pgbackrest --stanza=311crimemap --repo=2 --delta \
+pgbackrest --stanza="$PGBACKREST_STANZA" --repo=2 --delta \
     --set=20240702-211456F_20240702-212513D \
     --log-level-console=detail restore
 
@@ -769,7 +769,7 @@ kubectl get pods
 kubectl kubectl exec -it postgres-db-recovery-xxxx bash
 
 # in container
-pgbackrest --stanza=311crimemap stanza-upgrade
+pgbackrest --stanza="$PGBACKREST_STANZA" stanza-upgrade
 
 ```
 
@@ -788,7 +788,7 @@ Run pgbackrest backup to build local machine copy alongside s3
 
 ```
 kubectl exec -it postgresql-0 -- bash
-PGPASSWORD=xxxx pgbackrest --stanza=311crimemap --repo=1 --log-level-console=detail --type=full backup
+PGPASSWORD=xxxx pgbackrest --stanza="$PGBACKREST_STANZA" --repo=1 --log-level-console=detail --type=full backup
 
 ```
 
