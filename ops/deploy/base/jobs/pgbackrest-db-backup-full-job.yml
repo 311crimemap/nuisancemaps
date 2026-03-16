@@ -34,7 +34,7 @@ spec:
             echo "Launching pgbackrest on database pod..."
             kubectl exec core-db-postgresql-ha-postgresql-0 -- \
             bash -c "nohup env PGPASSWORD='$PGPASSWORD' pgbackrest \
-            --stanza=311crimemap \
+            --stanza='$PGBACKREST_STANZA' \
             --log-level-console=detail \
             --repo=2 \
             --archive-timeout=1d \

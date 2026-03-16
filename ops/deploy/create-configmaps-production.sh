@@ -20,7 +20,8 @@ kubectl apply -f production/postgresql/postgresql-configmap.yml
 
 # pgbackrest
 export $(grep -E '^(PGBACKREST_REPO2_S3_(REGION|ENDPOINT|BUCKET))' ../../.env | xargs)
-envsubst '${PGBACKREST_REPO2_S3_REGION} ${PGBACKREST_REPO2_S3_ENDPOINT} ${PGBACKREST_REPO2_S3_BUCKET}' < production/postgresql/pgbackrest-configmap.yml | kubectl apply -f -
+export $(grep -E '^(PGBACKREST_STANZA)' ../../.env | xargs)
+envsubst '${PGBACKREST_REPO2_S3_REGION} ${PGBACKREST_REPO2_S3_ENDPOINT} ${PGBACKREST_REPO2_S3_BUCKET} ${PGBACKREST_STANZA}' < production/postgresql/pgbackrest-configmap.yml | kubectl apply -f -
 
 # liquibase (migrations)
 kubectl delete configmap liquibase-properties-configmap -n crimemap --ignore-not-found=true

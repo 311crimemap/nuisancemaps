@@ -20,7 +20,7 @@ spec:
         command: ["bin/bash", "-c"]
         args:
           - |
-            pgbackrest --stanza=311crimemap --repo=2 --delta \
+            pgbackrest --stanza="$PGBACKREST_STANZA" --repo=2 --delta \
              --log-level-console=detail restore
 
         envFrom:
