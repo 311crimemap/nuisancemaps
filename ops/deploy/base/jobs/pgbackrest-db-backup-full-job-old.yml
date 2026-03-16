@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: pgbackrest-db-backup-full
+  namespace: core-db
   annotations:
     description: pod run on control node to run kubectl commands
 spec:
@@ -22,7 +23,7 @@ spec:
         command: ["bin/bash", "-c"]
         args:
           - |
-            kubectl exec -it crimemap-db-postgresql-ha-postgresql-0 -- \
+            kubectl exec -it core-db-postgresql-ha-postgresql-0 -- \
             env PGPASSWORD="$PGPASSWORD" pgbackrest --stanza=311crimemap --log-level-console=detail --repo=2 \
             --archive-timeout=1d --type=full backup
         envFrom:

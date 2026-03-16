@@ -7,11 +7,12 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: postgres-db-recovery
+  namespace: core-db
 spec:
   template:
     spec:
       nodeSelector:
-        node.kubernetes.io/class_instance: db-0
+        node.kubernetes.io/class_instance: gen-0
 
       # https://docs.bitnami.com/tutorials/running-non-root-containers-on-openshift#volumes-in-kubernetes
       securityContext:
@@ -119,7 +120,7 @@ spec:
           # NB: helm auto-generates the claimName:
           # "data" - helm project - image container - statefulset - ordinal
           persistentVolumeClaim:
-            claimName: data-crimemap-db-postgresql-ha-postgresql-0
+            claimName: data-core-db-postgresql-ha-postgresql-0
 
         - name: pgbackrest-configmap-volume
           configMap:

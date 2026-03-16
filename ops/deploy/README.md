@@ -41,7 +41,6 @@ configmap files (pgbackrest)
 * `export $(grep -E '^(CERT_MANAGER_EMAIL)' ../../.env)`
 * `envsubst '${CERT_MANAGER_EMAIL}' < production/cert-manager-issuer.yml | kubectl apply -f -`  # PRODUCTION
 * `envsubst '${CERT_MANAGER_EMAIL}' < staging/cert-manager-issuer.yml | kubectl apply -f -`     # STAGING
-
     * Verify: `kubectl describe clusterissuer`
 * `kubectl apply -f <env>/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
@@ -79,7 +78,7 @@ helm repo update
 ##### Deployments / Service
 
 * `kubectl apply -f base/postgresql/`
-* `helm install crimemap-db bitnami/postgresql-ha --version 14.3.1 -f base/postgresql/values.yml`
+* `helm install core-db bitnami/postgresql-ha --namespace core-db --version 14.3.1 -f base/postgresql/values.yml`
   * Pin versions - Chart v. 14.3.1, App v. 16.4.0 (Repmgr update bug keep at 5.4)
 * `deploy-api.sh`
 * `deploy-worker.sh`
@@ -103,13 +102,13 @@ kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"
 1. Ensure `postgresql-0` is primary; (or delete postgresql-1 pod to ping pong primary back to 0)
 2. adjust `base/postgresql/pgpool-configmap.yml` to comment/uncomment backend_1 replica host and apply.
 3. `kubectl get statefulset`
-   * `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1`
+   * `kubectl scale statefulset core-db-postgresql-ha-postgresql -n core-db --replicas=1`
 4. Update `values.yml` `postgresql.replicaCount` to match values.
 
 AVOID any `helm upgrade` commands. This will restart each statefulset pod with
 rollingUpdate; this triggers primary to replica failover.
-* `DO NOT: helm upgrade crimemap-db bitnami/postgresql-ha -f values.yml`
-* `DO NOT: helm upgrade crimemap-db bitnami/postgresql-ha --set replicaCount=2 --reuse-values`
+* `DO NOT: helm upgrade core-db bitnami/postgresql-ha -n core-db -f values.yml`
+* `DO NOT: helm upgrade core-db bitnami/postgresql-ha -n core-db --set replicaCount=2 --reuse-values`
 
 Depending on infra changes, may also need to delete `pvc` / `pv` if spinning down.
 
@@ -142,9 +141,9 @@ Depending on infra changes, may also need to delete `pvc` / `pv` if spinning dow
 
 ```
 
-kubectl delete -f <manifest>
+kubectl delete -n <namespace> -f <manifest>
 
-helm uninstall <name / e.g. crimemap-db>
+helm uninstall <name / e.g. core-db>
 
 #
 # clean up and disables from further scheduling
@@ -545,6 +544,9 @@ To expose service, need to link a Service Monitor resource to Service:
    * add `spec.selector.matchLabels`: match Service label above key: value
    * set `endpoints.port`: match the `ports.name` in Service
 
+3. Grafana:
+   * Add prometheus as a data source
+   * URL: `http://prometheus-kube-prometheus-prometheus.default.svc.cluster.local:9090`
 ```
 #
 # service
@@ -626,12 +628,12 @@ See `nuisancemaps/db/README.md` for specifics with `postgresql-ha`, parallelism
 and directory dump/restore.
 
 ```
-kubectl exec crimemap-db-postgresql-ha-postgresql-0 -- pg_dump -U postgres -d nuisancemaps |  gzip  > nuisancemaps_prod.sql.gz
+kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- pg_dump -U postgres -d nuisancemaps |  gzip  > nuisancemaps_prod.sql.gz
 ```
 
 ```
 # .dump compression which frankly, is kind of troublesome
-kubectl exec crimemap-db-postgresql-ha-postgresql-0 -- pg_dump -U postgres -Fc nuisancemaps | cat > nuisancemaps_prod.dump
+kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- pg_dump -U postgres -Fc nuisancemaps | cat > nuisancemaps_prod.dump
 ```
 
 Restore dev - ensure file is available (`/temp` mount) in `docker-compose.yml`,
@@ -674,8 +676,8 @@ Smaller backup footprint, and more up to date.
 Job check:
 
 ```
-kubectl get jobs
-kubectl get cronjobs
+kubectl get -n crimemap jobs
+kubectl get -n core-db cronjobs
 ```
 
 Raw command line
@@ -686,13 +688,13 @@ PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap --log-level-cons
 ### DB Recovery
 
 * General process:
-  1. stop postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0`
+  1. stop postgres: `kubectl scale statefulset -n core-db core-db-postgresql-ha-postgresql -n core-db  --replicas=0`
   2. job: `pgbackrest-db-restore-job.yml` -retrieve backup on to filesystem
   ~~ Not with postgresql-ha
   3. job: `postgres-db-recovery-job.yml` - postgres toggle recovery mode via
      touched `/bitnami/postgresql/data/recovery.signal` file
   4. remove `recovery.signal`
-  5. restart postgres: `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1`
+  5. restart postgres: `kubectl scale statefulset core-db-postgresql-ha-postgresql -n core-db --replicas=1`
      postgresql-ha container will auto recover.
   6. restart pgpool
   7. Verify pgbackrest is shutdown and not locked
@@ -713,7 +715,7 @@ Note this needs to be exec'd in a postgres container actively running pg. (e.g.
 not just bash in container)
 
 ```
-kubectl exec -it postgres-0 -- bash
+kubectl exec -n core-db -it postgres-0 -- bash
 
 PGPASSWORD="$POSTGRES_PASSWORD" pgbackrest --stanza=311crimemap stanza-create
 pgbackrest check
@@ -725,8 +727,8 @@ pgbackrest check
 Need to shutdown pg statefulset (scale 0), and run `pgbackrest-db-restore` job
 which mounts the volume and executes restore.
 
-* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0`
-* `kubectl apply -f jobs/pgbackrest-db-restore-job.yml`
+* `kubectl scale statefulset core-db-postgresql-ha-postgresql -n core-db --replicas=0`
+* `kubectl apply -f base/jobs/pgbackrest-db-restore-job.yml`
 
 For initial restore to different environment, may need to specify the latest
 backup set, and modify the job command:
@@ -748,10 +750,10 @@ pgbackrest --stanza=311crimemap --repo=2 --delta \
 For postgresql-ha: initial pod launches recovery and standby mode; have to scale
 down and back up to toggle into master.
 
-* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1` (recovery)
+* `kubectl scale statefulset core-db-postgresql-ha-postgresql -n core-db --replicas=1` (recovery)
   * might make noise about primary vs secondary, its ok, wait for loading to complete
-* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=0` (down for restart)
-* `kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1` (live)
+* `kubectl scale statefulset core-db-postgresql-ha-postgresql -n core-db --replicas=0` (down for restart)
+* `kubectl scale statefulset core-db-postgresql-ha-postgresql -n core-db --replicas=1` (live)
 
 
 ---
