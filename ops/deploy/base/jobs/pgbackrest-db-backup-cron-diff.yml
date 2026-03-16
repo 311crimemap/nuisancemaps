@@ -16,7 +16,7 @@ spec:
         spec:
           hostNetwork: true
           nodeSelector:
-            node.kubernetes.io/class_instance: cntrl-0
+            node.kubernetes.io/class_id: gen
 
           # Need to enable hostPath access
           securityContext:
@@ -31,13 +31,13 @@ spec:
                 set -e
                 # 0. Prep: Clear old logs so we don't read stale 'success' messages
                 echo "Cleaning up old logs..."
-                kubectl exec core-db-postgresql-ha-postgresql-0 -- rm -f /tmp/backup.log
+                kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- rm -f /tmp/backup.log
                 #echo "Cleaning up prior process..."
                 #kubectl exec core-db-postgresql-ha-postgresql-0 -- rm -rf /tmp/pgbackrest
 
                 # 1. Start backup and decouple it from this session
                 echo "Launching pgbackrest on database pod..."
-                kubectl exec core-db-postgresql-ha-postgresql-0 -- \
+                kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- \
                 bash -c "nohup env PGPASSWORD='$PGPASSWORD' pgbackrest \
                 --stanza=311crimemap \
                 --log-level-console=detail \
@@ -50,14 +50,14 @@ spec:
                 echo "Entering monitor loop (resilient to Hetzner idle timeouts)..."
                 while true; do
                 # check if the process is still there
-                if ! kubectl exec core-db-postgresql-ha-postgresql-0 -- bash -c "ps -ef | grep [p]gbackrest | grep -v defunct | grep -v archive-push" > /dev/null; then
+                if ! kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- bash -c "ps -ef | grep [p]gbackrest | grep -v defunct | grep -v archive-push" > /dev/null; then
                 echo "Active backup process finished."
                 break
                 fi
 
                 # Print a heartbeat to the Job logs
                 TIMESTAMP=$(date '+%H:%M:%S')
-                LOG_LINE=$(kubectl exec core-db-postgresql-ha-postgresql-0 -- tail -n 1 /tmp/backup.log)
+                LOG_LINE=$(kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- tail -n 1 /tmp/backup.log)
                 echo "[$TIMESTAMP] Status: $LOG_LINE"
 
                 # Wait 30 seconds - well below the 8-minute Hetzner drop
@@ -66,11 +66,11 @@ spec:
 
                 # 3. Final Verification
                 echo "Backup process ended. Verifying results..."
-                if kubectl exec core-db-postgresql-ha-postgresql-0 -- grep -q "completed successfully" /tmp/backup.log; then
+                if kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- grep -q "completed successfully" /tmp/backup.log; then
                 echo "SUCCESS: Full backup verified."
                 else
                 echo "ERROR: Backup failed. Last 20 lines of log:"
-                kubectl exec core-db-postgresql-ha-postgresql-0 -- tail -n 20 /tmp/backup.log
+                kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- tail -n 20 /tmp/backup.log
                 exit 1
                 fi
 

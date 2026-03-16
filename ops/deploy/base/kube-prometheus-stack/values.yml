@@ -17,7 +17,7 @@ alertmanager:
                   operator: In
                   values:
                     - cntrl
-          # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+          # Lower priority preference for `node.kubernetes.io/class_id=gen`
           - weight: 10
             preference:
               matchExpressions:
@@ -39,7 +39,7 @@ prometheusOperator:
                 operator: In
                 values:
                   - cntrl
-        # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+        # Lower priority preference for `node.kubernetes.io/class_id=gen`
         - weight: 10
           preference:
             matchExpressions:
@@ -66,7 +66,7 @@ prometheus:
                   operator: In
                   values:
                     - cntrl
-          # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+          # Lower priority preference for `node.kubernetes.io/class_id=gen`
           - weight: 10
             preference:
               matchExpressions:
@@ -110,7 +110,7 @@ kube-state-metrics:
                 operator: In
                 values:
                   - cntrl
-        # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+        # Lower priority preference for `node.kubernetes.io/class_id=gen`
         - weight: 10
           preference:
             matchExpressions:
