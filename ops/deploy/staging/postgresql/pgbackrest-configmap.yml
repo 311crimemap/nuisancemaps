@@ -4,6 +4,7 @@ metadata:
   name: pgbackrest-configmap
   namespace: core-db
 data:
+  PGBACKREST_STANZA: "${PGBACKREST_STANZA}"
   pgbackrest.conf: |
     [global]
     log-level-console=info
@@ -19,7 +20,7 @@ data:
     [${PGBACKREST_STANZA}]
     pg1-user=postgres
     pg1-path=/bitnami/postgresql/data
-    pg1-database=nuisancemaps
+    pg1-database=postgres # default database to connect to (not backup)
     # log-path=/backup_db/pgbackrest
 
     # "local" backup
