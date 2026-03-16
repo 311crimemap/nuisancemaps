@@ -41,7 +41,6 @@ configmap files (pgbackrest)
 * `export $(grep -E '^(CERT_MANAGER_EMAIL)' ../../.env)`
 * `envsubst '${CERT_MANAGER_EMAIL}' < production/cert-manager-issuer.yml | kubectl apply -f -`  # PRODUCTION
 * `envsubst '${CERT_MANAGER_EMAIL}' < staging/cert-manager-issuer.yml | kubectl apply -f -`     # STAGING
-
     * Verify: `kubectl describe clusterissuer`
 * `kubectl apply -f <env>/api/spring-api-ingress.yml`
   * Verify: `kubectl get cert`  # 30 sec; should read "READY True"
@@ -545,6 +544,9 @@ To expose service, need to link a Service Monitor resource to Service:
    * add `spec.selector.matchLabels`: match Service label above key: value
    * set `endpoints.port`: match the `ports.name` in Service
 
+3. Grafana:
+   * Add prometheus as a data source
+   * URL: `http://prometheus-kube-prometheus-prometheus.default.svc.cluster.local:9090`
 ```
 #
 # service
@@ -726,7 +728,7 @@ Need to shutdown pg statefulset (scale 0), and run `pgbackrest-db-restore` job
 which mounts the volume and executes restore.
 
 * `kubectl scale statefulset core-db-postgresql-ha-postgresql -n core-db --replicas=0`
-* `kubectl apply -f jobs/pgbackrest-db-restore-job.yml`
+* `kubectl apply -f base/jobs/pgbackrest-db-restore-job.yml`
 
 For initial restore to different environment, may need to specify the latest
 backup set, and modify the job command:

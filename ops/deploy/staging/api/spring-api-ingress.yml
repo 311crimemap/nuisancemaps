@@ -13,9 +13,6 @@ spec:
   tls:
   - hosts:
     - staging-api.311crimemap.com
-    - staging-grafana.311crimemap.com
-    # - staging-prometheus.311crimemap.com
-
     #
     # NB: tls secret persists without running cert manager / issuer containers
     # containers only used for validation (initial, renewal) of cert.
@@ -35,16 +32,6 @@ spec:
                 name: spring-api-service
                 port:
                   number: 8080
-    - host: staging-grafana.311crimemap.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: prometheus-grafana
-                port:
-                  number: 80
     #
     # NB: don't necessarily want to expose this publicly, but config is shown
     #

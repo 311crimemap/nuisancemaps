@@ -1,18 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: spring-api-ingress
-  namespace: crimemap
+  name: grafana-ingress
   annotations:
     kubernetes.io/ingress.class: "traefik"
     cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
-    traefik.ingress.kubernetes.io/router.middlewares: default-compress-middleware@kubernetescrd
 
 spec:
   ingressClassName: traefik
   tls:
   - hosts:
-    - api.311crimemap.com
+    - staging-grafana.311crimemap.com
+
     #
     # NB: tls secret persists without running cert manager / issuer containers
     # containers only used for validation (initial, renewal) of cert.
@@ -20,16 +19,28 @@ spec:
     # once validated cert is dumped (encoded) into secret.
     # cert is tied to secret, not container lifecycle.
     #
-    secretName: 311crimemap-com-tls
+    secretName: grafana-311crimemap-com-tls
   rules:
-    # NB: catches all when no host
-    - host: api.311crimemap.com
+    - host: staging-grafana.311crimemap.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: spring-api-service
+                name: prometheus-grafana
                 port:
-                  number: 8080
+                  number: 80
+    #
+    # NB: don't necessarily want to expose this publicly, but config is shown
+    #
+    # - host: staging-prometheus.311crimemap.com
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: prometheus-kube-prometheus-prometheus
+    #             port:
+    #               number: 9090

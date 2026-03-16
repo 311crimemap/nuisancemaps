@@ -50,6 +50,11 @@ prometheusOperator:
 
 prometheus:
   prometheusSpec:
+    serviceMonitorNamespaceSelector:
+      matchLabels: {}  # watch all namespaces
+    serviceMonitorSelector:
+      matchLabels:
+        release: prometheus
     affinity:
       nodeAffinity:
         # Preference: Prefer `node.kubernetes.io/class_id=cntrl`
@@ -83,7 +88,7 @@ grafana:
                 operator: In
                 values:
                   - cntrl
-        # Lower priority preference for `node.kubernetes.io/class_id=gen-0`
+        # Lower priority preference for `node.kubernetes.io/class_id=gen
         - weight: 10
           preference:
             matchExpressions:
