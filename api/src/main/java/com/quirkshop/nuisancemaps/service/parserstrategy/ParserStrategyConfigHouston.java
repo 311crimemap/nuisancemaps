@@ -57,7 +57,8 @@ public class ParserStrategyConfigHouston {
             String text = row.get("Occurrence Date");
             Integer hour = Integer.parseInt(row.getOrDefault("Occurrence Hour", "0"));
 
-            List<DateTimeFormatter> formatters = Arrays.asList(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            List<DateTimeFormatter> formatters = Arrays.asList(DateTimeFormatter.ofPattern("M/d/yyyy"),
+                                                               DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
             LocalDate date = null;
             for (DateTimeFormatter inputFormatter : formatters) {
