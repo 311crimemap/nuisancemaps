@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: spring-liquibase-migration
+  namespace: crimemap
 spec:
   template:
     spec:

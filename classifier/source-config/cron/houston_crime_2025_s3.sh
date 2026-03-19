@@ -7,8 +7,8 @@
 # see `crontab -l` for usage
 #
 
-URL=https://www.houstontx.gov/police/cs/xls/NIBRSPublicView2025.xlsx
-FILE=NIBRSPublicView2025.xlsx
+URL=https://www.houstontx.gov/police/cs/xls/NIBRSPublicView2025.csv
+FILE=NIBRSPublicView2025.csv
 
 date
 echo "[houston_crime_2025_s3] Downloading File"

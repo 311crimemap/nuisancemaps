@@ -189,6 +189,25 @@ public class ParserStrategyConfigMultiTest {
         assertThat(value).isEqualTo("2023-07-01T00:00:00");
     }
 
+    @Test
+    @Transactional
+    public void REPORTED_AT_JSON_EPOCHMILLIS_TEST()
+            throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.REPORTED_AT_JSON_EPOCHMILLIS).isNotNull();
+
+        String field = "date";
+        ObjectNode node = objectMapper.createObjectNode();
+        long l = 1697463540000L;
+        node.put(field, l);
+
+        MappingField mappingField = new MappingField();
+        mappingField.setField(field);
+        mappingField.setPointer("/" + field);
+
+        String value = ParserStrategyConfigMulti.REPORTED_AT_JSON_EPOCHMILLIS(node, mappingField);
+        assertThat(value).isEqualTo("2023-10-16T13:39:00");
+    }
+
     // Mar 31, 2017 08:21 AM
     @Test
     @Transactional

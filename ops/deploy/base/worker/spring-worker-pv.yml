@@ -13,6 +13,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: data-pv
+  namespace: crimemap
 spec:
   capacity:
     storage: 30Gi
@@ -30,4 +31,4 @@ spec:
         - key: node.kubernetes.io/class_id
           operator: In
           values:
-          - app
+          - gen

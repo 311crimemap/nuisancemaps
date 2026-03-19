@@ -5,6 +5,7 @@ metadata:
   labels:
     app: spring-api
   name: spring-api
+  namespace: crimemap
 spec:
   replicas: 1
   selector:
@@ -36,14 +37,14 @@ spec:
                     operator: In
                     values:
                       - app
-            # Lower priority preference for `node.kubernetes.io=db-0`
+            # Lower priority preference for `node.kubernetes.io=gen`
             - weight: 10
               preference:
                 matchExpressions:
-                  - key: node.kubernetes.io/class_instance
+                  - key: node.kubernetes.io/class_id
                     operator: In
                     values:
-                      - db-0
+                      - gen
       imagePullSecrets:
         - name: regcred
       containers:

@@ -5,6 +5,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: pgbackrest-db-backup-cron-full
+  namespace: core-db
   annotations:
     description: Pod run on control node to run kubectl commands
 spec:
@@ -15,7 +16,7 @@ spec:
         spec:
           hostNetwork: true
           nodeSelector:
-            node.kubernetes.io/class_instance: cntrl-0
+            node.kubernetes.io/class_id: gen
 
           # Need to enable hostPath access
           securityContext:
@@ -27,9 +28,52 @@ spec:
             command: ["bin/bash", "-c"]
             args:
               - |
-                kubectl exec -it crimemap-db-postgresql-ha-postgresql-0 -- \
-                env PGPASSWORD="$PGPASSWORD" pgbackrest --stanza=311crimemap --log-level-console=detail --repo=2 \
-                --archive-timeout=1d --type=full backup
+                set -e
+                # 0. Prep: Clear old logs so we don't read stale 'success' messages
+                echo "Cleaning up old logs..."
+                kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- rm -f /tmp/backup.log
+                #echo "Cleaning up prior process..."
+                #kubectl exec core-db-postgresql-ha-postgresql-0 -- rm -rf /tmp/pgbackrest
+
+                # 1. Start backup and decouple it from this session
+                echo "Launching pgbackrest on database pod..."
+                kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- \
+                bash -c "nohup env PGPASSWORD='$PGPASSWORD' pgbackrest \
+                --stanza='$PGBACKREST_STANZA' \
+                --log-level-console=detail \
+                --repo=2 \
+                --archive-timeout=1d \
+                --type=full backup > /tmp/backup.log 2>&1 &"
+                # --no-archive-check \ add this above if archive is missing / out of sync, and want to skip/jump to current backup
+
+                # 2. Poll using fresh, short-lived connections
+                echo "Entering monitor loop (resilient to Hetzner idle timeouts)..."
+                while true; do
+                # check if the process is still there
+                if ! kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- bash -c "ps -ef | grep [p]gbackrest | grep -v defunct | grep -v archive-push" > /dev/null; then
+                echo "Active backup process finished."
+                break
+                fi
+
+                # Print a heartbeat to the Job logs
+                TIMESTAMP=$(date '+%H:%M:%S')
+                LOG_LINE=$(kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- tail -n 1 /tmp/backup.log)
+                echo "[$TIMESTAMP] Status: $LOG_LINE"
+
+                # Wait 30 seconds - well below the 8-minute Hetzner drop
+                sleep 30
+                done
+
+                # 3. Final Verification
+                echo "Backup process ended. Verifying results..."
+                if kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- grep -q "completed successfully" /tmp/backup.log; then
+                echo "SUCCESS: Full backup verified."
+                else
+                echo "ERROR: Backup failed. Last 20 lines of log:"
+                kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- tail -n 20 /tmp/backup.log
+                exit 1
+                fi
+
             envFrom:
               - configMapRef:
                   name: pgbackrest-configmap

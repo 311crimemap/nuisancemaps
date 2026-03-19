@@ -50,6 +50,37 @@ public class ParserStrategyConfigHouston {
         return dateStr;
     }
 
+
+    public static String REPORTED_AT_CSV_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String text = row.get("Occurrence Date");
+            Integer hour = Integer.parseInt(row.getOrDefault("Occurrence Hour", "0"));
+
+            List<DateTimeFormatter> formatters = Arrays.asList(DateTimeFormatter.ofPattern("M/d/yyyy"),
+                                                               DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            LocalDate date = null;
+            for (DateTimeFormatter inputFormatter : formatters) {
+                try {
+                    date = LocalDate.parse(text, inputFormatter);
+                    break;
+                } catch (Exception e) {
+
+                }
+            }
+
+            LocalDateTime dateTime = date.atTime(hour, 0);
+            dateStr = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // DEPRECATED
     // 1/1/24 or also possibly 1/1/2024 given excel variability
     // hour: 0
     public static String REPORTED_AT_XLS_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
@@ -82,6 +113,29 @@ public class ParserStrategyConfigHouston {
         return dateStr;
     }
 
+
+    public static String ADDRESS_CSV_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
+        String address = null;
+        try {
+            String streetNo = row.get("Street Number");
+            String suffix = row.get("Street Suffix");
+            String streetName = row.get("Street Name");
+            String streetType = row.get("Street Type");
+            String city = row.get("City");
+            String zipcode = row.get("ZIP Code");
+
+            address = Stream.of(streetNo, suffix, streetName, streetType, city, zipcode)
+                    .filter(s -> s != null && !s.isEmpty())
+                    .collect(Collectors.joining(" "));
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return address;
+    }
+
+    // DEPRECATED
     public static String ADDRESS_XLS_CRIME_HOUSTON(Map<String, String> row, MappingField mappingField) {
         String address = null;
         try {

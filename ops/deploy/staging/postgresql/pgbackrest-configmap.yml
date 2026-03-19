@@ -2,7 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pgbackrest-configmap
+  namespace: core-db
 data:
+  PGBACKREST_STANZA: "${PGBACKREST_STANZA}"
   pgbackrest.conf: |
     [global]
     log-level-console=info
@@ -15,10 +17,10 @@ data:
     [global:archive-push]
     process-max=2
 
-    [311crimemap]
+    [${PGBACKREST_STANZA}]
     pg1-user=postgres
     pg1-path=/bitnami/postgresql/data
-    pg1-database=nuisancemaps
+    pg1-database=postgres # default database to connect to (not backup)
     # log-path=/backup_db/pgbackrest
 
     # "local" backup
@@ -39,7 +41,7 @@ data:
 
   archive.conf: |
     archive_mode = off
-    archive_command = 'pgbackrest --stanza=311crimemap archive-push %p'
+    archive_command = 'pgbackrest --stanza=${PGBACKREST_STANZA} archive-push %p'
 
   run.sh: |
     #!/bin/bash

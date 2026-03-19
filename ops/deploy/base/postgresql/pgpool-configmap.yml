@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pgpool-configmap
+  namespace: core-db
 data:
   pgpool.conf: |
 
@@ -18,8 +19,8 @@ data:
 
     #
     # NOTE: Make sure to scale statefulset to add/remove replica:
-    # * kubectl scale statefulset crimemap-db-postgresql-ha-postgresql --replicas=1
-    # * make sure primary is db-0
+    # * kubectl scale statefulset core-db-postgresql-ha-postgresql --replicas=1
+    # * make sure primary is gen-0
     #
     # enable/disable replica below:
 

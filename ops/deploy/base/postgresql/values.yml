@@ -12,6 +12,8 @@ global:
 
 metrics:
   enabled: true
+  image:
+    repository: bitnamilegacy/postgres-exporter
   serviceMonitor:
     enabled: true
     # require label to helm install name to allow servicemonitor discovery
@@ -19,12 +21,15 @@ metrics:
       release: prometheus
 
 postgresql:
+  image:
+    repository: bitnamilegacy/postgresql-repmgr
+    pullPolicy: IfNotPresent
   replicaCount: 1
   resources:
     requests:
       memory: "2Gi"
     limits:
-      memory: "6Gi"
+      memory: "5Gi"
   livenessProbe:
      # replica can be unresponsive on initial large db clone
      # can lead to repeated pod restart unless liveness delayed
@@ -33,13 +38,13 @@ postgresql:
   labels:
     kind: statefulSet
   nodeSelector:
-    node.kubernetes.io/class_id: db
+    node.kubernetes.io/class_id: gen
 
     #
     # Attempt to pin statefulSets to node
     # statefulSets create pods in order (postgresql-0, postgresql-1..)
     #
-    # pod-0 is scheduled first and weighted to schedule on node db-0
+    # pod-0 is scheduled first and weighted to schedule on node gen-0
     #
     # pod-N: subsequent replica pods use podAntityAffinity to be scheduled
     # on all other nodes
@@ -47,7 +52,7 @@ postgresql:
     #
     #   no strict guarantee to exactly map replica pod to node ordinal
     #   but I think it's OK to have replicas on nodes > 0, as long as
-    #   primary can be placed on db-0.
+    #   primary can be placed on gen-0.
     #
 
   affinity:
@@ -59,7 +64,7 @@ postgresql:
           - key: node.kubernetes.io/class_instance
             operator: In
             values:
-              - "db-0"
+              - "gen-0"
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
@@ -159,9 +164,11 @@ postgresql:
       mountPath: /mnt/tmp
 
 pgpool:
+  image:
+    repository: bitnamilegacy/pgpool
   configurationCM: pgpool-configmap
   nodeSelector:
-    node.kubernetes.io/class_instance: db-0
+    node.kubernetes.io/class_instance: gen-0
   resources:
     requests:
       memory: "512Mi"
@@ -171,7 +178,7 @@ pgpool:
 # automatically provisions PV and PVC; one per each node
 persistence:
   storageClass: local-path
-  size: 30Gi
+  size: 60Gi
 
 persistentVolumeClaimRetentionPolicy:
   enabled: true
@@ -179,3 +186,5 @@ persistentVolumeClaimRetentionPolicy:
 
 volumePermissions:
   enabled: true
+  image:
+    repository: bitnamilegacy/os-shell

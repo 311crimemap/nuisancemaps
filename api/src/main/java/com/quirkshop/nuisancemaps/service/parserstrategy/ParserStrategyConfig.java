@@ -28,6 +28,8 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigMulti::REPORTED_AT_JSON_yyyyMMdd_DASH);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_JSON_MMddyyyy_SLASH,
                 ParserStrategyConfigMulti::REPORTED_AT_JSON_MMddyyyy_SLASH);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_JSON_EPOCHMILLIS,
+                ParserStrategyConfigMulti::REPORTED_AT_JSON_EPOCHMILLIS);
 
         parsingFunctions.put(ParserStrategy.LATITUDE_311_DALLAS,
                 ParserStrategyConfigDallas::LATITUDE_311_DALLAS);
@@ -45,6 +47,10 @@ public class ParserStrategyConfig {
         // los angeles
         parsingFunctions.put(ParserStrategy.REPORTED_AT_311_LA,
                 ParserStrategyConfigLosAngeles::REPORTED_AT_311_LA);
+
+        // memphis
+        parsingFunctions.put(ParserStrategy.ADDRESS_ERSI_JSON_MEMPHIS,
+                ParserStrategyConfigMemphis::ADDRESS_ERSI_JSON_MEMPHIS);
 
         // montgomery county
         parsingFunctions.put(ParserStrategy.ADDRESS_JSON_CRIME_MONTGOMERY_COUNTY,
@@ -203,6 +209,10 @@ public class ParserStrategyConfig {
                 ParserStrategyConfigHouston::REPORTED_AT_CSV_311_HOUSTON);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV2_311_HOUSTON,
                 ParserStrategyConfigHouston::REPORTED_AT_CSV2_311_HOUSTON);
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_CRIME_HOUSTON,
+                ParserStrategyConfigHouston::REPORTED_AT_CSV_CRIME_HOUSTON);
+        parsingFunctions.put(ParserStrategy.ADDRESS_CSV_CRIME_HOUSTON,
+                ParserStrategyConfigHouston::ADDRESS_CSV_CRIME_HOUSTON);
         parsingFunctions.put(ParserStrategy.REPORTED_AT_XLS_CRIME_HOUSTON,
                 ParserStrategyConfigHouston::REPORTED_AT_XLS_CRIME_HOUSTON);
         parsingFunctions.put(ParserStrategy.ADDRESS_XLS_CRIME_HOUSTON,

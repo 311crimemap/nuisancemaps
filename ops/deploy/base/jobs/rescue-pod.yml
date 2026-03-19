@@ -1,0 +1,23 @@
+# rescue-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-fixer
+  namespace: core-db
+spec:
+  nodeName: 311crimemap-production-blue-web-fsn1-eu-central-cpx43-gen-0
+  tolerations:
+  - key: "node.kubernetes.io/disk-pressure"
+    operator: "Exists"
+    effect: "NoSchedule"
+  containers:
+  - name: alpine
+    image: alpine
+    command: ["/bin/sh", "-c", "sleep 3600"]
+    volumeMounts:
+    - name: pgdata
+      mountPath: /data
+  volumes:
+  - name: pgdata
+    persistentVolumeClaim:
+      claimName: data-core-db-postgresql-ha-postgresql-0
