@@ -1,7 +1,9 @@
 package com.quirkshop.nuisancemaps.service.parserstrategy;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -219,6 +221,27 @@ public class ParserStrategyConfigMulti {
 
             dateStr = LocalDate.parse(text, formatter)
                     .atStartOfDay()
+                    .format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 1697463540000,
+    public static String REPORTED_AT_JSON_EPOCHMILLIS(JsonNode item, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String pointer = mappingField.getPointer();
+            Long epochMillis = item.at(pointer).asLong();
+
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = Instant.ofEpochMilli(epochMillis)
+                    .atZone(ZoneOffset.UTC)
+                    .toLocalDateTime()
                     .format(outputFormatter);
 
         } catch (Exception e) {
