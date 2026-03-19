@@ -23,6 +23,9 @@ public class DataJobConfiguratorFactory {
             case APDINCIDENTREPORT:
                 return new APDIncidentReportConfigurator();
 
+            case ERSI_FEATURESERVER:
+                return new ERSI_FeatureServerConfigurator();
+
             default:
                 throw new Error("Missing Implementation");
         }
