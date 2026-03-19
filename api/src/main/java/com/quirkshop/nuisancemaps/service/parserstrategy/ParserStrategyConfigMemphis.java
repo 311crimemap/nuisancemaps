@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.quirkshop.nuisancemaps.WorkerApplication;
 import com.quirkshop.nuisancemaps.model.MappingField;
 
@@ -96,6 +97,22 @@ public class ParserStrategyConfigMemphis {
         }
 
         return longitude;
+    }
+
+    public static String ADDRESS_ERSI_JSON_MEMPHIS(JsonNode item, MappingField mappingField) {
+        String value = null;
+
+        try {
+            String address = item.at("/Location_Address").asText();
+            String city = item.at("/CITY").asText();
+            String zipcode = item.at("/ZipCode").asText();
+            value = String.join(" ", address + ",", city, zipcode);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return value;
     }
 
 }

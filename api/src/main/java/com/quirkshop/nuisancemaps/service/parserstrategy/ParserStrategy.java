@@ -14,6 +14,7 @@ public enum ParserStrategy {
     REPORTED_AT_JSON_yyyyMMdd_DASH,
     REPORTED_AT_JSON_MMddyyyy_SLASH,
     REPORTED_AT_CSV_MMMddyyyyhhmma_SPACE,
+    REPORTED_AT_JSON_EPOCHMILLIS,
 
     // Multi Point
     LATITUDE_CSV_POINT_MULTI,
@@ -102,6 +103,7 @@ public enum ParserStrategy {
     REPORTED_AT_CSV_311_MEMPHIS,
     LATITIUDE_CSV_311_MEMPHIS,
     LONGITUDE_CSV_311_MEMPHIS,
+    ADDRESS_ERSI_JSON_MEMPHIS,
 
     /* montgomery country */
     ADDRESS_CSV_CRIME_MONTGOMERY_COUNTY,

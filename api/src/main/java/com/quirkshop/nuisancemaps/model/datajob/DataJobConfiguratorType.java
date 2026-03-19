@@ -7,4 +7,5 @@ public enum DataJobConfiguratorType {
     ERSI,
     APDINCIDENTREPORT,
     OPENDATADATE,
+    ERSI_FEATURESERVER
 }

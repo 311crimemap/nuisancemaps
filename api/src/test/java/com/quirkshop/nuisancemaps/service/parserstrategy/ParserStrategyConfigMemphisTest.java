@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.quirkshop.nuisancemaps.NuisancemapsApplication;
 
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,20 @@ public class ParserStrategyConfigMemphisTest {
 
         String value = ParserStrategyConfigMemphis.LATITIUDE_CSV_311_MEMPHIS(row, null);
         assertThat(value).isEqualTo("35.14976");
+    }
+
+    @Test
+    @Transactional
+    public void ADDRESS_ERSI_JSON_311_MEMPHIS_TEST() throws JsonMappingException, JsonProcessingException {
+        assertThat(ParserStrategy.ADDRESS_ERSI_JSON_MEMPHIS).isNotNull();
+
+        ObjectNode node = objectMapper.createObjectNode();
+        node.put("Location_Address", "123 Dum Dum");
+        node.put("CITY", "Memphis");
+        node.put("ZipCode", "38109");
+
+        String value = ParserStrategyConfigMemphis.ADDRESS_ERSI_JSON_MEMPHIS(node, null);
+        assertThat(value).isEqualTo("123 Dum Dum, Memphis 38109");
     }
 
 }

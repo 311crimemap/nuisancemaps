@@ -1,0 +1,56 @@
+{
+  "sourceConfigId": 210,
+  "url": "https://311.memphistn.gov/server/rest/services/311/311_Request_Map_PROD/FeatureServer/0/query",
+  "cookie": null,
+  "category": "311",
+  "description": "Memphis 311 Daily",
+  "dataParserType": "JSON",
+  "dataProcessType": "MEMORY",
+  "dataJobConfiguratorType": "ERSI_FEATURESERVER",
+  "mapping": {
+    "rootPath": "$.features[*].attributes",
+    "orderKey": "OBJECTID",
+    "startReportedAt": "2023-01-01",
+    "reportNum": {
+      "field": "INCIDENT_NUMBER",
+      "pointer": "/INCIDENT_NUMBER",
+      "parsingStrategy": null
+    },
+    "reportCategory": {
+      "field": "REQUEST_TYPE",
+      "pointer": "/REQUEST_TYPE",
+      "parsingStrategy": null
+    },
+    "description": {
+      "field": "DEPARTMENT",
+      "pointer": "/DEPARTMENT",
+      "parsingStrategy": null
+    },
+    "address": {
+      "field": "Location_Address",
+      "pointer": "/Location_Address",
+      "parsingStrategy": null
+    },
+    "location": {
+      "field": null,
+      "pointer": null,
+      "parsingStrategy": null
+    },
+    "latitude": {
+      "field": "Y",
+      "pointer": "/Y",
+      "parsingStrategy": null
+    },
+    "longitude": {
+      "field": "X",
+      "pointer": "/X",
+      "parsingStrategy": null
+    },
+    "reportedAt": {
+      "field": "REPORTED_DATE",
+      "pointer": "/REPORTED_DATE",
+      "parsingStrategy": "EPOCH_MILLIS"
+    },
+    "reportedAt2": { "field": null, "pointer": null, "parsingStrategy": null }
+  }
+}
