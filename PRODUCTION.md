@@ -84,7 +84,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 13        | Detroit                | crime | 109       | 13     | x    | daily        |                 |       |
 | 13        | Detroit                | 311   | 110       | 13     | x    | daily        |                 |       |
 | 14        | Memphis                | crime | 113       | 14     | x    | daily        | 2024-12-01      |       |
-| 14        | Memphis                | 311   | 114       | 14     | x    | daily        | 2024-09-01      |       |
+| 14        | Memphis                | 311   | 215       | 14     | x    | daily        | 2023-01-01      |       |
 | 15        | Montgomery County      | crime | 117       | 15     | x    | daily        | 2024-12-01      |       |
 | 16        | Nashville              | crime | 118       | 16     | x    | daily        |                 |       |
 | 16        | Nashville (YTD)        | 311   | 120       | 16     | x    | daily        |                 |       |
