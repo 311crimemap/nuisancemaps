@@ -26,8 +26,8 @@ docker login --username AWS --password-stdin $IMAGE_REPO`
 
 4. Replace containers:
 
-* `kubectl rollout restart deployment/spring-worker`
-* `kubectl rollout restart deployment/spring-api`
+* `kubectl rollout restart deployment/spring-worker -n crimemap`
+* `kubectl rollout restart deployment/spring-api -n crimemap`
 
 
 ## Sources
