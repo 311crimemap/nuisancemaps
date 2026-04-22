@@ -1,22 +1,34 @@
 # Database Query and Index Optimization Examples
 
+
+
+
+#### Query Improvement
+
+
+
 Tried a number of indices in an attempt to improve query speed.
 
 Current fastest implementation:
 
-1. having _no_ GIST index of any kind
-2. single index on `reported_at DESC`
+1. Set a GIST index
+2. Increase the statistics on `point` and `reported_at` columns
 
-Query plan hits sorted dates first (memoized), then runs spatial query. Gets
-faster after first query.
+Spatial queries need larger than default (100) statistics.
 
-Concern is that this might not scale horizontally. As more cities are added, the
-number of entries in a date range will continue to increase - so the candidate
-pool for slower spatial query will continue to increase.
+```
+ALTER TABLE data_crime ALTER COLUMN point SET STATISTICS 1000;
+ALTER TABLE
+ALTER TABLE data_crime ALTER COLUMN reported_at SET STATISTICS 1000;
+ALTER TABLE
+ANALYZE data_crime;
 
-There may be a point where these queries slow down and then another approach
-(separate table, additional GINI) might then be faster.
-
+ALTER TABLE data_311 ALTER COLUMN point SET STATISTICS 1000;
+ALTER TABLE
+ALTER TABLE data_311 ALTER COLUMN reported_at SET STATISTICS 1000;
+ALTER TABLE
+ANALYZE data_311;
+```
 
 #### Exploration Notes
 
