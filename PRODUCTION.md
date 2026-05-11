@@ -92,8 +92,8 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |       |
 | 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |       |
 | 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |       |
-| 19        | Minneapolis 2025       | crime | 201       | 19     | x    | daily (year) |                 |       |
-| 19        | Minneapolis 2025       | 311   | 202       | 19     | x    | daily (year) |                 |       |
+| 19        | Minneapolis 2026       | crime | 232       | 19     | x    | daily (full) |                 |       |
+| 19        | Minneapolis 2026       | 311   | 233       | 19     | x    | daily (year) |                 |       |
 | 20        | Cleveland              | crime | 225       | 20     | x    | daily (full) |                 |       |
 | 20        | Cleveland              | 311   | 140       | 20     | x    | daily (full) |                 |       |
 | 21        | Cincinnatti            | crime | 213       | 21     | x    | daily        | 2024-06-01      |       |
@@ -110,7 +110,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 26        | Baton Rouge            | 311   | 176       | 26     | x    | daily        |                 |       |
 | 27        | Buffalo, NY            | crime | 180       | 27     | x    | daily        | 2024-12-01      |       |
 | 27        | Buffalo, NY            | 311   | 181       | 27     | x    | daily        | 2024-12-01      |       |
-| 28        | Chattanooga            | crime | 184       | 28     | x    | daily        | 2024-12-01      |       |
+| 28        | Chattanooga            | crime | 231       | 28     | x    | daily        | 2020-01-01      |       |
 | 28        | Chattanooga            | 311   | 185       | 28     | x    | daily        | 2024-12-01      |       |
 | 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2024-12-01      |       |
 | 30        | Portland, OR           | crime | 227       | 30     | x    | daily        | 2026-01-01      |       |
