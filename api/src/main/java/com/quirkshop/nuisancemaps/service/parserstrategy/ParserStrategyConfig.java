@@ -91,6 +91,10 @@ public class ParserStrategyConfig {
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH);
 
+        // 2026-02-18 21:09:00
+        parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMdd_HHmmss_SLASH,
+                ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMdd_HHmmss_SLASH);
+
         parsingFunctions.put(ParserStrategy.REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
                 ParserStrategyConfigMulti::REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ);
 
