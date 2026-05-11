@@ -62,8 +62,10 @@ spec:
           resources:
             requests:
               memory: "1400Mi"
+              cpu: "500m"
             limits:
               memory: "3200Mi"
+              cpu: "4"
           envFrom:
           - configMapRef:
               name: postgresql-configmap
