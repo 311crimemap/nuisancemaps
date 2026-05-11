@@ -88,7 +88,7 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 15        | Montgomery County      | crime | 117       | 15     | x    | daily        | 2024-12-01      |       |
 | 16        | Nashville              | crime | 118       | 16     | x    | daily        |                 |       |
 | 16        | Nashville (YTD)        | 311   | 120       | 16     | x    | daily        |                 |       |
-| 17        | Kansas City 2025       | crime | 208       | 17     | x    | daily        | 2025-01-01      |       |
+| 17        | Kansas City 2026       | crime | 222       | 17     | x    | daily        | 2026-01-01      |       |
 | 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |       |
 | 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |       |
 | 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |       |
