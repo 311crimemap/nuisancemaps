@@ -65,11 +65,28 @@ public class ParserStrategyConfigBoston {
     }
 
     // 2020-12-31 20:30:00
-    public static String REPORTED_AT_CSV_311_BOSTON(Map<String, String> row, MappingField mappingField) {
+    public static String REPORTED_AT_CSV_311_BOSTON_yyyyMMddHHmmss(Map<String, String> row, MappingField mappingField) {
         String dateStr = null;
         try {
             String text = row.get("open_dt");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 2026-02-06T21:40:00
+    public static String REPORTED_AT_CSV_311_BOSTON(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String text = row.get("open_dt");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
             dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
