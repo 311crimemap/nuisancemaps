@@ -73,8 +73,8 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 7         | Los Angeles 2025       | 311   | 206       | 7      | x    | daily        | 2025-01-01      |       |
 | 8         | Houston 2026           | Crime | 216       | 8      | x    | quarterly    | 2026-01-01      |       |
 | 8         | Houston MTD            | 311   | 191       | 8      | x    | daily        |                 |       |
-| 9         | Philadelphia 2025      | crime | 193       | 9      | x    | daily        |                 |       |
-| 9         | Philadelphia 2025      | 311   | 194       | 9      | x    | daily        |                 |       |
+| 9         | Philadelphia 2026      | crime | 229       | 9      | x    | daily        | 2026-01-01      |       |
+| 9         | Philadelphia 2026      | 311   | 230       | 9      | x    | daily        | 2026-01-01      |       |
 | 10        | San Diego              | crime | 99        | 10     | x    | daily        |                 |       |
 | 10        | San Diego 2026         | 311   | 218       | 10     | x    | daily        | 2026-01-01      |       |
 | 11        | Charlotte              | crime | 105       | 11     | x    | daily        |                 |       |
