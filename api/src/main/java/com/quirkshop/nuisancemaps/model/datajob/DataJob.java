@@ -38,8 +38,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "data_job", indexes = {
-        @Index(name = "idx_source_id_data_job", columnList = "source_id"),
-        @Index(name = "idx_session_id_data_job", columnList = "sessionId")
+        @Index(name = "idx_source_id_data_job", columnList = "source_id")
 })
 public class DataJob {
 
