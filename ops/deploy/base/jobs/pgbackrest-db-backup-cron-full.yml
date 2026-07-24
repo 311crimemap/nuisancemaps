@@ -10,6 +10,8 @@ metadata:
     description: Pod run on control node to run kubectl commands
 spec:
   schedule: "0 22 * * 5"  # run every Fri at 10 PM. [s, h, day of m, m, Day]
+  # Do not start another scheduled backup while the previous Job is active.
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
@@ -29,31 +31,46 @@ spec:
             args:
               - |
                 set -e
-                # 0. Prep: Clear old logs so we don't read stale 'success' messages
+                # 0. Do not disturb an existing backup (or its log).
+                if kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- \
+                bash -c "ps -ef | grep '[p]gbackrest' | grep -E '[[:space:]]backup([[:space:]]|$)' | grep -v defunct" > /dev/null; then
+                echo "ERROR: A pgBackRest backup is already running; refusing to overlap it."
+                exit 1
+                fi
+
+                # Clear old logs so we don't read a stale success message.
                 echo "Cleaning up old logs..."
                 kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- rm -f /tmp/backup.log
-                #echo "Cleaning up prior process..."
-                #kubectl exec core-db-postgresql-ha-postgresql-0 -- rm -rf /tmp/pgbackrest
 
-                # 1. Start backup and decouple it from this session
+                # 1. Start the backup and record the exact process to monitor.
                 echo "Launching pgbackrest on database pod..."
-                kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- \
+                BACKUP_PID="$(kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- \
                 bash -c "nohup env PGPASSWORD='$PGPASSWORD' pgbackrest \
                 --stanza='$PGBACKREST_STANZA' \
+                --pg1-database=postgres \
                 --log-level-console=detail \
                 --repo=2 \
                 --archive-timeout=1d \
-                --type=full backup > /tmp/backup.log 2>&1 &"
-                # --no-archive-check \ add this above if archive is missing / out of sync, and want to skip/jump to current backup
+                --type=full backup > /tmp/backup.log 2>&1 & echo \$!")"
+                case "$BACKUP_PID" in
+                ''|*[!0-9]*)
+                echo "ERROR: Could not determine the pgBackRest process ID: $BACKUP_PID"
+                exit 1
+                ;;
+                esac
+                echo "Launched pgBackRest backup PID: $BACKUP_PID"
 
-                # 2. Poll using fresh, short-lived connections
+                # 2. Poll the backup we launched using fresh, short-lived connections.
                 echo "Entering monitor loop (resilient to Hetzner idle timeouts)..."
                 while true; do
-                # check if the process is still there
-                if ! kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- bash -c "ps -ef | grep [p]gbackrest | grep -v defunct | grep -v archive-push" > /dev/null; then
-                echo "Active backup process finished."
+                PROCESS_STATE="$(kubectl exec -n core-db core-db-postgresql-ha-postgresql-0 -- \
+                ps -o stat= -p "$BACKUP_PID" 2>/dev/null || true)"
+                case "$PROCESS_STATE" in
+                ''|Z*)
+                echo "Launched backup process finished."
                 break
-                fi
+                ;;
+                esac
 
                 # Print a heartbeat to the Job logs
                 TIMESTAMP=$(date '+%H:%M:%S')
