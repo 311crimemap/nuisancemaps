@@ -6,6 +6,7 @@ public enum ParserStrategy {
     REPORTED_AT_CSV_yyyyMMddHHmmssSSS_DASH,
     REPORTED_AT_CSV_MMddyyyyHHmmss_SLASH,
     REPORTED_AT_CSV_yyyyMMdd_HHmmss_SLASH,
+    REPORTED_AT_CSV_311_yyyyMMdd_HHmmssSSS_DASH,
     REPORTED_AT_CSV_MMddyyyyhhmmssa,
     REPORTED_AT_CSV_yyyyMMddHHmmssx_SLASH_TZ,
     REPORTED_AT_CSV_Mdyyyyhhmmssa_SLASH,
