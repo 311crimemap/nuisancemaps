@@ -133,7 +133,7 @@ See `./classifer/README.md` for locale -> source -> textcategory sequence.
 
 * Make any `source_config.json`changes - includes any mapping updates
 * Submit to update route:
-  * `curl -X PATCH -H 'content-type:application/json' -H 'X-API-KEY: <key>' -d @source_config.json api.311crimemap.com/sources/<id>`
+  * `curl -X PATCH -H 'content-type:application/json' -H "X-API-KEY: $ADMIN_API_KEY -d @source_config.json api.311crimemap.com/sources/<id>`
   * submit full source (updates all) object not single fields
 
 ##### Mapping

@@ -54,9 +54,6 @@ rules:
     verbs: [patch]
   # provisioner
   - apiGroups: [""]
-    resources: [secrets]
-    verbs: [get, list]
-  - apiGroups: [""]
     resources: [persistentvolumes]
     verbs: [get, list, watch, create, delete, patch]
   - apiGroups: [""]
@@ -215,7 +212,7 @@ spec:
             limits: {}
             requests: {}
         - name: hcloud-csi-driver
-          image: docker.io/hetznercloud/hcloud-csi-driver:v2.21.2 # x-releaser-pleaser-version
+          image: docker.io/hetznercloud/hcloud-csi-driver:v2.22.0 # x-releaser-pleaser-version
           imagePullPolicy: IfNotPresent
           args:
             - -node
@@ -315,7 +312,7 @@ spec:
       initContainers:
       containers:
         - name: hcloud-csi-driver
-          image: docker.io/hetznercloud/hcloud-csi-driver:v2.21.2 # x-releaser-pleaser-version
+          image: docker.io/hetznercloud/hcloud-csi-driver:v2.22.0 # x-releaser-pleaser-version
           imagePullPolicy: IfNotPresent
           args:
             - -controller
