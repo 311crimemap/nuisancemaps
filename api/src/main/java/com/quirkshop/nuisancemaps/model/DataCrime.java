@@ -21,10 +21,12 @@ import jakarta.persistence.Index;
 
 import org.locationtech.jts.geom.Point;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.locationtech.jts.geom.GeometryFactory;
 
 @Entity
+@DynamicUpdate // Keep unavoidable worker updates narrow to reduce WAL volume.
 @Table(name = "data_crime", indexes = {
         @Index(name = "idx_report_num_data_crime", columnList = "reportNum"),
         @Index(name = "idx_reported_at_desc_data_crime", columnList = "reportedAt DESC"),
