@@ -88,6 +88,20 @@ class DataParserTest {
         assertThat(parseCounter.getNumUnchangedDuplicates()).isZero();
     }
 
+    @Test
+    void addDataEntityDeduplicatesReportNumbersWithinABatch() {
+        Source source = source(7);
+        DataCrime original = data(source, "report-3", "original description", "100 Main St");
+        DataCrime replacement = data(source, "report-3", "replacement description", "100 Main St");
+        DataParser parser = new DataParser();
+
+        parser.addDataEntity(original, new ParseCounter());
+        parser.addDataEntity(replacement, new ParseCounter());
+
+        assertThat(parser.reportNums).containsExactly("report-3");
+        assertThat(parser.parseNewDataMap).containsEntry("report-3", replacement);
+    }
+
     private DataParser parserWith(DataCrimeRepository repository, DataCrime incoming) {
         DataParser parser = new DataParser();
         parser.dataEntityRepository = repository;

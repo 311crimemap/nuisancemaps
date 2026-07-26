@@ -13,9 +13,7 @@ public interface DataEntityRepository<T extends DataEntity> {
         return ((CrudRepository<DataEntity, Integer>) this).saveAll(entities);
     }
 
-    List<T> findAllBySource_Locale_IdAndReportNumIn(Integer localeId, List<String> reportNums);
-
-    // Abstract query method for findAllBySourceIdAndReportNumIn
+    // Matches the data table's (source_id, report_num) unique constraint.
     List<T> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
 }

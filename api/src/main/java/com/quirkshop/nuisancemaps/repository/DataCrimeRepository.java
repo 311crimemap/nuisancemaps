@@ -23,8 +23,6 @@ public interface DataCrimeRepository extends DataEntityRepository<DataCrime>, Cr
 
     List<DataCrime> findAllByReportNumIn(List<String> reportNums);
 
-    List<DataCrime> findAllBySource_Locale_IdAndReportNumIn(Integer localeId, List<String> reportNums);
-
     List<DataCrime> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
     /**

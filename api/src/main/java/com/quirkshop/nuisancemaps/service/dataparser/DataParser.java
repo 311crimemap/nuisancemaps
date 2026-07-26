@@ -72,7 +72,7 @@ public class DataParser {
     protected DataEntityRepository<? extends DataEntity> dataEntityRepository;
 
     HashMap<String, DataEntity> parseNewDataMap = new HashMap<String, DataEntity>();
-    List<String> reportNums = new ArrayList<String>();
+    Set<String> reportNums = new HashSet<String>();
 
     public void parse(DataJob dataJob, File file, InputStream inputStream, ParseCounter parseCounter) {
         throw new Error("Missing Implementation");
@@ -182,14 +182,14 @@ public class DataParser {
         parseNewDataMap.clear();
     }
 
-    private void replaceWithNew(Source source, List<String> reportNums, ParseCounter parseCounter,
+    private void replaceWithNew(Source source, Set<String> reportNums, ParseCounter parseCounter,
             HashMap<String, DataEntity> parseNewDataMap) {
         int numReplaced = 0;
 
         // Duplicate identity must match the database constraint. A report number can
         // legitimately exist in another source within the same locale.
         List<? extends DataEntity> existing = dataEntityRepository
-                .findAllBySourceIdAndReportNumIn(source.getId(), reportNums);
+                .findAllBySourceIdAndReportNumIn(source.getId(), new ArrayList<>(reportNums));
 
         Map<String, DataEntity> existingByReportNum = new HashMap<>();
         for (DataEntity dataEntityDB : existing) {

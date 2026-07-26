@@ -18,8 +18,6 @@ public interface Data311Repository extends DataEntityRepository<Data311>, CrudRe
 
     List<Data311> findAllByReportNumIn(List<String> reportNums);
 
-    List<Data311> findAllBySource_Locale_IdAndReportNumIn(Integer localeId, List<String> reportNums);
-
     List<Data311> findAllBySourceIdAndReportNumIn(Integer sourceId, List<String> reportNums);
 
     List<Data311> findAllByOrderByReportedAtDesc(PageRequest n);
