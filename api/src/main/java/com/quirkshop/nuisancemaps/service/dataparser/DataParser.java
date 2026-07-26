@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,7 +19,6 @@ import com.quirkshop.nuisancemaps.model.Data311;
 import com.quirkshop.nuisancemaps.model.DataCrime;
 import com.quirkshop.nuisancemaps.model.DataEntity;
 import com.quirkshop.nuisancemaps.model.DataError;
-import com.quirkshop.nuisancemaps.model.Locale;
 import com.quirkshop.nuisancemaps.model.PendingTextCategory;
 import com.quirkshop.nuisancemaps.model.Source;
 import com.quirkshop.nuisancemaps.model.datajob.DataJob;
@@ -153,13 +152,11 @@ public class DataParser {
     }
 
     public void batchSave(Source source, ParseCounter parseCounter) {
+        replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
         Map<String, Object> logDetails = Map.of(
                 "sourceId", source.getId(),
                 "numSaved", parseNewDataMap.size());
-
-        replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
         saveAll(parseCounter, parseNewDataMap);
-
         log.info("[DataParser:batchSave]", StructuredArguments.entries(Map.of("data", logDetails)));
 
         reportNums.clear();
@@ -170,48 +167,65 @@ public class DataParser {
             HashMap<String, DataEntity> parseNewDataMap) {
         int numReplaced = 0;
 
-        Locale locale = source.getLocale();
-
-        // query any existing in shared locale
-        // allows for different data sources (source_id) contributing to same area
+        // Duplicate identity must match the database constraint. A report number can
+        // legitimately exist in another source within the same locale.
         List<? extends DataEntity> existing = dataEntityRepository
-                .findAllBySource_Locale_IdAndReportNumIn(locale.getId(), reportNums);
+                .findAllBySourceIdAndReportNumIn(source.getId(), reportNums);
 
-        // replace existing with new
+        Map<String, DataEntity> existingByReportNum = new HashMap<>();
         for (DataEntity dataEntityDB : existing) {
-            Long id = dataEntityDB.getId();
-            String reportNum = dataEntityDB.getReportNum();
-            DataEntity dNew = parseNewDataMap.getOrDefault(reportNum, null);
+            existingByReportNum.put(dataEntityDB.getReportNum(), dataEntityDB);
+        }
 
-            // info preservation
-
-            // For each attribute, preserve and use old value if new value
-            // becomes null
-            Field[] fields = DataEntity.class.getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                try {
-                    Object newValue = field.get(dNew);
-                    Object oldValue = field.get(dataEntityDB);
-
-                    if (newValue == null && oldValue != null) {
-                        field.set(dNew, oldValue);
-                    }
-
-                } catch (Exception e) {
-                    log.error("[DataParser] field err",
-                            StructuredArguments.entries(Map.of("data", Map.of("error", e.getMessage()))));
+        // Keep the persisted entity for duplicates. This preserves fields missing
+        // from the feed and, crucially, lets unchanged rows be omitted from saveAll.
+        for (Map.Entry<String, DataEntity> entry : new ArrayList<>(parseNewDataMap.entrySet())) {
+            DataEntity dataEntityDB = existingByReportNum.get(entry.getKey());
+            if (dataEntityDB != null) {
+                if (copyChangedFields(entry.getValue(), dataEntityDB)) {
+                    parseNewDataMap.put(entry.getKey(), dataEntityDB);
+                    numReplaced++;
+                } else {
+                    parseNewDataMap.remove(entry.getKey());
                 }
-            }
-
-            if (dNew != null) {
-                dNew.setId(id); // set id to overwrite
-                numReplaced++;
             }
         }
 
         parseCounter.setNumReplace(parseCounter.getNumReplaced() + numReplaced);
         parseCounter.setNumDuplicates(parseCounter.getNumDuplicates() + existing.size());
+    }
+
+    private boolean copyChangedFields(DataEntity incoming, DataEntity existing) {
+        boolean changed = false;
+
+        changed |= copyIfPresent(incoming.getReportCategory(), existing.getReportCategory(), existing::setReportCategory);
+        changed |= copyIfPresent(incoming.getDescription(), existing.getDescription(), existing::setDescription);
+        changed |= copyIfPresent(incoming.getAddress(), existing.getAddress(), existing::setAddress);
+        changed |= copyIfPresent(incoming.getLocation(), existing.getLocation(), existing::setLocation);
+        changed |= copyCategoryIfPresent(incoming.getOrgCategory(), existing.getOrgCategory(), existing::setOrgCategory);
+        changed |= copyIfPresent(incoming.getLatitude(), existing.getLatitude(), existing::setLatitude);
+        changed |= copyIfPresent(incoming.getLongitude(), existing.getLongitude(), existing::setLongitude);
+        changed |= copyIfPresent(incoming.getPoint(), existing.getPoint(), existing::setPoint);
+        changed |= copyIfPresent(incoming.getReportedAt(), existing.getReportedAt(), existing::setReportedAt);
+
+        return changed;
+    }
+
+    private <T> boolean copyIfPresent(T incoming, T existing, java.util.function.Consumer<T> setter) {
+        if (incoming != null && !Objects.equals(incoming, existing)) {
+            setter.accept(incoming);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean copyCategoryIfPresent(Category incoming, Category existing,
+            java.util.function.Consumer<Category> setter) {
+        if (incoming != null && (existing == null || !Objects.equals(incoming.getId(), existing.getId()))) {
+            setter.accept(incoming);
+            return true;
+        }
+        return false;
     }
 
     private void saveAll(ParseCounter parseCounter, HashMap<String, DataEntity> parseNewDataMap) {

@@ -149,7 +149,6 @@ public class DataEntityMappingService {
         dataEntity.setLongitude(longitude);
         dataEntity.setPoint(point);
         dataEntity.setReportedAt(reported_at);
-        dataEntity.setUpdatedAt(LocalDateTime.now());
     }
 
     private void validateReportedAt(LocalDateTime reportedAt) throws ThresholdReportedAtException {

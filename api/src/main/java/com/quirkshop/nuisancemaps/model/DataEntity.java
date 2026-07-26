@@ -11,7 +11,23 @@ public interface DataEntity {
 
     public String getReportNum();
 
+    public String getReportCategory();
+
+    public String getDescription();
+
+    public String getAddress();
+
+    public String getLocation();
+
     public Category getOrgCategory();
+
+    public Double getLatitude();
+
+    public Double getLongitude();
+
+    public Point getPoint();
+
+    public LocalDateTime getReportedAt();
 
     public void setReportNum(String reportNum);
 
