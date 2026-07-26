@@ -248,6 +248,10 @@ public class DataParser {
     }
 
     private void saveAll(ParseCounter parseCounter, HashMap<String, DataEntity> parseNewDataMap) {
+        if (parseNewDataMap.isEmpty()) {
+            return;
+        }
+
         Iterable<DataEntity> i = dataEntityRepository
                 .saveAllEntities(parseNewDataMap.values());
 
