@@ -82,6 +82,9 @@ public interface DataProcessStrategy {
         logDetails.put("Missing", parseCounter.getNumMissing());
         logDetails.put("Built", parseCounter.getNumBuilt());
         logDetails.put("Processed", parseCounter.getNumProcessed());
+        logDetails.put("Inserted", parseCounter.getNumInserted());
+        logDetails.put("Updated", parseCounter.getNumReplaced());
+        logDetails.put("UnchangedDuplicates", parseCounter.getNumUnchangedDuplicates());
         logDetails.put("Errors", parseCounter.getNumErrors());
         logDetails.put("Duplicates", parseCounter.getNumDuplicates());
 

@@ -36,6 +36,8 @@ class DataParserTest {
 
         assertThat(savedBatches).containsExactly(List.of());
         assertThat(parseCounter.getNumDuplicates()).isEqualTo(1);
+        assertThat(parseCounter.getNumUnchangedDuplicates()).isEqualTo(1);
+        assertThat(parseCounter.getNumInserted()).isZero();
         verify(repository).findAllBySourceIdAndReportNumIn(eq(7), any());
     }
 
@@ -50,11 +52,38 @@ class DataParserTest {
         DataCrimeRepository repository = repositoryReturning(existing, savedBatches);
         DataParser parser = parserWith(repository, incoming);
 
-        parser.batchSave(source, new ParseCounter());
+        ParseCounter parseCounter = new ParseCounter();
+        parser.batchSave(source, parseCounter);
 
         assertThat(savedBatches).containsExactly(List.of(existing));
         assertThat(existing.getDescription()).isEqualTo("revised description");
         assertThat(existing.getAddress()).isEqualTo("100 Main St");
+        assertThat(parseCounter.getNumReplaced()).isEqualTo(1);
+        assertThat(parseCounter.getNumInserted()).isZero();
+    }
+
+    @Test
+    void batchSaveCountsNewRecordsAsInserted() {
+        Source source = source(7);
+        DataCrime incoming = data(source, "report-2", "new description", "100 Main St");
+        List<List<DataEntity>> savedBatches = new ArrayList<>();
+        DataCrimeRepository repository = mock(DataCrimeRepository.class);
+        when(repository.findAllBySourceIdAndReportNumIn(eq(7), any())).thenReturn(List.of());
+        when(repository.saveAllEntities(any())).thenAnswer(invocation -> {
+            Iterable<DataEntity> entities = invocation.getArgument(0);
+            List<DataEntity> saved = toList(entities);
+            savedBatches.add(saved);
+            return saved;
+        });
+        DataParser parser = parserWith(repository, incoming);
+        ParseCounter parseCounter = new ParseCounter();
+
+        parser.batchSave(source, parseCounter);
+
+        assertThat(savedBatches).containsExactly(List.of(incoming));
+        assertThat(parseCounter.getNumInserted()).isEqualTo(1);
+        assertThat(parseCounter.getNumReplaced()).isZero();
+        assertThat(parseCounter.getNumUnchangedDuplicates()).isZero();
     }
 
     private DataParser parserWith(DataCrimeRepository repository, DataCrime incoming) {

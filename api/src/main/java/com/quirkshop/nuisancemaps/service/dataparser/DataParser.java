@@ -152,10 +152,29 @@ public class DataParser {
     }
 
     public void batchSave(Source source, ParseCounter parseCounter) {
+        int numCandidates = parseNewDataMap.size();
+        int numReplacedBefore = parseCounter.getNumReplaced();
+        int numDuplicatesBefore = parseCounter.getNumDuplicates();
+
         replaceWithNew(source, reportNums, parseCounter, parseNewDataMap);
+
+        int numUpdated = parseCounter.getNumReplaced() - numReplacedBefore;
+        int numDuplicates = parseCounter.getNumDuplicates() - numDuplicatesBefore;
+        int numPersisted = parseNewDataMap.size();
+        int numInserted = numPersisted - numUpdated;
+        int numUnchangedDuplicates = numDuplicates - numUpdated;
+
+        parseCounter.setNumInserted(parseCounter.getNumInserted() + numInserted);
+        parseCounter.setNumUnchangedDuplicates(
+                parseCounter.getNumUnchangedDuplicates() + numUnchangedDuplicates);
+
         Map<String, Object> logDetails = Map.of(
                 "sourceId", source.getId(),
-                "numSaved", parseNewDataMap.size());
+                "candidates", numCandidates,
+                "inserted", numInserted,
+                "updated", numUpdated,
+                "unchangedDuplicates", numUnchangedDuplicates,
+                "persisted", numPersisted);
         saveAll(parseCounter, parseNewDataMap);
         log.info("[DataParser:batchSave]", StructuredArguments.entries(Map.of("data", logDetails)));
 

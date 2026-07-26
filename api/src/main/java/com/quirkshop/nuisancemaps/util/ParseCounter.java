@@ -12,6 +12,8 @@ public class ParseCounter {
     int numReplaced = 0;
     int numProcessed = 0;
     int numDuplicates = 0;
+    int numInserted = 0;
+    int numUnchangedDuplicates = 0;
 
     int numBatch = 0;
 
@@ -58,6 +60,14 @@ public class ParseCounter {
         this.numDuplicates = numDuplicates;
     }
 
+    public void setNumInserted(int numInserted) {
+        this.numInserted = numInserted;
+    }
+
+    public void setNumUnchangedDuplicates(int numUnchangedDuplicates) {
+        this.numUnchangedDuplicates = numUnchangedDuplicates;
+    }
+
     public int getNumFetched() {
         return numFetched;
     }
@@ -84,6 +94,14 @@ public class ParseCounter {
 
     public int getNumDuplicates() {
         return numDuplicates;
+    }
+
+    public int getNumInserted() {
+        return numInserted;
+    }
+
+    public int getNumUnchangedDuplicates() {
+        return numUnchangedDuplicates;
     }
 
     public int getNumMissing() {
