@@ -7,7 +7,7 @@ interface DropDownProps {
     children: React.ReactNode
 }
 export default function DropDown({ children }: DropDownProps) {
-  const buttonRef = useRef<number>(0);
+  const buttonRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const childArray = React.Children.toArray(children);
   const [icon, setIcon] = useState(faChevronUp);
