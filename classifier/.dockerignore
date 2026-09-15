@@ -1,1 +1,6 @@
+.git
+.env
+.env.*
+__pycache__
+*.py[cod]
 source-config/data
