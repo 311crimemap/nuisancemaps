@@ -99,15 +99,15 @@ spec:
           - name: JAVA_TOOL_OPTS
             value: "Xms512m -Xmx3000m"
           - name: ASYNC_EXECUTOR_CORE_POOL_SIZE
-            value: "4"
+            value: "2"
           - name: ASYNC_EXECUTOR_MAX_POOL_SIZE
-            value: "4"
+            value: "2"
           - name: ASYNC_EXECUTOR_QUEUE_CAPACITY
             value: "8"
           - name: WORKER_QUERY_LIMIT
             value: "100000"
           - name: BATCH_SIZE
-            value: "50000"
+            value: "15000"
           - name: VITE_MAX_DATA_RECORDS
             value: "20000"
           - name: MAPTILER_HOST_REFERER
