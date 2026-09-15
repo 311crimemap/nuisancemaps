@@ -2,7 +2,7 @@
 
 ## Common Commands
 
-* Run test suite: `./mvnw test -P test -Dspring.profiles.active=test`
+* Run test suite: `./mvnw clean test -P test -Dspring.profiles.active=test`
 * build-image for deploy: `./mvnw spring-boot:build-image -Dmaven.test.skip=true -Dstart-class=org.springframework.boot.loader.launch.PropertiesLauncher -D$(grep IMAGE_REPO ../.env)`
   * Note this is done on bastion host command line not in api container
 * liquibase:
