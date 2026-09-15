@@ -1,12 +1,17 @@
 FROM python:3.11.7
 
-RUN apt-get update && apt-get install -y jq curl
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y jq curl \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install pandas jq python-dotenv gnureadline openai bs4 openpyxl csvkit chardet
+RUN pip install --no-cache-dir pandas jq python-dotenv gnureadline openai bs4 openpyxl csvkit chardet
 
-COPY . /classifier
 WORKDIR /classifier
+RUN groupadd --gid 10001 app \
+    && useradd --uid 10001 --gid app --create-home --shell /usr/sbin/nologin app
 
-RUN echo "alias ll='ls -l'" >> /.bashrc
+COPY --chown=app:app . /classifier
+
+USER app
 
 CMD ["/bin/bash"]
