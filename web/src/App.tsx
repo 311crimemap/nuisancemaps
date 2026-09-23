@@ -136,6 +136,8 @@ function App() {
   const { map, mapController } = useMap({
     position,
     setPosition,
+    dataCrimes,
+    data311s,
     setActiveReportNum,
     dataSources,
     setActiveFeatures,
