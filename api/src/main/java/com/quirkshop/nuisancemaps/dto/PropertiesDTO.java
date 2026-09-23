@@ -9,6 +9,7 @@ public class PropertiesDTO {
     private String location;
     private CategoryDTO category;
     private LocalDateTime reportedAt;
+    private String dateMatch;
 
     public PropertiesDTO(String reportCategory, String address, String location,
             LocalDateTime reportedAt, String reportNum, CategoryDTO category) {
@@ -66,5 +67,13 @@ public class PropertiesDTO {
 
     public void setCategory(CategoryDTO category) {
         this.category = category;
+    }
+
+    public String getDateMatch() {
+        return dateMatch;
+    }
+
+    public void setDateMatch(String dateMatch) {
+        this.dateMatch = dateMatch;
     }
 }
