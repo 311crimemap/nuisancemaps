@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { useState, useEffect, SetStateAction, Dispatch } from "react";
+import { useState, useEffect, useRef, SetStateAction, Dispatch } from "react";
 import { useParams } from "react-router-dom";
 import maplibregl from "maplibre-gl";
 import {
@@ -28,10 +28,13 @@ import { ActiveFeatures } from "../../types/activefeatures";
 import { defaultMapPosition } from "../../types/mapposition";
 
 const MAX_DATA_RECORDS = import.meta.env.VITE_MAX_DATA_RECORDS;
+const FALLBACK_LIMIT = Math.min(100, Number(MAX_DATA_RECORDS));
 
 interface useMapsProps {
   position: MapPosition;
   setPosition: Dispatch<SetStateAction<MapPosition>>;
+  dataCrimes: DataFeatureCollection;
+  data311s: DataFeatureCollection;
   setActiveReportNum: Dispatch<SetStateAction<null>>;
   dataSources: DataSourcesMap;
   setActiveFeatures: Dispatch<SetStateAction<ActiveFeatures>>;
@@ -42,6 +45,8 @@ interface useMapsProps {
 export default function useMap({
   position,
   setPosition,
+  dataCrimes,
+  data311s,
   setActiveReportNum,
   dataSources,
   setActiveFeatures,
@@ -51,6 +56,8 @@ export default function useMap({
   const { city } = useParams();
   const [map, setMap] = useState<Map>();
   const [mapController, setMapController] = useState<MapController>();
+  const latestData = useRef({ dataCrimes, data311s });
+  latestData.current = { dataCrimes, data311s };
 
   useEffect(() => {
     if (!isInitLoaded) {
@@ -369,6 +376,21 @@ export default function useMap({
       const numData311sSource = sd311.features.length;
 
       const newMaxBounds = calcMaxLatLngBounds(bounds, _map.getZoom());
+      const cappedFallback = [latestData.current.dataCrimes, latestData.current.data311s].filter(
+        (data) => data.features.length >= FALLBACK_LIMIT &&
+          data.features.some((feature) => feature.properties.dateMatch === "older_context")
+      );
+      const fallbackCapped = cappedFallback.length > 0;
+      const missingOlderInView = cappedFallback.some((data) =>
+        !data.features.some((feature) =>
+          feature.properties.dateMatch === "older_context" &&
+          bounds.contains([feature.geometry.coordinates[0], feature.geometry.coordinates[1]])
+        )
+      );
+      // A 100-report fallback needs tighter bounds as the viewport moves.
+      const fallbackBounds = fallbackCapped
+        ? calcMaxLatLngBounds(bounds, Math.max(12, _map.getZoom() + 1))
+        : newMaxBounds;
 
       // NB: need functional update as props.position is a stale closure
       setPosition((prevPosition: MapPosition) => {
@@ -394,7 +416,11 @@ export default function useMap({
 
         const isMax =
           numData311sSource >= MAX_DATA_RECORDS ||
-          numDataCrimesSource >= MAX_DATA_RECORDS;
+          numDataCrimesSource >= MAX_DATA_RECORDS ||
+          fallbackCapped;
+
+        const fallbackBoundsChanged = fallbackCapped &&
+          JSON.stringify(fallbackBounds.toArray()) !== JSON.stringify(prevPosition.fetchBounds?.toArray());
 
         // isRefresh criteria
         //
@@ -412,6 +438,7 @@ export default function useMap({
         const isRefresh =
           (exceedBounds && !zoomOut && zoom >= SOURCE_LAYER_ZOOM) ||
           (zoomIn && isMax) ||
+          (fallbackBoundsChanged && missingOlderInView && zoom >= SOURCE_LAYER_ZOOM) ||
           zoomInToggle;
 
         const newPosition = {
@@ -419,7 +446,7 @@ export default function useMap({
           zoom: _map.getZoom(),
           center: _map.getCenter(),
           bounds,
-          fetchBounds: isRefresh ? newMaxBounds : prevPosition.fetchBounds,
+          fetchBounds: isRefresh ? fallbackBounds : prevPosition.fetchBounds,
           refresh: prevPosition.refresh + Number(isRefresh),
         };
 
