@@ -20,6 +20,8 @@ export interface DataFeatureProperties {
     reportCategory: string;
     reportNum: string;
     reportedAt: string | null;
+    dateMatch?: "within_range" | "older_context";
+    olderCount?: number;
 }
 
 export interface DataFeature {
@@ -46,6 +48,8 @@ export const defaultData: DataFeatureCollection = {
                 reportCategory: "",
                 reportNum: "",
                 reportedAt: null,
+                dateMatch: "within_range",
+                olderCount: 0,
             },
             geometry: {
                 type: "Point",

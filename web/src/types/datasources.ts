@@ -12,6 +12,7 @@ export interface GeoJSONSource {
     cluster?: boolean;
     clusterMaxZoom?: number;
     clusterRadius?: number;
+    clusterProperties?: Record<string, unknown>;
 }
 
 export interface DataSourcesMap {
@@ -21,4 +22,3 @@ export interface DataSourcesMap {
     [DATASOURCES.HeatMapDataCrimes]: GeoJSONSource;
     [DATASOURCES.HeatMapData311s]: GeoJSONSource;
 }
-
