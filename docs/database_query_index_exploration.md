@@ -1,22 +1,89 @@
 # Database Query and Index Optimization Examples
 
+## Current Spatial Query Approach
+
+The map-data queries filter by a PostGIS geometry viewport and a report-date
+range, then return the newest rows first:
+
+```sql
+WHERE ST_Within(point, ST_MakeEnvelope(..., 4326)::geometry)
+  AND reported_at BETWEEN :startDate AND :endDate
+ORDER BY reported_at DESC
+LIMIT :limit
+```
+
+The active spatial indexes are dedicated **GiST** indexes on the PostGIS
+`point` column:
+
+```sql
+CREATE INDEX idx_point_gist_data_311 ON data_311 USING GIST (point);
+CREATE INDEX idx_point_gist_data_crime ON data_crime USING GIST (point);
+```
+
+These are GiST indexes. Separate native B-tree indexes on `reported_at DESC`
+remain available for the date-range/order part of the query. PostgreSQL chooses
+between the spatial and date-oriented paths according to the selectivity of the
+viewport and date range: a wide map extent tends to make date ordering more
+important, while a narrow viewport benefits substantially from spatial
+filtering.
+
+### Planner statistics
+
+The default statistics target (100) did not give PostgreSQL sufficiently useful
+selectivity estimates for these spatial-plus-date queries. The current
+configuration raises the statistics target to 1000 for both `point` and
+`reported_at` on both data tables and runs `ANALYZE`. This was the material
+improvement: it helps the planner estimate the competing spatial and temporal
+filters correctly and choose an appropriate plan, including using the spatial
+index when the viewport is selective.
+
+### Previous composite GiST experiment
+
+We previously created composite GiST indexes on `(point, reported_at)`. The
+`btree_gist` extension was required because PostGIS supplies GiST support for
+the geometry column, while `btree_gist` supplies GiST operator classes for
+ordinary scalar types such as `reported_at`. The composite indexes were later
+dropped in favor of the dedicated GiST indexes plus higher planner statistics:
+they did not reliably produce the best plans, and GiST cannot provide the
+native descending B-tree ordering needed for `ORDER BY reported_at DESC`.
+
+`btree_gist` remains installed because it is negligible by itself and keeps the
+option of future mixed GiST indexes open. It adds meaningful disk and write
+maintenance cost only when an index actually uses it; the current point-only
+GiST indexes do not.
+
+The sections below are the historical index experiments that led to this
+configuration.
+
+
+
+
+#### Query Improvement
+
+
+
 Tried a number of indices in an attempt to improve query speed.
 
 Current fastest implementation:
 
-1. having _no_ GIST index of any kind
-2. single index on `reported_at DESC`
+1. Set a GIST index
+2. Increase the statistics on `point` and `reported_at` columns
 
-Query plan hits sorted dates first (memoized), then runs spatial query. Gets
-faster after first query.
+Spatial queries need larger than default (100) statistics.
 
-Concern is that this might not scale horizontally. As more cities are added, the
-number of entries in a date range will continue to increase - so the candidate
-pool for slower spatial query will continue to increase.
+```
+ALTER TABLE data_crime ALTER COLUMN point SET STATISTICS 1000;
+ALTER TABLE
+ALTER TABLE data_crime ALTER COLUMN reported_at SET STATISTICS 1000;
+ALTER TABLE
+ANALYZE data_crime;
 
-There may be a point where these queries slow down and then another approach
-(separate table, additional GINI) might then be faster.
-
+ALTER TABLE data_311 ALTER COLUMN point SET STATISTICS 1000;
+ALTER TABLE
+ALTER TABLE data_311 ALTER COLUMN reported_at SET STATISTICS 1000;
+ALTER TABLE
+ANALYZE data_311;
+```
 
 #### Exploration Notes
 
@@ -122,7 +189,7 @@ ORDER BY dc.reported_at DESC LIMIT 10000;
 ```
 
 The reality was it was not any faster than the slowest original attempt with
-GINI indices. The JOIN's lent to expensive scans, overwhelming any benefit of
+GiST indices. The JOIN's lent to expensive scans, overwhelming any benefit of
 separation.
 
 

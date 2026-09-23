@@ -190,6 +190,38 @@ public class ParserStrategyConfigMulti {
         return dateStr;
     }
 
+    // 2026-02-18 20:38:00
+    public static String REPORTED_AT_CSV_yyyyMMdd_HHmmss_SLASH(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+        try {
+            String field = mappingField.getField();
+            String text = row.get(field);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
+    // 2025-08-05 14:51:00.000
+    public static String REPORTED_AT_CSV_311_yyyyMMdd_HHmmssSSS_DASH(Map<String, String> row, MappingField mappingField) {
+        String dateStr = null;
+
+        try {
+            String text = row.get("date_requested");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            dateStr = LocalDateTime.parse(text, formatter).format(outputFormatter);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return dateStr;
+    }
+
     // 2024-12-04
     public static String REPORTED_AT_JSON_yyyyMMdd_DASH(JsonNode item, MappingField mappingField) {
         String dateStr = null;

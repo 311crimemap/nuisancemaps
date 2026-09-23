@@ -42,7 +42,8 @@
         "paint": {
             "text-color": "#A5D6A7",
             "text-halo-color": "#000000",
-            "text-halo-width": 1
+            "text-halo-width": 1,
+            "text-opacity": ["case", ["==", ["get", "older_count"], ["get", "point_count"]], 0.4, 1]
         }
     },
     {
@@ -55,15 +56,15 @@
             "point_count"
         ],
         "layout": {
-            "text-field": [
-                "get",
-                "point_count_abbreviated"
-            ],
+            "text-field": ["get", "point_count_abbreviated"],
             "text-font": [
                 "Noto Sans Regular"
             ],
             "text-allow-overlap": true,
             "text-size": 14
+        },
+        "paint": {
+            "text-opacity": ["case", ["==", ["get", "older_count"], ["get", "point_count"]], 0.4, 1]
         }
     },
     {
@@ -83,7 +84,8 @@
             "circle-color": "#A5D6A7",
             "circle-stroke-width": 2,
             "circle-stroke-color": "#000000",
-            "circle-stroke-opacity": 0.75
+            "circle-stroke-opacity": ["case", ["==", ["get", "dateMatch"], "older_context"], 0.25, 0.75],
+            "circle-opacity": ["case", ["==", ["get", "dateMatch"], "older_context"], 0.35, 1]
         }
     },
     {
@@ -118,7 +120,8 @@
         "paint": {
             "text-color": "#000000",
             "text-halo-color": "#f0f0f0",
-            "text-halo-width": 1
+            "text-halo-width": 1,
+            "text-opacity": ["case", ["==", ["get", "dateMatch"], "older_context"], 0.35, 1]
         }
     }
 ]

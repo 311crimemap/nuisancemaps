@@ -16,7 +16,7 @@ metadata:
   namespace: crimemap
 spec:
   capacity:
-    storage: 30Gi
+    storage: 15Gi
   volumeMode: Filesystem
   accessModes:
   - ReadWriteOnce

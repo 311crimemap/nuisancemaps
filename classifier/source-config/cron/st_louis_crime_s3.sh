@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 #
 # because IP poisoned on worker, setting a cron job to download daily dump
@@ -7,21 +8,24 @@
 # see `crontab -l` for usage
 #
 
-URL=https://www.stlouis-mo.gov/data/upload/data-files/csb.zip
-FILE=2025.csv
+MONTH=$(date -d "last month" +%B)        # e.g., "April"
+DATA_YEAR=$(date -d "last month" +%Y)    # e.g., "2026"
+UPLOAD_YEAR=$(date +%Y)                  # current year
+UPLOAD_MONTH=$(date +%m)                 # current month, zero-padded
+
+URL="https://slmpd.org/wp-content/uploads/${UPLOAD_YEAR}/${UPLOAD_MONTH}/${MONTH}${DATA_YEAR}.csv"
+#OUT="${MONTH}${DATA_YEAR}.csv"
+OUT_FILE=crime.csv
 
 date
 echo "[st_louis_crime_s3] Downloading File"
-
 mkdir -p $WORKDIR
 cd $WORKDIR
-wget $URL -O $WORKDIR/csb.zip
+wget $URL -O $WORKDIR/$OUT_FILE
 
-echo "[st_louis_crime_s3] Unzipping archive"
-unzip -o $WORKDIR/csb.zip $FILE
 
-echo "[st_lousi_crime_s3] Uploading to AWS"
+echo "[st_louis_crime_s3] Uploading to AWS"
 # Example: Use AWS CLI to upload the file to S3
 aws s3 cp --profile $AWS_PROFILE --region $AWS_REGION \
-    $WORKDIR/2025.csv $BUCKET_ST_LOUIS
+    $WORKDIR/$OUT_FILE $BUCKET_ST_LOUIS
 date

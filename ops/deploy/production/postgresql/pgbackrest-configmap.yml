@@ -20,7 +20,8 @@ data:
     [${PGBACKREST_STANZA}]
     pg1-user=postgres
     pg1-path=/bitnami/postgresql/data
-    pg1-database=postgres # default database to connect to (not backup)
+    # default database to connect to (not backup)
+    pg1-database=postgres
     # log-path=/backup_db/pgbackrest
 
     # "local" backup
@@ -32,8 +33,8 @@ data:
     repo2-s3-region=${PGBACKREST_REPO2_S3_REGION}
     repo2-s3-endpoint=${PGBACKREST_REPO2_S3_ENDPOINT}
     repo2-s3-bucket=${PGBACKREST_REPO2_S3_BUCKET}
-    repo2-retention-diff=2
-    repo2-retention-full=2
+    repo2-retention-diff=1
+    repo2-retention-full=1
 
     # creds are set in respective .env.*
     # note prefix and underscore: PGBACKREST_REPO2_S3_KEY

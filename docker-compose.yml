@@ -6,12 +6,22 @@ services:
     build: "./web"
     volumes:
       - ./web:/web
+      # Keep dependencies built into the image out of the host bind mount.
+      - /web/node_modules
     command: bash -c "npm run dev"
     ports:
-      - 5173:5173  # dev server
-      - 4173:4173  # prod build preview
+      - 127.0.0.1:5173:5173  # dev server
+      - 127.0.0.1:4173:4173  # prod build preview
     env_file:
       - .env.dev
+    environment:
+      # The Compose API proxy is intentionally bound to loopback.
+      VITE_API_SERVER_URL: http://localhost:8080
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    init: true
 
   classifier:
     image: "${IMAGE_REPO:-$USER}/311crimemap/classifier"
@@ -21,20 +31,26 @@ services:
       - ./classifier:/classifier
     env_file:
       - .env.dev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    init: true
 
   traefik:
     image: "traefik:v2.11.31"
     container_name: "traefik"
     command:
-      - "--api.insecure=true"
+      - "--api.insecure=false"
+      - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.dashboard.address=:8081"
       - "--entrypoints.apiEntryPoint.address=:8000"
       - "--entrypoints.traefik.address=:9999"  # internal
     ports:
-      - 8081:8081  # dashboard port
-      - 8080:8000  # map traefik to api (apiEntryPoint address port)
+      - 127.0.0.1:8081:8081  # dashboard port
+      - 127.0.0.1:8080:8000  # map traefik to api (apiEntryPoint address port)
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
@@ -44,22 +60,30 @@ services:
       - "traefik.http.routers.traefik-dashboard.entrypoints=dashboard"   # Use the "dashboard entry point
       - "traefik.http.routers.traefik-dashboard.service=api@internal"    # Service name for Traefik's internal API
       - "traefik.http.middlewares.api-compression.compress=true"         # Gzip middleware
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    init: true
 
   api:
     #NB: deploy image is configured in pom.xml, built via spring boot.
     image: eclipse-temurin:17-jdk-alpine
     volumes:
       - ./api:/api
-      - $HOME/.m2:/root/.m2
+      - api_maven_cache:/root/.m2
       - data:/data  # env.FETCH_DATA_DIR downloads location (typically local instance store)
     working_dir: '/api'
     #command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication"
     # enable debugger via dap-mode / dap-breakpoint-toggle
     command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.NuisancemapsApplication -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'"
     ports:
-      - 5005:5005 # enable remote debug port
+      - 127.0.0.1:5005:5005 # enable remote debug port
     env_file:
       - .env.dev
+    environment:
+      # Keep browser API access limited to the local development servers.
+      CORS_ORIGINS: http://localhost:5173,http://localhost:4173
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=PathPrefix(`/`)"               # Routes all traffic to this service
@@ -69,12 +93,15 @@ services:
     depends_on:
       db:
          condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    init: true
 
   worker:
     image: eclipse-temurin:17-jdk-alpine
     volumes:
       - ./api:/api
-      - $HOME/.m2:/root/.m2
+      - worker_maven_cache:/root/.m2
       - data:/data  # env.FETCH_DATA_DIR downloads location (typically local instance store)
     working_dir: '/api'
     command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.WorkerApplication"
@@ -85,6 +112,9 @@ services:
     depends_on:
       db:
          condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    init: true
 
   db:
     image: bitnamilegacy/pgpool:4
@@ -164,3 +194,5 @@ volumes:
   db_pg_0:
   db_pg_1:
   data:
+  api_maven_cache:
+  worker_maven_cache:

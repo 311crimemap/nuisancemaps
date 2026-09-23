@@ -20,7 +20,8 @@ data:
     [${PGBACKREST_STANZA}]
     pg1-user=postgres
     pg1-path=/bitnami/postgresql/data
-    pg1-database=postgres # default database to connect to (not backup)
+    # default database to connect to (not backup)
+    pg1-database=postgres
     # log-path=/backup_db/pgbackrest
 
     # "local" backup

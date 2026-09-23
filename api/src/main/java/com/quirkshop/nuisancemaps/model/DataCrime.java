@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 @Entity
 @Table(name = "data_crime", indexes = {
         @Index(name = "idx_report_num_data_crime", columnList = "reportNum"),
-        @Index(name = "idx_source_id_data_crime", columnList = "source_id"),
         @Index(name = "idx_reported_at_desc_data_crime", columnList = "reportedAt DESC"),
         // Combined Spatial GIST + Vanilla index uses btree_gist extension
         @Index(name = "idx_gist_point_reported_at_data_crime", columnList = "point, reportedAt")

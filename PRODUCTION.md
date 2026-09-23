@@ -26,8 +26,8 @@ docker login --username AWS --password-stdin $IMAGE_REPO`
 
 4. Replace containers:
 
-* `kubectl rollout restart deployment/spring-worker`
-* `kubectl rollout restart deployment/spring-api`
+* `kubectl rollout restart deployment/spring-worker -n crimemap`
+* `kubectl rollout restart deployment/spring-api -n crimemap`
 
 
 ## Sources
@@ -59,24 +59,24 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 |-----------|------------------------|-------|-----------|--------|------|--------------|-----------------|-------|
 | 1         | Austin                 | Crime | 2         | 1      | x    | -            | 2024-12-01      |       |
 | 1         | Austin                 | 311   | 35        | 1      | x    |              | 2024-09-01      |       |
-| 2         | Dallas                 | Crime | 36        | 2      | x    |              | 2024-09-01      |       |
-| 2         | Dallas t-90 days       | 311   | 211       | 2      | x    |              | 2024-11-22      |       |
-| 3         | Chicago                | Crime | 38        | 3      | x    |              | 2024-09-01      |       |
-| 3         | Chicago                | 311   | 34        | 3      | x    |              |                 |       |
-| 4         | NYC (YTD)              | crime | 186       | 4      | x    | quarterly    |                 |       |
-| 4         | NYC                    | 311   | 32        | 4      | x    |              | 2024-09-01      |       |
-| 5         | SF                     | Crime | 39        | 5      | x    |              | 2024-09-01      |       |
-| 5         | SF                     | 311   | 33        | 5      | x    |              | 2024-09-01      |       |
+| 2         | Dallas                 | Crime | 36        | 2      | x    |              | 2026-01-01      |       |
+| 2         | Dallas Full Daily      | 311   | 234       | 2      | x    |              | 2026-01-01      |       |
+| 3         | Chicago                | Crime | 38        | 3      | x    |              | 2026-01-01      |       |
+| 3         | Chicago                | 311   | 34        | 3      | x    |              | 2026-01-01      |       |
+| 4         | NYC (YTD)              | crime | 186       | 4      | x    | quarterly    | 2026-01-01      |       |
+| 4         | NYC                    | 311   | 32        | 4      | x    |              | 2026-01-01      |       |
+| 5         | SF                     | Crime | 39        | 5      | x    |              | 2026-01-01      |       |
+| 5         | SF                     | 311   | 33        | 5      | x    |              | 2026-01-01      |       |
 | 6         | Boston (2023-present)  | Crime | 13        | 6      | x    |              |                 |       |
-| 6         | Boston 2025            | 311   | 200       | 6      | x    |              |                 |       |
-| 7         | Los Angeles            | Crime | 187       | 7      | x    | weekly       | 2024-12-01      |       |
-| 7         | Los Angeles 2025       | 311   | 206       | 7      | x    | daily        | 2025-01-01      |       |
-| 8         | Houston 2025           | Crime | 212       | 8      | x    | monthly      | 2025-01-01      |       |
+| 6         | Boston 2026            | 311   | 217       | 6      | x    | daily        | 2026-01-01      |       |
+| 7         | Los Angeles            | Crime | 187       | 7      | x    | weekly       | 2025-05-01      |       |
+| 7         | Los Angeles 2025       | 311   | 206       | 7      | x    | daily        | 2025-05-01      |       |
+| 8         | Houston 2026           | Crime | 216       | 8      | x    | quarterly    | 2026-01-01      |       |
 | 8         | Houston MTD            | 311   | 191       | 8      | x    | daily        |                 |       |
-| 9         | Philadelphia 2025      | crime | 193       | 9      | x    | daily        |                 |       |
-| 9         | Philadelphia 2025      | 311   | 194       | 9      | x    | daily        |                 |       |
+| 9         | Philadelphia 2026      | crime | 229       | 9      | x    | daily        | 2026-01-01      |       |
+| 9         | Philadelphia 2026      | 311   | 230       | 9      | x    | daily        | 2026-01-01      |       |
 | 10        | San Diego              | crime | 99        | 10     | x    | daily        |                 |       |
-| 10        | San Diego 2025         | 311   | 192       | 10     | x    | daily        |                 |       |
+| 10        | San Diego 2026         | 311   | 218       | 10     | x    | daily        | 2026-01-01      |       |
 | 11        | Charlotte              | crime | 105       | 11     | x    | daily        |                 |       |
 | 11        | Charlotte              | 311   | 106       | 11     | x    | daily        |                 |       |
 | 12        | Denver                 | crime | 107       | 12     | x    | daily        |                 |       |
@@ -84,36 +84,36 @@ Job Restarts within past day: `curl -H "X-API-KEY: $ADMIN_API_KEY" api.311crimem
 | 13        | Detroit                | crime | 109       | 13     | x    | daily        |                 |       |
 | 13        | Detroit                | 311   | 110       | 13     | x    | daily        |                 |       |
 | 14        | Memphis                | crime | 113       | 14     | x    | daily        | 2024-12-01      |       |
-| 14        | Memphis                | 311   | 114       | 14     | x    | daily        | 2024-09-01      |       |
-| 15        | Montgomery County      | crime | 117       | 15     | x    | daily        | 2024-12-01      |       |
+| 14        | Memphis                | 311   | 215       | 14     | x    | daily        | 2023-01-01      |       |
+| 15        | Montgomery County      | crime | 117       | 15     | x    | daily        | 2026-01-01      |       |
 | 16        | Nashville              | crime | 118       | 16     | x    | daily        |                 |       |
 | 16        | Nashville (YTD)        | 311   | 120       | 16     | x    | daily        |                 |       |
-| 17        | Kansas City 2025       | crime | 208       | 17     | x    | daily        | 2025-01-01      |       |
-| 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2024-12-01      |       |
-| 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        |                 |       |
-| 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2024-12-01      |       |
-| 19        | Minneapolis 2025       | crime | 201       | 19     | x    | daily (year) |                 |       |
-| 19        | Minneapolis 2025       | 311   | 202       | 19     | x    | daily (year) |                 |       |
-| 20        | Cleveland              | crime | 139       | 20     | x    | daily (full) |                 |       |
+| 17        | Kansas City 2026       | crime | 222       | 17     | x    | daily        | 2026-01-01      |       |
+| 17        | Kansas City            | 311   | 124       | 17     | x    | daily        | 2026-01-01      |       |
+| 18        | Oakland (last 90 days) | crime | 125       | 18     | x    | daily        | 2026-01-01      |       |
+| 18        | Oakland                | 311   | 128       | 18     | x    | daily        | 2025-01-01      |       |
+| 19        | Minneapolis 2026       | crime | 232       | 19     | x    | daily (full) |                 |       |
+| 19        | Minneapolis 2026       | 311   | 233       | 19     | x    | daily (year) |                 |       |
+| 20        | Cleveland              | crime | 225       | 20     | x    | daily (full) |                 |       |
 | 20        | Cleveland              | 311   | 140       | 20     | x    | daily (full) |                 |       |
-| 21        | Cincinnatti            | crime | 213       | 21     | x    | daily        | 2024-06-01      |       |
-| 21        | Cincinnatti            | 311   | 144       | 21     | x    | daily        |                 |       |
-| 22        | St. Louis 2025         | crime | 207       | 22     | x    | daily (year) |                 |       |
-| 22        | St. Louis              | 311   | 210       | 22     | x    | daily (year) |                 |       |
+| 21        | Cincinnatti            | crime | 213       | 21     | x    | daily        | 2026-01-01      |       |
+| 21        | Cincinnatti            | 311   | 226       | 21     | x    | daily        | 2026-01-01      |       |
+| 22        | St. Louis 2026         | crime | 235       | 22     | x    | daily (year) | 2026-01-01      |       |
+| 22        | St. Louis              | 311   | 223       | 22     | x    | daily (year) | 2026-01-01      |       |
 | 23        | Baltimore              | crime | 209       | 23     | x    | daily (full) |                 |       |
-| 23        | Baltimore 2025         | 311   | 203       | 23     | x    | daily (year) |                 |       |
-| 24        | Washington DC 2025     | crime | 204       | 24     | x    | daily        |                 |       |
-| 24        | Washington DC 2025     | 311   | 205       | 24     | x    | daily        |                 |       |
-| 25        | Prince George's        | crime | 188       | 25     | x    | daily        | 2024-12-01      |       |
-| 25        | Prince George's        | 311   | 172       | 25     | x    | daily        |                 |       |
-| 26        | Baton Rouge            | crime | 175       | 26     | x    | daily        |                 |       |
-| 26        | Baton Rouge            | 311   | 176       | 26     | x    | daily        |                 |       |
-| 27        | Buffalo, NY            | crime | 180       | 27     | x    | daily        | 2024-12-01      |       |
-| 27        | Buffalo, NY            | 311   | 181       | 27     | x    | daily        | 2024-12-01      |       |
-| 28        | Chattanooga            | crime | 184       | 28     | x    | daily        | 2024-12-01      |       |
-| 28        | Chattanooga            | 311   | 185       | 28     | x    | daily        | 2024-12-01      |       |
-| 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2024-12-01      |       |
-| 30        | Portland, OR           | crime | 214       | 30     | x    | daily        | 2025-01-01      |       |
+| 23        | Baltimore 2026         | 311   | 221       | 23     | x    | daily (year) | 2026-01-01      |       |
+| 24        | Washington DC 2026     | crime | 219       | 24     | x    | daily        | 2026-01-01      |       |
+| 24        | Washington DC 2026     | 311   | 220       | 24     | x    | daily        | 2026-01-01      |       |
+| 25        | Prince George's        | crime | 188       | 25     | x    | daily        | 2026-01-01      |       |
+| 25        | Prince George's        | 311   | 172       | 25     | x    | daily        | 2026-01-01      |       |
+| 26        | Baton Rouge            | crime | 175       | 26     | x    | daily        | 2026-01-01      |       |
+| 26        | Baton Rouge            | 311   | 176       | 26     | x    | daily        | 2026-01-01      |       |
+| 27        | Buffalo, NY            | crime | 180       | 27     | x    | daily        | 2026-01-01      |       |
+| 27        | Buffalo, NY            | 311   | 181       | 27     | x    | daily        | 2026-01-01      |       |
+| 28        | Chattanooga            | crime | 231       | 28     | x    | daily        | 2024-12-01      |       |
+| 28        | Chattanooga            | 311   | 185       | 28     | x    | daily        | 2025-06-01      |       |
+| 29        | Seattle                | crime | 190       | 29     | x    | daily        | 2026-01-01      |       |
+| 30        | Portland, OR           | crime | 227       | 30     | x    | daily        | 2026-01-01      |       |
 
 
 #### Submit New Worker Task
@@ -133,7 +133,7 @@ See `./classifer/README.md` for locale -> source -> textcategory sequence.
 
 * Make any `source_config.json`changes - includes any mapping updates
 * Submit to update route:
-  * `curl -X PATCH -H 'content-type:application/json' -H 'X-API-KEY: <key>' -d @source_config.json api.311crimemap.com/sources/<id>`
+  * `curl -X PATCH -H 'content-type:application/json' -H "X-API-KEY: $ADMIN_API_KEY -d @source_config.json api.311crimemap.com/sources/<id>`
   * submit full source (updates all) object not single fields
 
 ##### Mapping

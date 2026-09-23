@@ -7,7 +7,7 @@ interface DropDownProps {
     children: React.ReactNode
 }
 export default function DropDown({ children }: DropDownProps) {
-  const buttonRef = useRef<number>(0);
+  const buttonRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const childArray = React.Children.toArray(children);
   const [icon, setIcon] = useState(faChevronUp);
@@ -79,7 +79,7 @@ export default function DropDown({ children }: DropDownProps) {
       <div
         tabIndex={0}
         role="button"
-        className="btn m-2 p-2 sm:px-4 capitalize bg-base-100 hover:bg-secondary-content focus:border-indigo-300"
+        className="btn m-2 p-2 xl:px-4 capitalize bg-base-100 hover:bg-secondary-content focus:border-indigo-300"
         onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
           onClickHandler(e)
         }

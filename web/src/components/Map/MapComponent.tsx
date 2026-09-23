@@ -32,6 +32,8 @@ export default function MapComponent(props: any) {
       const dataCrimes = {
         type: "FeatureCollection",
         features: props.dataCrimes.features.filter((feature: DataFeature) => {
+          if (!props.showOlder && feature.properties.dateMatch === "older_context")
+            return false;
           if (typeof feature.properties.category !== "string")
             return activeCategoriesIds.includes(
               feature.properties.category?.id
@@ -43,6 +45,8 @@ export default function MapComponent(props: any) {
       const data311s = {
         type: "FeatureCollection",
         features: props.data311s.features.filter((feature: DataFeature) => {
+          if (!props.showOlder && feature.properties.dateMatch === "older_context")
+            return false;
           if (typeof feature.properties.category !== "string")
             return activeCategoriesIds.includes(
               feature.properties.category?.id
@@ -51,14 +55,34 @@ export default function MapComponent(props: any) {
         }),
       };
 
-      dataCrimesSource?.setData(dataCrimes);
-      data311sSource?.setData(data311s);
-      heatMapDataCrimesSource?.setData(dataCrimes);
-      heatMapData311sSource?.setData(data311s);
+      const withOlderCounts = (features: DataFeature[]) => ({
+        type: "FeatureCollection",
+        features: [...features].sort((a, b) => {
+          const aOlder = a.properties.dateMatch === "older_context";
+          const bOlder = b.properties.dateMatch === "older_context";
+          return aOlder === bOlder ? 0 : aOlder ? -1 : 1;
+        }).map((feature) => ({
+          ...feature,
+          properties: {
+            ...feature.properties,
+            olderCount: feature.properties.dateMatch === "older_context" ? 1 : 0,
+          },
+        })),
+      });
+      dataCrimesSource?.setData(withOlderCounts(dataCrimes.features));
+      data311sSource?.setData(withOlderCounts(data311s.features));
+      heatMapDataCrimesSource?.setData({
+        type: "FeatureCollection",
+        features: dataCrimes.features.filter((feature: DataFeature) => feature.properties.dateMatch !== "older_context"),
+      });
+      heatMapData311sSource?.setData({
+        type: "FeatureCollection",
+        features: data311s.features.filter((feature: DataFeature) => feature.properties.dateMatch !== "older_context"),
+      });
     } catch (e) {
       Log.error({ msg: e, ...Log.data });
     }
-  }, [props.activeCategories, props.dataCrimes, props.data311s]);
+  }, [props.activeCategories, props.dataCrimes, props.data311s, props.showOlder]);
 
   return <div id="map"></div>;
 }
