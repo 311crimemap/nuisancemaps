@@ -30,8 +30,8 @@ public interface Data311Repository extends DataEntityRepository<Data311>, CrudRe
             "FROM data_311 dc " +
             "JOIN category cat ON dc.category_id = cat.id " +
             "WHERE ST_Within(point, ST_MakeEnvelope(:sw_lng, :sw_lat, :ne_lng, :ne_lat, 4326)\\:\\:geometry) " +
-            "AND reported_at BETWEEN :startDate AND :endDate " +
-            "ORDER BY dc.reported_at DESC " +
+            "AND dc.reported_at >= :startDate AND dc.reported_at < :endDate " +
+            "ORDER BY dc.reported_at DESC, dc.id DESC " +
             "LIMIT :limit", nativeQuery = true)
 
     List<Object[]> findAllByLatLngBoundsAndBetweenDates(

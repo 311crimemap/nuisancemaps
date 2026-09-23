@@ -32,6 +32,10 @@ body {
     width: 270px !important;
     max-width: 270px !important;
   }
+  @media (min-width: 768px) and (max-width: 1199px) {
+    width: 150px !important;
+    max-width: 150px !important;
+  }
 }
 
 #feature-list-component {

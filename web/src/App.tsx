@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./App.css";
 import Meta from "./Meta";
@@ -32,9 +32,11 @@ function App() {
   const [position, setPosition] = useState<MapPosition>(defaultMapPosition);
   const [dataCrimes, setDataCrimes] = useState(defaultData);
   const [data311s, setData311s] = useState(defaultData);
+  const [showOlder, setShowOlder] = useState(true);
 
   const [initStatus, setInitStatus] = useState(DATASTATUS.LOADING);
   const [dataStatus, setDataStatus] = useState(DATASTATUS.NONE);
+  const lastRequestKey = useRef<string | null>(null);
 
   const [activeReportNum, setActiveReportNum] = useState(null);
   const [activeFeatures, setActiveFeatures] = useState(defaultActiveFeatures);
@@ -48,6 +50,10 @@ function App() {
     dateFilterReducer,
     defaultDateRange
   );
+
+  useEffect(() => {
+    setActiveFeatures({ source: "", features: [] });
+  }, [showOlder]);
 
   const dataSources: DataSourcesMap = {
     [DATASOURCES.Sources]: {
@@ -63,6 +69,7 @@ function App() {
       cluster: true,
       clusterMaxZoom: 18, // Max zoom to cluster points on
       clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+      clusterProperties: { older_count: ["+", ["get", "olderCount"]] },
     },
     [DATASOURCES.DataCrimes]: {
       type: "geojson",
@@ -70,6 +77,7 @@ function App() {
       cluster: true,
       clusterMaxZoom: 18, // Max zoom to cluster points on
       clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+      clusterProperties: { older_count: ["+", ["get", "olderCount"]] },
     },
 
     //TODO: issue w/ dueling layers - they get overlaid not aggregated (like clusters)
@@ -144,11 +152,6 @@ function App() {
     if (!map) return;
     if (map.getZoom() < 10) return;
 
-    filterDateDispatcher({
-      type: "isBusy",
-      value: true,
-    });
-
     const bounds = map.getBounds();
     const fetchBounds =
       position.fetchBounds || calcMaxLatLngBounds(bounds, map.getZoom());
@@ -166,6 +169,14 @@ function App() {
       sw_lng: fetchBounds.getSouthWest().lng.toString(),
       ne_lat: fetchBounds.getNorthEast().lat.toString(),
       ne_lng: fetchBounds.getNorthEast().lng.toString(),
+    });
+    const requestKey = params.toString();
+    if (lastRequestKey.current === requestKey) return;
+    lastRequestKey.current = requestKey;
+
+    filterDateDispatcher({
+      type: "isBusy",
+      value: true,
     });
 
     const dataCrimesURL = `${
@@ -223,6 +234,7 @@ function App() {
     position.refresh,
     filterDate.date.startDate,
     filterDate.date.endDate,
+    dataStatus,
   ]);
 
   Log.log({
@@ -259,6 +271,8 @@ function App() {
             dataCrimes={dataCrimes}
             data311s={data311s}
             dataStatus={dataStatus}
+            showOlder={showOlder}
+            setShowOlder={setShowOlder}
           />
         )}
       </div>
@@ -278,6 +292,7 @@ function App() {
           DATASOURCES={DATASOURCES}
           dataCrimes={dataCrimes}
           data311s={data311s}
+          showOlder={showOlder}
         />
 
         <FeatureListComponent activeFeatures={activeFeatures} />
@@ -285,9 +300,10 @@ function App() {
 
       <MapStatus
         dataStatus={dataStatus}
-        errorRefreshFn={() =>
-          setPosition({ ...position, refresh: position.refresh + 1 })
-        }
+        errorRefreshFn={() => {
+          lastRequestKey.current = null;
+          setPosition({ ...position, refresh: position.refresh + 1 });
+        }}
       />
     </>
   );

@@ -2,6 +2,7 @@ package com.quirkshop.nuisancemaps.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.quirkshop.nuisancemaps.dto.CategoryDTO;
@@ -42,10 +43,19 @@ public class DataCrimeService {
             double ne_lat,
             double ne_lng, LocalDateTime startDate, LocalDateTime endDate, int limit) {
 
-        List<Object[]> results = dataCrimeRepository.findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat,
-                ne_lng, startDate,
-                endDate, limit);
-
+        LocalDateTime endExclusive = endDate.toLocalDate().plusDays(1).atStartOfDay();
+        List<Object[]> matches = dataCrimeRepository.findAllByLatLngBoundsAndBetweenDates(
+                sw_lat, sw_lng, ne_lat, ne_lng, startDate, endExclusive, limit);
+        List<Object[]> older = List.of();
+        LocalDateTime fallbackStart = SparseQueryPolicy.fallbackStart(endDate.toLocalDate());
+        if (SparseQueryPolicy.isRecent(endDate.toLocalDate()) && matches.size() < SparseQueryPolicy.THRESHOLD
+                && matches.size() < limit
+                && fallbackStart.isBefore(startDate)) {
+            older = dataCrimeRepository.findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng,
+                    fallbackStart, startDate, SparseQueryPolicy.FALLBACK_LIMIT - matches.size());
+        }
+        List<Object[]> results = new ArrayList<>(matches);
+        results.addAll(older);
         List<FeatureDTO> featuresDTO = results
                 .stream()
                 .map(result -> {
@@ -86,7 +96,6 @@ public class DataCrimeService {
 
                 }).toList();
 
-        return new FeatureCollectionDTO("FeatureCollection", featuresDTO);
-
+        return SparseQueryPolicy.collect(featuresDTO, matches.size());
     }
 }

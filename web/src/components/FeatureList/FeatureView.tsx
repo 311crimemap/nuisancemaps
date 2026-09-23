@@ -68,6 +68,9 @@ export default function FeatureView({
 
           <div className="w-32 text-sm text-right">{reportedAtDate}</div>
         </div>
+        {properties.dateMatch === "older_context" && (
+          <div className="text-xs text-neutral-content">Outside selected dates</div>
+        )}
 
         {listMode && !isLast && <hr className="mb-2" />}
 

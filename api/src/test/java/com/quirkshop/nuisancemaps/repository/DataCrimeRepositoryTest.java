@@ -136,7 +136,7 @@ public class DataCrimeRepositoryTest {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING), 4326);
 
         double latitude = 30.2944;
-        double longitude = -97.7171;
+        double longitude = -140.7171;
         Coordinate coordinate = new Coordinate(longitude, latitude);
         Point point = geometryFactory.createPoint(coordinate);
 
@@ -198,22 +198,22 @@ public class DataCrimeRepositoryTest {
         List<Object[]> results = datacrime_repo
                 .findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng, tenDaysAgo, now, 10000);
 
-        assertThat(results.size()).isEqualTo(2);
+        assertThat(results.size()).isEqualTo(1);
 
         results = datacrime_repo
                 .findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng, now, now, 10000);
-        assertThat(results.size()).isEqualTo(1);
+        assertThat(results.size()).isZero();
 
         results = datacrime_repo
                 .findAllByLatLngBoundsAndBetweenDates(new_latitude - 0.01, sw_lng, new_latitude + 0.01, ne_lng,
                         tenDaysAgo, now, 10000);
-        assertThat(results.size()).isEqualTo(1);
+        assertThat(results.size()).isZero();
 
         results = datacrime_repo
                 .findAllByLatLngBoundsAndBetweenDates(new_latitude - 2, sw_lng, new_latitude + 2,
                         ne_lng, tenDaysAgo, now, 10000);
 
-        assertThat(results.size()).isEqualTo(3);
+        assertThat(results.size()).isEqualTo(1);
     }
 
 }

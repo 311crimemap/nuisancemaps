@@ -24,6 +24,8 @@ interface ControlBarProps {
   dataCrimes: DataFeatureCollection;
   data311s: DataFeatureCollection;
   dataStatus: DATASTATUS;
+  showOlder: boolean;
+  setShowOlder: (value: boolean) => void;
 }
 
 export default function ControlBar({
@@ -37,12 +39,14 @@ export default function ControlBar({
   dataCrimes,
   data311s,
   dataStatus,
+  showOlder,
+  setShowOlder,
 }: ControlBarProps) {
   if (activeCategories.length == 0) return null;
 
   return (
     <div className="navbar bg-base-100 p-4 pb-2 sm:py-2 border-b">
-      <div className="flex flex-col sm:flex-row w-full flex-1">
+      <div className="flex flex-col sm:flex-row w-full md:w-auto md:flex-none">
         <div className="w-full sm:w-auto mb-2 sm:mb-0">
           <Search mapController={mapController} />
         </div>
@@ -70,13 +74,15 @@ export default function ControlBar({
           </div>
         </div>
       </div>
-
-      <div className="flex-none hidden md:flex">
+      <div className="hidden md:flex min-w-0 flex-1 justify-end md:ml-4">
         <MapInfo
           map={map}
           dataCrimes={dataCrimes}
           data311s={data311s}
+          activeCategories={activeCategories}
           dataStatus={dataStatus}
+          showOlder={showOlder}
+          setShowOlder={setShowOlder}
         />
       </div>
     </div>
