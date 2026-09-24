@@ -42,16 +42,18 @@ class SparseQueryServiceTest {
         LocalDateTime start = end.minusMonths(1).atStartOfDay();
         LocalDateTime endExclusive = end.plusDays(1).atStartOfDay();
         List<Object[]> matches = Collections.nCopies(matchCount, row(start));
-        List<Object[]> older = Collections.nCopies(100 - matchCount, row(start.minusDays(1)));
+        List<Object[]> older = Collections.nCopies(SparseQueryPolicy.FALLBACK_LIMIT - matchCount,
+                row(start.minusDays(1)));
         when(crimes.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1, start, endExclusive, 20000))
                 .thenReturn(matches);
         when(crimes.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
-                SparseQueryPolicy.fallbackStart(end), start, 100 - matchCount)).thenReturn(older);
+                SparseQueryPolicy.fallbackStart(end), start, SparseQueryPolicy.FALLBACK_LIMIT - matchCount))
+                .thenReturn(older);
 
         FeatureCollectionDTO result = crimeService.findAllByBoundsOrderByReportedAtDescGeoJSON(
                 0, 0, 1, 1, start, end.atStartOfDay(), 20000);
 
-        assertThat(result.getFeatures()).hasSize(100);
+        assertThat(result.getFeatures()).hasSize(SparseQueryPolicy.FALLBACK_LIMIT);
         if (matchCount > 0) {
             assertThat(result.getFeatures().get(0).getProperties().getDateMatch()).isEqualTo("within_range");
         }
@@ -98,7 +100,8 @@ class SparseQueryServiceTest {
         when(reports311.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
                 start, end.plusDays(1).atStartOfDay(), 20000)).thenReturn(List.of());
         when(reports311.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
-                earliest, start, 100)).thenReturn(Collections.singletonList(row(earliest)));
+                earliest, start, SparseQueryPolicy.FALLBACK_LIMIT))
+                .thenReturn(Collections.singletonList(row(earliest)));
 
         FeatureCollectionDTO result = service311.findAllByBoundsOrderByReportedAtDescGeoJSON(
                 0, 0, 1, 1, start, end.atStartOfDay(), 20000);

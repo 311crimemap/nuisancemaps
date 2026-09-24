@@ -66,10 +66,7 @@ spec:
                 name: postgresql-secrets
                 key: POSTGRESQL_PASSWORD
           - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: postgresql-configmap
-                key: POSTGRESQL_URL
+            value: "$(POSTGRESQL_URL)?prepareThreshold=0"
           - name: ADMIN_API_KEY
             valueFrom:
               secretKeyRef:

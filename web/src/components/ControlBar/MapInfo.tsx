@@ -55,6 +55,8 @@ export default function MapInfo({
   const olderCrime = visibleCrime.filter((feature) => feature.properties.dateMatch === "older_context");
   const older311 = visible311.filter((feature) => feature.properties.dateMatch === "older_context");
   const olderReports = [...olderCrime, ...older311];
+  const hasOlderReports = dataCrimes.features.some((feature) => feature.properties.dateMatch === "older_context") ||
+    data311s.features.some((feature) => feature.properties.dateMatch === "older_context");
   const latestOlderDate = olderReports
     .map((feature) => feature.properties.reportedAt?.slice(0, 10))
     .filter((date): date is string => Boolean(date))
@@ -66,21 +68,21 @@ export default function MapInfo({
   const [year, month, day] = (latestOlderDate ?? "").split("-");
   const formattedDate = latestOlderDate ? `${month}/${day}/${year}` : null;
   const message = formattedDate
-    ? `Reports unreleased for date range. ${showOlder ? "Including most recent" : "Most recent"} ${reportType} ${showOlder ? "from" : "available from"} ${formattedDate}.`
+    ? `Reports unreleased for date range. ${showOlder ? "Showing most recent" : "Most recent"} ${reportType} ${showOlder ? "from" : "available from"} ${formattedDate}.`
     : "";
   return (
     <div className="flex items-center justify-end w-full min-w-0 gap-4 text-sm" aria-live="polite">
       <span className="hidden min-[960px]:block flex-1 min-w-0 text-center text-xs leading-tight" title={message}>
         {dataStatus === DATASTATUS.OK ? message : ""}
       </span>
-      <div className="flex shrink-0 flex-col justify-center whitespace-nowrap leading-tight">
+      {hasOlderReports && <div className="flex shrink-0 flex-col justify-center whitespace-nowrap leading-tight">
         <label className="flex items-center justify-center cursor-pointer">
           <input type="checkbox" className="cursor-pointer" checked={!showOlder}
             onChange={(event) => setShowOlder(!event.target.checked)} />
           <span className="label-text pl-2">Hide older reports</span>
         </label>
         <span className="hidden min-[960px]:block text-center text-xs">Faded markers show older data</span>
-      </div>
+      </div>}
       <div className="hidden 2xl:flex shrink-0 items-center">
         <div className="flex flex-col justify-center items-center w-16 ml-3" title="crime records returned, including older reports">
           <div>{numCrime.toLocaleString()}</div>

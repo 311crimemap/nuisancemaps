@@ -7,8 +7,8 @@ range, then return the newest rows first:
 
 ```sql
 WHERE ST_Within(point, ST_MakeEnvelope(..., 4326)::geometry)
-  AND reported_at BETWEEN :startDate AND :endDate
-ORDER BY reported_at DESC
+  AND reported_at >= :startDate AND reported_at < :endDate
+ORDER BY reported_at DESC, id DESC
 LIMIT :limit
 ```
 
@@ -26,6 +26,18 @@ between the spatial and date-oriented paths according to the selectivity of the
 viewport and date range: a wide map extent tends to make date ordering more
 important, while a narrow viewport benefits substantially from spatial
 filtering.
+
+### Sparse-query fallback (2026)
+
+Sparse recent map requests run the date-bounded query first, then fetch up to
+1,000 older reports from the preceding six months. Wider date ranges and new
+indexes were investigated, but the repeated-request slowdown came from pgJDBC
+switching to a generic prepared-statement plan. On the merged NYC dev data,
+uncached crime fallback GETs rose to a 1.62 s median after that switch; with
+`prepareThreshold=0`, they stayed near 44 ms. The 311 path was about 38 ms in
+both configurations. Raising the SQL limit from 100 to 1,000 did not explain
+the slow plan (1.78 s versus 1.74 s in a forced-generic crime query). The
+deployment setting applies to the API only; the worker and SQL are unchanged.
 
 ### Planner statistics
 

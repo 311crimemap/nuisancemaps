@@ -8,12 +8,12 @@ import java.util.List;
 import com.quirkshop.nuisancemaps.dto.FeatureCollectionDTO;
 import com.quirkshop.nuisancemaps.dto.FeatureDTO;
 
-/** Shared rules for adding up to 100 older reports to sparse, recent map queries. */
+/** Shared rules for adding up to 1,000 older reports to sparse, recent map queries. */
 public final class SparseQueryPolicy {
     // Use one calendar zone when deciding whether the requested end date is recent.
     public static final ZoneId ZONE = ZoneId.of("America/Chicago");
     public static final int THRESHOLD = 10;
-    public static final int FALLBACK_LIMIT = 100;
+    public static final int FALLBACK_LIMIT = 1000;
 
     private SparseQueryPolicy() {}
 
