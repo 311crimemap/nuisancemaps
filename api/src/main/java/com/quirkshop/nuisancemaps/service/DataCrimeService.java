@@ -47,12 +47,11 @@ public class DataCrimeService {
         List<Object[]> matches = dataCrimeRepository.findAllByLatLngBoundsAndBetweenDates(
                 sw_lat, sw_lng, ne_lat, ne_lng, startDate, endExclusive, limit);
         List<Object[]> older = List.of();
-        LocalDateTime fallbackStart = SparseQueryPolicy.fallbackStart(endDate.toLocalDate());
         if (SparseQueryPolicy.isRecent(endDate.toLocalDate()) && matches.size() < SparseQueryPolicy.THRESHOLD
-                && matches.size() < limit
-                && fallbackStart.isBefore(startDate)) {
-            older = dataCrimeRepository.findAllByLatLngBoundsAndBetweenDates(sw_lat, sw_lng, ne_lat, ne_lng,
-                    fallbackStart, startDate, SparseQueryPolicy.FALLBACK_LIMIT - matches.size());
+                && matches.size() < limit) {
+            older = dataCrimeRepository.findRecentBeforeStartNearViewport(
+                    sw_lat, sw_lng, ne_lat, ne_lng, startDate,
+                    Math.min(SparseQueryPolicy.FALLBACK_LIMIT - matches.size(), limit - matches.size()));
         }
         List<Object[]> results = new ArrayList<>(matches);
         results.addAll(older);

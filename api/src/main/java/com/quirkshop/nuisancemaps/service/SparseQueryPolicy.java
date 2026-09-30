@@ -1,7 +1,6 @@
 package com.quirkshop.nuisancemaps.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -20,11 +19,6 @@ public final class SparseQueryPolicy {
     public static boolean isRecent(LocalDate endDate) {
         LocalDate today = LocalDate.now(ZONE);
         return endDate.equals(today) || endDate.equals(today.minusDays(1));
-    }
-
-    /** Do not search more than six months back from the requested end date. */
-    public static LocalDateTime fallbackStart(LocalDate endDate) {
-        return endDate.minusMonths(6).atStartOfDay();
     }
 
     /** Labels requested records and older context for the map. */

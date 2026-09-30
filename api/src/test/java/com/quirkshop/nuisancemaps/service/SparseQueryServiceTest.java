@@ -1,8 +1,8 @@
 package com.quirkshop.nuisancemaps.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
@@ -37,18 +37,17 @@ class SparseQueryServiceTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 0, 1, 9 })
-    void recentSparseCrimeAddsOnlyAvailableOlderReports(int matchCount) {
+    void recentSparseCrimeUsesOneAnchoredFallback(int matchCount) {
         LocalDate end = LocalDate.now(SparseQueryPolicy.ZONE);
         LocalDateTime start = end.minusMonths(1).atStartOfDay();
         LocalDateTime endExclusive = end.plusDays(1).atStartOfDay();
         List<Object[]> matches = Collections.nCopies(matchCount, row(start));
         List<Object[]> older = Collections.nCopies(SparseQueryPolicy.FALLBACK_LIMIT - matchCount,
-                row(start.minusDays(1)));
+                row(start.minusYears(1)));
         when(crimes.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1, start, endExclusive, 20000))
                 .thenReturn(matches);
-        when(crimes.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
-                SparseQueryPolicy.fallbackStart(end), start, SparseQueryPolicy.FALLBACK_LIMIT - matchCount))
-                .thenReturn(older);
+        when(crimes.findRecentBeforeStartNearViewport(0, 0, 1, 1, start,
+                SparseQueryPolicy.FALLBACK_LIMIT - matchCount)).thenReturn(older);
 
         FeatureCollectionDTO result = crimeService.findAllByBoundsOrderByReportedAtDescGeoJSON(
                 0, 0, 1, 1, start, end.atStartOfDay(), 20000);
@@ -59,6 +58,9 @@ class SparseQueryServiceTest {
         }
         assertThat(result.getFeatures().get(matchCount).getProperties().getDateMatch()).isEqualTo("older_context");
         verify(crimes).findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1, start, endExclusive, 20000);
+        verify(crimes).findRecentBeforeStartNearViewport(0, 0, 1, 1, start,
+                SparseQueryPolicy.FALLBACK_LIMIT - matchCount);
+        verifyNoMoreInteractions(crimes);
     }
 
     @Test
@@ -93,19 +95,46 @@ class SparseQueryServiceTest {
     }
 
     @Test
-    void recent311UsesItsOwnSparseCountAndStopsAtSixMonths() {
+    void recent311UsesOneAnchoredFallback() {
         LocalDate end = LocalDate.now(SparseQueryPolicy.ZONE);
         LocalDateTime start = end.minusMonths(1).atStartOfDay();
-        LocalDateTime earliest = SparseQueryPolicy.fallbackStart(end);
+        LocalDateTime olderDate = start.minusYears(1);
         when(reports311.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
                 start, end.plusDays(1).atStartOfDay(), 20000)).thenReturn(List.of());
-        when(reports311.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
-                earliest, start, SparseQueryPolicy.FALLBACK_LIMIT))
-                .thenReturn(Collections.singletonList(row(earliest)));
+        when(reports311.findRecentBeforeStartNearViewport(0, 0, 1, 1, start,
+                SparseQueryPolicy.FALLBACK_LIMIT)).thenReturn(List.<Object[]>of(row(olderDate)));
 
         FeatureCollectionDTO result = service311.findAllByBoundsOrderByReportedAtDescGeoJSON(
                 0, 0, 1, 1, start, end.atStartOfDay(), 20000);
         assertThat(result.getFeatures()).hasSize(1);
+        assertThat(result.getFeatures().get(0).getProperties().getReportedAt()).isEqualTo(olderDate);
         assertThat(result.getFeatures().get(0).getProperties().getDateMatch()).isEqualTo("older_context");
+        verify(reports311).findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
+                start, end.plusDays(1).atStartOfDay(), 20000);
+        verify(reports311).findRecentBeforeStartNearViewport(0, 0, 1, 1, start,
+                SparseQueryPolicy.FALLBACK_LIMIT);
+        verifyNoMoreInteractions(reports311);
+    }
+
+    @Test
+    void recent311CapsFallbackAtRemainingResponseLimit() {
+        LocalDate end = LocalDate.now(SparseQueryPolicy.ZONE);
+        LocalDateTime start = end.minusMonths(1).atStartOfDay();
+        List<Object[]> matches = Collections.nCopies(9, row(start));
+        List<Object[]> older = Collections.nCopies(2, row(start.minusDays(1)));
+        when(reports311.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
+                start, end.plusDays(1).atStartOfDay(), 11)).thenReturn(matches);
+        when(reports311.findRecentBeforeStartNearViewport(0, 0, 1, 1, start, 2)).thenReturn(older);
+
+        FeatureCollectionDTO result = service311.findAllByBoundsOrderByReportedAtDescGeoJSON(
+                0, 0, 1, 1, start, end.atStartOfDay(), 11);
+
+        assertThat(result.getFeatures()).hasSize(11);
+        assertThat(result.getFeatures().get(8).getProperties().getDateMatch()).isEqualTo("within_range");
+        assertThat(result.getFeatures().get(9).getProperties().getDateMatch()).isEqualTo("older_context");
+        verify(reports311).findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1,
+                start, end.plusDays(1).atStartOfDay(), 11);
+        verify(reports311).findRecentBeforeStartNearViewport(0, 0, 1, 1, start, 2);
+        verifyNoMoreInteractions(reports311);
     }
 }

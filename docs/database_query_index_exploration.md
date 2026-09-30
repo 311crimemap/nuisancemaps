@@ -29,10 +29,39 @@ filtering.
 
 ### Sparse-query fallback (2026)
 
-Sparse recent map requests run the date-bounded query first, then fetch up to
-1,000 older reports from the preceding six months. Wider date ranges and new
-indexes were investigated, but the repeated-request slowdown came from pgJDBC
-switching to a generic prepared-statement plan. On the merged NYC dev data,
+Sparse recent map requests run the requested date range first. If a category
+has fewer than 10 matches, its fallback query takes the latest reported date
+for the nearest enabled locale with data in that category from
+`locale_category_min_max_reported_at`. It then searches the original viewport
+for reports in the month preceding that date, stopping before the requested
+start date and returning up to 1,000 reports. The anchored month can contain
+fewer than 1,000 viewport reports, and the nearest locale's latest date may
+not represent every source visible in a viewport spanning cities.
+
+The fallback SQL first materializes `anchor`, a single row containing that
+category's latest date for the locale nearest the viewport center.
+`CROSS JOIN LATERAL` joins that row to a subquery over crime or 311 records.
+That subquery uses `anchor.max_reported_at` to set its date bounds while retaining the
+requested viewport filter and 1,000-row limit. Keeping this dependency inside
+the lateral subquery gave PostgreSQL a bounded record scan; the equivalent
+plain join was observed to scan the large data table before applying the date
+anchor.
+
+For a sparse Los Angeles crime viewport on 2026-09-29, production PostgreSQL
+took 2.57 s for the old six-month fallback, 609 ms in total for five monthly
+queries, and 0.78 s for the first anchored-month query. The old six-month
+query scanned roughly 1.45 million date-matched rows to find four points.
+The anchored query returned two points. These are database timings; uncached
+API latency still needs checking after deployment.
+
+For the same Los Angeles viewport, the old 311 fallback took 37.1 s as one
+query and 29.1 s across five monthly queries. The first anchored-month query
+took 3.61 s and returned 33 points. Cache-warmed anchored queries were faster,
+but first-viewport latency still needs monitoring.
+
+Wider date ranges and new indexes were investigated, but an earlier
+repeated-request slowdown came from pgJDBC switching to a generic
+prepared-statement plan. On the merged NYC dev data,
 uncached crime fallback GETs rose to a 1.62 s median after that switch; with
 `prepareThreshold=0`, they stayed near 44 ms. The 311 path was about 38 ms in
 both configurations. Raising the SQL limit from 100 to 1,000 did not explain
