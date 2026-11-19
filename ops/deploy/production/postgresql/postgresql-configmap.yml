@@ -35,5 +35,7 @@ metadata:
   name: postgresql-configmap
   namespace: crimemap
 data:
+  # Shared JVM mitigation for the API and worker (CVE-2026-114938).
+  JAVA_TOOL_OPTIONS: "-XX:-UseBASE64Intrinsics"
   POSTGRESQL_USER: "postgres"
   POSTGRESQL_URL: "jdbc:postgresql://core-db-postgresql-ha-pgpool.core-db.svc.cluster.local:5432/nuisancemaps"

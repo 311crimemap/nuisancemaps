@@ -85,7 +85,7 @@ services:
     environment:
       # Keep browser API access limited to the local development servers.
       CORS_ORIGINS: http://localhost:5173,http://localhost:4173
-      # CVE-2026-114938: disable the vulnerable JVM Base64 intrinsic.
+      # CVE-2026-114938: retain until the running JVM is verified patched.
       JAVA_TOOL_OPTIONS: -XX:-UseBASE64Intrinsics
     labels:
       - "traefik.enable=true"
