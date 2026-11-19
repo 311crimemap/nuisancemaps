@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.10</version>
+    <version>4.1.2</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.quirkshop</groupId>
@@ -29,7 +29,7 @@
     <!-- toggle spring-boot-starter-parent version above -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -41,7 +41,7 @@
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
+        <artifactId>spring-boot-starter-webmvc-test</artifactId>
         <scope>test</scope>
     </dependency>
     <dependency>
@@ -58,37 +58,41 @@
         <scope>runtime</scope>
         <optional>true</optional>
     </dependency>
+    <!-- Keep the existing Jackson 2 serializers and JSURFER integration during the Boot 4 migration. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-jackson2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-restclient</artifactId>
+    </dependency>
     <!-- end spring boot -->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.6.0</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.liquibase</groupId>
-      <artifactId>liquibase-core</artifactId>
-      <version>4.24.0</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-liquibase</artifactId>
     </dependency>
     <dependency>
       <groupId>org.locationtech.jts</groupId>
       <artifactId>jts-core</artifactId>
-      <version>1.16.1</version>
+      <version>1.19.0</version>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>6.1.7.Final</version>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-spatial</artifactId>
-      <version>6.1.7.Final</version>
     </dependency>
     <dependency>
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-registry-prometheus</artifactId>
-        <version>1.15.8</version>
     </dependency>
     <dependency>
         <groupId>net.logstash.logback</groupId>
@@ -98,7 +102,6 @@
     <dependency>
         <groupId>com.github.ben-manes.caffeine</groupId>
         <artifactId>caffeine</artifactId>
-        <version>3.1.8</version>
     </dependency>
     <dependency>
         <groupId>com.squareup.okhttp3</groupId>
@@ -153,6 +156,12 @@
           <!-- NB: imageRepo not available via .env during build runtime, passed as command line property -->
           <image>
               <name>${imageRepo}/${project.name}/${project.artifactId}:${project.version}</name>
+              <env>
+                  <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
+                  <!-- CVE-2026-114938: retain until the image JVM is verified patched. -->
+                  <BPE_APPEND_JAVA_TOOL_OPTIONS>-XX:-UseBASE64Intrinsics</BPE_APPEND_JAVA_TOOL_OPTIONS>
+                  <BPE_DELIM_JAVA_TOOL_OPTIONS xml:space="preserve"> </BPE_DELIM_JAVA_TOOL_OPTIONS>
+              </env>
           </image>
 
         </configuration>
@@ -162,7 +171,7 @@
       <plugin>
         <groupId>org.liquibase</groupId>
         <artifactId>liquibase-maven-plugin</artifactId>
-        <version>4.24.0</version>
+        <version>${liquibase.version}</version>
         <configuration>
           <propertyFile>liquibase.properties</propertyFile>
         </configuration>
@@ -170,12 +179,12 @@
           <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>3.2.1</version>
+            <version>${project.parent.version}</version>
           </dependency>
           <dependency>
             <groupId>org.liquibase.ext</groupId>
-            <artifactId>liquibase-hibernate6</artifactId>
-            <version>4.25.0</version>
+            <artifactId>liquibase-hibernate7</artifactId>
+            <version>${liquibase.version}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -212,7 +221,7 @@
           <plugin>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-maven-plugin</artifactId>
-            <version>4.24.0</version>
+            <version>${liquibase.version}</version>
             <configuration>
               <propertyFile>liquibase-test.properties</propertyFile>
             </configuration>
@@ -220,12 +229,12 @@
               <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>3.2.1</version>
+                <version>${project.parent.version}</version>
               </dependency>
               <dependency>
                 <groupId>org.liquibase.ext</groupId>
-                <artifactId>liquibase-hibernate6</artifactId>
-                <version>4.25.0</version>
+                <artifactId>liquibase-hibernate7</artifactId>
+                <version>${liquibase.version}</version>
               </dependency>
             </dependencies>
           </plugin>

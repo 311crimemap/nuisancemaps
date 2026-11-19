@@ -69,6 +69,7 @@ services:
   api:
     #NB: deploy image is configured in pom.xml, built via spring boot.
     image: eclipse-temurin:17-jdk-alpine
+    pull_policy: always
     volumes:
       - ./api:/api
       - api_maven_cache:/root/.m2
@@ -84,6 +85,8 @@ services:
     environment:
       # Keep browser API access limited to the local development servers.
       CORS_ORIGINS: http://localhost:5173,http://localhost:4173
+      # CVE-2026-114938: retain until the running JVM is verified patched.
+      JAVA_TOOL_OPTIONS: -XX:-UseBASE64Intrinsics
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=PathPrefix(`/`)"               # Routes all traffic to this service
@@ -99,6 +102,7 @@ services:
 
   worker:
     image: eclipse-temurin:17-jdk-alpine
+    pull_policy: always
     volumes:
       - ./api:/api
       - worker_maven_cache:/root/.m2
@@ -107,6 +111,8 @@ services:
     command: ash -c "./mvnw spring-boot:run -Dstart-class=com.quirkshop.nuisancemaps.WorkerApplication"
     env_file:
       - .env.dev
+    environment:
+      JAVA_TOOL_OPTIONS: -XX:-UseBASE64Intrinsics
     # deploy: # to test multiple workers
     #   replicas: 3
     depends_on:

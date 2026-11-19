@@ -30,10 +30,12 @@ import com.quirkshop.nuisancemaps.service.dataprocess.DataProcessStrategyFactory
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest(classes = NuisancemapsApplication.class)
 public class DataProcessStrategyFactoryTest {
 
@@ -59,16 +62,16 @@ public class DataProcessStrategyFactoryTest {
     @Mock
     private ResponseBody responseBody;
 
-    @MockBean
+    @MockitoBean
     private OkHttpClient client;
 
-    @MockBean
+    @MockitoBean
     private DataCrimeRepository datacrime_repo;
 
-    @MockBean
+    @MockitoBean
     private SourceRepository source_repo;
 
-    @MockBean
+    @MockitoBean
     DataJobRepository dataJobRepository;
 
     @Autowired

@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -32,7 +31,7 @@ class SparseQueryServiceTest {
 
     private static Object[] row(LocalDateTime date) {
         return new Object[] { 1L, "report", "type", "address", "place", 30.0, -95.0,
-                Timestamp.valueOf(date), 1, "crime", "text", 1, "icon", "unicode" };
+                date, 1, "crime", "text", 1, "icon", "unicode" };
     }
 
     @ParameterizedTest
@@ -137,4 +136,25 @@ class SparseQueryServiceTest {
         verify(reports311).findRecentBeforeStartNearViewport(0, 0, 1, 1, start, 2);
         verifyNoMoreInteractions(reports311);
     }
+
+    @Test
+    void bothServicesPreserveLocalDateTimeFromNativeQuery() {
+        LocalDateTime date = LocalDateTime.of(2024, 1, 15, 12, 30, 45, 123456000);
+        LocalDateTime start = date.toLocalDate().atStartOfDay();
+        LocalDateTime endExclusive = start.plusDays(1);
+        Object[] resultRow = row(date);
+        when(crimes.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1, start, endExclusive, 10))
+                .thenReturn(Collections.singletonList(resultRow));
+        when(reports311.findAllByLatLngBoundsAndBetweenDates(0, 0, 1, 1, start, endExclusive, 10))
+                .thenReturn(Collections.singletonList(resultRow));
+
+        var crimeResult = crimeService.findAllByBoundsOrderByReportedAtDescGeoJSON(0, 0, 1, 1, start, start, 10);
+        var reportsResult = service311.findAllByBoundsOrderByReportedAtDescGeoJSON(0, 0, 1, 1, start, start, 10);
+
+        assertThat(crimeResult.getFeatures()).hasSize(1);
+        assertThat(crimeResult.getFeatures().get(0).getProperties().getReportedAt()).isEqualTo(date);
+        assertThat(reportsResult.getFeatures()).hasSize(1);
+        assertThat(reportsResult.getFeatures().get(0).getProperties().getReportedAt()).isEqualTo(date);
+    }
+
 }

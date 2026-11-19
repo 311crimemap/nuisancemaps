@@ -1,6 +1,5 @@
 package com.quirkshop.nuisancemaps.service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +66,8 @@ public class DataCrimeService {
                     String location = (String) result[4];
                     Double latitude = (Double) result[5];
                     Double longitude = (Double) result[6];
-                    Timestamp t_reportedAt = ((Timestamp) result[7]);
-                    LocalDateTime reportedAt = t_reportedAt.toLocalDateTime();
+                    // Hibernate 7 returns LocalDateTime for native timestamp columns.
+                    LocalDateTime reportedAt = (LocalDateTime) result[7];
 
                     // Mapping category fields
                     Integer catId = (Integer) result[8];
