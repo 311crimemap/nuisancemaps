@@ -41,13 +41,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
 
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest(classes = NuisancemapsApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FileDataProcessingStrategyTest {
@@ -61,10 +64,10 @@ public class FileDataProcessingStrategyTest {
     @Mock
     private DataJob mockDataJob;
 
-    @MockBean
+    @MockitoBean
     private FileDataPreProcessor fileDataPreProcessor;
 
-    @MockBean
+    @MockitoBean
     private DataJobRepository mockDataJobRepository;
 
     @Autowired

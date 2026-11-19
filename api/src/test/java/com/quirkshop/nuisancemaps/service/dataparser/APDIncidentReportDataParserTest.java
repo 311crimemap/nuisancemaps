@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,7 +79,7 @@ public class APDIncidentReportDataParserTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @MockBean
+    @MockitoBean
     private GeocoderService geocoderService;
 
     @Autowired
