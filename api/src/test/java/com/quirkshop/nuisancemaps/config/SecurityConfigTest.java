@@ -2,8 +2,10 @@ package com.quirkshop.nuisancemaps.config;
 
 //Annotations
 import org.junit.jupiter.api.Test; //@Test
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired; //@Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc; //@AutoConfigureMockMvc
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc; //@AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest; //@SpringBootTest
 
 //Mock classes
@@ -66,6 +68,28 @@ public class SecurityConfigTest {
         mvc.perform(MockMvcRequestBuilders.get("/data311s.geojson?sw_lat=42.599&sw_lng=-72.201&ne_lat=42.899&ne_lng=-71.801").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void headOpenRouteInit() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.head("/init"))
+                .andExpect(status().isOk());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/init", "/categories", "/locales", "/data311s.geojson", "/datacrimes.geojson", "/actuator/health"})
+    public void writesToPublicReadRoutesRequireApiKey(String path) throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post(path).contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Invalid API Key"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/locales/1", "/sources", "/datajobs", "/datacrimes/nested", "/data311s/nested"})
+    public void protectedAndNestedRoutesRequireApiKey(String path) throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(path))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Invalid API Key"));
     }
 
 }

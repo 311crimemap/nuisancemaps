@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
@@ -26,18 +26,18 @@ public class SecurityConfig {
         // NB: "/** " matches both /, /aa, and /aa/bb - see doc
         //
         OrRequestMatcher whiteList = new OrRequestMatcher(
-                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/actuator/**"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/actuator/**"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/init"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/init"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/categories"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/categories"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/locales"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/locales"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/data311s*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/data311s*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.HEAD, "/datacrimes*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/datacrimes*"));
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.HEAD, "/actuator/**"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/actuator/**"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.HEAD, "/init"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/init"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.HEAD, "/categories"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/categories"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.HEAD, "/locales"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/locales"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.HEAD, "/data311s*"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/data311s*"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.HEAD, "/datacrimes*"),
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/datacrimes*"));
 
         NegatedRequestMatcher nRequestMatcher = new NegatedRequestMatcher(whiteList);
 
