@@ -21,6 +21,7 @@ import jakarta.persistence.Index;
 
 import org.locationtech.jts.geom.Point;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -73,6 +74,7 @@ public class Data311 implements DataEntity {
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     @CreationTimestamp
+    @Immutable
     private LocalDateTime createdAt;
 
     @JsonIgnore
